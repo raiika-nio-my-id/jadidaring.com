@@ -823,8 +823,8 @@ body {
 .pf-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .pf-bar__owner { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
 .pf-wall { margin-top: 8px; }
-.pf-explore { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
-.pf-explore .clay-input { width: auto; flex: 1 1 180px; }
+.clay-form.pf-explore { flex-direction: row; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 18px; }
+.pf-explore .clay-input { width: auto; flex: 1 1 180px; min-width: 0; height: 48px; box-sizing: border-box; }
 .pf-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 .pf-mini { display: flex; gap: 12px; padding: 14px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink); text-decoration: none; box-shadow: var(--clay-out); align-items: center; }
 .pf-mini__av { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; flex: none; }
