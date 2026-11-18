@@ -1338,7 +1338,16 @@ cold_start() {
     public_health
 }
 
+ensure_realtime() {
+    [ -f "$APP_DIR/realtime/bin/jd-realtime" ] || return 0
+    if [ "$(docker inspect -f '{{.State.Running}}' singlepage-realtime 2>/dev/null)" != "true" ]; then
+        log "Starting the Rust realtime service."
+        docker compose up -d --no-deps realtime || log "WARNING: realtime service did not start; games stay on Reverb"
+    fi
+}
+
 finish_log() {
+    ensure_realtime
     step "Deploy complete"
     log "Path: $(path_label)"
     log "Ref: $REF → $(git rev-parse --short HEAD) — $(git log -1 --format='%s')"
