@@ -693,3 +693,20 @@ body {
   align-items: center;
   gap: 4px;
 }
+
+/* Member auth */
+.clay-auth { max-width: 460px; margin: 24px auto; }
+.clay-auth .clay-card { padding: 28px; }
+.clay-form { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+.clay-form label { font-weight: 700; color: var(--clay-ink-2); }
+.clay-input { font: inherit; color: var(--clay-ink); background: var(--clay-surface); border: 0; border-radius: var(--radius-sm); padding: 12px 14px; box-shadow: var(--clay-pressed); }
+.clay-input:focus-visible { outline: 3px solid var(--clay-focus); outline-offset: 2px; }
+.clay-check { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.clay-errors { list-style: none; padding: 12px 14px; margin: 12px 0; border-radius: var(--radius-sm); background: var(--clay-surface); color: var(--clay-danger); box-shadow: var(--clay-in); font-weight: 700; }
+.clay-status { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--clay-mint); color: var(--clay-mint-ink); font-weight: 700; }
+.clay-auth__links { text-align: center; font-weight: 600; }
+.clay-auth__links a { color: var(--clay-focus); }
+.clay-social { display: flex; flex-direction: column; gap: 10px; align-items: stretch; margin-top: 18px; text-align: center; }
+.clay-social__label { color: var(--clay-ink-2); margin: 0; }
+.clay-social__telegram { display: flex; justify-content: center; }
+.clay-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

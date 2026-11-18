@@ -8,6 +8,7 @@ use App\Policies\CompanyProfilePolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -30,7 +31,17 @@ class AppServiceProvider extends ServiceProvider
         // Host-only admin cookies. Never Domain=.jadidaring.com / .jadidaring.test.
         Config::set('session.domain', null);
         Config::set('session.http_only', true);
-        Config::set('session.same_site', 'strict');
+        // Strict on the admin host. Lax elsewhere so an OAuth provider's
+        // top-level redirect back to /auth/{provider}/callback keeps the session.
+        $isAdminHost = strtolower(request()->getHost()) === strtolower((string) config('singlepage.admin_domain'));
+        Config::set('session.same_site', $isAdminHost ? 'strict' : 'lax');
+
+        ResetPassword::createUrlUsing(function (object $user, string $token): string {
+            return route('member.password.reset', [
+                'token' => $token,
+                'email' => $user->getEmailForPasswordReset(),
+            ]);
+        });
 
         Gate::policy(CompanyProfile::class, CompanyProfilePolicy::class);
 

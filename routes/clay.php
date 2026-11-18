@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClayController;
+use App\Http\Controllers\Member\AuthController;
+use App\Http\Controllers\Member\PasswordResetController;
+use App\Http\Controllers\Member\SocialController;
 use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +21,24 @@ Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('clay.sitem
 Route::get('/game/{slug}', [TenantController::class, 'showGame'])->name('clay.game.show');
 Route::get('/game/{slug}/', [TenantController::class, 'showGame']);
 Route::get('/game/{slug}/syarat-ketentuan', [TenantController::class, 'gameTerms'])->name('clay.game.terms');
+
+// Member auth (username + password, optional email, social login).
+Route::middleware('guest')->group(function (): void {
+    Route::get('/masuk', [AuthController::class, 'showLogin'])->name('member.login');
+    Route::post('/masuk', [AuthController::class, 'login'])->middleware('throttle:20,1');
+    Route::get('/daftar', [AuthController::class, 'showRegister'])->name('member.register');
+    Route::post('/daftar', [AuthController::class, 'register'])->middleware('throttle:10,1');
+    Route::get('/lupa-password', [PasswordResetController::class, 'showForgot'])->name('member.password.request');
+    Route::post('/lupa-password', [PasswordResetController::class, 'sendLink'])->middleware('throttle:5,1')->name('member.password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('member.password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'reset'])->middleware('throttle:10,1')->name('member.password.update');
+    Route::get('/auth/telegram/callback', [SocialController::class, 'telegram'])->name('member.telegram.callback');
+    Route::get('/auth/{provider}/redirect', [SocialController::class, 'redirect'])->whereIn('provider', ['google', 'github'])->name('member.social.redirect');
+    Route::get('/auth/{provider}/callback', [SocialController::class, 'callback'])->whereIn('provider', ['google', 'github'])->name('member.social.callback');
+});
+
+Route::middleware('auth')->group(function (): void {
+    Route::post('/keluar', [AuthController::class, 'logout'])->name('member.logout');
+    Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
+    Route::post('/akun/email', [AuthController::class, 'updateEmail'])->name('member.account.email');
+});

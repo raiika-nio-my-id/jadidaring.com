@@ -37,6 +37,14 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function member(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => UserRole::Member,
+            'username' => fake()->unique()->userName(),
+        ]);
+    }
+
     public function client(): static
     {
         return $this->state(fn (array $attributes) => [

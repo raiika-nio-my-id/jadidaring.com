@@ -81,8 +81,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_PROTO,
         );
 
-        $middleware->redirectGuestsTo(fn () => route('login'));
-        $middleware->redirectUsersTo(fn () => route('home'));
+        $isAdminHost = static fn (Request $request): bool => strtolower($request->getHost()) === strtolower((string) config('singlepage.admin_domain'));
+
+        $middleware->redirectGuestsTo(fn (Request $request) => $isAdminHost($request) ? route('login') : route('member.login'));
+        $middleware->redirectUsersTo(fn (Request $request) => $isAdminHost($request) ? route('home') : route('member.account'));
 
         $middleware->alias([
             'admin.api' => AuthenticateAdminApiKey::class,

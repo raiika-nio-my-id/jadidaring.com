@@ -41,7 +41,11 @@
                     <a href="/berita" class="clay-nav__link" @if(request()->is('berita*')) aria-current="page" @endif>Berita</a>
                     <a href="/game" class="clay-nav__link" @if(request()->is('game*')) aria-current="page" @endif>Game</a>
                     <a href="/komunitas" class="clay-nav__link" @if(request()->is('komunitas*')) aria-current="page" @endif>Komunitas</a>
-                    <a href="{{ request()->getScheme() }}://{{ config('singlepage.admin_domain') }}/login" class="clay-nav__link">Masuk</a>
+                    @auth
+                        <a href="/akun" class="clay-nav__link" @if(request()->is('akun*')) aria-current="page" @endif>{{ auth()->user()->username ?? auth()->user()->name }}</a>
+                    @else
+                        <a href="/masuk" class="clay-nav__link" @if(request()->is('masuk', 'daftar')) aria-current="page" @endif>Masuk</a>
+                    @endauth
                 </nav>
 
                 <div class="clay-header__actions">
@@ -98,7 +102,7 @@
             </svg>
             <span>Komunitas</span>
         </a>
-        <a href="{{ request()->getScheme() }}://{{ config('singlepage.admin_domain') }}/login" class="clay-bottom-nav__item">
+        <a href="{{ auth()->check() ? '/akun' : '/masuk' }}" class="clay-bottom-nav__item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
