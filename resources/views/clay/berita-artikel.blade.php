@@ -23,7 +23,11 @@
 
         <div class="clay-card news-body">
             @foreach ($article['paragraphs'] as $p)
-                <p>{!! nl2br(e($p)) !!}</p>
+                @if (str_starts_with($p, '## '))
+                    <h2 class="news-subhead">{{ trim(substr($p, 3)) }}</h2>
+                @else
+                    <p>{!! nl2br(e($p)) !!}</p>
+                @endif
             @endforeach
         </div>
 

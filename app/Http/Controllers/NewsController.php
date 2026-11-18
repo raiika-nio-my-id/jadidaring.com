@@ -57,7 +57,7 @@ class NewsController extends Controller
                 'summary' => $article->summary, 'image_url' => $article->image_url, 'sources' => $article->sources,
                 'published_at' => $article->published_at?->toIso8601String(),
                 'updated_at' => $article->updated_at?->toIso8601String(),
-                'paragraphs' => array_values(array_filter(array_map('trim', preg_split('/\R{2,}/', (string) $article->body) ?: []))),
+                'paragraphs' => self::paragraphs((string) $article->body),
             ];
         });
 
@@ -149,5 +149,18 @@ class NewsController extends Controller
     private function articleFor(string $slug): Article
     {
         return Article::query()->visible()->where('slug', $slug)->firstOrFail();
+    }
+
+    /** @return list<string> */
+    private static function paragraphs(string $body): array
+    {
+        $parts = array_values(array_filter(array_map('trim', preg_split('/\\R{2,}/', $body) ?: [])));
+
+        // Bodies written with single line breaks still get one paragraph per line.
+        if (count($parts) <= 1) {
+            $parts = array_values(array_filter(array_map('trim', preg_split('/\\R/', $body) ?: [])));
+        }
+
+        return $parts;
     }
 }
