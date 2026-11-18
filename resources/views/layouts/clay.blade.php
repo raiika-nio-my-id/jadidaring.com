@@ -27,14 +27,12 @@
     <meta name="theme-color" content="#f4ecff">
     <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/', 'inLanguage' => 'id-ID'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/marketing/images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="{{ \App\Support\AssetUrl::to('marketing/images/favicon.svg') }}" type="image/svg+xml">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"></noscript>
+    <link rel="preload" as="font" type="font/woff2" href="{{ \App\Support\AssetUrl::to('fonts/nunito-latin.woff2') }}" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="{{ \App\Support\AssetUrl::to('fonts/baloo2-latin.woff2') }}" crossorigin>
 
-    <style>{!! \App\Support\InlineCss::clay() !!}</style>
+    <style>{!! \App\Support\InlineCss::fonts() !!}{!! \App\Support\InlineCss::clay() !!}</style>
     @include('partials.theme-boot')
     @stack('head')
 </head>
@@ -44,7 +42,7 @@
             <div class="clay-header__bar">
                 <a href="/" class="clay-brand" aria-label="Beranda Jadidaring">
                     <span class="clay-brand__logo">
-                        <img src="/marketing/images/logo-mark.svg" alt="Jadidaring Logo" width="36" height="36">
+                        <img src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark.svg') }}" alt="Jadidaring Logo" width="36" height="36">
                     </span>
                     <span class="clay-brand__name">Jadidaring</span>
                 </a>
@@ -124,6 +122,6 @@
     </nav>
 
     @include('partials.ga4-consent')
-    <script src="/js/theme.js" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/theme.js') }}" defer></script>
 </body>
 </html>

@@ -20,5 +20,5 @@
     </div>
 @endif
 @once
-    <script src="/js/news-nav.js" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/news-nav.js') }}" defer></script>
 @endonce

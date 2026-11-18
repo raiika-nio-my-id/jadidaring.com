@@ -57,6 +57,6 @@
             @endauth
         </section>
     </article>
-    <script src="/js/news-comments.js" defer></script>
-    <script src="/js/news-nav.js" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/news-comments.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/news-nav.js') }}" defer></script>
 @endsection

@@ -61,6 +61,12 @@ return Application::configure(basePath: dirname(__DIR__))
                     })->where('any', '(?!up$).*');
                 });
 
+            // Session-less static assets with immutable caching (independent of nginx rules).
+            Route::domain($base)
+                ->get('/a/{path}', \App\Http\Controllers\StaticAssetController::class)
+                ->where('path', '.*')
+                ->name('assets');
+
             Route::middleware('web')
                 ->domain($base)
                 ->group(base_path('routes/clay.php'));
