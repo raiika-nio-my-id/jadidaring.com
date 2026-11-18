@@ -16,8 +16,14 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function showLogin(): View
+    public function showLogin(Request $request): View
     {
+        $next = (string) $request->query('next', '');
+
+        if (preg_match('#^/(?!/)[A-Za-z0-9/_\-.?=&%]{0,200}$#', $next) === 1) {
+            $request->session()->put('url.intended', url($next));
+        }
+
         return view('member.login', ['providers' => SocialAuth::enabledProviders()]);
     }
 
@@ -99,6 +105,21 @@ class AuthController extends Controller
     public function account(Request $request): View
     {
         return view('member.account', ['user' => $request->user()]);
+    }
+
+    public function updateName(Request $request): RedirectResponse
+    {
+        $request->merge(['name' => trim((string) preg_replace('/\s+/', ' ', (string) $request->input('name')))]);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:20', 'regex:/^(?=.*[\p{L}\p{N}])[\p{L}\p{N} ._\'-]+$/u'],
+        ], [
+            'name.regex' => 'Nama tampilan hanya boleh huruf, angka, spasi, titik, garis bawah, apostrof, dan tanda hubung.',
+        ]);
+
+        $request->user()->forceFill(['name' => $data['name']])->save();
+
+        return back()->with('status', 'Nama tampilan diperbarui. Skor dan data mainmu ikut berubah.');
     }
 
     public function updateEmail(Request $request): RedirectResponse

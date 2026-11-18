@@ -95,6 +95,16 @@ class GameRoomService
         ];
     }
 
+    private ?int $actorId = null;
+
+    /** Link players seated by the following calls to this account (null for guests). */
+    public function actingAs(?int $userId): static
+    {
+        $this->actorId = $userId;
+
+        return $this;
+    }
+
     /**
      * @param  array<string, mixed>  $input
      * @return array<string, mixed>
@@ -316,7 +326,7 @@ class GameRoomService
             $profile->subdomain,
             $room->code,
             (int) $player->id,
-            $player->display_name,
+            $player->shownName(),
             $relay,
             $id,
             $at,
@@ -514,6 +524,7 @@ class GameRoomService
         $player = GamePlayer::query()->create([
             'game_room_id' => $room->id,
             'display_name' => $name,
+            'user_id' => $this->actorId,
             'seat' => $seat,
             'token_hash' => hash('sha256', $token),
             'is_host' => $host,
@@ -586,6 +597,7 @@ class GameRoomService
     private function present(GameRoom $room, GamePlayer $player, ?string $token = null, ?int $since = null): array
     {
         $players = $room->players()
+            ->with('user')
             ->whereNull('left_at')
             ->get()
             ->sort(function (GamePlayer $left, GamePlayer $right): int {
@@ -618,7 +630,7 @@ class GameRoomService
             'private' => $player->private_state ?? [],
             'players' => $players->map(fn (GamePlayer $member): array => [
                 'id' => $member->id,
-                'displayName' => $member->display_name,
+                'displayName' => $member->shownName(),
                 'seat' => $member->seat,
                 'host' => $member->is_host,
                 'spectator' => $member->is_spectator,

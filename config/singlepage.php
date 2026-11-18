@@ -34,7 +34,7 @@ return [
     | Games where creating/drawing needs a logged-in member (comma separated
     | subdomains). Empty disables the rule.
     */
-    'members_only_games' => env('GAME_MEMBERS_ONLY', 'drawquarium,langitbersama'),
+    'members_only_games' => env('GAME_MEMBERS_ONLY', '*'),
 
     'subscription_years' => (int) env('SUBSCRIPTION_YEARS', 1),
 

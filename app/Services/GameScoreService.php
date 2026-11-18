@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\CompanyProfile;
 use App\Models\GameScore;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class GameScoreService
@@ -20,6 +21,7 @@ class GameScoreService
     public function list(CompanyProfile $profile, int $limit = self::DEFAULT_LIMIT): array
     {
         $scores = GameScore::query()
+            ->with('user')
             ->whereBelongsTo($profile, 'profile')
             ->orderByDesc('score')
             ->orderByDesc('created_at')
@@ -36,14 +38,19 @@ class GameScoreService
      * @param  array<string, mixed>  $input
      * @return array{id: int, name: string, score: int, created_at: string|null}
      */
-    public function submit(CompanyProfile $profile, array $input): array
+    public function submit(CompanyProfile $profile, array $input, ?User $user = null): array
     {
+        if ($user !== null) {
+            $input['name'] = mb_substr($user->name, 0, 16);
+        }
+
         $data = $this->validate($input);
 
         $score = GameScore::query()->create([
             'company_profile_id' => $profile->id,
             'name' => $data['name'],
             'score' => $data['score'],
+            'user_id' => $user?->id,
         ]);
 
         return $this->present($score);
@@ -56,7 +63,7 @@ class GameScoreService
     {
         return [
             'id' => $score->id,
-            'name' => $score->name,
+            'name' => $score->shownName(),
             'score' => $score->score,
             'created_at' => $score->created_at?->toIso8601String(),
         ];

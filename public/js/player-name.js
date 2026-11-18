@@ -89,7 +89,13 @@
         return clean(text);
     }
 
+    var ME = root.__JD_ME && typeof root.__JD_ME === 'object' ? root.__JD_ME : null;
+
     function readShared() {
+        if (ME) {
+            return clean(ME.name) || 'Tamu';
+        }
+
         try {
             return clean(localGet(SHARED));
         } catch (error) {
@@ -98,6 +104,10 @@
     }
 
     function writeShared(name) {
+        if (ME) {
+            return;
+        }
+
         try {
             if (name) {
                 localSet(SHARED, name);
@@ -174,6 +184,69 @@
                 writeShared(name);
             }
         };
+    }
+
+    function loginModal(url) {
+        if (!root.document || root.document.getElementById('jd-login-modal')) {
+            return;
+        }
+
+        var box = root.document.createElement('div');
+        box.id = 'jd-login-modal';
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.style.cssText = 'position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;background:rgba(43,36,64,.6);font:600 15px/1.5 system-ui,sans-serif';
+        box.innerHTML = '<div style="background:#fff;color:#2B2440;border-radius:24px;padding:24px;max-width:340px;margin:16px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.35)">' +
+            '<h2 style="margin:0 0 8px;font-size:20px">Masuk dulu ya</h2>' +
+            '<p style="margin:0 0 16px;font-weight:500">Skor dan data mainmu disimpan ke akunmu, jadi kamu perlu masuk atau daftar.</p>' +
+            '<a data-a="in" style="display:block;background:#7C5CFF;color:#fff;border-radius:16px;padding:12px;text-decoration:none;margin-bottom:8px">Masuk</a>' +
+            '<a data-a="up" href="/daftar" style="display:block;background:#E9E2FF;color:#2B2440;border-radius:16px;padding:12px;text-decoration:none;margin-bottom:8px">Daftar</a>' +
+            '<button type="button" style="background:none;border:0;color:#6b6480;font:inherit;cursor:pointer;padding:8px">Nanti saja</button></div>';
+        box.querySelector('[data-a=in]').href = (url || '/masuk') + '?next=' + encodeURIComponent(root.location.pathname);
+        box.querySelector('button').addEventListener('click', function () { box.remove(); });
+        root.document.body.appendChild(box);
+    }
+
+    function watch401(status, body) {
+        if (status !== 401) {
+            return;
+        }
+
+        try {
+            var data = typeof body === 'string' ? JSON.parse(body) : null;
+
+            if (data && data.login) {
+                loginModal(data.login);
+            }
+        } catch (error) {
+            // Not a JSON login prompt.
+        }
+    }
+
+    if (!ME || !ME.in) {
+        if (typeof root.fetch === 'function') {
+            var nativeFetch = root.fetch.bind(root);
+
+            root.fetch = function () {
+                return nativeFetch.apply(null, arguments).then(function (response) {
+                    if (response.status === 401) {
+                        response.clone().text().then(function (text) { watch401(401, text); });
+                    }
+
+                    return response;
+                });
+            };
+        }
+
+        if (root.XMLHttpRequest) {
+            var nativeSend = root.XMLHttpRequest.prototype.send;
+
+            root.XMLHttpRequest.prototype.send = function () {
+                this.addEventListener('load', function () { watch401(this.status, this.responseText); });
+
+                return nativeSend.apply(this, arguments);
+            };
+        }
     }
 
     promote();

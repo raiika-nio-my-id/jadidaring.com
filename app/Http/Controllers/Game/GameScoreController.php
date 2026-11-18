@@ -6,6 +6,7 @@ use App\Exceptions\GameRoomException;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use App\Services\GameScoreService;
+use App\Services\MembersOnlyGames;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,13 @@ class GameScoreController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        return $this->respond(fn (): array => $this->scores->submit($this->profile($request), $request->all()));
+        $user = MembersOnlyGames::user();
+
+        if ($user === null && MembersOnlyGames::applies($this->profile($request)->subdomain)) {
+            return response()->json(['error' => 'Masuk dulu untuk menyimpan skormu.', 'login' => '/masuk'], 401);
+        }
+
+        return $this->respond(fn (): array => $this->scores->submit($this->profile($request), $request->all(), $user));
     }
 
     private function profile(Request $request): CompanyProfile

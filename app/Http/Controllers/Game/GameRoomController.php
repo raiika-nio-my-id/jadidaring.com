@@ -33,17 +33,25 @@ class GameRoomController extends Controller
             return $denied;
         }
 
-        return $this->respond(fn (): array => $this->rooms->create($this->profile($request), $request->all()));
+        return $this->respond(fn (): array => $this->rooms->actingAs($this->actorId())->create($this->profile($request), $this->payload($request)));
     }
 
     public function join(Request $request): JsonResponse
     {
-        return $this->respond(fn (): array => $this->rooms->join($this->profile($request), $request->all()));
+        if ($denied = $this->requireMember($request)) {
+            return $denied;
+        }
+
+        return $this->respond(fn (): array => $this->rooms->actingAs($this->actorId())->join($this->profile($request), $this->payload($request)));
     }
 
     public function match(Request $request): JsonResponse
     {
-        return $this->respond(fn (): array => $this->rooms->match($this->profile($request), $request->all()));
+        if ($denied = $this->requireMember($request)) {
+            return $denied;
+        }
+
+        return $this->respond(fn (): array => $this->rooms->actingAs($this->actorId())->match($this->profile($request), $this->payload($request)));
     }
 
     public function show(Request $request, string $tenant, string $code): JsonResponse
@@ -60,7 +68,7 @@ class GameRoomController extends Controller
 
     public function watch(Request $request, string $tenant, string $code): JsonResponse
     {
-        return $this->respond(fn (): array => $this->rooms->watch($this->profile($request, $tenant), $code, $request->all()));
+        return $this->respond(fn (): array => $this->rooms->actingAs($this->actorId())->watch($this->profile($request, $tenant), $code, $this->payload($request)));
     }
 
     public function act(Request $request, string $tenant, string $code): JsonResponse
@@ -118,7 +126,29 @@ class GameRoomController extends Controller
             return null;
         }
 
-        return response()->json(['error' => 'Masuk dulu untuk membuat gambar baru.', 'login' => '/masuk'], 401);
+        return response()->json(['error' => 'Masuk dulu untuk menyimpan data mainmu.', 'login' => '/masuk'], 401);
+    }
+
+    private function actorId(): ?int
+    {
+        return MembersOnlyGames::user()?->id;
+    }
+
+    /**
+     * The account name replaces any typed name, so saved player data always follows the account.
+     *
+     * @return array<string, mixed>
+     */
+    private function payload(Request $request): array
+    {
+        $input = $request->all();
+        $user = MembersOnlyGames::user();
+
+        if ($user !== null) {
+            $input['displayName'] = mb_substr($user->name, 0, 40);
+        }
+
+        return $input;
     }
 
     private function profile(Request $request, ?string $tenant = null): CompanyProfile

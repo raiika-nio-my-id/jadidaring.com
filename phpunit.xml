@@ -18,6 +18,7 @@
         </include>
     </source>
     <php>
+        <env name="GAME_MEMBERS_ONLY" value=""/>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:0KoUUd9SAEv25W3wZIq6TuTNogVpHKPseQXPOQWzr20="/>
         <env name="APP_NAME" value="Singlepage"/>

@@ -41,7 +41,7 @@ class TenantController extends Controller
             : $legalInjector->inject($html, $this->termsUrl($request, $profile));
 
         $html = $seoInjector->inject($html, $this->canonicalUrl($request, $profile), $this->ogImageUrl($request, $profile));
-        $html = $names->inject($html);
+        $html = $names->inject($html, MembersOnlyGames::user());
 
         if (GameHub::isProfile($profile)) {
             $html = JaRingMark::apply($html);
@@ -56,6 +56,7 @@ class TenantController extends Controller
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
             'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=()',
+            'Cache-Control' => 'private, no-cache',
         ]);
     }
 
@@ -81,7 +82,7 @@ class TenantController extends Controller
             : $legalInjector->inject($html, TenantPath::gameTermsUrl($request, $profile->subdomain));
 
         $html = $seoInjector->inject($html, TenantPath::gameHomeUrl($request, $profile->subdomain));
-        $html = $names->inject($html);
+        $html = $names->inject($html, MembersOnlyGames::user());
 
         if (MembersOnlyGames::applies($profile->subdomain) && ! MembersOnlyGames::allows($request)) {
             $banner = MembersOnlyGames::banner('/masuk');
@@ -95,6 +96,7 @@ class TenantController extends Controller
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
             'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=()',
+            'Cache-Control' => 'private, no-cache',
         ]);
     }
 

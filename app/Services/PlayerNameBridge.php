@@ -16,7 +16,7 @@ class PlayerNameBridge
 
     public const STORAGE_KEY = 'jdng.name';
 
-    public function inject(string $html): string
+    public function inject(string $html, ?\App\Models\User $user = null): string
     {
         if (str_contains($html, self::MARKER) || ! $this->asksForPlayerName($html)) {
             return $html;
@@ -28,7 +28,11 @@ class PlayerNameBridge
             return $html;
         }
 
-        $tag = '<script '.self::MARKER.">\n".$script."\n</script>";
+        $me = json_encode(
+            ['in' => $user !== null, 'name' => $user?->name ?? '', 'login' => '/masuk'],
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE,
+        );
+        $tag = '<script '.self::MARKER.">\nwindow.__JD_ME=".$me.";\n".$script."\n</script>";
         $replaced = preg_replace('/<head\b[^>]*>/i', '$0'.$tag, $html, 1, $count);
 
         if (is_string($replaced) && $count > 0) {

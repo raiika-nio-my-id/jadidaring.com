@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['company_profile_id', 'name', 'score'])]
+#[Fillable(['company_profile_id', 'name', 'score', 'user_id'])]
 class GameScore extends Model
 {
     /** @use HasFactory<GameScoreFactory> */
@@ -22,6 +22,16 @@ class GameScore extends Model
         return [
             'score' => 'integer',
         ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function shownName(): string
+    {
+        return $this->user_id !== null && $this->user !== null && $this->user->name !== '' ? $this->user->name : $this->name;
     }
 
     public function profile(): BelongsTo

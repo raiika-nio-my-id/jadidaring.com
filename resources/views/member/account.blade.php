@@ -6,6 +6,12 @@
             <h1 class="clay-section__title">Akunku</h1>
             <p>Masuk sebagai <strong>{{ $user->username }}</strong>.</p>
             @include('member._form_open')
+            <form method="POST" action="{{ route('member.account.name') }}" class="clay-form">
+                @csrf
+                <label for="name">Nama tampilan (dipakai di semua game)</label>
+                <input class="clay-input" id="name" type="text" name="name" value="{{ old('name', $user->name) }}" maxlength="20" minlength="2" required autocomplete="nickname">
+                <button class="clay-btn clay-btn--mint" type="submit">Simpan nama</button>
+            </form>
             <form method="POST" action="{{ route('member.account.email') }}" class="clay-form">
                 @csrf
                 <label for="email">Email (untuk reset kata sandi)</label>
