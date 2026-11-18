@@ -149,4 +149,19 @@ class CommunityPagesTest extends TestCase
         $js = file_get_contents(public_path('js/prompt-builder.js'));
         $this->assertSame(20, preg_match_all("/^    \['[^']+', '/m", $js));
     }
+
+    public function test_sanitizer_keeps_allowlisted_cdn_assets_and_drops_others(): void
+    {
+        $out = (new \App\Services\MemberPageSanitizer)->clean('<html><head><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">'
+            .'<link rel="stylesheet" href="https://evil.example/x.css"><link rel="icon" href="https://fonts.gstatic.com/a.png">'
+            .'<style>@import url("https://fonts.googleapis.com/css2?family=Lora");@import url("https://evil.example/a.css");body{color:red}</style>'
+            .'<script src="https://cdn.tailwindcss.com"></script><script src="https://evil.example/a.js"></script></head><body class="p-4"><p style="color:blue">hi</p></body></html>');
+
+        $this->assertStringContainsString('fonts.googleapis.com/css2?family=Inter', $out);
+        $this->assertStringNotContainsString('evil.example', $out);
+        $this->assertStringContainsString('cdn.tailwindcss.com', $out);
+        $this->assertStringContainsString('family=Lora', $out);
+        $this->assertStringContainsString('color:red', $out);
+        $this->assertStringContainsString('color:blue', $out);
+    }
 }

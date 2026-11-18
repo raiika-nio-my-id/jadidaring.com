@@ -122,18 +122,20 @@ class CommunityController extends Controller
         }
 
         $html = $page->html;
-        $snippet = '<script>(function(){function s(){try{parent.postMessage({jdFrameHeight:Math.ceil(document.documentElement.scrollHeight)},"*")}catch(e){}}'
-            .'addEventListener("load",s);if(window.ResizeObserver){new ResizeObserver(s).observe(document.documentElement)}setInterval(s,1500)})();</script>';
+        $snippet = '<script>(function(){function s(){try{var b=document.body,h=Math.max(b?b.scrollHeight:0,document.documentElement.scrollHeight);parent.postMessage({jdFrameHeight:Math.ceil(h)},"*")}catch(e){}}'
+            .'addEventListener("load",s);addEventListener("DOMContentLoaded",s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s)}'
+            .'if(window.ResizeObserver){new ResizeObserver(s).observe(document.documentElement);if(document.body)new ResizeObserver(s).observe(document.body)}setInterval(s,1000)})();</script>';
         $html = stripos($html, '</body>') !== false ? preg_replace('~</body>~i', $snippet.'</body>', $html, 1) : $html.$snippet;
 
+        $cdn = implode(' ', array_map(fn (string $h): string => 'https://'.$h, \App\Services\MemberPageSanitizer::CDN_HOSTS));
         $csp = implode('; ', [
             'sandbox allow-scripts allow-popups',
             "default-src 'none'",
-            "script-src 'unsafe-inline'",
-            "style-src 'unsafe-inline'",
+            "script-src 'unsafe-inline' 'unsafe-eval' ".$cdn,
+            "style-src 'unsafe-inline' ".$cdn,
             'img-src https: data:',
             'media-src https: data:',
-            'font-src data:',
+            'font-src data: '.$cdn,
             "connect-src 'none'",
             "form-action 'none'",
             "base-uri 'none'",

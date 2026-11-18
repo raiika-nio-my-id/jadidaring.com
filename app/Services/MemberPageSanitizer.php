@@ -15,7 +15,21 @@ class MemberPageSanitizer
 {
     public const MAX_BYTES = 307200; // 300 KB
 
-    private const DROP_TAGS = ['iframe', 'frame', 'frameset', 'object', 'embed', 'applet', 'base', 'link', 'portal', 'dialog'];
+    private const DROP_TAGS = ['iframe', 'frame', 'frameset', 'object', 'embed', 'applet', 'base', 'portal', 'dialog'];
+
+    /** Hosts allowed for external stylesheets, fonts and scripts (also used by the content CSP). */
+    public const CDN_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'cdn.tailwindcss.com'];
+
+    public static function cdnAllowed(string $url): bool
+    {
+        $u = trim($url);
+        if (! str_starts_with(strtolower($u), 'https://')) {
+            return false;
+        }
+        $parts = parse_url($u);
+
+        return is_array($parts) && ! isset($parts['user']) && isset($parts['host']) && in_array(strtolower($parts['host']), self::CDN_HOSTS, true);
+    }
 
     private const URL_ATTRS = ['href', 'src', 'action', 'formaction', 'poster', 'data', 'xlink:href', 'background', 'ping', 'cite'];
 
@@ -55,8 +69,20 @@ class MemberPageSanitizer
             }
         }
 
+        foreach (iterator_to_array($doc->querySelectorAll('link')) as $el) {
+            $rel = strtolower(trim((string) $el->getAttribute('rel')));
+            $href = (string) $el->getAttribute('href');
+            $okRel = in_array($rel, ['stylesheet', 'preconnect', 'dns-prefetch'], true);
+
+            if (! $okRel || ! self::cdnAllowed($href)) {
+                $el->remove();
+            }
+        }
+
         foreach (iterator_to_array($doc->querySelectorAll('script')) as $el) {
-            if ($el->hasAttribute('src') || $el->hasAttribute('href') || $el->hasAttribute('xlink:href')) {
+            if ($el->hasAttribute('href') || $el->hasAttribute('xlink:href')) {
+                $el->remove();
+            } elseif ($el->hasAttribute('src') && ! self::cdnAllowed((string) $el->getAttribute('src'))) {
                 $el->remove();
             }
         }
@@ -145,7 +171,7 @@ class MemberPageSanitizer
     /** Strip @import, expression(), behaviors and non-https url(). */
     public static function css(string $css): string
     {
-        $css = preg_replace('/@import[^;]*;?/i', '', $css) ?? $css;
+        $css = preg_replace_callback('/@import\s+(?:url\(\s*)?([\'"]?)([^\'")\s;]+)\1\s*\)?[^;]*;?/i', static fn (array $m): string => self::cdnAllowed($m[2]) ? $m[0] : '', $css) ?? $css;
         $css = preg_replace('/expression\s*\(|behaviou?r\s*:|-moz-binding\s*:|javascript\s*:/i', 'x-blocked(', $css) ?? $css;
 
         return preg_replace_callback('/url\(\s*([\'"]?)(.*?)\1\s*\)/is', static function (array $m): string {

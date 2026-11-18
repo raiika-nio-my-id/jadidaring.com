@@ -12,7 +12,7 @@
         <div class="member-frame">
             <iframe id="member-frame" title="Halaman {{ $owner->username }}" src="{{ $frameSrc }}"
                 sandbox="allow-scripts allow-popups" allow="" referrerpolicy="no-referrer" loading="lazy"
-                data-min="320" data-max="2400" style="height:80vh"></iframe>
+                data-min="320" data-max="8000" style="height:80vh"></iframe>
         </div>
 
         <div class="member-actions">
