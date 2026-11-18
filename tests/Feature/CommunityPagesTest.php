@@ -164,4 +164,13 @@ class CommunityPagesTest extends TestCase
         $this->assertStringContainsString('color:red', $out);
         $this->assertStringContainsString('color:blue', $out);
     }
+
+    public function test_scroll_behavior_is_not_mangled(): void
+    {
+        $out = \App\Services\MemberPageSanitizer::clean('<html><head><style>html{scroll-behavior:smooth}body{overscroll-behavior:none;behavior:url(x)}</style></head><body>x</body></html>');
+
+        $this->assertStringContainsString('scroll-behavior:smooth', $out);
+        $this->assertStringContainsString('overscroll-behavior:none', $out);
+        $this->assertStringNotContainsString('behavior:url', $out);
+    }
 }

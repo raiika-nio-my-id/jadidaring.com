@@ -172,7 +172,7 @@ class MemberPageSanitizer
     public static function css(string $css): string
     {
         $css = preg_replace_callback('/@import\s+(?:url\(\s*)?([\'"]?)([^\'")\s;]+)\1\s*\)?[^;]*;?/i', static fn (array $m): string => self::cdnAllowed($m[2]) ? $m[0] : '', $css) ?? $css;
-        $css = preg_replace('/expression\s*\(|behaviou?r\s*:|-moz-binding\s*:|javascript\s*:/i', 'x-blocked(', $css) ?? $css;
+        $css = preg_replace('/expression\s*\(|(?<![\w-])behaviou?r\s*:|-moz-binding\s*:|javascript\s*:/i', 'x-blocked(', $css) ?? $css;
 
         return preg_replace_callback('/url\(\s*([\'"]?)(.*?)\1\s*\)/is', static function (array $m): string {
             $u = strtolower(preg_replace('/[\x00-\x20]+/', '', $m[2]) ?? '');

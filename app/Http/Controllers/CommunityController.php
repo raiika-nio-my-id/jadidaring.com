@@ -121,7 +121,8 @@ class CommunityController extends Controller
             ]);
         }
 
-        $html = $page->html;
+        // Repair pages saved while the old sanitizer mangled scroll-behavior / overscroll-behavior.
+        $html = preg_replace('/\b(scroll|overscroll)-x-blocked\(/', '$1-behavior:', $page->html) ?? $page->html;
         $snippet = '<script>(function(){function s(){try{var b=document.body,h=Math.max(b?b.scrollHeight:0,document.documentElement.scrollHeight);parent.postMessage({jdFrameHeight:Math.ceil(h)},"*")}catch(e){}}'
             .'addEventListener("load",s);addEventListener("DOMContentLoaded",s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s)}'
             .'if(window.ResizeObserver){new ResizeObserver(s).observe(document.documentElement);if(document.body)new ResizeObserver(s).observe(document.body)}setInterval(s,1000)})();</script>';
