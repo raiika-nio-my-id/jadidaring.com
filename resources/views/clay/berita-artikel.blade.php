@@ -13,7 +13,7 @@
 
         <p><span class="topic-badge topic-badge--static topic-badge--{{ $article['topic'] }}">{{ $topicName }}</span></p>
         <h1 class="clay-section__title">{{ $article['title'] }}</h1>
-        <p class="news-meta"><time datetime="{{ $article['published_at'] }}">{{ \Illuminate\Support\Carbon::parse($article['published_at'])->locale('id')->translatedFormat('l, d F Y H:i') }}</time></p>
+        <p class="news-meta news-meta-row"><time class="news-date" datetime="{{ $article['published_at'] }}"><svg class="news-date__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span>{{ \Illuminate\Support\Carbon::parse($article['published_at'])->locale('id')->translatedFormat('l, d F Y H:i') }}</span></time></p>
 
         @if ($article['image_url'])
             <img class="news-hero" src="{{ $article['image_url'] }}" alt="" referrerpolicy="no-referrer">
