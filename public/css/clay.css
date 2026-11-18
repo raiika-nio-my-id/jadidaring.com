@@ -767,3 +767,24 @@ body {
 .news-card time.news-date, .news-meta time.news-date { color: #5a3fa0; font-size: .8rem; }
 .news-date__icon { flex: none; }
 :root[data-theme="dark"] .news-date, :root[data-theme="dark"] .news-card time.news-date, :root[data-theme="dark"] .news-meta time.news-date { color: #cdbdff; }
+
+/* Community */
+.pb-card { padding: 22px; margin: 22px 0; }
+.pb-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 640px) { .pb-grid { grid-template-columns: 1fr 1fr; } .pb-grid--3 { grid-template-columns: repeat(3, 1fr); } }
+.pb-grid select, .pb-grid input.clay-input, .pb-form textarea, .pb-form select { width: 100%; box-sizing: border-box; }
+.pb-feats { border: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.pb-feats legend { font-weight: 800; margin-bottom: 6px; }
+.pb-feats label { font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.pb-color { width: 100%; height: 44px; border: 0; border-radius: var(--radius-sm); padding: 4px; background: var(--clay-surface); box-shadow: var(--clay-pressed); }
+.pb-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+.pb-preview { width: 100%; box-sizing: border-box; font-family: ui-monospace, monospace; font-size: .85rem; }
+.pb-steps { padding-left: 1.3rem; } .pb-steps li { margin-bottom: .8em; line-height: 1.7; }
+.member-frame { margin: 14px 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--clay-out); background: #fff; contain: layout paint; isolation: isolate; }
+.member-frame iframe { display: block; width: 100%; border: 0; min-height: 320px; }
+.member-comment { padding: 14px 0; border-top: 1px dashed rgba(90,63,160,.25); }
+.member-comment p { margin: 6px 0; line-height: 1.7; overflow-wrap: anywhere; }
+.member-comment__tools { display: flex; gap: 14px; }
+.member-link { background: none; border: 0; padding: 0; font: inherit; font-size: .85rem; font-weight: 700; color: #5a3fa0; text-decoration: underline; cursor: pointer; }
+:root[data-theme="dark"] .member-link { color: #cdbdff; }
+.member-actions { display: flex; justify-content: flex-end; }

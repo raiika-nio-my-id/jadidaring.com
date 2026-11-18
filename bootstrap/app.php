@@ -61,6 +61,23 @@ return Application::configure(basePath: dirname(__DIR__))
                     })->where('any', '(?!up$).*');
                 });
 
+            // Member page content: no session/cookie middleware, sandbox CSP set by the controller.
+            Route::domain($base)
+                ->get('/u/{username}/konten', [\App\Http\Controllers\CommunityController::class, 'content'])
+                ->where('username', '[a-z0-9_]{3,20}')
+                ->middleware('throttle:120,1')
+                ->name('community.content');
+
+            if ((string) config('singlepage.sandbox_domain') !== '') {
+                Route::domain((string) config('singlepage.sandbox_domain'))
+                    ->get('/', fn () => redirect()->away('https://'.strtolower((string) config('singlepage.base_domain')), 301));
+
+                Route::domain((string) config('singlepage.sandbox_domain'))
+                    ->get('/{username}', [\App\Http\Controllers\CommunityController::class, 'content'])
+                    ->where('username', '[a-z0-9_]{3,20}')
+                    ->middleware('throttle:120,1');
+            }
+
             // Session-less static assets with immutable caching (independent of nginx rules).
             Route::domain($base)
                 ->get('/a/{path}', \App\Http\Controllers\StaticAssetController::class)

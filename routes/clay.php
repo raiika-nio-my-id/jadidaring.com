@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClayController;
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Member\AuthController;
 use App\Http\Controllers\Member\PasswordResetController;
@@ -17,7 +18,8 @@ Route::get('/berita/{topik}/{slug}', [NewsController::class, 'show'])->name('cla
 Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'])->name('clay.berita.komentar');
 Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
 Route::get('/game', [ClayController::class, 'game'])->name('clay.game');
-Route::get('/komunitas', [ClayController::class, 'komunitas'])->name('clay.komunitas');
+Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas');
+Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->name('community.show');
 Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms');
 Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots');
 Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('clay.sitemap');
@@ -44,5 +46,11 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware('auth')->group(function (): void {
     Route::post('/keluar', [AuthController::class, 'logout'])->name('member.logout');
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
+    Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
+    Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:10,60')->name('community.save');
+    Route::post('/u/{username}/komentar', [CommunityController::class, 'comment'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1')->name('community.comment');
+    Route::post('/u/{username}/komentar/{comment}/sembunyikan', [CommunityController::class, 'hideComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->name('community.comment.hide');
+    Route::post('/u/{username}/komentar/{comment}/lapor', [CommunityController::class, 'reportComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->middleware('throttle:20,1');
+    Route::post('/u/{username}/lapor', [CommunityController::class, 'report'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1');
     Route::post('/akun/email', [AuthController::class, 'updateEmail'])->name('member.account.email');
 });

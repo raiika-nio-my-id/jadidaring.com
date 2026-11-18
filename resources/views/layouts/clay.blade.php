@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $metaTitle ?? 'Jadidaring' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
+    @if(!empty($noindex))<meta name="robots" content="noindex,nofollow">@endif
     <link rel="canonical" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
 
     <meta property="og:title" content="{{ $metaTitle ?? 'Jadidaring' }}">

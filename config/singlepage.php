@@ -113,7 +113,15 @@ return [
         'reverb',
         'up',
         'marketing',
+        'u',
+        'a',
     ],
+
+    /*
+    | Isolated origin for member pages (e.g. u.jadidaring.com). Empty = serve the
+    | same sandboxed content from the main host under /u/{username}/konten.
+    */
+    'sandbox_domain' => env('SANDBOX_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
