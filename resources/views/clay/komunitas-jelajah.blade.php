@@ -14,18 +14,19 @@
             <select class="clay-input" id="ex-s" name="urut">
                 <option value="update" @selected($sort === 'update')>Baru diperbarui</option>
                 <option value="baru" @selected($sort === 'baru')>Terbaru</option>
-                <option value="populer" @selected($sort === 'populer')>Terpopuler</option>
+                <option value="populer" @selected($sort === 'populer')>Populer (pengikut)</option>
+                @auth<option value="mengikuti" @selected($sort === 'mengikuti')>Mengikuti</option>@endauth
             </select>
             <button class="clay-btn clay-btn--primary" type="submit">Cari</button>
             @auth
-                <a class="clay-btn" href="/komunitas/buat">Buat / Edit profil</a>
+                <a class="clay-btn clay-btn--secondary" href="/komunitas/buat">Buat / Edit profil</a>
             @else
-                <a class="clay-btn" href="/komunitas/buat">Cara membuat profil</a>
+                <a class="clay-btn clay-btn--secondary" href="/komunitas/buat">Cara membuat profil</a>
             @endauth
         </form>
 
         @if ($pages->isEmpty())
-            <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text">Belum ada profil yang cocok. <a href="/komunitas/buat">Buat profilmu</a> dan jadilah yang pertama!</p></div>
+            <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text">@if ($sort === 'mengikuti') Kamu belum mengikuti siapa pun. Buka sebuah profil lalu tekan Ikuti. @endif Belum ada profil yang cocok. <a href="/komunitas/buat">Buat profilmu</a> dan jadilah yang pertama!</p></div>
         @else
             <div class="pf-cards">
                 @foreach ($pages as $p)
@@ -40,7 +41,7 @@
                             <strong>{{ $p->user->name }}</strong>
                             <span class="pf-user">{{ '@'.$p->user->username }}</span>
                             @if ($pr['tagline'] !== '')<span class="pf-mini__tag">{{ $pr['tagline'] }}</span>@endif
-                            <span class="news-date">{{ number_format($p->views) }} pengunjung</span>
+                            <span class="news-date">{{ number_format($p->followers_count ?? 0) }} pengikut · {{ number_format($p->views) }} pengunjung</span>
                         </span>
                     </a>
                 @endforeach

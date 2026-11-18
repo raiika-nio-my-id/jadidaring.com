@@ -20,6 +20,8 @@ Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComm
 Route::get('/game', [ClayController::class, 'game'])->name('clay.game');
 Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas');
 Route::get('/komunitas/buat', [CommunityController::class, 'prompt'])->name('community.prompt');
+Route::get('/u/{username}/pengikut', [\App\Http\Controllers\FollowController::class, 'followers'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.followers');
+Route::get('/u/{username}/mengikuti', [\App\Http\Controllers\FollowController::class, 'following'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.following');
 Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.show');
 Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms');
 Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots');
@@ -49,6 +51,8 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
     Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
     Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:10,60')->name('community.save');
+    Route::post('/u/{username}/ikuti', [\App\Http\Controllers\FollowController::class, 'follow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.follow');
+    Route::post('/u/{username}/berhenti-mengikuti', [\App\Http\Controllers\FollowController::class, 'unfollow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.unfollow');
     Route::post('/u/{username}/komentar', [CommunityController::class, 'comment'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1')->name('community.comment');
     Route::post('/u/{username}/komentar/{comment}/sembunyikan', [CommunityController::class, 'hideComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->name('community.comment.hide');
     Route::post('/u/{username}/komentar/{comment}/lapor', [CommunityController::class, 'reportComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->middleware('throttle:20,1');
@@ -58,5 +62,6 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:20,60')->name('community.draft.publish');
     Route::post('/komunitas/halamanku/draft/batal', [CommunityController::class, 'cancelDraft'])->name('community.draft.cancel');
     Route::post('/akun/nama', [AuthController::class, 'updateName'])->middleware('throttle:6,60')->name('member.account.name');
+    Route::post('/akun/hapus', [AuthController::class, 'deleteAccount'])->middleware('throttle:5,60')->name('member.account.delete');
     Route::post('/akun/email', [AuthController::class, 'updateEmail'])->name('member.account.email');
 });

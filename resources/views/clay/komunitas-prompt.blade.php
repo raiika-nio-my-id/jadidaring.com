@@ -60,15 +60,15 @@
                 </div>
                 <label for="pb-extra">Arahan tambahan (opsional)</label>
                 <textarea class="clay-input" id="pb-extra" name="extra" rows="2" maxlength="600"></textarea>
-                <button class="clay-btn clay-btn--primary" type="submit">Buat Prompt</button>
+                <div class="clay-actions"><button class="clay-btn clay-btn--primary" type="submit">Buat Prompt</button></div>
             </form>
 
             <div id="pb-result" hidden>
                 <h3>Prompt kamu siap</h3>
-                <div class="pb-actions">
+                <div class="clay-actions">
                     <button type="button" class="clay-btn clay-btn--primary" id="pb-chatgpt">Buka di ChatGPT</button>
-                    <button type="button" class="clay-btn" id="pb-gemini">Buka di Gemini</button>
-                    <button type="button" class="clay-btn" id="pb-copy">Salin prompt</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-gemini">Buka di Gemini</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-copy">Salin prompt</button>
                 </div>
                 <p id="pb-toast" class="news-comments__msg" role="status" aria-live="polite"></p>
                 <label for="pb-preview">Pratinjau prompt</label>
@@ -91,7 +91,7 @@
                 <li>Pengunjung bisa meninggalkan komentar di profilmu. Kolom komentar dan menu utama selalu tampil dan tidak bisa dihapus.</li>
             </ol>
             <p class="news-meta">Keamanan: profil dirender oleh Jadidaring dari data tervalidasi. HTML kustom hanya hidup di widget kecil terisolasi (sandbox). Kolom password/kartu dan pengalihan otomatis tidak diizinkan. Maks. 300 KB.</p>
-            <p>@auth <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">Edit profilku</a> <a class="clay-btn" href="/u/{{ auth()->user()->username }}">Lihat profilku</a> @endauth</p>
+            @auth<div class="clay-actions"><a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">Edit profilku</a> <a class="clay-btn clay-btn--secondary" href="/u/{{ auth()->user()->username }}">Lihat profilku</a></div>@endauth
         </section>
 
         

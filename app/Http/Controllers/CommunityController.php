@@ -22,15 +22,20 @@ class CommunityController extends Controller
 {
     public function index(Request $request): View
     {
-        $sort = in_array($request->query('urut'), ['baru', 'populer', 'update'], true) ? $request->query('urut') : 'update';
+        $sort = in_array($request->query('urut'), ['baru', 'populer', 'update', 'mengikuti'], true) ? $request->query('urut') : 'update';
         $q = strtolower(trim((string) $request->query('q', '')));
         $q = preg_replace('/[^a-z0-9_]/', '', $q) ?? '';
 
+        if ($sort === 'mengikuti' && ! auth()->check()) {
+            $sort = 'update';
+        }
+
         $pages = MemberPage::query()->where('status', 'published')
             ->where(fn ($w) => $w->whereNotNull('config')->orWhere('html', '!=', ''))
-            ->with('user:id,username,name')
+            ->with('user:id,username,name')->select('member_pages.*')->addSelect(['followers_count' => DB::table('member_follows')->selectRaw('count(*)')->whereColumn('followed_id', 'member_pages.user_id')])
             ->when($q !== '', fn ($w) => $w->whereHas('user', fn ($u) => $u->where('username', 'like', '%'.$q.'%')))
-            ->when($sort === 'populer', fn ($w) => $w->orderByDesc('views')->orderByDesc('id'))
+            ->when($sort === 'populer', fn ($w) => $w->orderByRaw('(select count(*) from member_follows where followed_id = member_pages.user_id) desc')->orderByDesc('views')->orderByDesc('id'))
+            ->when($sort === 'mengikuti', fn ($w) => $w->whereIn('user_id', DB::table('member_follows')->where('follower_id', auth()->id())->select('followed_id'))->orderByDesc('updated_at')->orderByDesc('id'))
             ->when($sort === 'baru', fn ($w) => $w->orderByDesc('created_at')->orderByDesc('id'))
             ->when($sort === 'update', fn ($w) => $w->orderByDesc('updated_at')->orderByDesc('id'))
             ->simplePaginate(24)->withQueryString();
@@ -295,7 +300,13 @@ class CommunityController extends Controller
             $frame = ($sandbox !== '' ? $request->getScheme().'://'.$sandbox.'/'.$user->username : '/u/'.$user->username.'/konten').'?t='.$token;
         }
 
+        $followersCount = DB::table('member_follows')->where('followed_id', $user->id)->count();
+        $followingCount = DB::table('member_follows')->where('follower_id', $user->id)->count();
+        $isFollowing = auth()->check() && ! $isOwner
+            && DB::table('member_follows')->where('follower_id', auth()->id())->where('followed_id', $user->id)->exists();
+
         return view('clay.komunitas-halaman', [
+            'followersCount' => $followersCount, 'followingCount' => $followingCount, 'isFollowing' => $isFollowing,
             'metaTitle' => $user->name.' (@'.$user->username.') — Profil Jadidaring',
             'metaDescription' => 'Profil komunitas @'.$user->username.' di Jadidaring.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/u/'.$user->username,

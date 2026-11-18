@@ -135,4 +135,33 @@ class AuthController extends Controller
 
         return back()->with('status', 'Email disimpan.');
     }
+
+    /** Members can delete their own account: confirms username + password, cascades only their own rows. */
+    public function deleteAccount(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        abort_unless($user->isMember(), 403);
+
+        $request->validate(['confirm' => ['required', 'string'], 'password' => ['nullable', 'string']]);
+
+        if (Str::lower(trim((string) $request->input('confirm'))) !== Str::lower($user->username)) {
+            return back()->withErrors(['confirm' => 'Ketik nama penggunamu persis untuk konfirmasi.']);
+        }
+
+        if ($user->password !== null && ! \Illuminate\Support\Facades\Hash::check((string) $request->input('password'), $user->password)) {
+            return back()->withErrors(['password' => 'Kata sandi salah.']);
+        }
+
+        if (\App\Models\CompanyProfile::query()->where('user_id', $user->id)->exists()) {
+            return back()->withErrors(['confirm' => 'Akun ini memiliki situs klien dan tidak bisa dihapus sendiri.']);
+        }
+
+        Auth::guard('web')->logout();
+        $user->delete();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('status', 'Akunmu sudah dihapus.');
+    }
 }

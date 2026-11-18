@@ -14,9 +14,9 @@
             <section class="clay-card clay-card--mint" aria-labelledby="draft-h">
                 <h2 id="draft-h">Draft baru</h2>
                 <p class="news-meta">Pratinjau penuh di bawah belum tayang ({{ $draft->source === 'api' ? 'dikirim lewat kunci sekali pakai' : 'dari editor' }}). Terbitkan untuk menayangkan, Batal untuk membuangnya.</p>
-                <div class="pb-actions">
+                <div class="clay-actions">
                     <form method="post" action="/komunitas/halamanku/draft/terbitkan">@csrf<button class="clay-btn clay-btn--primary" type="submit">Terbitkan</button></form>
-                    <form method="post" action="/komunitas/halamanku/draft/batal">@csrf<button class="clay-btn clay-btn--peach" type="submit">Batal</button></form>
+                    <form method="post" action="/komunitas/halamanku/draft/batal">@csrf<button class="clay-btn clay-btn--secondary" type="submit">Batal</button></form>
                 </div>
                 @include('clay._profile', ['config' => $draftConfig, 'customHtml' => (string) $draft->html, 'frameSrc' => $draftFrame, 'views' => (int) ($page->views ?? 0), 'friendPages' => $friendPages])
             </section>
@@ -32,7 +32,7 @@
             <details class="clay-card clay-card--lavender" open><summary>Impor dari AI</summary>
                 <p class="news-meta">Tempel JSON dari AI (isi blok <code>json</code>), lalu muat ke editor.</p>
                 <textarea class="clay-input" id="pf-import" rows="4" spellcheck="false" aria-label="JSON dari AI"></textarea>
-                <button class="clay-btn" type="button" id="pf-import-go">Muat ke editor</button>
+                <div class="clay-actions"><button class="clay-btn clay-btn--secondary" type="button" id="pf-import-go">Muat ke editor</button></div>
                 <p id="pf-import-msg" class="news-comments__msg" role="status" aria-live="polite"></p>
             </details>
 
@@ -92,7 +92,7 @@
                 <label for="cf">atau unggah file .html</label><input class="clay-input" id="cf" type="file" name="file" accept=".html,.htm,.txt">
             </details>
 
-            <button class="clay-btn clay-btn--primary" type="submit">Buat Draft &amp; Pratinjau</button>
+            <div class="clay-actions clay-actions--bar"><button class="clay-btn clay-btn--primary" type="submit">Buat Draft &amp; Pratinjau</button></div>
         </form>
         <aside class="pf-live-wrap" aria-label="Pratinjau langsung"><h2>Pratinjau langsung</h2><div id="pf-live" class="pf-live"></div></aside>
         </div>
