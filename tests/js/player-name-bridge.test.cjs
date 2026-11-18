@@ -114,7 +114,7 @@ function page(localSeed, sessionSeed, options) {
         localStorage: local,
         sessionStorage: session,
         navigator: { language: 'id', webdriver: !!opts.webdriver },
-        location: { search: opts.search || '', hash: opts.hash || '', hostname: 'www.jadidaring.test' },
+        location: { search: opts.search || '', hash: opts.hash || '', hostname: 'jadidaring.test' },
         document: {
             documentElement: {
                 lang: 'id',

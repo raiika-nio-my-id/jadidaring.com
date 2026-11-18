@@ -36,7 +36,7 @@ class GameMasterClaimTest extends TestCase
 
         foreach ($wrong as $code) {
             $this->withToken($room['playerToken'])
-                ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+                ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                     'code' => $code,
                 ])
                 ->assertForbidden()
@@ -44,7 +44,7 @@ class GameMasterClaimTest extends TestCase
         }
 
         $seen = $this->withToken($room['playerToken'])
-            ->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
+            ->getJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
             ->assertOk()
             ->json();
 
@@ -58,13 +58,13 @@ class GameMasterClaimTest extends TestCase
         $this->publish('coratcoret');
         $room = $this->openRoom('coratcoret', 'Ada');
 
-        $friend = $this->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/join', [
+        $friend = $this->postJson('http://jadidaring.test/coratcoret/api/game/rooms/join', [
             'code' => $room['code'],
             'displayName' => 'Bayu',
         ])->assertOk()->json();
 
         $claimed = $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gamemasterjd',
             ])
             ->assertOk()
@@ -84,7 +84,7 @@ class GameMasterClaimTest extends TestCase
         });
 
         $friendView = $this->withToken($friend['playerToken'])
-            ->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
+            ->getJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
             ->assertOk()
             ->json();
 
@@ -97,7 +97,7 @@ class GameMasterClaimTest extends TestCase
     {
         $this->publish('coratcoret');
 
-        $config = $this->getJson('http://www.jadidaring.test/coratcoret/api/game/config')
+        $config = $this->getJson('http://jadidaring.test/coratcoret/api/game/config')
             ->assertOk()
             ->assertJsonMissingPath('gamemasterKey')
             ->assertJsonMissingPath('gamemasterSecret')
@@ -116,12 +116,12 @@ class GameMasterClaimTest extends TestCase
         $public = $this->openRoom('coratcoret', 'Ada', 'public');
         $private = $this->openRoom('coratcoret', 'Bayu', 'private');
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms')
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms')
             ->assertOk()
             ->assertJsonCount(1, 'rooms')
             ->assertJsonPath('rooms.0.code', $public['code']);
 
-        $rooms = $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
+        $rooms = $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
             ->assertOk()
             ->assertJsonCount(2, 'rooms')
             ->json('rooms');
@@ -130,7 +130,7 @@ class GameMasterClaimTest extends TestCase
         $this->assertTrue($codes->contains($public['code']));
         $this->assertTrue($codes->contains($private['code']));
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms', [
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms', [
             'X-Game-Master' => 'gamemasterjd',
         ])->assertOk()
             ->assertJsonCount(2, 'rooms');
@@ -141,13 +141,13 @@ class GameMasterClaimTest extends TestCase
         $this->publish('coratcoret');
         $room = $this->openRoom('coratcoret', 'Ada');
 
-        $this->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+        $this->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
             'code' => 'gamemasterjd',
         ])->assertUnauthorized()
             ->assertExactJson(['error' => 'A player token is required.']);
 
         $this->withToken('not-a-member')
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gamemasterjd',
             ])->assertForbidden()
             ->assertExactJson(['error' => 'You are not a member of this room.']);
@@ -158,19 +158,19 @@ class GameMasterClaimTest extends TestCase
         $this->publish('coratcoret');
         $room = $this->openRoom('coratcoret', 'Ada');
 
-        $friend = $this->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/join', [
+        $friend = $this->postJson('http://jadidaring.test/coratcoret/api/game/rooms/join', [
             'code' => $room['code'],
             'displayName' => 'Bayu',
         ])->assertOk()->json();
 
         $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gamemasterjd',
             ])->assertOk()
             ->assertJsonPath('gamemaster', true);
 
         $transferred = $this->withToken($friend['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gamemasterjd',
             ])->assertOk()
             ->json();
@@ -180,11 +180,11 @@ class GameMasterClaimTest extends TestCase
         $this->assertTrue(collect($transferred['players'])->firstWhere('id', $friend['playerId'])['gamemaster']);
 
         $this->withToken($friend['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/leave')
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/leave')
             ->assertOk();
 
         $afterLeave = $this->withToken($room['playerToken'])
-            ->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
+            ->getJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'])
             ->assertOk()
             ->json();
 
@@ -204,13 +204,13 @@ class GameMasterClaimTest extends TestCase
         );
 
         $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gamemasterjd',
             ])->assertForbidden()
             ->assertExactJson(['error' => 'Invalid game master code.']);
 
         $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
+            ->postJson('http://jadidaring.test/coratcoret/api/game/rooms/'.$room['code'].'/gamemaster', [
                 'code' => 'gmjd1212',
             ])->assertOk()
             ->assertJsonPath('gamemaster', true);
@@ -221,7 +221,7 @@ class GameMasterClaimTest extends TestCase
      */
     private function openRoom(string $subdomain, string $displayName, string $visibility = 'private'): array
     {
-        return $this->postJson('http://www.jadidaring.test/'.$subdomain.'/api/game/rooms', [
+        return $this->postJson('http://jadidaring.test/'.$subdomain.'/api/game/rooms', [
             'displayName' => $displayName,
             'visibility' => $visibility,
         ])->assertOk()->json();

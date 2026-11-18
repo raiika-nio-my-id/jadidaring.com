@@ -34,7 +34,7 @@ class TenantLegalNoticeTest extends TestCase
         $this->assertStringContainsString('https://jadidaring.com/', $html);
         $this->assertStringContainsString('>Jadidaring</a>', $html);
         $this->assertStringNotContainsString('bukan tanggung jawab', $html);
-        $this->assertStringContainsString('http://www.jadidaring.test/acme/syarat-ketentuan', $html);
+        $this->assertStringContainsString('http://jadidaring.test/acme/syarat-ketentuan', $html);
     }
 
     public function test_hidden_footer_profile_is_served_without_the_platform_notice(): void
@@ -70,7 +70,7 @@ class TenantLegalNoticeTest extends TestCase
 
         $this->assertStringContainsString('Syarat &amp; Ketentuan', $html);
         $this->assertStringContainsString('hanya menyediakan sarana teknis', $html);
-        $this->assertStringContainsString('www.jadidaring.test/acme', $html);
+        $this->assertStringContainsString('jadidaring.test/acme', $html);
     }
 
     public function test_terms_view_states_that_jadidaring_is_only_the_provider(): void
@@ -78,14 +78,14 @@ class TenantLegalNoticeTest extends TestCase
         $html = view('tenant.terms', [
             'platformName' => 'Jadidaring',
             'updatedOn' => '20 September 2026',
-            'siteHost' => 'www.jadidaring.test/acme',
-            'homeUrl' => 'http://www.jadidaring.test/acme/',
+            'siteHost' => 'jadidaring.test/acme',
+            'homeUrl' => 'http://jadidaring.test/acme/',
         ])->render();
 
         $this->assertStringContainsString('hanya menyediakan sarana teknis', $html);
         $this->assertStringContainsString('tidak bertanggung jawab', $html);
         $this->assertStringContainsString('penipuan', $html);
-        $this->assertStringContainsString('www.jadidaring.test/acme', $html);
+        $this->assertStringContainsString('jadidaring.test/acme', $html);
         $this->assertStringContainsString('Kembali ke website', $html);
         $this->assertStringContainsString('data-theme-toggle', $html);
         $this->assertStringContainsString('js/theme.js', $html);

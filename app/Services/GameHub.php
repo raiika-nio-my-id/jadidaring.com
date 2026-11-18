@@ -38,13 +38,7 @@ class GameHub
 
     public static function host(): string
     {
-        $configured = config('singlepage.gamehub.host');
-
-        if (is_string($configured) && $configured !== '') {
-            return strtolower($configured);
-        }
-
-        return 'www.'.self::baseDomain();
+        return self::baseDomain();
     }
 
     public static function legacyHost(): string

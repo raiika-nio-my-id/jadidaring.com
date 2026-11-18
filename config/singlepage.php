@@ -87,6 +87,9 @@ return [
     'reserved_subdomains' => [
         'admin',
         'www',
+        'game',
+        'berita',
+        'komunitas',
         'gamehub',
         'mail',
         'api',

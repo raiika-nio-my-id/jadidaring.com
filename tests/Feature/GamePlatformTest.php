@@ -24,11 +24,11 @@ class GamePlatformTest extends TestCase
         $this->publish('mahjong');
         $this->publish('explodingkitten');
 
-        $mahjong = $this->getJson('http://www.jadidaring.test/mahjong/api/game/config')
+        $mahjong = $this->getJson('http://jadidaring.test/mahjong/api/game/config')
             ->assertOk()
             ->assertJsonPath('game', 'mahjong')
-            ->assertJsonPath('api', '/mahjong/api/game')
-            ->assertJsonPath('host', 'www.jadidaring.test')
+            ->assertJsonPath('api', '/game/mahjong/api/game')
+            ->assertJsonPath('host', 'jadidaring.test')
             ->assertJsonPath('database.shared', true)
             ->assertJsonPath('database.isolatedBy', 'subdomain')
             ->assertJsonPath('websocket.enabled', true)
@@ -40,21 +40,21 @@ class GamePlatformTest extends TestCase
             ->assertJsonPath('websocket.inputEvent', 'room.input');
 
         $this->assertStringContainsString(
-            'ws://www.jadidaring.test/app/test-reverb-key',
+            'ws://jadidaring.test/app/test-reverb-key',
             (string) $mahjong->json('websocket.url'),
         );
         $this->assertStringNotContainsString('password', (string) $mahjong->getContent());
         $mahjong->assertJsonMissingPath('database.password');
         $mahjong->assertJsonMissingPath('database.host');
 
-        $this->getJson('http://www.jadidaring.test/explodingkitten/api/game/config')
+        $this->getJson('http://jadidaring.test/explodingkitten/api/game/config')
             ->assertOk()
             ->assertJsonPath('websocket.channelPrefix', 'game.explodingkitten')
             ->assertJsonPath('websocket.roomChannel', 'game.explodingkitten.{code}');
 
         CompanyProfile::factory()->create(['subdomain' => 'hidden']);
 
-        $this->getJson('http://www.jadidaring.test/hidden/api/game/config')->assertNotFound();
+        $this->getJson('http://jadidaring.test/hidden/api/game/config')->assertNotFound();
         $this->getJson('http://admin.jadidaring.test/api/game/config')->assertNotFound();
     }
 
@@ -63,7 +63,7 @@ class GamePlatformTest extends TestCase
         $this->publish('mahjong');
         $this->publish('explodingkitten');
 
-        $table = $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms', [
+        $table = $this->postJson('http://jadidaring.test/mahjong/api/game/rooms', [
             'displayName' => 'Ada',
             'visibility' => 'public',
             'maxPlayers' => 4,
@@ -84,7 +84,7 @@ class GamePlatformTest extends TestCase
                 && collect($event->broadcastOn())->contains(fn ($channel): bool => $channel->name === 'game.mahjong.'.$table['code']);
         });
 
-        $friend = $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/join', [
+        $friend = $this->postJson('http://jadidaring.test/mahjong/api/game/rooms/join', [
             'code' => $table['code'],
             'displayName' => 'Bayu',
         ])->assertOk()->json();
@@ -94,25 +94,25 @@ class GamePlatformTest extends TestCase
         $this->assertSame(['wall' => 136], $friend['state']);
         $this->assertFalse(collect($friend['players'])->contains(fn (array $player): bool => isset($player['private']) || isset($player['hand'])));
 
-        $this->getJson('http://www.jadidaring.test/explodingkitten/api/game/rooms')
+        $this->getJson('http://jadidaring.test/explodingkitten/api/game/rooms')
             ->assertOk()
             ->assertJsonCount(0, 'rooms');
 
-        $this->postJson('http://www.jadidaring.test/explodingkitten/api/game/rooms/join', [
+        $this->postJson('http://jadidaring.test/explodingkitten/api/game/rooms/join', [
             'code' => $table['code'],
             'displayName' => 'Sneak',
         ])->assertNotFound();
 
-        $this->getJson('http://www.jadidaring.test/mahjong/api/game/rooms')
+        $this->getJson('http://jadidaring.test/mahjong/api/game/rooms')
             ->assertOk()
             ->assertJsonPath('rooms.0.code', $table['code'])
             ->assertJsonPath('rooms.0.seated', 2);
 
-        $this->getJson('http://www.jadidaring.test/mahjong/api/game/rooms/'.$table['code'])
+        $this->getJson('http://jadidaring.test/mahjong/api/game/rooms/'.$table['code'])
             ->assertUnauthorized();
 
         $seen = $this->withToken($friend['playerToken'])
-            ->getJson('http://www.jadidaring.test/mahjong/api/game/rooms/'.$table['code'].'?since='.$friend['version'])
+            ->getJson('http://jadidaring.test/mahjong/api/game/rooms/'.$table['code'].'?since='.$friend['version'])
             ->assertOk()
             ->json();
 
@@ -124,13 +124,13 @@ class GamePlatformTest extends TestCase
     {
         $this->publish('explodingkitten');
 
-        $room = $this->postJson('http://www.jadidaring.test/explodingkitten/api/game/rooms', [
+        $room = $this->postJson('http://jadidaring.test/explodingkitten/api/game/rooms', [
             'displayName' => 'Ada',
             'visibility' => 'private',
             'private' => ['cards' => ['defuse']],
         ])->assertOk()->json();
 
-        $this->postJson('http://www.jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'].'/actions', [
+        $this->postJson('http://jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'].'/actions', [
             'type' => 'draw',
             'expectedVersion' => 1,
             'state' => ['deck' => 40],
@@ -143,7 +143,7 @@ class GamePlatformTest extends TestCase
             ->assertJsonPath('state.deck', 40)
             ->assertJsonPath('private.cards.1', 'skip');
 
-        $this->postJson('http://www.jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'].'/actions', [
+        $this->postJson('http://jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'].'/actions', [
             'type' => 'draw',
             'expectedVersion' => 1,
             'state' => ['deck' => 1],
@@ -152,11 +152,11 @@ class GamePlatformTest extends TestCase
         ])->assertStatus(409);
 
         $this->withToken('not-a-member')
-            ->getJson('http://www.jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'])
+            ->getJson('http://jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'])
             ->assertForbidden();
 
         $refreshed = $this->withToken($room['playerToken'])
-            ->getJson('http://www.jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'])
+            ->getJson('http://jadidaring.test/explodingkitten/api/game/rooms/'.$room['code'])
             ->assertOk()
             ->json();
 
@@ -168,24 +168,24 @@ class GamePlatformTest extends TestCase
     {
         $this->publish('mahjong');
 
-        $first = $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/match', [
+        $first = $this->postJson('http://jadidaring.test/mahjong/api/game/rooms/match', [
             'displayName' => 'Ada',
             'maxPlayers' => 2,
         ])->assertOk()->json();
 
-        $second = $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/match', [
+        $second = $this->postJson('http://jadidaring.test/mahjong/api/game/rooms/match', [
             'displayName' => 'Bayu',
         ])->assertOk()->json();
 
         $this->assertSame($first['code'], $second['code']);
         $this->assertFalse($second['host']);
 
-        $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/join', [
+        $this->postJson('http://jadidaring.test/mahjong/api/game/rooms/join', [
             'code' => $first['code'],
             'displayName' => 'Cici',
         ])->assertStatus(409);
 
-        $watcher = $this->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/watch', [
+        $watcher = $this->postJson('http://jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/watch', [
             'displayName' => 'Deni',
         ])->assertOk()->json();
 
@@ -193,14 +193,14 @@ class GamePlatformTest extends TestCase
         $this->assertNull($watcher['players'][2]['seat']);
 
         $this->withToken($first['playerToken'])
-            ->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/leave')
+            ->postJson('http://jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/leave')
             ->assertOk();
 
         $this->withToken($second['playerToken'])
-            ->postJson('http://www.jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/leave')
+            ->postJson('http://jadidaring.test/mahjong/api/game/rooms/'.$first['code'].'/leave')
             ->assertOk();
 
-        $this->getJson('http://www.jadidaring.test/mahjong/api/game/rooms')
+        $this->getJson('http://jadidaring.test/mahjong/api/game/rooms')
             ->assertOk()
             ->assertJsonCount(0, 'rooms');
     }

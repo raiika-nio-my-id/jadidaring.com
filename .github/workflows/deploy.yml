@@ -168,13 +168,21 @@ jobs:
         run: |
           curl --retry 5 --retry-delay 6 --retry-all-errors \
             -sSf -o /dev/null -w 'HTTP %{http_code}\n' \
-            https://www.jadidaring.com/up
+            https://jadidaring.com/up
 
       - name: Smoke /drawquarium/api/game/config
         run: |
           curl --retry 5 --retry-delay 6 --retry-all-errors \
             -sSf -o /dev/null -w 'HTTP %{http_code}\n' \
-            https://www.jadidaring.com/drawquarium/api/game/config
+            https://jadidaring.com/game/drawquarium/api/game/config
+
+      - name: Smoke home and game hub
+        run: |
+          for path in / /game /berita; do
+            curl --retry 5 --retry-delay 6 --retry-all-errors \
+              -sSf -o /dev/null -w "$path HTTP %{http_code}\n" \
+              "https://jadidaring.com$path"
+          done
 
       - name: Smoke admin login
         run: |

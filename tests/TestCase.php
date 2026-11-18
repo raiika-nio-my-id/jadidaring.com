@@ -77,7 +77,7 @@ JS;
             2 => ['pipe', 'w'],
         ];
         $process = proc_open(
-            ['node', '-e', $script, $game, $pathname, 'www.jadidaring.test'],
+            ['node', '-e', $script, $game, $pathname, 'jadidaring.test'],
             $descriptors,
             $pipes,
         );

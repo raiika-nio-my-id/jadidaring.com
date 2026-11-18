@@ -58,6 +58,66 @@ class TenantController extends Controller
         ]);
     }
 
+    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names): Response
+    {
+        $slug = strtolower(trim($slug));
+
+        if (! TenantPath::isHostLabel($slug) || GameHub::isSubdomain($slug)) {
+            abort(404);
+        }
+
+        $profile = CompanyProfile::query()
+            ->live()
+            ->games()
+            ->where('subdomain', $slug)
+            ->first();
+
+        abort_unless($profile instanceof CompanyProfile, 404);
+
+        $html = TenantPath::rewriteHtml((string) $profile->html, $profile->subdomain);
+        $html = $profile->hide_footer
+            ? $html
+            : $legalInjector->inject($html, TenantPath::gameTermsUrl($request, $profile->subdomain));
+
+        $html = $seoInjector->inject($html, TenantPath::gameHomeUrl($request, $profile->subdomain));
+        $html = $names->inject($html);
+
+        $this->trackVisit($profile, $request);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html; charset=UTF-8',
+            'X-Content-Type-Options' => 'nosniff',
+            'Referrer-Policy' => 'strict-origin-when-cross-origin',
+            'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=()',
+        ]);
+    }
+
+    public function gameTerms(Request $request, string $slug): View
+    {
+        $slug = strtolower(trim($slug));
+
+        if (! TenantPath::isHostLabel($slug) || GameHub::isSubdomain($slug)) {
+            abort(404);
+        }
+
+        $profile = CompanyProfile::query()
+            ->live()
+            ->games()
+            ->where('subdomain', $slug)
+            ->first();
+
+        abort_unless($profile instanceof CompanyProfile, 404);
+
+        return view('tenant.terms', [
+            'platformName' => (string) config('singlepage.platform_name', 'Jadidaring'),
+            'updatedOn' => Carbon::parse((string) config('singlepage.terms_updated_on'))
+                ->locale('id')
+                ->translatedFormat('d F Y'),
+            'siteHost' => TenantPath::host().'/game/'.$profile->subdomain,
+            'homeUrl' => TenantPath::gameHomeUrl($request, $profile->subdomain),
+        ]);
+    }
+
     public function terms(Request $request): View
     {
         $profile = $this->profile($request);
@@ -68,7 +128,7 @@ class TenantController extends Controller
                 ->locale('id')
                 ->translatedFormat('d F Y'),
             'siteHost' => $profile->publicLabel(),
-            'homeUrl' => TenantPath::homeUrl($request, $profile->subdomain),
+            'homeUrl' => $this->canonicalUrl($request, $profile),
         ]);
     }
 
@@ -83,11 +143,19 @@ class TenantController extends Controller
 
     private function canonicalUrl(Request $request, CompanyProfile $profile): string
     {
+        if ($profile->is_game) {
+            return TenantPath::gameHomeUrl($request, $profile->subdomain);
+        }
+
         return TenantPath::homeUrl($request, $profile->subdomain);
     }
 
     private function termsUrl(Request $request, CompanyProfile $profile): string
     {
+        if ($profile->is_game) {
+            return TenantPath::gameTermsUrl($request, $profile->subdomain);
+        }
+
         return TenantPath::termsUrl($request, $profile->subdomain);
     }
 

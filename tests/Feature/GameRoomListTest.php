@@ -33,7 +33,7 @@ class GameRoomListTest extends TestCase
         $closed = $this->openRoom('coratcoret', 'Deni', 'public');
         $this->closeRoom('coratcoret', $closed);
 
-        $rooms = $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms')
+        $rooms = $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms')
             ->assertOk()
             ->assertJsonCount(2, 'rooms')
             ->json('rooms');
@@ -61,8 +61,8 @@ class GameRoomListTest extends TestCase
         $private = $this->openRoom('coratcoret', 'Bayu', 'private');
 
         foreach ([
-            'http://www.jadidaring.test/coratcoret/api/game/rooms?gm=wrongsecret',
-            'http://www.jadidaring.test/coratcoret/api/game/rooms?gm=GameMasterJD',
+            'http://jadidaring.test/coratcoret/api/game/rooms?gm=wrongsecret',
+            'http://jadidaring.test/coratcoret/api/game/rooms?gm=GameMasterJD',
         ] as $url) {
             $this->getJson($url)
                 ->assertOk()
@@ -71,7 +71,7 @@ class GameRoomListTest extends TestCase
                 ->assertJsonPath('rooms.0.visibility', 'public');
         }
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms', [
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms', [
             'X-Game-Master' => 'wrongsecret',
         ])->assertOk()
             ->assertJsonCount(1, 'rooms')
@@ -94,7 +94,7 @@ class GameRoomListTest extends TestCase
         $closedPrivate = $this->openRoom('coratcoret', 'Deni', 'private');
         $this->closeRoom('coratcoret', $closedPrivate);
 
-        $rooms = $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
+        $rooms = $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
             ->assertOk()
             ->assertJsonCount(3, 'rooms')
             ->json('rooms');
@@ -115,7 +115,7 @@ class GameRoomListTest extends TestCase
         $public = $this->openRoom('sambungcoret', 'Ada', 'public');
         $private = $this->openRoom('sambungcoret', 'Bayu', 'private');
 
-        $rooms = $this->getJson('http://www.jadidaring.test/sambungcoret/api/game/rooms', [
+        $rooms = $this->getJson('http://jadidaring.test/sambungcoret/api/game/rooms', [
             'X-Game-Master' => 'gamemasterjd',
         ])->assertOk()
             ->assertJsonCount(2, 'rooms')
@@ -134,13 +134,13 @@ class GameRoomListTest extends TestCase
         $corat = $this->openRoom('coratcoret', 'Ada', 'private');
         $sambung = $this->openRoom('sambungcoret', 'Bayu', 'private');
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
             ->assertOk()
             ->assertJsonCount(1, 'rooms')
             ->assertJsonPath('rooms.0.code', $corat['code'])
             ->assertJsonPath('rooms.0.visibility', 'private');
 
-        $this->getJson('http://www.jadidaring.test/sambungcoret/api/game/rooms', [
+        $this->getJson('http://jadidaring.test/sambungcoret/api/game/rooms', [
             'X-Game-Master' => 'gamemasterjd',
         ])->assertOk()
             ->assertJsonCount(1, 'rooms')
@@ -148,7 +148,7 @@ class GameRoomListTest extends TestCase
 
         CompanyProfile::factory()->create(['subdomain' => 'hidden']);
 
-        $this->getJson('http://www.jadidaring.test/hidden/api/game/rooms?gm=gamemasterjd')->assertNotFound();
+        $this->getJson('http://jadidaring.test/hidden/api/game/rooms?gm=gamemasterjd')->assertNotFound();
         $this->getJson('http://admin.jadidaring.test/api/game/rooms?gm=gamemasterjd')->assertNotFound();
     }
 
@@ -165,11 +165,11 @@ class GameRoomListTest extends TestCase
 
         $this->assertSame('gamemasterjd', Setting::gamemasterSecret());
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
             ->assertOk()
             ->assertJsonCount(2, 'rooms');
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms', [
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms', [
             'X-Game-Master' => 'gamemasterjd',
         ])->assertOk()
             ->assertJsonCount(2, 'rooms');
@@ -197,12 +197,12 @@ class GameRoomListTest extends TestCase
 
         $this->assertSame('new-gm-key', Setting::gamemasterSecret());
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=gamemasterjd')
             ->assertOk()
             ->assertJsonCount(1, 'rooms')
             ->assertJsonPath('rooms.0.code', $public['code']);
 
-        $rooms = $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms?gm=new-gm-key')
+        $rooms = $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms?gm=new-gm-key')
             ->assertOk()
             ->assertJsonCount(2, 'rooms')
             ->json('rooms');
@@ -211,7 +211,7 @@ class GameRoomListTest extends TestCase
         $this->assertTrue($codes->contains($public['code']));
         $this->assertTrue($codes->contains($private['code']));
 
-        $this->getJson('http://www.jadidaring.test/coratcoret/api/game/rooms', [
+        $this->getJson('http://jadidaring.test/coratcoret/api/game/rooms', [
             'X-Game-Master' => 'new-gm-key',
         ])->assertOk()
             ->assertJsonCount(2, 'rooms');
@@ -222,7 +222,7 @@ class GameRoomListTest extends TestCase
      */
     private function openRoom(string $subdomain, string $displayName, string $visibility): array
     {
-        return $this->postJson('http://www.jadidaring.test/'.$subdomain.'/api/game/rooms', [
+        return $this->postJson('http://jadidaring.test/'.$subdomain.'/api/game/rooms', [
             'displayName' => $displayName,
             'visibility' => $visibility,
         ])->assertOk()->json();
@@ -234,7 +234,7 @@ class GameRoomListTest extends TestCase
     private function setStatus(string $subdomain, array $room, string $status): void
     {
         $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/'.$subdomain.'/api/game/rooms/'.$room['code'].'/actions', [
+            ->postJson('http://jadidaring.test/'.$subdomain.'/api/game/rooms/'.$room['code'].'/actions', [
                 'type' => 'status',
                 'expectedVersion' => $room['version'],
                 'status' => $status,
@@ -247,7 +247,7 @@ class GameRoomListTest extends TestCase
     private function closeRoom(string $subdomain, array $room): void
     {
         $this->withToken($room['playerToken'])
-            ->postJson('http://www.jadidaring.test/'.$subdomain.'/api/game/rooms/'.$room['code'].'/leave')
+            ->postJson('http://jadidaring.test/'.$subdomain.'/api/game/rooms/'.$room['code'].'/leave')
             ->assertOk();
     }
 

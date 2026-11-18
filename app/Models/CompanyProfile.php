@@ -66,6 +66,10 @@ class CompanyProfile extends Model
 
     public function publicUrl(): string
     {
+        if ($this->is_game) {
+            return TenantPath::gamePublicUrl($this->subdomain);
+        }
+
         return static::publicUrlFor($this->subdomain);
     }
 

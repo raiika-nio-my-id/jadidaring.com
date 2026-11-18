@@ -63,6 +63,23 @@ class TenantPath
         return $request->getScheme().'://'.self::host().'/'.self::segment($subdomain).'/syarat-ketentuan';
     }
 
+    public static function gamePublicUrl(string $subdomain): string
+    {
+        $scheme = parse_url((string) config('app.url'), PHP_URL_SCHEME) ?: 'https';
+
+        return $scheme.'://'.self::host().'/game/'.self::segment($subdomain);
+    }
+
+    public static function gameHomeUrl(Request $request, string $subdomain): string
+    {
+        return $request->getScheme().'://'.self::host().'/game/'.self::segment($subdomain).'/';
+    }
+
+    public static function gameTermsUrl(Request $request, string $subdomain): string
+    {
+        return $request->getScheme().'://'.self::host().'/game/'.self::segment($subdomain).'/syarat-ketentuan';
+    }
+
     public static function legacyHost(string $subdomain): string
     {
         return strtolower($subdomain).'.'.GameHub::baseDomain();
@@ -224,10 +241,22 @@ class TenantPath
             static fn (array $matches): string => $host.$matches[2],
         );
 
+        $html = self::replaceCallback(
+            $html,
+            $boundary.'(?:www\.)?'.$base.'/gamehub(?:/(?![A-Za-z0-9-]))?',
+            static fn (array $matches): string => $host.'/game',
+        );
+
+        $html = self::replaceCallback(
+            $html,
+            $boundary.'gamehub\.'.$base.'(?:/(?![A-Za-z0-9-]))?',
+            static fn (array $matches): string => $host.'/game',
+        );
+
         return self::replaceCallback(
             $html,
             $boundary.$skip.$label.'\.'.$base.$tail,
-            static fn (array $matches): string => $host.'/'.strtolower($matches[1]),
+            static fn (array $matches): string => $host.'/game/'.strtolower($matches[1]),
         );
     }
 
@@ -237,14 +266,20 @@ class TenantPath
 
         $html = self::replace(
             $html,
-            '(?P<attr>\b(?:href|action)\s*=\s*[\'"])/(syarat-ketentuan|terms)(?![A-Za-z0-9-])',
-            '$1/'.$path.'/$2',
+            '(?P<attr>\b(?:href|action)\s*=\s*[\'"])(?:/(?:(?:game/)?'.preg_quote($path, '#').'/)?)(?:syarat-ketentuan|terms)(?![A-Za-z0-9-])',
+            '$1/game/'.$path.'/syarat-ketentuan',
+        );
+
+        $html = self::replace(
+            $html,
+            '(?P<quote>[\'"])(?:/(?:game/)?'.preg_quote($path, '#').')?/api/game(?![A-Za-z0-9-])',
+            '$1/game/'.$path.'/api/game',
         );
 
         return self::replace(
             $html,
-            '(?P<quote>[\'"])/api/game(?![A-Za-z0-9-])',
-            '$1/'.$path.'/api/game',
+            '(?P<attr>\b(?:href|action)\s*=\s*[\'"]|(?P<quote>[\'"]))/gamehub(?:/(?![A-Za-z0-9-]))?',
+            '$1/game',
         );
     }
 
@@ -291,7 +326,11 @@ class TenantPath
             $fn = substr($html, $start, $end - $start + 1);
             $offset = $end + 1;
 
-            if (! str_contains($fn, '(?:com|test)') || str_contains($fn, 'location.pathname')) {
+            if (! str_contains($fn, '(?:com|test)')) {
+                continue;
+            }
+
+            if (str_contains($fn, 'host ===') && ! str_contains($fn, 'location.pathname')) {
                 continue;
             }
 
@@ -306,17 +345,15 @@ class TenantPath
 
     private static function gameSubdomainFunction(string $subdomain, bool $export): string
     {
-        $segment = json_encode(self::segment($subdomain), JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
-        $host = json_encode(strtolower(self::host()), JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $slug = json_encode(self::segment($subdomain), JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $publicHost = json_encode(strtolower(self::host()), JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $wwwHost = json_encode(strtolower('www.'.GameHub::baseDomain()), JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $prefix = $export ? 'export function' : 'function';
 
         return $prefix.' gameSubdomain(hostname) {'
             .' const host = String(hostname || "").toLowerCase();'
-            .' if (host === '.$host.') {'
-            .' const seg = String((typeof location !== "undefined" && location && location.pathname) || "").split("/").filter(Boolean)[0] || "";'
-            .' const label = seg.toLowerCase();'
-            .' if (/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label) && label !== '.$host.'.split(".")[0]) return label;'
-            .' return '.$segment.';'
+            .' if (host === '.$publicHost.' || host === '.$wwwHost.') {'
+            .' return '.$slug.';'
             .' }'
             .' const m = /^([a-z0-9-]+)\\.jadidaring\\.(?:com|test)$/i.exec(host);'
             .' return m ? m[1].toLowerCase() : null;'

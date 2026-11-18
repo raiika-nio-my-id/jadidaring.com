@@ -31,14 +31,14 @@ class TenantSiteTest extends TestCase
             'html' => '<html><body>Acme public site</body></html>',
         ]);
 
-        $this->get('http://www.jadidaring.test/acme/')
+        $this->get('http://jadidaring.test/acme/')
             ->assertOk()
             ->assertSee('Acme public site', false)
             ->assertSee('data-jadidaring-legal-notice', false)
             ->assertSee('Syarat &amp; Ketentuan', false)
             ->assertSee('https://jadidaring.com/', false)
             ->assertDontSee('bukan tanggung jawab', false)
-            ->assertSee('http://www.jadidaring.test/acme/syarat-ketentuan', false)
+            ->assertSee('http://jadidaring.test/acme/syarat-ketentuan', false)
             ->assertDontSee('data-jdng-name-bridge', false)
             ->assertHeader('X-Content-Type-Options', 'nosniff')
             ->assertHeader('Permissions-Policy', 'camera=(), microphone=(self), geolocation=()');
@@ -51,7 +51,7 @@ class TenantSiteTest extends TestCase
             'html' => '<html><head><title>Ular Tangga</title></head><body><!-- jd-namegate --></body></html>',
         ]);
 
-        $html = $this->get('http://www.jadidaring.test/ulartangga/')->assertOk()->getContent();
+        $html = $this->get('http://jadidaring.test/ulartangga/')->assertOk()->getContent();
         $bridgeAt = strpos($html, 'data-jdng-name-bridge');
         $titleAt = strpos($html, '<title>');
 
@@ -68,7 +68,7 @@ class TenantSiteTest extends TestCase
             'html' => '<html><body>White label site</body></html>',
         ]);
 
-        $this->get('http://www.jadidaring.test/vip/')
+        $this->get('http://jadidaring.test/vip/')
             ->assertOk()
             ->assertSee('White label site', false)
             ->assertDontSee('data-jdng-name-bridge', false)
@@ -83,16 +83,16 @@ class TenantSiteTest extends TestCase
             'html' => '<html><body>Acme public site</body></html>',
         ]);
 
-        $this->get('http://www.jadidaring.test/acme/syarat-ketentuan')
+        $this->get('http://jadidaring.test/acme/syarat-ketentuan')
             ->assertOk()
             ->assertSee('Syarat &amp; Ketentuan', false)
             ->assertSee('hanya menyediakan sarana teknis', false)
             ->assertSee('tidak bertanggung jawab', false)
             ->assertSee('penipuan', false)
-            ->assertSee('www.jadidaring.test/acme');
+            ->assertSee('jadidaring.test/acme');
 
-        $this->get('http://www.jadidaring.test/acme/terms')
-            ->assertRedirect('http://www.jadidaring.test/acme/syarat-ketentuan');
+        $this->get('http://jadidaring.test/acme/terms')
+            ->assertRedirect('http://jadidaring.test/acme/syarat-ketentuan');
     }
 
     public function test_draft_profile_terms_page_is_not_public(): void

@@ -34,14 +34,12 @@ class GameRoomService
         $scheme = $request->getScheme() === 'https' ? 'wss' : 'ws';
         $limits = $this->roomLimits($profile);
         // Reverb is nginx's /app prefix on the public host, not /{game}/app.
-        $socketHost = strcasecmp($request->getHost(), TenantPath::host()) === 0
-            ? $request->getHttpHost()
-            : TenantPath::host();
+        $socketHost = TenantPath::host();
 
         return [
             'game' => $profile->subdomain,
             'host' => TenantPath::host(),
-            'api' => '/'.TenantPath::segment($profile->subdomain).'/api/game',
+            'api' => '/game/'.TenantPath::segment($profile->subdomain).'/api/game',
             'database' => [
                 'shared' => true,
                 'isolatedBy' => 'subdomain',

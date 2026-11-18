@@ -31,12 +31,14 @@ class ResolveTenantPath
         }
 
         if (GameHub::isSubdomain($subdomain)) {
-            return redirect()->away(TenantPath::redirectTarget($request, $subdomain), 301);
+            abort(404);
         }
 
         if (TenantPath::isBlockedLabel($subdomain)) {
             abort(404);
         }
+
+        $isApi = str_contains($request->path(), 'api/game') || $request->is('api/*');
 
         $profile = CompanyProfile::query()
             ->live()
@@ -44,6 +46,10 @@ class ResolveTenantPath
             ->first();
 
         if ($profile instanceof CompanyProfile) {
+            if (! $isApi && $profile->is_game) {
+                abort(404);
+            }
+
             $request->attributes->set('tenantProfile', $profile);
 
             return $next($request);
@@ -56,6 +62,10 @@ class ResolveTenantPath
             ->first();
 
         if ($alias instanceof CompanyProfileAlias && $alias->companyProfile instanceof CompanyProfile) {
+            if (! $isApi && $alias->companyProfile->is_game) {
+                abort(404);
+            }
+
             return redirect()->away(TenantPath::redirectTarget($request, $alias->companyProfile->subdomain), 301);
         }
 

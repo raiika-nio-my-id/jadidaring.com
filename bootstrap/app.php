@@ -1,11 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateAdminApiKey;
-use App\Http\Middleware\ResolveGameHub;
 use App\Http\Middleware\ResolveTenantPath;
-use App\Http\Middleware\ResolveTenantSubdomain;
-use App\Services\GameHub;
-use App\Services\MarketingSite;
 use App\Services\TenantPath;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,55 +17,59 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
         then: function (): void {
-            // Exact GET / (plus root robots/sitemap) on apex and www. Not
-            // registered on the admin host. Asset files live in public/marketing.
-            foreach (MarketingSite::hosts() as $host) {
-                Route::middleware('web')
-                    ->domain($host)
-                    ->group(base_path('routes/marketing.php'));
-            }
-
-            // Registered before {tenant} so www.{base}/gamehub is the hub, not a game path.
-            Route::middleware(['web', ResolveGameHub::class])
-                ->domain(GameHub::host())
-                ->name('gamehub.')
-                ->group(base_path('routes/gamehub.php'));
-
-            Route::middleware([ResolveGameHub::class])
-                ->domain(GameHub::host())
-                ->prefix(GameHub::path().'/api/game')
-                ->name('gamehub.game.')
-                ->group(base_path('routes/game.php'));
-
-            Route::middleware(['web', ResolveTenantPath::class])
-                ->domain(TenantPath::host())
-                ->name('path.')
-                ->group(base_path('routes/tenant-path.php'));
-
-            Route::middleware([ResolveTenantPath::class])
-                ->domain(TenantPath::host())
-                ->prefix('{tenant}/api/game')
-                ->where(['tenant' => TenantPath::routePattern()])
-                ->name('path.game.')
-                ->group(base_path('routes/game.php'));
+            $base = strtolower((string) config('singlepage.base_domain'));
+            $www = 'www.'.$base;
 
             Route::middleware('web')
                 ->domain((string) config('singlepage.admin_domain'))
                 ->group(base_path('routes/admin.php'));
-
-            // Retired game hosts. Live profiles 301 to /{subdomain} on the public host.
-            // www and the other reserved labels are not part of this domain,
-            // so the public host keeps /up and its path routes.
-            Route::middleware(ResolveTenantSubdomain::class)
-                ->domain('{tenant}.'.config('singlepage.base_domain'))
-                ->where(['tenant' => TenantPath::routePattern()])
-                ->group(base_path('routes/tenant.php'));
 
             Route::middleware(['api', 'admin.api', 'throttle:admin-api'])
                 ->domain((string) config('singlepage.admin_domain'))
                 ->prefix('api/admin')
                 ->name('api.admin.')
                 ->group(base_path('routes/admin-api.php'));
+
+            // Game room/score API. New clients use /game/{tenant}/api/game.
+            // /{tenant}/api/game stays on the bare host and www for tabs and
+            // clients opened before the move (no redirect, so POSTs survive).
+            foreach ([$base => 'bare', $www => 'www'] as $host => $label) {
+                Route::middleware([ResolveTenantPath::class])
+                    ->domain($host)
+                    ->prefix('{tenant}/api/game')
+                    ->where(['tenant' => TenantPath::routePattern()])
+                    ->name('path.game.'.$label.'.')
+                    ->group(base_path('routes/game.php'));
+            }
+
+            Route::middleware([ResolveTenantPath::class])
+                ->domain($base)
+                ->prefix('game/{tenant}/api/game')
+                ->where(['tenant' => TenantPath::routePattern()])
+                ->name('game.api.')
+                ->group(base_path('routes/game.php'));
+
+            // www is not a page host: GET/HEAD 301 to the bare domain.
+            Route::middleware('web')
+                ->domain($www)
+                ->group(function (): void {
+                    Route::match(['GET', 'HEAD'], '/{any?}', function (Request $request) {
+                        $target = $request->getScheme().'://'.strtolower((string) config('singlepage.base_domain')).$request->getRequestUri();
+
+                        return redirect()->away($target, 301);
+                    })->where('any', '(?!up$).*');
+                });
+
+            Route::middleware('web')
+                ->domain($base)
+                ->group(base_path('routes/clay.php'));
+
+            // Client sites (non-game profiles) stay at /{tenant}/. Game pages
+            // under /{tenant}/ are 404 now; they live at /game/{slug}.
+            Route::middleware(['web', ResolveTenantPath::class])
+                ->domain($base)
+                ->name('path.')
+                ->group(base_path('routes/tenant-path.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

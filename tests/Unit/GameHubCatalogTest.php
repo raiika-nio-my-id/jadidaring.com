@@ -41,13 +41,13 @@ class GameHubCatalogTest extends TestCase
     public function test_page_metadata_ignores_the_hub_jpeg_and_absolutizes_a_cover(): void
     {
         $hub = '<html><head><title>Kopi Senja</title>'
-            .'<meta property="og:image" content="https://www.jadidaring.test/og-gamehub.jpg">'
+            .'<meta property="og:image" content="https://jadidaring.test/og-gamehub.jpg">'
             .'<meta name="twitter:image" content="/covers/kopi.webp">'
             .'</head></html>';
 
         $meta = GameHubCatalog::pageMetadata($hub, 'https');
 
-        $this->assertSame('https://www.jadidaring.test/covers/kopi.webp', $meta['image']);
+        $this->assertSame('https://jadidaring.test/covers/kopi.webp', $meta['image']);
     }
 
     #[DataProvider('sorts')]

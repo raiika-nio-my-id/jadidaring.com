@@ -17,7 +17,7 @@ class GameScoreTest extends TestCase
     {
         $this->publish('bumerang');
 
-        $this->getJson('http://www.jadidaring.test/bumerang/api/game/scores')
+        $this->getJson('http://jadidaring.test/bumerang/api/game/scores')
             ->assertOk()
             ->assertExactJson(['scores' => []]);
     }
@@ -27,7 +27,7 @@ class GameScoreTest extends TestCase
         $profile = $this->publish('bumerang');
         $this->travelTo('2026-10-25 12:00:00');
 
-        $this->postJson('http://www.jadidaring.test/bumerang/api/game/scores', [
+        $this->postJson('http://jadidaring.test/bumerang/api/game/scores', [
             'name' => '  Ada  Bayu ',
             'score' => 12345,
         ])->assertOk()
@@ -60,20 +60,20 @@ class GameScoreTest extends TestCase
             fn ($sequence) => ['name' => 'P'.str_pad((string) $sequence->index, 2, '0', STR_PAD_LEFT), 'score' => 1],
         )->create();
 
-        $this->getJson('http://www.jadidaring.test/bumerang/api/game/scores')
+        $this->getJson('http://jadidaring.test/bumerang/api/game/scores')
             ->assertOk()
             ->assertJsonCount(GameScoreService::DEFAULT_LIMIT, 'scores')
             ->assertJsonPath('scores.0.name', 'NewHigh')
             ->assertJsonPath('scores.1.name', 'OldHigh')
             ->assertJsonPath('scores.2.name', 'Mid');
 
-        $this->getJson('http://www.jadidaring.test/bumerang/api/game/scores?limit=2')
+        $this->getJson('http://jadidaring.test/bumerang/api/game/scores?limit=2')
             ->assertOk()
             ->assertJsonCount(2, 'scores')
             ->assertJsonPath('scores.0.name', 'NewHigh')
             ->assertJsonPath('scores.1.name', 'OldHigh');
 
-        $this->getJson('http://www.jadidaring.test/bumerang/api/game/scores?limit=100')
+        $this->getJson('http://jadidaring.test/bumerang/api/game/scores?limit=100')
             ->assertOk()
             ->assertJsonCount(GameScoreService::MAX_LIMIT, 'scores');
     }
@@ -88,18 +88,18 @@ class GameScoreTest extends TestCase
             'score' => 900,
         ]);
 
-        $this->postJson('http://www.jadidaring.test/explodingkitten/api/game/scores', [
+        $this->postJson('http://jadidaring.test/explodingkitten/api/game/scores', [
             'name' => 'Bayu',
             'score' => 50,
         ])->assertOk();
 
-        $this->getJson('http://www.jadidaring.test/mahjong/api/game/scores')
+        $this->getJson('http://jadidaring.test/mahjong/api/game/scores')
             ->assertOk()
             ->assertJsonCount(1, 'scores')
             ->assertJsonPath('scores.0.name', 'Ada')
             ->assertJsonPath('scores.0.score', 900);
 
-        $this->getJson('http://www.jadidaring.test/explodingkitten/api/game/scores')
+        $this->getJson('http://jadidaring.test/explodingkitten/api/game/scores')
             ->assertOk()
             ->assertJsonCount(1, 'scores')
             ->assertJsonPath('scores.0.name', 'Bayu')
@@ -107,8 +107,8 @@ class GameScoreTest extends TestCase
 
         CompanyProfile::factory()->create(['subdomain' => 'hidden']);
 
-        $this->getJson('http://www.jadidaring.test/hidden/api/game/scores')->assertNotFound();
-        $this->postJson('http://www.jadidaring.test/hidden/api/game/scores', [
+        $this->getJson('http://jadidaring.test/hidden/api/game/scores')->assertNotFound();
+        $this->postJson('http://jadidaring.test/hidden/api/game/scores', [
             'name' => 'Sneak',
             'score' => 1,
         ])->assertNotFound();
@@ -119,7 +119,7 @@ class GameScoreTest extends TestCase
     {
         $this->publish('bumerang');
 
-        $this->postJson('http://www.jadidaring.test/bumerang/api/game/scores', [])
+        $this->postJson('http://jadidaring.test/bumerang/api/game/scores', [])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['name', 'score']);
 
@@ -131,7 +131,7 @@ class GameScoreTest extends TestCase
     {
         $this->publish('bumerang');
 
-        $this->postJson('http://www.jadidaring.test/bumerang/api/game/scores', $payload)
+        $this->postJson('http://jadidaring.test/bumerang/api/game/scores', $payload)
             ->assertUnprocessable()
             ->assertJsonValidationErrors([
                 $field => $message,
