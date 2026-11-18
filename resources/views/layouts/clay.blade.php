@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $metaTitle ?? 'Jadidaring' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
@@ -10,9 +11,14 @@
     <meta property="og:title" content="{{ $metaTitle ?? 'Jadidaring' }}">
     <meta property="og:description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
     <meta property="og:url" content="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    @isset($ogImage)
+        @if($ogImage)
+    <meta property="og:image" content="{{ $ogImage }}">
+        @endif
+    @endisset
     <meta property="og:site_name" content="Jadidaring">
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="{{ ! empty($ogImage) ? 'summary_large_image' : 'summary' }}">
     <meta name="twitter:title" content="{{ $metaTitle ?? 'Jadidaring' }}">
     <meta name="twitter:description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
 
@@ -25,6 +31,7 @@
 
     <link rel="stylesheet" href="/css/clay.css">
     @include('partials.theme-boot')
+    @stack('head')
 </head>
 <body>
     <header class="clay-header">
@@ -111,6 +118,7 @@
         </a>
     </nav>
 
+    @include('partials.ga4-consent')
     <script src="/js/theme.js" defer></script>
 </body>
 </html>

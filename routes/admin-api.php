@@ -12,3 +12,11 @@ Route::patch('/clients/{companyProfile}', [ClientController::class, 'update'])
 Route::patch('/clients/subdomain/{subdomain}', [ClientController::class, 'updateBySubdomain'])
     ->where('subdomain', '[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?')
     ->name('clients.update-by-subdomain');
+
+use App\Http\Controllers\Api\Admin\NewsController;
+
+Route::get('/news/topics', [NewsController::class, 'topics'])->name('news.topics');
+Route::patch('/news/topics/{slug}', [NewsController::class, 'updateTopic'])->name('news.topics.update');
+Route::post('/news/articles', [NewsController::class, 'store'])->name('news.articles.store');
+Route::patch('/news/articles/{article}', [NewsController::class, 'update'])->whereNumber('article')->name('news.articles.update');
+Route::patch('/news/comments/{comment}', [NewsController::class, 'moderateComment'])->whereNumber('comment')->name('news.comments.moderate');

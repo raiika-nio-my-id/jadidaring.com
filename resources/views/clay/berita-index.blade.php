@@ -13,10 +13,6 @@
             @endforeach
         </div>
 
-        <div class="clay-card clay-card--sky clay-empty">
-            <div class="clay-empty__icon" aria-hidden="true">&#128240;</div>
-            <h2 class="clay-empty__title">Berita segera hadir</h2>
-            <p class="clay-empty__text">Artikel berita dari topik politik, gaming, saham, indonesia, musibah, dan teknologi sedang disiapkan.</p>
-        </div>
+        @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Artikel berita dari topik politik, gaming, saham, indonesia, musibah, dan teknologi sedang disiapkan.'])
     </div>
 @endsection

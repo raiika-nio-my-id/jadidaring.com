@@ -17,10 +17,6 @@
             @endforeach
         </div>
 
-        <div class="clay-card clay-card--sky clay-empty">
-            <div class="clay-empty__icon" aria-hidden="true">&#128240;</div>
-            <h2 class="clay-empty__title">Berita segera hadir</h2>
-            <p class="clay-empty__text">Belum ada artikel untuk topik {{ strtolower($topicName) }}. Pantau terus pembaruan dari redaksi kami!</p>
-        </div>
+        @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Belum ada artikel untuk topik '.strtolower($topicName).'. Pantau terus pembaruan dari redaksi kami!'])
     </div>
 @endsection

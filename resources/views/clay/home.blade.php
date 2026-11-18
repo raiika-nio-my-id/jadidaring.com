@@ -29,11 +29,7 @@
             <a href="/berita/teknologi" class="clay-pill clay-pill--sky">Teknologi</a>
         </div>
 
-        <div class="clay-card clay-card--sky clay-empty">
-            <div class="clay-empty__icon" aria-hidden="true">&#128240;</div>
-            <h3 class="clay-empty__title">Berita segera hadir</h3>
-            <p class="clay-empty__text">Redaksi Jadidaring sedang menyiapkan sajian berita harian terbaik untuk Anda.</p>
-        </div>
+        @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Redaksi Jadidaring sedang menyiapkan sajian berita harian terbaik untuk Anda.'])
     </section>
 
     {{-- Game Pilihan Section --}}

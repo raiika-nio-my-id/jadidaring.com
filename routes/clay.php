@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClayController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Member\AuthController;
 use App\Http\Controllers\Member\PasswordResetController;
 use App\Http\Controllers\Member\SocialController;
@@ -10,8 +11,11 @@ use Illuminate\Support\Facades\Route;
 // Canonical public host (bare domain). Static paths are registered before
 // the legacy /{tenant} client-site group, so they always win.
 Route::get('/', [ClayController::class, 'home'])->name('clay.home');
-Route::get('/berita', [ClayController::class, 'berita'])->name('clay.berita');
-Route::get('/berita/{topik}', [ClayController::class, 'beritaTopik'])->name('clay.berita.topik');
+Route::get('/berita', [NewsController::class, 'index'])->name('clay.berita');
+Route::get('/berita/{topik}', [NewsController::class, 'topic'])->name('clay.berita.topik');
+Route::get('/berita/{topik}/{slug}', [NewsController::class, 'show'])->name('clay.berita.artikel');
+Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'])->name('clay.berita.komentar');
+Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
 Route::get('/game', [ClayController::class, 'game'])->name('clay.game');
 Route::get('/komunitas', [ClayController::class, 'komunitas'])->name('clay.komunitas');
 Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms');

@@ -53,36 +53,7 @@ class ClayController extends Controller
             'metaDescription' => 'Platform hiburan web Indonesia. Mainkan game seru gratis tanpa unduh, baca berita harian pilihan, dan bergabung dengan komunitas.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/',
             'games' => $games,
-        ]);
-    }
-
-    public function berita(Request $request): View
-    {
-        return view('clay.berita-index', [
-            'metaTitle' => 'Berita — Jadidaring',
-            'metaDescription' => 'Kumpulan berita pilihan seputar politik, gaming, saham, peristiwa Indonesia, musibah, dan teknologi.',
-            'canonicalUrl' => 'https://'.TenantPath::host().'/berita',
-            'topics' => self::TOPICS,
-        ]);
-    }
-
-    public function beritaTopik(Request $request, string $topik): View
-    {
-        $topik = strtolower(trim($topik));
-
-        if (! array_key_exists($topik, self::TOPICS)) {
-            abort(404);
-        }
-
-        $topicName = self::TOPICS[$topik];
-
-        return view('clay.berita-topik', [
-            'metaTitle' => 'Berita '.$topicName.' — Jadidaring',
-            'metaDescription' => 'Kumpulan berita dan informasi terkini seputar '.$topicName.' di Jadidaring.',
-            'canonicalUrl' => 'https://'.TenantPath::host().'/berita/'.$topik,
-            'currentTopic' => $topik,
-            'topicName' => $topicName,
-            'topics' => self::TOPICS,
+            'articles' => \App\Services\NewsCache::latest(null, 6),
         ]);
     }
 
@@ -181,6 +152,10 @@ class ClayController extends Controller
         }
 
         $urls[] = $host.'/game';
+
+        foreach (\App\Services\NewsCache::latest(null, 500) as $article) {
+            $urls[] = $host.$article['url'];
+        }
 
         $gameProfiles = CompanyProfile::query()
             ->live()
