@@ -17,7 +17,14 @@ use tokio::sync::mpsc;
 
 use hub::{Frame, Hub};
 
+struct Stats {
+    ok: std::sync::atomic::AtomicU64,
+    rejected: std::sync::atomic::AtomicU64,
+    last_reject: Mutex<String>,
+}
+
 struct App {
+    stats: Stats,
     hub: Mutex<Hub>,
     pusher_key: String,
     pusher_secret: String,
@@ -36,6 +43,7 @@ async fn main() {
         std::process::exit(2);
     }
     let state: Shared = Arc::new(App {
+        stats: Stats { ok: Default::default(), rejected: Default::default(), last_reject: Mutex::new(String::new()) },
         hub: Mutex::new(Hub::default()),
         pusher_key: auth::derive(&app_key, "rt-key")[..20].to_string(),
         pusher_secret: auth::derive(&app_key, "rt-pusher"),
@@ -87,7 +95,7 @@ async fn ws_upgrade(
         Err(_) => {
             // Not a WebSocket handshake: say which hop headers arrived (no secrets), to debug proxies.
             let h = |n: &str| headers.get(n).and_then(|v| v.to_str().ok()).unwrap_or("-").to_string();
-            return (StatusCode::UPGRADE_REQUIRED, Json(json!({"error": "websocket upgrade required", "connection": h("connection"), "upgrade": h("upgrade"), "version": h("sec-websocket-version"), "has_key": headers.contains_key("sec-websocket-key")}))).into_response();
+            return (StatusCode::UPGRADE_REQUIRED, Json(json!({"error": "websocket upgrade required", "connection": h("connection"), "upgrade": h("upgrade"), "version": h("sec-websocket-version"), "has_key": headers.contains_key("sec-websocket-key"), "published": s.stats.ok.load(std::sync::atomic::Ordering::Relaxed), "rejected": s.stats.rejected.load(std::sync::atomic::Ordering::Relaxed), "last_reject": s.stats.last_reject.lock().unwrap().clone(), "conns": s.hub.lock().unwrap().conns.len()}))).into_response();
         }
     };
     let Some(claims) = q.get("t").and_then(|t| auth::check_token(&s.join_key, t, auth::now())) else {
@@ -161,6 +169,12 @@ async fn client(sock: WebSocket, s: Shared, slug: String) {
 }
 
 /// Pusher HTTP API subset, signed by Laravel's broadcaster over the internal network.
+fn reject(s: &Shared, why: &str) -> axum::response::Response {
+    s.stats.rejected.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    *s.stats.last_reject.lock().unwrap() = why.to_string();
+    (StatusCode::UNAUTHORIZED, why.to_string()).into_response()
+}
+
 async fn publish(
     State(s): State<Shared>,
     Path(app_id): Path<String>,
@@ -169,22 +183,22 @@ async fn publish(
     body: Bytes,
 ) -> impl IntoResponse {
     if app_id != "jdrt" || q.get("auth_key") != Some(&s.pusher_key) {
-        return (StatusCode::UNAUTHORIZED, "bad app").into_response();
+        return reject(&s, "bad app");
     }
     let ts: u64 = q.get("auth_timestamp").and_then(|t| t.parse().ok()).unwrap_or(0);
     if auth::now().abs_diff(ts) > 600 {
-        return (StatusCode::UNAUTHORIZED, "stale").into_response();
+        return reject(&s, "stale");
     }
     let md5 = hex::encode(Md5::digest(&body));
     if q.get("body_md5") != Some(&md5) {
-        return (StatusCode::UNAUTHORIZED, "md5").into_response();
+        return reject(&s, "md5");
     }
     let mut pairs: Vec<(&String, &String)> = q.iter().filter(|(k, _)| k.as_str() != "auth_signature").collect();
     pairs.sort();
     let qs = pairs.iter().map(|(k, v)| format!("{k}={v}")).collect::<Vec<_>>().join("&");
     let to_sign = format!("POST\n{}\n{}", uri.path(), qs);
     if !auth::verify(&s.pusher_secret, &to_sign, q.get("auth_signature").map(String::as_str).unwrap_or("")) {
-        return (StatusCode::UNAUTHORIZED, "signature").into_response();
+        return reject(&s, "signature");
     }
     let Ok(v) = serde_json::from_slice::<Value>(&body) else {
         return (StatusCode::BAD_REQUEST, "json").into_response();
@@ -207,6 +221,7 @@ async fn publish(
             h.publish(&ch, frame);
         }
     }
+    s.stats.ok.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     (StatusCode::OK, Json(json!({}))).into_response()
 }
 
