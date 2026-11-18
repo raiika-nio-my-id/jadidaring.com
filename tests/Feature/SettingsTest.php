@@ -44,6 +44,8 @@ class SettingsTest extends TestCase
 
     public function test_empty_gamemaster_secret_falls_back_to_the_env_default(): void
     {
+        config(['games.gamemaster_secret' => 'gamemasterjd']);
+
         $admin = User::factory()->admin()->create();
 
         Setting::query()->updateOrCreate(
@@ -68,6 +70,8 @@ class SettingsTest extends TestCase
 
     public function test_whitespace_only_gamemaster_secret_is_stored_empty_and_falls_back(): void
     {
+        config(['games.gamemaster_secret' => 'gamemasterjd']);
+
         $admin = User::factory()->admin()->create();
 
         $this->actingAs($admin)

@@ -12,19 +12,24 @@ services:
     image: ${SINGLEPAGE_IMAGE:-singlepage:incoming}
     container_name: singlepage-app-green
     restart: unless-stopped
+    mem_limit: 160m
+    memswap_limit: 160m
+    cpus: 0.15
     working_dir: /var/www
     volumes:
       - ${GREEN_APP_MOUNT:?}:/var/www
       - ${APP_DIR:?}/.env:/var/www/.env:ro
       - ${APP_DIR:?}/storage:/var/www/storage
       - ${GREEN_APP_MOUNT:?}/docker-config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ${GREEN_APP_MOUNT:?}/docker-config/php/opcache.ini:/usr/local/etc/php/conf.d/zz-opcache.ini
+      - ${GREEN_APP_MOUNT:?}/docker-config/php/zz-pool.conf:/usr/local/etc/php-fpm.d/zz-pool.conf
     environment:
-      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-50M}
-      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-50M}
-      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-256M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-20M}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-20M}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-128M}
       PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME:-300}
       PHP_MAX_INPUT_TIME: ${PHP_MAX_INPUT_TIME:-300}
-      PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS:-On}
+      PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS:-Off}
       # Publish to the live Reverb (compose DNS alias), not a second process.
       BROADCAST_CONNECTION: reverb
       REVERB_HOST: reverb
@@ -41,6 +46,9 @@ services:
     image: nginx:alpine
     container_name: singlepage-nginx-health
     restart: "no"
+    mem_limit: 32m
+    memswap_limit: 32m
+    cpus: 0.05
     depends_on:
       - singlepage_green
     ports:

@@ -17,6 +17,8 @@ class GameRoomListTest extends TestCase
     {
         parent::setUp();
 
+        config(['games.gamemaster_secret' => 'gamemasterjd']);
+
         Event::fake([GameRoomUpdated::class]);
     }
 

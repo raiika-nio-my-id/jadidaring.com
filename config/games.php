@@ -77,6 +77,6 @@ return [
     |
     */
 
-    'gamemaster_secret' => (string) env('GAME_GAMEMASTER_SECRET', 'gamemasterjd'),
+    'gamemaster_secret' => (string) env('GAME_GAMEMASTER_SECRET', ''),
 
 ];

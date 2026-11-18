@@ -606,11 +606,6 @@ migrations_pending() {
 
 backup_database() {
     local container="$1"
-    if ! command -v mysqldump >/dev/null 2>&1; then
-        log "mysqldump not installed on this host — skipping backup."
-        log "  To enable: sudo apt install default-mysql-client"
-        return 0
-    fi
     local DB_HOST DB_PORT DB_DATABASE DB_USERNAME DB_PASSWORD
     DB_HOST=$(docker exec "$container" sh -c 'printf "%s" "$DB_HOST"' 2>/dev/null || true)
     DB_PORT=$(docker exec "$container" sh -c 'printf "%s" "${DB_PORT:-3306}"' 2>/dev/null || true)
@@ -618,27 +613,104 @@ backup_database() {
     DB_USERNAME=$(docker exec "$container" sh -c 'printf "%s" "$DB_USERNAME"' 2>/dev/null || true)
     DB_PASSWORD=$(docker exec "$container" sh -c 'printf "%s" "$DB_PASSWORD"' 2>/dev/null || true)
     if [ -z "$DB_HOST" ] || [ -z "$DB_DATABASE" ]; then
-        log "Could not read DB credentials from container — skipping backup."
-        return 0
+        backup_no_method "Could not read DB credentials from container"
+        return $?
     fi
-    local backup_dir backup_file
+    local backup_dir backup_file dump_ok=0
     backup_dir="${APP_DIR}/storage/backups"
     mkdir -p "$backup_dir"
     backup_file="${backup_dir}/pre-deploy-$(date +%Y%m%d-%H%M%S).sql.gz"
     log "Dumping $DB_DATABASE → $backup_file"
-    if MYSQL_PWD="$DB_PASSWORD" mysqldump \
-            -h "$DB_HOST" \
-            -P "$DB_PORT" \
-            -u "$DB_USERNAME" \
-            --single-transaction \
-            --skip-lock-tables \
-            "$DB_DATABASE" \
-        | gzip > "$backup_file"; then
-        log "Backup saved ($(du -sh "$backup_file" | cut -f1))."
-    else
-        log "WARNING: mysqldump failed — continuing without backup."
-        rm -f "$backup_file"
+    # Try 1: host mysqldump
+    if command -v mysqldump >/dev/null 2>&1; then
+        if MYSQL_PWD="$DB_PASSWORD" mysqldump \
+                -h "$DB_HOST" \
+                -P "$DB_PORT" \
+                -u "$DB_USERNAME" \
+                --single-transaction \
+                --skip-lock-tables \
+                "$DB_DATABASE" 2>/dev/null \
+            | gzip > "$backup_file"; then
+            dump_ok=1
+        else
+            log "Host mysqldump failed; trying container fallback."
+            rm -f "$backup_file"
+        fi
     fi
+    # Try 2: mysqldump inside the DB container (shared container is mysql-db)
+    if [ "$dump_ok" -eq 0 ]; then
+        local db_container="${DB_HOST}"
+        if container_running "$db_container"; then
+            log "Trying mysqldump inside container $db_container"
+            if docker exec \
+                    -e "MYSQL_PWD=$DB_PASSWORD" \
+                    "$db_container" \
+                    mysqldump \
+                        -u "$DB_USERNAME" \
+                        --single-transaction \
+                        --skip-lock-tables \
+                        "$DB_DATABASE" 2>/dev/null \
+                | gzip > "$backup_file"; then
+                dump_ok=1
+            else
+                log "Container mysqldump also failed."
+                rm -f "$backup_file"
+            fi
+        else
+            log "DB container $db_container is not running — cannot fall back to container mysqldump."
+        fi
+    fi
+    if [ "$dump_ok" -eq 0 ]; then
+        backup_no_method "All mysqldump methods failed"
+        return $?
+    fi
+    # Verify the backup
+    if ! backup_verify "$backup_file"; then
+        rm -f "$backup_file"
+        backup_no_method "Backup verification failed"
+        return $?
+    fi
+    log "Backup saved and verified ($(du -sh "$backup_file" | cut -f1))."
+    # Prune pre-deploy backups older than 14 days
+    find "$backup_dir" -maxdepth 1 -name 'pre-deploy-*.sql.gz' -type f -mtime +14 -delete 2>/dev/null || true
+}
+
+backup_verify() {
+    local file="$1"
+    if [ ! -f "$file" ]; then
+        log "Backup file does not exist"
+        return 1
+    fi
+    local file_size
+    file_size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
+    if [ "$file_size" -le 1024 ]; then
+        log "Backup file too small (${file_size} bytes, need >1 KB)"
+        return 1
+    fi
+    if ! gzip -t "$file" 2>/dev/null; then
+        log "Backup file is not valid gzip"
+        return 1
+    fi
+    # grep -c reads the whole stream (grep -q would SIGPIPE zcat under pipefail).
+    local hits
+    hits=$( (zcat "$file" 2>/dev/null || true) | grep -cE 'CREATE TABLE|INSERT INTO' || true)
+    if [ "${hits:-0}" -lt 1 ]; then
+        log "Backup does not contain CREATE TABLE or INSERT INTO"
+        return 1
+    fi
+    return 0
+}
+
+backup_no_method() {
+    local reason="$1"
+    if [ "${DEPLOY_ALLOW_NO_BACKUP:-0}" = "1" ]; then
+        log "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        log "!! WARNING: $reason"
+        log "!! Continuing WITHOUT a verified backup (DEPLOY_ALLOW_NO_BACKUP=1)"
+        log "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        return 0
+    fi
+    fail "$reason — aborting deploy. Set DEPLOY_ALLOW_NO_BACKUP=1 to skip."
 }
 
 maybe_migrate() {
@@ -683,8 +755,23 @@ maybe_up() {
     return 1
 }
 
+ensure_env_line() {
+    local key="$1" default_value="$2" comment="${3:-}"
+    [ -f "$APP_DIR/.env" ] || return 0
+    if grep -q "^${key}=" "$APP_DIR/.env"; then
+        return 0
+    fi
+    log "Appending ${key} to .env (transitional default)"
+    {
+        [ -n "$comment" ] && printf '\n%s\n' "$comment"
+        printf '%s=%s\n' "$key" "$default_value"
+    } >> "$APP_DIR/.env"
+}
+
 rebuild_caches() {
     local container="$1" strict="${2:-1}" skip_views="${3:-0}"
+    ensure_env_line "GAME_GAMEMASTER_SECRET" "gamemasterjd" \
+        "# transitional legacy value (already public in old game clients) - rotate it"
     log "Rebuilding framework caches in $container"
     if ! docker exec "$container" php artisan config:cache; then
         if [ "$strict" -eq 1 ]; then
