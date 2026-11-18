@@ -3,8 +3,8 @@ mod hub;
 
 use axum::{
     body::Bytes,
-    extract::{ws::{Message, WebSocket, WebSocketUpgrade}, DefaultBodyLimit, Path, Query, State},
-    http::{StatusCode, Uri},
+    extract::{ws::{Message, WebSocket, WebSocketUpgrade}, rejection::WebSocketUpgradeRejection, DefaultBodyLimit, Path, Query, State},
+    http::{HeaderMap, StatusCode, Uri},
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
@@ -73,7 +73,8 @@ async fn health(State(s): State<Shared>) -> impl IntoResponse {
 }
 
 async fn ws_upgrade(
-    ws: WebSocketUpgrade,
+    headers: HeaderMap,
+    ws: Result<WebSocketUpgrade, WebSocketUpgradeRejection>,
     Path(key): Path<String>,
     Query(q): Query<HashMap<String, String>>,
     State(s): State<Shared>,
@@ -81,6 +82,14 @@ async fn ws_upgrade(
     if key != s.pusher_key {
         return StatusCode::NOT_FOUND.into_response();
     }
+    let ws = match ws {
+        Ok(ws) => ws,
+        Err(_) => {
+            // Not a WebSocket handshake: say which hop headers arrived (no secrets), to debug proxies.
+            let h = |n: &str| headers.get(n).and_then(|v| v.to_str().ok()).unwrap_or("-").to_string();
+            return (StatusCode::UPGRADE_REQUIRED, Json(json!({"error": "websocket upgrade required", "connection": h("connection"), "upgrade": h("upgrade"), "version": h("sec-websocket-version"), "has_key": headers.contains_key("sec-websocket-key")}))).into_response();
+        }
+    };
     let Some(claims) = q.get("t").and_then(|t| auth::check_token(&s.join_key, t, auth::now())) else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
