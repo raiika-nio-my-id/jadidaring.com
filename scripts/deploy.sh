@@ -675,14 +675,31 @@ migrations_pending() {
     return 1
 }
 
+# Read a setting from the container environment, falling back to the app's
+# .env file (the compose file does not pass DB_* into the container env).
+container_dotenv() {
+    local container="$1" name="$2" value
+    value=$(docker exec "$container" sh -c "printf '%s' \"\${$name:-}\"" 2>/dev/null || true)
+    if [ -z "$value" ]; then
+        value=$(docker exec "$container" sh -c "grep -E '^${name}=' /var/www/.env 2>/dev/null | tail -n 1 | cut -d= -f2-" 2>/dev/null || true)
+        value=${value%$'\r'}
+        case "$value" in
+            \"*\") value=${value#\"}; value=${value%\"} ;;
+            \'*\') value=${value#\'}; value=${value%\'} ;;
+        esac
+    fi
+    printf '%s' "$value"
+}
+
 backup_database() {
     local container="$1"
     local DB_HOST DB_PORT DB_DATABASE DB_USERNAME DB_PASSWORD
-    DB_HOST=$(docker exec "$container" sh -c 'printf "%s" "$DB_HOST"' 2>/dev/null || true)
-    DB_PORT=$(docker exec "$container" sh -c 'printf "%s" "${DB_PORT:-3306}"' 2>/dev/null || true)
-    DB_DATABASE=$(docker exec "$container" sh -c 'printf "%s" "$DB_DATABASE"' 2>/dev/null || true)
-    DB_USERNAME=$(docker exec "$container" sh -c 'printf "%s" "$DB_USERNAME"' 2>/dev/null || true)
-    DB_PASSWORD=$(docker exec "$container" sh -c 'printf "%s" "$DB_PASSWORD"' 2>/dev/null || true)
+    DB_HOST=$(container_dotenv "$container" DB_HOST)
+    DB_PORT=$(container_dotenv "$container" DB_PORT)
+    DB_PORT="${DB_PORT:-3306}"
+    DB_DATABASE=$(container_dotenv "$container" DB_DATABASE)
+    DB_USERNAME=$(container_dotenv "$container" DB_USERNAME)
+    DB_PASSWORD=$(container_dotenv "$container" DB_PASSWORD)
     if [ -z "$DB_HOST" ] || [ -z "$DB_DATABASE" ]; then
         backup_no_method "Could not read DB credentials from container"
         return $?
