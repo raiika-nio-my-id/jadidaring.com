@@ -123,7 +123,7 @@ return [
     */
     'realtime_enabled' => (bool) env('REALTIME_ENABLED', env('APP_ENV') === 'production'),
     'realtime_host' => env('REALTIME_HOST', 'singlepage-realtime:9000'),
-    'rust_games' => env('GAME_RUST_GAMES', 'mahjong,explodingkitten,drawquarium,langitbersama'),
+    'rust_games' => env('GAME_RUST_GAMES', 'benteng,coratcoret,dapurpadang,dapurpadang3d,drag201,drawquarium,duelular,explodingkitten,gambletogether,gasingarena,gelembung,langitbersama,lanjutkata,mahjong,mahjong-master,malampendakian,ogohogoharak,pedangsihir,penaltitimnas,rebutbendera,sambungcoret,skalateman,tamiyalintasan,ulartangga'),
 
     /*
     | Isolated origin for member pages (e.g. u.jadidaring.com). Empty = serve the
