@@ -1107,6 +1107,8 @@ recreate_reverb_and_scheduler() {
     log "WebSocket clients will disconnect briefly and must reconnect. HTTP stays up."
     docker tag singlepage:incoming singlepage
     docker compose up -d --no-deps --force-recreate reverb scheduler
+    # Rust realtime: create if missing (the binary is swapped in by the workflow).
+    docker compose up -d --no-deps realtime || log "WARNING: realtime service did not start; games stay on Reverb"
     wait_running "$REVERB_CONTAINER"
     wait_running "$SCHEDULER_CONTAINER"
     # Flush Docker DNS so the recreated Reverb name is used immediately.
