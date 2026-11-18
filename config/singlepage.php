@@ -121,7 +121,7 @@ return [
     | Isolated origin for member pages (e.g. u.jadidaring.com). Empty = serve the
     | same sandboxed content from the main host under /u/{username}/konten.
     */
-    'sandbox_domain' => env('SANDBOX_DOMAIN'),
+    'sandbox_domain' => env('SANDBOX_DOMAIN', env('APP_ENV') === 'production' ? 'u.'.env('APP_BASE_DOMAIN', 'jadidaring.test') : null),
 
     /*
     |--------------------------------------------------------------------------
