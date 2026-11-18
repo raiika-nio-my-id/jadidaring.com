@@ -9,6 +9,7 @@ use App\Services\JaRingMark;
 use App\Services\LegalNoticeInjector;
 use App\Services\MembersOnlyGames;
 use App\Services\PlayerNameBridge;
+use App\Services\RealtimeBridge;
 use App\Services\SeoInjector;
 use App\Services\TenantPath;
 use Illuminate\Contracts\View\View;
@@ -60,7 +61,7 @@ class TenantController extends Controller
         ]);
     }
 
-    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names): Response
+    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names, RealtimeBridge $realtime): Response
     {
         $slug = strtolower(trim($slug));
 
@@ -83,6 +84,7 @@ class TenantController extends Controller
 
         $html = $seoInjector->inject($html, TenantPath::gameHomeUrl($request, $profile->subdomain));
         $html = $names->inject($html, MembersOnlyGames::user());
+        $html = $realtime->inject($html, $profile->subdomain);
 
         if (MembersOnlyGames::applies($profile->subdomain) && ! MembersOnlyGames::allows($request)) {
             $banner = MembersOnlyGames::banner('/masuk');

@@ -29,6 +29,14 @@ class GameRoomUpdated implements ShouldBroadcastNow
         ];
     }
 
+    /**
+     * @return array<int, string|null>
+     */
+    public function broadcastConnections(): array
+    {
+        return [\App\Services\Realtime::connectionFor($this->subdomain)];
+    }
+
     public function broadcastAs(): string
     {
         return 'room.updated';

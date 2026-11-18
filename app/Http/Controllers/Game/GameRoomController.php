@@ -16,7 +16,8 @@ class GameRoomController extends Controller
 
     public function config(Request $request): JsonResponse
     {
-        return response()->json($this->rooms->describe($request, $this->profile($request)));
+        return response()->json($this->rooms->describe($request, $this->profile($request)))
+            ->header('Cache-Control', 'no-store, private');
     }
 
     public function index(Request $request): JsonResponse

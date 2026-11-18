@@ -1313,9 +1313,9 @@ cold_start() {
     commit_staged
     if [ "$MODE" = "container" ]; then
         docker tag singlepage:incoming singlepage
-        docker compose up -d --no-deps --force-recreate singlepage reverb scheduler nginx
+        docker compose up -d --no-deps --force-recreate singlepage reverb realtime scheduler nginx
     else
-        docker compose up -d --no-deps singlepage reverb scheduler nginx
+        docker compose up -d --no-deps singlepage reverb realtime scheduler nginx
     fi
     wait_running "$APP_CONTAINER"
     wait_running "$NGINX_CONTAINER"

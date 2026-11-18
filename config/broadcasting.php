@@ -46,6 +46,21 @@ return [
             ],
         ],
 
+        // Rust realtime service: same Pusher wire protocol, keys derived from APP_KEY.
+        'rust' => [
+            'driver' => 'reverb',
+            'key' => substr(hash_hmac('sha256', 'rt-key', (string) env('APP_KEY')), 0, 20),
+            'secret' => hash_hmac('sha256', 'rt-pusher', (string) env('APP_KEY')),
+            'app_id' => 'jdrt',
+            'options' => [
+                'host' => explode(':', env('REALTIME_HOST', 'singlepage-realtime:9000'))[0],
+                'port' => (int) (explode(':', env('REALTIME_HOST', 'singlepage-realtime:9000'))[1] ?? 9000),
+                'scheme' => 'http',
+                'useTLS' => false,
+            ],
+            'client_options' => ['timeout' => 2],
+        ],
+
         'pusher' => [
             'driver' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),

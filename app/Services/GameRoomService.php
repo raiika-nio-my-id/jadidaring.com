@@ -35,6 +35,7 @@ class GameRoomService
         $limits = $this->roomLimits($profile);
         // Reverb is nginx's /app prefix on the public host, not /{game}/app.
         $socketHost = TenantPath::host();
+        $rust = Realtime::engine($profile->subdomain) === 'rust';
 
         return [
             'game' => $profile->subdomain,
@@ -45,11 +46,12 @@ class GameRoomService
                 'isolatedBy' => 'subdomain',
             ],
             'websocket' => [
-                'enabled' => $key !== '',
-                'url' => $key === ''
-                    ? null
-                    : $scheme.'://'.$socketHost.'/app/'.$key.'?protocol=7&client=jadidaring&version=1.0',
-                'key' => $key === '' ? null : $key,
+                'enabled' => $rust || $key !== '',
+                'engine' => $rust ? 'rust' : 'reverb',
+                'url' => $rust
+                    ? $scheme.'://'.$socketHost.'/rt/app/'.Realtime::key().'?protocol=7&client=jadidaring&version=1.0&t='.Realtime::token($profile->subdomain, (int) (MembersOnlyGames::user()?->id ?? 0))
+                    : ($key === '' ? null : $scheme.'://'.$socketHost.'/app/'.$key.'?protocol=7&client=jadidaring&version=1.0'),
+                'key' => $rust ? Realtime::key() : ($key === '' ? null : $key),
                 'channelPrefix' => $prefix,
                 'lobbyChannel' => $prefix,
                 'roomChannel' => $prefix.'.{code}',

@@ -118,6 +118,14 @@ return [
     ],
 
     /*
+    | Rust realtime engine. Games listed here use it while it is healthy; every
+    | other game stays on Reverb. REALTIME_ENABLED=false forces Reverb everywhere.
+    */
+    'realtime_enabled' => (bool) env('REALTIME_ENABLED', env('APP_ENV') === 'production'),
+    'realtime_host' => env('REALTIME_HOST', 'singlepage-realtime:9000'),
+    'rust_games' => env('GAME_RUST_GAMES', 'mahjong,explodingkitten,drawquarium,langitbersama'),
+
+    /*
     | Isolated origin for member pages (e.g. u.jadidaring.com). Empty = serve the
     | same sandboxed content from the main host under /u/{username}/konten.
     */

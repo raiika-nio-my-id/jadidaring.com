@@ -3,9 +3,10 @@
 # This stack must stay within 50 % of the host: ≤ 512 MB RAM, ≤ 0.50 vCPU.
 #
 #   Service       RAM    CPU
-#   singlepage   288m   0.30
-#   reverb       112m   0.10
-#   scheduler     80m   0.05
+#   singlepage   256m   0.25
+#   reverb        80m   0.08   (fallback engine for games not yet on Rust)
+#   realtime      80m   0.08   (Rust WebSocket fan-out, realtime/)
+#   scheduler     64m   0.04
 #   nginx         32m   0.05
 #   ─────────────────────────
 #   Total        512m   0.50
@@ -20,9 +21,9 @@ services:
     image: singlepage
     container_name: singlepage-app
     restart: unless-stopped
-    mem_limit: 288m
-    memswap_limit: 288m
-    cpus: 0.30
+    mem_limit: 256m
+    memswap_limit: 256m
+    cpus: 0.25
     volumes:
       - .:/var/www
       - ./docker-config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
@@ -36,6 +37,7 @@ services:
       - PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-300}
       - PHP_DISPLAY_ERRORS=${PHP_DISPLAY_ERRORS:-Off}
       - BROADCAST_CONNECTION=reverb
+      - REALTIME_HOST=singlepage-realtime:9000
       - REVERB_HOST=reverb
       - REVERB_PORT=8080
       - REVERB_SCHEME=http
@@ -51,9 +53,9 @@ services:
     image: singlepage
     container_name: singlepage-reverb
     restart: unless-stopped
-    mem_limit: 112m
-    memswap_limit: 112m
-    cpus: 0.10
+    mem_limit: 80m
+    memswap_limit: 80m
+    cpus: 0.08
     entrypoint: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
     working_dir: /var/www
     volumes:
@@ -80,14 +82,32 @@ services:
     networks:
       - shared-services
 
+  # Rust WebSocket fan-out. The binary is built in CI (realtime/) and uploaded to
+  # realtime/bin/; no image build on the 1 GB host. APP_KEY comes from .env and
+  # all sub-keys are derived from it, so no new secret exists.
+  realtime:
+    image: alpine:3.20
+    container_name: singlepage-realtime
+    restart: unless-stopped
+    mem_limit: 80m
+    memswap_limit: 80m
+    cpus: 0.08
+    command: ["/rt/jd-realtime"]
+    volumes:
+      - ./realtime/bin:/rt:ro
+    environment:
+      - APP_KEY=${APP_KEY}
+    networks:
+      - shared-services
+
   scheduler:
     build: .
     image: singlepage
     container_name: singlepage-scheduler
     restart: unless-stopped
-    mem_limit: 80m
-    memswap_limit: 80m
-    cpus: 0.05
+    mem_limit: 64m
+    memswap_limit: 64m
+    cpus: 0.04
     user: root
     entrypoint: ["/usr/local/bin/scheduler-entrypoint.sh"]
     working_dir: /var/www
@@ -125,6 +145,7 @@ services:
     depends_on:
       - singlepage
       - reverb
+      - realtime
     networks:
       - shared-services
 
