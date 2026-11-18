@@ -22,14 +22,19 @@
     <meta name="twitter:title" content="{{ $metaTitle ?? 'Jadidaring' }}">
     <meta name="twitter:description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
 
+    <link rel="alternate" hreflang="id" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
+    <meta name="theme-color" content="#f4ecff">
+    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/', 'inLanguage' => 'id-ID'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/marketing/images/favicon.svg" type="image/svg+xml">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"></noscript>
 
-    <link rel="stylesheet" href="/css/clay.css">
+    <style>{!! \App\Support\InlineCss::clay() !!}</style>
     @include('partials.theme-boot')
     @stack('head')
 </head>

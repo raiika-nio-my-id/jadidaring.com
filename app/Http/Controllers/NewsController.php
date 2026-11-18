@@ -18,8 +18,8 @@ class NewsController extends Controller
     public function index(): View
     {
         return view('clay.berita-index', [
-            'metaTitle' => 'Berita — Jadidaring',
-            'metaDescription' => 'Berita pilihan seputar politik, gaming, saham & emas, kabar baik Indonesia, bencana, dan teknologi. Setiap berita punya minimal dua sumber.',
+            'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi — Jadidaring',
+            'metaDescription' => 'Berita terkini hari ini seputar politik, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/berita',
             'topics' => ClayController::TOPICS,
             'articles' => NewsCache::latest(null, 24),
@@ -33,8 +33,8 @@ class NewsController extends Controller
         $name = ClayController::TOPICS[$topik];
 
         return view('clay.berita-topik', [
-            'metaTitle' => 'Berita '.$name.' — Jadidaring',
-            'metaDescription' => 'Berita '.$name.' terbaru di Jadidaring, dengan sumber yang bisa diperiksa.',
+            'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini — Jadidaring',
+            'metaDescription' => 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/berita/'.$topik,
             'currentTopic' => $topik,
             'topicName' => $name,

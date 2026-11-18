@@ -49,8 +49,8 @@ class ClayController extends Controller
         $games = $this->formatGames($profiles);
 
         return view('clay.home', [
-            'metaTitle' => 'Jadidaring — Main Game Daring, Berita & Komunitas',
-            'metaDescription' => 'Platform hiburan web Indonesia. Mainkan game seru gratis tanpa unduh, baca berita harian pilihan, dan bergabung dengan komunitas.',
+            'metaTitle' => 'Jadidaring — Game Gratis Online, Berita Terkini Hari Ini & Komunitas',
+            'metaDescription' => 'Main game gratis online tanpa unduh, baca berita terkini hari ini: politik, saham & harga emas, gempa, teknologi, dan kabar baik Indonesia.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/',
             'games' => $games,
             'articles' => \App\Services\NewsCache::latest(null, 6),
@@ -94,8 +94,8 @@ class ClayController extends Controller
         $games = $this->formatGames($profiles);
 
         return view('clay.game-index', [
-            'metaTitle' => 'Game — Jadidaring',
-            'metaDescription' => 'Katalog game web ringan karya kreator tanah air. Mainkan langsung di peramban tanpa instalasi.',
+            'metaTitle' => 'Game Gratis Online Tanpa Unduh — Jadidaring',
+            'metaDescription' => 'Main game online gratis di HP atau laptop tanpa instalasi. Game multiplayer dan game santai karya kreator Indonesia, langsung dari peramban.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/game',
             'games' => $games,
             'sort' => $sort,

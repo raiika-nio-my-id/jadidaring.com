@@ -715,7 +715,7 @@ body {
 .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 .news-card { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink); text-decoration: none; box-shadow: var(--clay-out); }
 .news-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-sm); }
-.news-card h3 { margin: 0; font-family: var(--font-display); font-size: 1.15rem; }
+.news-card h2 { margin: 0; font-family: var(--font-display); font-size: 1.15rem; }
 .news-card p { margin: 0; color: var(--clay-ink-2); }
 .news-card time, .news-meta { color: var(--clay-ink-2); font-size: .9rem; }
 .news-article { max-width: 760px; margin-inline: auto; }
