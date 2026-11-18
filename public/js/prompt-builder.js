@@ -37,28 +37,29 @@
   sel.addEventListener('change', showDesc); showDesc();
 
   var TEMPLATE = [
-    'Kamu adalah desainer UI/UX dan frontend developer profesional. Buatkan SATU halaman web satu-halaman untuk komunitas Jadidaring (jadidaring.com) berdasarkan data pengguna di bagian bawah.',
+    'Kamu adalah desainer UI/UX untuk komunitas Jadidaring (jadidaring.com). Profil member memakai TATA LETAK TETAP ala Friendster yang dirender oleh Jadidaring. Tugasmu: menghasilkan PENGATURAN profil dalam JSON (tema, latar, widget) berdasarkan data pengguna di bagian bawah, dan HANYA bila perlu satu widget HTML kustom.',
     '',
     'ATURAN OUTPUT (WAJIB)',
-    '- Hasil akhir: satu blok kode markdown berbahasa html berisi dokumen lengkap (<!DOCTYPE html> sampai </html>). Tanpa penjelasan panjang di luar blok kode.',
-    '- Satu file: CSS di <style>, JavaScript di <script>. Dilarang: <iframe>, <embed>, <object>, <base>, <meta http-equiv>, dan @import dari luar daftar di bawah.',
-    '- Sumber luar yang DIIZINKAN (hanya https): <link rel="stylesheet"> dan <script src> dari fonts.googleapis.com, fonts.gstatic.com, cdn.jsdelivr.net, cdnjs.cloudflare.com, unpkg.com, dan cdn.tailwindcss.com. Domain lain dihapus oleh platform.',
-    '- Maksimal 250 KB. Teks halaman memakai {LANG}.',
-    '- Taruh semua konten yang bisa diubah (nama, deskripsi, tautan, daftar) dalam satu objek JSON valid di <script type="application/json" id="website-config"> lalu render dengan JavaScript.',
+    '- Balas dengan satu blok kode markdown berbahasa json berisi objek persis sesuai skema di bawah. Tanpa komentar di dalam JSON. Teks memakai {LANG}.',
+    '- OPSIONAL: bila pengguna menginginkan sesuatu yang tidak bisa dibuat widget bawaan, tambahkan satu blok kode kedua berbahasa html berisi dokumen kecil lengkap untuk widget "custom_html" (maks. 250 KB; CSS di <style>, JavaScript di <script>). Bila tidak perlu, jangan buat blok html dan jangan masukkan widget custom_html.',
     '',
-    'BATASAN KEAMANAN PLATFORM (halaman ditolak bila dilanggar)',
-    '- Dilarang: kolom password/PIN/OTP/kartu, unggah file, form yang mengirim data ke server, pengalihan otomatis, URL javascript:, memuat skrip atau stylesheet dari domain di luar daftar yang diizinkan, permintaan jaringan (fetch/XHR/WebSocket diblokir).',
-    '- Tautan dan media hanya https:// . Gunakan gambar/audio HANYA dari URL yang diberikan pengguna; jangan mengarang URL. Bila tidak ada gambar, buat latar dengan CSS (gradasi, pola, bentuk).',
-    '- Musik: sediakan tombol Putar/Jeda dan pengatur volume; DILARANG autoplay; mulai senyap sampai pengunjung menekan tombol.',
-    '- Kursor kustom hanya lewat CSS cursor:url(https://...) dengan fallback, atau kursor buatan sendiri dari CSS/emoji.',
-    '- Halaman tampil di dalam bingkai terisolasi: jangan akses window.parent/top, cookie, localStorage; jangan memakai popup atau alert/confirm/prompt.',
-    '- Jangan mengarang informasi (alamat, harga, testimoni, kontak, statistik). Bila data kosong, hilangkan bagiannya.',
-    '- Jadidaring menambahkan menu utama dan kolom komentar DI LUAR halamanmu; jangan membuat kolom komentar sendiri.',
+    'SKEMA JSON (kunci lain diabaikan; nilai di luar batas dikoreksi atau dibuang)',
+    '{ "profile": { "tagline": "<=80 huruf", "status": "<=140", "about": "<=1200", "avatar": "https://... (gambar, opsional)" },',
+    '  "theme": { "bg": { "type": "color|gradient|image|pattern", "color": "#rrggbb", "color2": "#rrggbb", "angle": 0-360, "image": "https://... atau kosong", "pattern": "none|dots|grid|stripes", "fixed": true, "overlay": 0-0.8 },',
+    '    "colors": { "text": "#rrggbb", "accent": "#rrggbb", "card": "#rrggbb", "link": "#rrggbb" },',
+    '    "font": "Nunito|Baloo 2|Poppins|Inter|Lora|Playfair Display|Pacifico|Space Grotesk|Comic Neue|Press Start 2P",',
+    '    "card": { "radius": 0-40, "opacity": 0.3-1, "blur": 0-24 }, "cursor": { "url": "https://... gambar kecil atau kosong", "size": 16-48 } },',
+    '  "music": { "url": "https://... .mp3/.ogg/.wav atau kosong", "title": "judul" },',
+    '  "widgets": [ urutan tampil; tipe: about, status, gallery, links, counter, music, friends, quote, youtube, custom_html. Bentuk: {"type":"gallery","items":[{"url":"https://...","caption":"..."}]} (maks 12), {"type":"links","items":[{"label":"...","url":"https://..."}]} (maks 10), {"type":"friends","items":[{"username":"..."}]} (maks 8), {"type":"quote","text":"...","author":"..."}, {"type":"youtube","id":"11 karakter atau tautan youtube"}, lainnya cukup {"type":"about"} ] }',
+    '',
+    'BATASAN KEAMANAN PLATFORM',
+    '- Semua warna wajib #rrggbb. Semua URL wajib https:// dan HANYA dari URL yang diberikan pengguna; jangan mengarang URL gambar, audio, atau tautan. Bila tidak ada gambar, pakai latar gradient/pattern.',
+    '- Musik tidak pernah autoplay (pengunjung menekan putar). Jangan mengarang informasi (alamat, harga, testimoni, kontak, statistik). Bila data kosong, kosongkan atau hapus bagiannya.',
+    '- Menu utama dan kolom komentar ditambahkan Jadidaring dan tidak bisa diubah; jangan membuatnya.',
+    '- Khusus widget HTML kustom: dilarang kolom password/PIN/OTP/kartu, unggah file, form kirim data, pengalihan otomatis, javascript: URL, <iframe>/<embed>/<object>/<base>, fetch/XHR/WebSocket (diblokir), dan akses window.parent/cookie/localStorage. Sumber luar yang DIIZINKAN (hanya https): <link rel="stylesheet"> dan <script src> dari fonts.googleapis.com, fonts.gstatic.com, cdn.jsdelivr.net, cdnjs.cloudflare.com, unpkg.com, dan cdn.tailwindcss.com. Domain lain dihapus oleh platform. Footer widget tidak perlu memuat S&K.',
     '',
     'KUALITAS',
-    '- Mobile-first dan responsif, aksesibel (alt gambar, kontras AA, fokus terlihat, hormati prefers-reduced-motion), HTML semantik, <title> dan meta description.',
-    '- Bukan template generik: komposisi, tipografi, dan warna sesuai tujuan dan gaya desain di bawah. Animasi halus dan bermakna.',
-    '- Footer wajib memuat tautan teks "Syarat & Ketentuan" ke https://jadidaring.com/syarat-ketentuan dan tidak boleh menyiratkan Jadidaring bertanggung jawab atas isi halaman.',
+    '- Pilih warna, font, latar, dan urutan widget yang cocok dengan tujuan dan gaya desain di bawah; kontras teks vs kartu minimal AA. Isi tagline, status, dan tentang aku dengan kalimat yang hidup tapi jujur sesuai data pengguna.',
     '',
     'DATA PENGGUNA'
   ].join('\n');
@@ -69,18 +70,18 @@
 
   function deliverySection(info, title) {
     if (!info) {
-      return '\nPENGIRIMAN HASIL\n- Balas dengan satu blok kode html berisi dokumen lengkap. Pengguna akan menempelkannya di jadidaring.com/komunitas/halamanku, lalu meninjau dan menerbitkannya.';
+      return '\nPENGIRIMAN HASIL\n- Balas dengan blok json (dan blok html bila ada widget kustom). Pengguna menempel JSON di jadidaring.com/komunitas/halamanku (tombol Muat ke editor), lalu meninjau dan menerbitkannya.';
     }
-    var curl = "curl -sS -X POST " + info.endpoint + " -H 'Content-Type: text/html; charset=utf-8' -H 'X-Draft-Key: " + info.key + "' --data-binary @halaman.html";
+    var curl = "curl -sS -X POST " + info.endpoint + " -H 'Content-Type: application/json' -H 'X-Draft-Key: " + info.key + "' --data-binary @profil.json";
     return [
       '',
       'PENGIRIMAN HASIL (kunci sekali pakai, berlaku 60 menit)',
-      '- Setelah dokumen HTML selesai dan sudah kamu periksa, kirim sebagai DRAFT:',
-      '  1) Jika kamu bisa membuat permintaan HTTP: POST ke ' + info.endpoint + ' dengan Content-Type: application/json dan isi {"key":"' + info.key + '","title":"' + (title || 'Halamanku').replace(/["\\\n]/g, ' ') + '","html":"<seluruh dokumen HTML sebagai string JSON>"}. Boleh juga body HTML mentah dengan header X-Draft-Key: ' + info.key + '.',
-      '  2) Jika tidak bisa: balas dengan dua blok kode. Blok pertama berbahasa html berisi dokumen lengkap (pengguna menyimpannya sebagai halaman.html). Blok kedua berbahasa bash berisi persis perintah ini:',
+      '- Setelah JSON selesai dan kamu periksa, kirim sebagai DRAFT:',
+      '  1) Jika kamu bisa membuat permintaan HTTP: POST ke ' + info.endpoint + ' dengan Content-Type: application/json dan isi {"key":"' + info.key + '","config":{...objek JSON profil...},"html":"<dokumen HTML widget kustom sebagai string, atau hilangkan kunci html>"}.',
+      '  2) Jika tidak bisa: balas dengan blok json (objek profil) dan, bila ada, blok html. Lalu blok bash berisi persis perintah ini setelah pengguna menyimpan JSON sebagai profil.json dengan bentuk {"config":{...},"html":"..."} (tambahkan "key":"' + info.key + '" bila kunci tidak dikirim lewat header):',
       '     ' + curl,
-      '- Kunci ini hanya membuat DRAFT dan hangus setelah satu kali berhasil. Halaman TIDAK tayang otomatis: pengguna meninjau di https://jadidaring.com/komunitas/halamanku lalu menekan Terbitkan atau Batal. Jangan membagikan kunci ini ke pihak lain dan jangan menaruhnya di dalam HTML.',
-      '- Jika pengiriman gagal, tampilkan pesan error-nya dan berikan blok html serta perintah curl di atas.'
+      '- Kunci ini hanya membuat DRAFT dan hangus setelah satu kali berhasil. Profil TIDAK tayang otomatis: pengguna meninjau di https://jadidaring.com/komunitas/halamanku lalu menekan Terbitkan atau Batal. Jangan membagikan kunci ini ke pihak lain dan jangan menaruhnya di dalam JSON atau HTML.',
+      '- Jika pengiriman gagal, tampilkan pesan error-nya dan berikan blok json serta perintah curl di atas.'
     ].join('\n');
   }
 
@@ -107,7 +108,7 @@
     add('URL musik', val('music'));
     add('URL gambar latar / foto', val('bg'));
     add('Arahan tambahan', val('extra'));
-    if (/game/i.test(type)) lines.push('Catatan game: hanya mode satu pemain yang berjalan di browser, tanpa server atau multiplayer.');
+    if (/game/i.test(type)) lines.push('Catatan game: hanya mode satu pemain di browser; buat sebagai widget custom_html.');
     if (/friendster/i.test(type)) lines.push('Catatan: tampilkan elemen khas Friendster/MySpace (profil, status, top teman, testimoni dekoratif) tanpa mengarang data orang lain.');
     lines.push(delivery);
     return lines.join('\n');

@@ -3,12 +3,13 @@
 @section('content')
     <div class="clay-section">
         <div class="clay-section__header">
-            <h1 class="clay-section__title">Komunitas</h1>
+            <a href="/komunitas" class="news-back"><span aria-hidden="true">&larr;</span> Jelajahi komunitas</a>
+            <h1 class="clay-section__title">Buat / Edit Profil</h1>
         </div>
-        <p class="news-lead">Buat halaman profil ala Friendster-mu sendiri: musik, kursor kustom, latar unik. Isi formulir, biarkan AI yang menulis kodenya, lalu tempel hasilnya di sini.</p>
+        <p class="news-lead">Profilmu punya tata letak tetap ala Friendster. Kamu mengatur latar, warna, font, kursor, musik, dan widget. Isi formulir, biarkan AI menulis pengaturannya (JSON), lalu muat ke editor.</p>
 
         <section class="clay-card clay-card--lavender pb-card" aria-labelledby="pb-h">
-            <h2 id="pb-h">Buat Halamanmu Sendiri</h2>
+            <h2 id="pb-h">Buat Profilmu dengan AI</h2>
             <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-mint="/komunitas/draft-key" data-csrf="{{ csrf_token() }}" data-endpoint="https://{{ \App\Services\TenantPath::host() }}/api/komunitas/draft"@endauth>
                 <div class="pb-grid">
                     <div><label for="pb-type">Jenis halaman / tujuan</label>
@@ -80,35 +81,20 @@
             <ol class="pb-steps">
                 <li>Isi formulir di atas, lalu tekan <strong>Buat Prompt</strong>.</li>
                 <li>Tekan <strong>Buka di ChatGPT</strong> (prompt terisi otomatis) atau <strong>Buka di Gemini</strong> (prompt disalin, tinggal tempel).</li>
-                <li>Tunggu AI menulis kode. Salin <em>seluruh</em> blok kode HTML-nya.</li>
+                <li>AI menjawab dengan blok <code>json</code> (pengaturan profil) dan, bila perlu, blok <code>html</code> untuk widget kustom.</li>
                 @auth
-                    <li>Jika AI-nya bisa mengirim data, ia mengirim draft otomatis memakai kunci sekali pakai di prompt. Jika tidak, ia memberi perintah <code>curl</code> siap jalan, atau tempel sendiri kodenya di <a href="/komunitas/halamanku">Halaman Saya</a>.</li>
-                    <li>Buka <a href="/komunitas/halamanku">Halaman Saya</a>, tinjau <strong>Draft baru</strong>, lalu tekan <strong>Terbitkan</strong> atau <strong>Batal</strong>. Halamanmu tayang di <code>/u/{{ auth()->user()->username }}</code> hanya setelah kamu menerbitkan.</li>
+                    <li>Jika AI bisa mengirim data, ia mengirim draft otomatis memakai kunci sekali pakai di prompt. Jika tidak, ia memberi perintah <code>curl</code> siap jalan, atau tempel JSON-nya di <a href="/komunitas/halamanku">Edit profil</a> lalu tekan <strong>Muat ke editor</strong>.</li>
+                    <li>Di editor, cek pratinjau langsung, buat <strong>Draft</strong>, lalu tekan <strong>Terbitkan</strong> atau <strong>Batal</strong>. Profilmu ada di <code>/u/{{ auth()->user()->username }}</code>.</li>
                 @else
-                    <li><a href="/masuk">Masuk</a> atau <a href="/daftar">daftar</a> dulu, lalu buka Halaman Saya untuk menempel kodenya.</li>
+                    <li><a href="/masuk">Masuk</a> atau <a href="/daftar">daftar</a> dulu agar mendapat kunci kirim draft otomatis dan bisa mengedit profil.</li>
                 @endauth
-                <li>Pengunjung bisa meninggalkan komentar di halamanmu. Kolom komentar dan menu utama selalu tampil dan tidak bisa dihapus.</li>
+                <li>Pengunjung bisa meninggalkan komentar di profilmu. Kolom komentar dan menu utama selalu tampil dan tidak bisa dihapus.</li>
             </ol>
-            <p class="news-meta">Keamanan: halamanmu tampil di bingkai terisolasi. Skrip dari luar daftar CDN tepercaya, kolom password/kartu, dan pengalihan otomatis tidak diizinkan. Maks. 300 KB.</p>
-            <p>@auth <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">{{ $mine ? 'Ubah halamanku' : 'Tempel halamanku' }}</a> @endauth</p>
+            <p class="news-meta">Keamanan: profil dirender oleh Jadidaring dari data tervalidasi. HTML kustom hanya hidup di widget kecil terisolasi (sandbox). Kolom password/kartu dan pengalihan otomatis tidak diizinkan. Maks. 300 KB.</p>
+            <p>@auth <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">Edit profilku</a> <a class="clay-btn" href="/u/{{ auth()->user()->username }}">Lihat profilku</a> @endauth</p>
         </section>
 
-        <section class="clay-section" aria-labelledby="galeri-h">
-            <h2 id="galeri-h">Halaman komunitas</h2>
-            @if ($pages->isEmpty())
-                <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text">Belum ada halaman. Jadilah yang pertama!</p></div>
-            @else
-                <div class="news-grid">
-                    @foreach ($pages as $p)
-                        <a class="news-card news-card--noimg" href="/u/{{ $p->user->username }}">
-                            <span class="topic-badge topic-badge--gaming">{{ '@'.$p->user->username }}</span>
-                            <h2>{{ $p->title }}</h2>
-                            <div class="news-meta-row"><span class="news-date">{{ number_format($p->views) }} kunjungan</span></div>
-                        </a>
-                    @endforeach
-                </div>
-            @endif
-        </section>
+        
     </div>
     <script src="{{ \App\Support\AssetUrl::to('js/prompt-builder.js') }}" defer></script>
 @endsection

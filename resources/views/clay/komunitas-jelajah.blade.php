@@ -1,0 +1,54 @@
+@extends('layouts.clay')
+
+@section('content')
+    <div class="clay-section">
+        <div class="clay-section__header">
+            <h1 class="clay-section__title">Komunitas</h1>
+        </div>
+        <p class="news-lead">Jelajahi profil ala Friendster buatan member Jadidaring. Intip latar, musik, dan galeri mereka, lalu tinggalkan komentar.</p>
+
+        <form class="clay-form pf-explore" method="get" action="/komunitas" role="search">
+            <label for="ex-q" class="sr-only">Cari nama pengguna</label>
+            <input class="clay-input" id="ex-q" type="search" name="q" value="{{ $q }}" maxlength="20" placeholder="Cari nama pengguna…" autocomplete="off">
+            <label for="ex-s" class="sr-only">Urutkan</label>
+            <select class="clay-input" id="ex-s" name="urut">
+                <option value="update" @selected($sort === 'update')>Baru diperbarui</option>
+                <option value="baru" @selected($sort === 'baru')>Terbaru</option>
+                <option value="populer" @selected($sort === 'populer')>Terpopuler</option>
+            </select>
+            <button class="clay-btn clay-btn--primary" type="submit">Cari</button>
+            @auth
+                <a class="clay-btn" href="/komunitas/buat">Buat / Edit profil</a>
+            @else
+                <a class="clay-btn" href="/komunitas/buat">Cara membuat profil</a>
+            @endauth
+        </form>
+
+        @if ($pages->isEmpty())
+            <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text">Belum ada profil yang cocok. <a href="/komunitas/buat">Buat profilmu</a> dan jadilah yang pertama!</p></div>
+        @else
+            <div class="pf-cards">
+                @foreach ($pages as $p)
+                    @php $cfg = $p->profileConfig(); $pr = $cfg['profile']; @endphp
+                    <a class="pf-mini" href="/u/{{ $p->user->username }}">
+                        @if ($pr['avatar'] !== '')
+                            <img class="pf-mini__av" src="{{ $pr['avatar'] }}" alt="" width="56" height="56" loading="lazy" referrerpolicy="no-referrer">
+                        @else
+                            <span class="pf-mini__av pf-mini__av--ph" aria-hidden="true">{{ mb_strtoupper(mb_substr($p->user->name, 0, 1)) }}</span>
+                        @endif
+                        <span class="pf-mini__body">
+                            <strong>{{ $p->user->name }}</strong>
+                            <span class="pf-user">{{ '@'.$p->user->username }}</span>
+                            @if ($pr['tagline'] !== '')<span class="pf-mini__tag">{{ $pr['tagline'] }}</span>@endif
+                            <span class="news-date">{{ number_format($p->views) }} pengunjung</span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+            <nav class="pf-pager" aria-label="Halaman">
+                @if ($pages->previousPageUrl())<a class="clay-btn" href="{{ $pages->previousPageUrl() }}" rel="prev">&larr; Sebelumnya</a>@endif
+                @if ($pages->hasMorePages())<a class="clay-btn" href="{{ $pages->nextPageUrl() }}" rel="next">Berikutnya &rarr;</a>@endif
+            </nav>
+        @endif
+    </div>
+@endsection

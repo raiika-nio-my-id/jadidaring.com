@@ -126,6 +126,6 @@ class CommunityDraftKeyTest extends TestCase
         foreach (['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'cdn.tailwindcss.com', 'X-Draft-Key', 'DRAFT'] as $needle) {
             $this->assertStringContainsString($needle, $js);
         }
-        $this->actingAs(User::factory()->member()->create(['username' => 'ff_ff']))->get($this->base().'/komunitas')->assertSee('data-mint="/komunitas/draft-key"', false);
+        $this->actingAs(User::factory()->member()->create(['username' => 'ff_ff']))->get($this->base().'/komunitas/buat')->assertSee('data-mint="/komunitas/draft-key"', false);
     }
 }

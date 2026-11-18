@@ -19,7 +19,8 @@ Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'
 Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
 Route::get('/game', [ClayController::class, 'game'])->name('clay.game');
 Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas');
-Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->name('community.show');
+Route::get('/komunitas/buat', [CommunityController::class, 'prompt'])->name('community.prompt');
+Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.show');
 Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms');
 Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots');
 Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('clay.sitemap');
@@ -52,6 +53,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/u/{username}/komentar/{comment}/sembunyikan', [CommunityController::class, 'hideComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->name('community.comment.hide');
     Route::post('/u/{username}/komentar/{comment}/lapor', [CommunityController::class, 'reportComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->middleware('throttle:20,1');
     Route::post('/u/{username}/lapor', [CommunityController::class, 'report'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1');
+    Route::post('/komunitas/halamanku/pratinjau', [CommunityController::class, 'preview'])->middleware('throttle:60,1')->name('community.preview');
     Route::post('/komunitas/draft-key', [CommunityController::class, 'mintKey'])->middleware('throttle:5,60')->name('community.draftkey');
     Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:20,60')->name('community.draft.publish');
     Route::post('/komunitas/halamanku/draft/batal', [CommunityController::class, 'cancelDraft'])->name('community.draft.cancel');

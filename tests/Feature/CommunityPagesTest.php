@@ -147,7 +147,7 @@ class CommunityPagesTest extends TestCase
 
     public function test_komunitas_page_has_builder_and_twenty_styles_script(): void
     {
-        $this->get($this->base().'/komunitas')->assertOk()->assertSee('Buat Halamanmu Sendiri')->assertSee('pb-style', false);
+        $this->get($this->base().'/komunitas/buat')->assertOk()->assertSee('Buat Profilmu dengan AI')->assertSee('pb-style', false);
         $js = file_get_contents(public_path('js/prompt-builder.js'));
         $this->assertSame(20, preg_match_all("/^    \['[^']+', '/m", $js));
     }

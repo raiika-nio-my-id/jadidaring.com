@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->role === UserRole::Client;
     }
+
+    public function memberPage(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(MemberPage::class);
+    }
 }

@@ -1,19 +1,19 @@
 @extends('layouts.clay')
 
 @section('content')
-    <div class="clay-section member-page">
-        <a href="/komunitas" class="news-back"><span aria-hidden="true">&larr;</span> Komunitas</a>
-        <h1 class="clay-section__title">{{ $page->title }}</h1>
-        <p class="news-meta">oleh <strong>{{ '@'.$owner->username }}</strong> &middot; {{ number_format($page->views) }} kunjungan
-            @if (! $page->isPublished()) &middot; <strong>disembunyikan moderator</strong> @endif</p>
-        @if (session('status'))<p class="news-comments__msg" role="status">{{ session('status') }}</p>@endif
-
-        {{-- Untrusted member content: isolated origin/CSP sandbox, no allow-same-origin, no top navigation, modals or fullscreen. --}}
-        <div class="member-frame">
-            <iframe id="member-frame" title="Halaman {{ $owner->username }}" src="{{ $frameSrc }}"
-                sandbox="allow-scripts allow-popups" allow="" referrerpolicy="no-referrer" loading="lazy"
-                data-min="320" data-max="8000" style="height:80vh"></iframe>
+    <div class="member-page">
+        <div class="pf-bar">
+            <a href="/komunitas" class="news-back"><span aria-hidden="true">&larr;</span> Jelajahi</a>
+            @if ($isOwner)
+                <span class="pf-bar__owner">
+                    <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">Edit profil</a>
+                    <a class="clay-btn" href="/akun">Pengaturan akun</a>
+                </span>
+            @endif
         </div>
+        @if (session('status'))<p class="news-comments__msg" role="status">{{ session('status') }}</p>@endif
+        @if (! $page->isPublished())<p class="clay-status" role="status">Profil ini disembunyikan moderator dan hanya terlihat olehmu.</p>@endif
+        @include('clay._profile')
 
         <div class="member-actions">
             @auth
@@ -27,7 +27,7 @@
         </div>
 
         {{-- Trusted comment wall: rendered by the server outside the sandbox; members cannot remove or hide it. --}}
-        <section class="clay-card clay-card--lavender news-comments" id="komentar" aria-labelledby="kmt-h">
+        <section class="clay-card clay-card--lavender news-comments pf-wall" id="komentar" aria-labelledby="kmt-h">
             <h2 id="kmt-h">Komentar &amp; Testimoni</h2>
             @auth
                 <form class="clay-form" method="post" action="/u/{{ $owner->username }}/komentar">

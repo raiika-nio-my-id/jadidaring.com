@@ -53,7 +53,7 @@
                     <a href="/game" class="clay-nav__link" @if(request()->is('game*')) aria-current="page" @endif>Game</a>
                     <a href="/komunitas" class="clay-nav__link" @if(request()->is('komunitas*')) aria-current="page" @endif>Komunitas</a>
                     @auth
-                        <a href="/akun" class="clay-nav__link" @if(request()->is('akun*')) aria-current="page" @endif>{{ auth()->user()->username ?? auth()->user()->name }}</a>
+                        <a href="/u/{{ auth()->user()->username }}" class="clay-nav__link" @if(request()->is('akun*') || request()->is('u/'.auth()->user()->username)) aria-current="page" @endif>Akun</a>
                     @else
                         <a href="/masuk" class="clay-nav__link" @if(request()->is('masuk', 'daftar')) aria-current="page" @endif>Masuk</a>
                     @endauth
@@ -113,7 +113,7 @@
             </svg>
             <span>Komunitas</span>
         </a>
-        <a href="{{ auth()->check() ? '/akun' : '/masuk' }}" class="clay-bottom-nav__item">
+        <a href="{{ auth()->check() && auth()->user()->username ? '/u/'.auth()->user()->username : (auth()->check() ? '/akun' : '/masuk') }}" class="clay-bottom-nav__item" @if(auth()->check() && (request()->is('akun*') || request()->is('u/'.auth()->user()->username))) aria-current="page" @endif>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
