@@ -8,11 +8,14 @@
 
 @section('content')
     <article class="clay-section news-article">
+        <a href="/berita/{{ $article['topic'] }}" class="news-back" data-news-back data-fallback="/berita/{{ $article['topic'] }}"><span aria-hidden="true">&larr;</span> Kembali ke daftar berita</a>
+
         <nav class="pills-bar" aria-label="Topik Berita">
             <a href="/berita" class="clay-pill clay-pill--sky">Semua</a>
             <a href="/berita/{{ $article['topic'] }}" class="clay-pill clay-pill--sky is-active">{{ $topicName }}</a>
         </nav>
 
+        <p><span class="topic-badge topic-badge--static topic-badge--{{ $article['topic'] }}">{{ $topicName }}</span></p>
         <h1 class="clay-section__title">{{ $article['title'] }}</h1>
         <p class="news-meta"><time datetime="{{ $article['published_at'] }}">{{ \Illuminate\Support\Carbon::parse($article['published_at'])->locale('id')->translatedFormat('l, d F Y H:i') }}</time></p>
 
@@ -55,4 +58,5 @@
         </section>
     </article>
     <script src="/js/news-comments.js" defer></script>
+    <script src="/js/news-nav.js" defer></script>
 @endsection
