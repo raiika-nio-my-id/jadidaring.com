@@ -113,6 +113,136 @@ if compose_file_changed; then
     failures=$((failures + 1))
 fi
 
+# Test image_inputs_changed when docker is absent / inspect fails
+OLD_SHA="80ea7e4"
+NEW_SHA="984b60e"
+DEPLOY_FORCE_BUILD=0
+if ! image_inputs_changed; then
+    echo "FAIL: image_inputs_changed should return 0 when docker inspect fails" >&2
+    failures=$((failures + 1))
+fi
+
+# Mock docker for unit testing image_inputs_changed and remove_stale_incoming_image
+docker() {
+    case "$*" in
+        "image inspect singlepage:incoming"*)
+            if [ "${MOCK_INCOMING_EXISTS:-0}" -eq 1 ]; then
+                echo "sha256:incoming123"
+                return 0
+            fi
+            return 1
+            ;;
+        "image inspect singlepage"*)
+            return 0
+            ;;
+        "ps -a -q --filter ancestor=sha256:incoming123"*)
+            if [ "${MOCK_CONTAINER_USING:-0}" -eq 1 ]; then
+                echo "container_xyz"
+            fi
+            return 0
+            ;;
+        "ps -a -q --filter ancestor=singlepage:incoming"*)
+            return 0
+            ;;
+        "image rm singlepage:incoming"*)
+            MOCK_RM_CALLED=1
+            return 0
+            ;;
+        "build -t singlepage:incoming"*)
+            MOCK_BUILD_CALLED=1
+            return 0
+            ;;
+        "tag singlepage singlepage:incoming"*)
+            MOCK_TAG_CALLED=1
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+if image_inputs_changed; then
+    echo "FAIL: image_inputs_changed should return 1 when inputs are unchanged" >&2
+    failures=$((failures + 1))
+fi
+
+DEPLOY_FORCE_BUILD=1
+if ! image_inputs_changed; then
+    echo "FAIL: image_inputs_changed should return 0 when DEPLOY_FORCE_BUILD=1" >&2
+    failures=$((failures + 1))
+fi
+DEPLOY_FORCE_BUILD=0
+
+# Diff touching Dockerfile (compare empty tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904 to HEAD)
+OLD_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+NEW_SHA="984b60e"
+if ! image_inputs_changed; then
+    echo "FAIL: image_inputs_changed should return 0 when Dockerfile changed" >&2
+    failures=$((failures + 1))
+fi
+
+# Test remove_stale_incoming_image
+MOCK_RM_CALLED=0
+MOCK_INCOMING_EXISTS=0
+MOCK_CONTAINER_USING=0
+remove_stale_incoming_image >/dev/null 2>&1 || true
+if [ "$MOCK_RM_CALLED" -ne 0 ]; then
+    echo "FAIL: remove_stale_incoming_image should not remove non-existent image" >&2
+    failures=$((failures + 1))
+fi
+
+MOCK_INCOMING_EXISTS=1
+MOCK_CONTAINER_USING=1
+remove_stale_incoming_image >/dev/null 2>&1 || true
+if [ "$MOCK_RM_CALLED" -ne 0 ]; then
+    echo "FAIL: remove_stale_incoming_image should not remove image in use by container" >&2
+    failures=$((failures + 1))
+fi
+
+MOCK_INCOMING_EXISTS=1
+MOCK_CONTAINER_USING=0
+remove_stale_incoming_image >/dev/null 2>&1 || true
+if [ "$MOCK_RM_CALLED" -ne 1 ]; then
+    echo "FAIL: remove_stale_incoming_image should remove unused incoming image" >&2
+    failures=$((failures + 1))
+fi
+
+# Test build_image
+RELEASE_DIR="/tmp/mock-release-dir"
+MOCK_BUILD_CALLED=0
+MOCK_TAG_CALLED=0
+OLD_SHA="80ea7e4"
+NEW_SHA="984b60e"
+DEPLOY_FORCE_BUILD=0
+build_image >/dev/null 2>&1 || true
+if [ "$MOCK_TAG_CALLED" -ne 1 ] || [ "$MOCK_BUILD_CALLED" -ne 0 ]; then
+    echo "FAIL: build_image should tag live image when inputs unchanged" >&2
+    failures=$((failures + 1))
+fi
+
+MOCK_BUILD_CALLED=0
+MOCK_TAG_CALLED=0
+DEPLOY_FORCE_BUILD=1
+build_image >/dev/null 2>&1 || true
+if [ "$MOCK_BUILD_CALLED" -ne 1 ] || [ "$MOCK_TAG_CALLED" -ne 0 ]; then
+    echo "FAIL: build_image should docker build when image inputs changed" >&2
+    failures=$((failures + 1))
+fi
+DEPLOY_FORCE_BUILD=0
+
+unset -f docker
+
+# Test require_free_disk
+APP_DIR="$ROOT"
+if ! require_free_disk 10 >/dev/null 2>&1; then
+    echo "FAIL: require_free_disk 10 should succeed" >&2
+    failures=$((failures + 1))
+fi
+
+if (APP_DIR="$ROOT" require_free_disk 99999999 >/dev/null 2>&1); then
+    echo "FAIL: require_free_disk 99999999 should fail" >&2
+    failures=$((failures + 1))
+fi
+
 if [ "$failures" -ne 0 ]; then
     printf '%s assertion(s) failed\n' "$failures" >&2
     exit 1

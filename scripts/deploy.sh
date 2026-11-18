@@ -79,6 +79,7 @@ REF_SET=0
 MAINTENANCE=0
 MAINTENANCE_ACTIVE=0
 FORCE_RECREATE=0
+DEPLOY_FORCE_BUILD="${DEPLOY_FORCE_BUILD:-0}"
 RESTART_REVERB=0
 PLAN_ONLY=0
 HEALTH_TIMEOUT="${DEPLOY_HEALTH_TIMEOUT:-90}"
@@ -109,6 +110,7 @@ Options:
   --plan              Print Path A vs Path B and exit without changing the server
   --maintenance       artisan down around migrations and the container switch
   --force-recreate    Path B even if no image/container files changed
+  --force-build       Path B: rebuild singlepage image even if Dockerfile is unchanged
   --restart-reverb    Path A only: recreate Reverb (WebSocket clients reconnect)
   -h, --help          Show this help
 
@@ -116,6 +118,7 @@ Environment:
   DEPLOY_PATH            App directory (default /var/www/singlepage)
   DEPLOY_MAINTENANCE=1   Same as --maintenance
   DEPLOY_FORCE_RECREATE=1
+  DEPLOY_FORCE_BUILD=1   Same as --force-build
   DEPLOY_RESTART_REVERB=1
   DEPLOY_RELEASE_DIR     Side tree for Path B (default: $DEPLOY_PATH-release)
   DEPLOY_GREEN_PORT      Localhost port for the throwaway green health check
@@ -193,12 +196,14 @@ path_label() {
 parse_args() {
     if [ "${DEPLOY_MAINTENANCE:-0}" = "1" ]; then MAINTENANCE=1; fi
     if [ "${DEPLOY_FORCE_RECREATE:-0}" = "1" ]; then FORCE_RECREATE=1; fi
+    if [ "${DEPLOY_FORCE_BUILD:-0}" = "1" ]; then DEPLOY_FORCE_BUILD=1; fi
     if [ "${DEPLOY_RESTART_REVERB:-0}" = "1" ]; then RESTART_REVERB=1; fi
 
     while [ $# -gt 0 ]; do
         case "$1" in
             --maintenance) MAINTENANCE=1 ;;
             --force-recreate) FORCE_RECREATE=1 ;;
+            --force-build) DEPLOY_FORCE_BUILD=1 ;;
             --restart-reverb) RESTART_REVERB=1 ;;
             --plan) PLAN_ONLY=1 ;;
             -h|--help) usage; exit 0 ;;
@@ -221,6 +226,20 @@ require_uint() {
     if ! [[ "$value" =~ ^[0-9]+$ ]]; then
         fail "$name=$value must be a non-negative integer"
     fi
+}
+
+require_free_disk() {
+    local required_mb="$1"
+    require_uint "required_mb" "$required_mb"
+    local free_mb
+    free_mb=$( (df -Pm "$APP_DIR" 2>/dev/null || true) | tail -1 | awk '{print $4}')
+    if [ -z "$free_mb" ] || ! [[ "$free_mb" =~ ^[0-9]+$ ]]; then
+        fail "Could not determine free disk space for $APP_DIR"
+    fi
+    if [ "$free_mb" -lt "$required_mb" ]; then
+        fail "Insufficient free disk space on $APP_DIR: ${free_mb} MB available, need at least ${required_mb} MB"
+    fi
+    log "Disk check passed: ${free_mb} MB available (${required_mb} MB required)"
 }
 
 acquire_lock() {
@@ -586,9 +605,50 @@ install_release_vendor() {
     chmod -R a+rX "$RELEASE_DIR/vendor"
 }
 
+image_inputs_changed() {
+    if [ "${DEPLOY_FORCE_BUILD:-0}" = "1" ]; then
+        return 0
+    fi
+    if ! docker image inspect singlepage >/dev/null 2>&1; then
+        return 0
+    fi
+    if [ -z "${OLD_SHA:-}" ] || [ -z "${NEW_SHA:-}" ]; then
+        return 0
+    fi
+    if ! git diff --quiet "$OLD_SHA" "$NEW_SHA" -- Dockerfile 'Dockerfile.*' .dockerignore docker-config/scheduler/; then
+        return 0
+    fi
+    return 1
+}
+
+remove_stale_incoming_image() {
+    local img_id
+    img_id=$(docker image inspect singlepage:incoming --format '{{.Id}}' 2>/dev/null || true)
+    if [ -z "$img_id" ]; then
+        return 0
+    fi
+
+    local in_use
+    in_use=$(docker ps -a -q --filter ancestor="$img_id" 2>/dev/null || true)
+    if [ -z "$in_use" ]; then
+        in_use=$(docker ps -a -q --filter ancestor=singlepage:incoming 2>/dev/null || true)
+    fi
+    if [ -n "$in_use" ]; then
+        return 0
+    fi
+
+    log "Removing stale image singlepage:incoming"
+    docker image rm singlepage:incoming >/dev/null 2>&1 || true
+}
+
 build_image() {
-    log "Building image singlepage:incoming (running containers keep their current image)"
-    docker build -t singlepage:incoming -f "$RELEASE_DIR/Dockerfile" "$RELEASE_DIR"
+    if image_inputs_changed; then
+        log "Building image singlepage:incoming (running containers keep their current image)"
+        docker build -t singlepage:incoming -f "$RELEASE_DIR/Dockerfile" "$RELEASE_DIR"
+    else
+        log "Dockerfile unchanged — reusing the live image (no build)"
+        docker tag singlepage singlepage:incoming
+    fi
 }
 
 migrations_pending() {
@@ -639,8 +699,16 @@ backup_database() {
     fi
     # Try 2: mysqldump inside the DB container (shared container is mysql-db)
     if [ "$dump_ok" -eq 0 ]; then
-        local db_container="${DB_HOST}"
-        if container_running "$db_container"; then
+        # DB_HOST is often a network alias (mysql-db) of the real container
+        # (global-mysql). Try an explicit override, the alias, then global-mysql.
+        local db_container="" candidate
+        for candidate in "${DEPLOY_DB_CONTAINER:-}" "${DB_HOST}" global-mysql; do
+            if [ -n "$candidate" ] && container_running "$candidate"; then
+                db_container="$candidate"
+                break
+            fi
+        done
+        if [ -n "$db_container" ]; then
             log "Trying mysqldump inside container $db_container"
             if docker exec \
                     -e "MYSQL_PWD=$DB_PASSWORD" \
@@ -657,7 +725,7 @@ backup_database() {
                 rm -f "$backup_file"
             fi
         else
-            log "DB container $db_container is not running — cannot fall back to container mysqldump."
+            log "No running DB container (tried DEPLOY_DB_CONTAINER, ${DB_HOST}, global-mysql) — cannot fall back to container mysqldump."
         fi
     fi
     if [ "$dump_ok" -eq 0 ]; then
@@ -1063,6 +1131,9 @@ cleanup_on_exit() {
         log "Do not delete them until $NGINX_CONTAINER is confirmed on singlepage-app and that container is healthy."
     else
         cleanup_green || true
+        if [ "$status" -ne 0 ]; then
+            remove_stale_incoming_image || true
+        fi
         rollback_staged || true
         cleanup_release || true
         restore_upstream_symlink || true
@@ -1081,6 +1152,7 @@ cleanup_on_exit() {
 path_assets() {
     local reload_nginx="$1"
     step "Path A — refresh bind-mounted code without recreating containers"
+    require_free_disk 300
     extract_release "$NEW_SHA"
     if [ "$reload_nginx" -eq 1 ]; then
         preflight_nginx "$RELEASE_DIR"
@@ -1119,6 +1191,12 @@ recreate_reverb_only() {
 
 path_b() {
     step "Path B — blue-green PHP replace (global-mysql is not touched)"
+    remove_stale_incoming_image
+    if image_inputs_changed; then
+        require_free_disk 3000
+    else
+        require_free_disk 600
+    fi
     refuse_leftover_green
     require_env_file
     extract_release "$NEW_SHA"
