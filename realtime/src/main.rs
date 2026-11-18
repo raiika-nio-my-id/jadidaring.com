@@ -62,6 +62,7 @@ async fn main() {
 
     let router = Router::new()
         .route("/app/:key", get(ws_upgrade))
+        .route("/sse/:key", get(sse))
         .route("/apps/:app_id/events", post(publish))
         .route("/health", get(health))
         .layer(DefaultBodyLimit::max(16 * 1024))
@@ -225,3 +226,66 @@ async fn publish(
     (StatusCode::OK, Json(json!({}))).into_response()
 }
 
+
+/// Removes the connection from the hub when the HTTP stream is dropped.
+struct Guard {
+    s: Shared,
+    id: u64,
+}
+
+impl Drop for Guard {
+    fn drop(&mut self) {
+        self.s.hub.lock().unwrap().remove(self.id);
+    }
+}
+
+/// Server-Sent Events transport. The browser bridge uses it when the proxy in front
+/// of the stack does not tunnel WebSockets. Same token, same channel scoping; the
+/// client writes still go through Laravel's HTTP API as they always did.
+async fn sse(
+    Path(key): Path<String>,
+    Query(q): Query<HashMap<String, String>>,
+    State(s): State<Shared>,
+) -> axum::response::Response {
+    if key != s.pusher_key {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let Some(claims) = q.get("t").and_then(|t| auth::check_token(&s.join_key, t, auth::now())) else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let chans: Vec<String> = q.get("c").map(|c| c.split(',').filter(|x| !x.is_empty()).take(hub::MAX_SUBS).map(String::from).collect()).unwrap_or_default();
+    let (tx, rx) = mpsc::channel::<Frame>(256);
+    let id = {
+        let mut h = s.hub.lock().unwrap();
+        if h.conns.len() >= MAX_CONNS {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+        let id = h.add(tx, claims.slug);
+        for ch in &chans {
+            if h.subscribe(id, ch).is_err() {
+                h.remove(id);
+                return StatusCode::FORBIDDEN.into_response();
+            }
+        }
+        id
+    };
+    let guard = Guard { s: s.clone(), id };
+    let stream = futures_util::stream::unfold((rx, guard, true), |(mut rx, g, first)| async move {
+        let chunk = if first {
+            Bytes::from_static(b"data: {\"event\":\"jd:ready\"}\n\n")
+        } else {
+            match tokio::time::timeout(Duration::from_secs(20), rx.recv()).await {
+                Ok(Some(f)) => Bytes::from(format!("data: {f}\n\n")),
+                Ok(None) => return None,
+                Err(_) => Bytes::from_static(b": ka\n\n"),
+            }
+        };
+        Some((Ok::<Bytes, std::convert::Infallible>(chunk), (rx, g, false)))
+    });
+    axum::response::Response::builder()
+        .header("content-type", "text/event-stream")
+        .header("cache-control", "no-store")
+        .header("x-accel-buffering", "no")
+        .body(axum::body::Body::from_stream(stream))
+        .unwrap()
+}

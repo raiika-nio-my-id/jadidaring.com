@@ -14,7 +14,7 @@
 # Relies on ~/project/infrastructure (mysql-db on shared-services,
 # global-proxy / Nginx Proxy Manager on host network → 127.0.0.1:${APP_PORT}).
 # Create the network once: docker network create shared-services
-# Reverb and realtime are internal. Browsers reach it through nginx on /app (Upgrade must pass the proxy).
+# Reverb and realtime are internal (sse). Browsers reach it through nginx on /app (Upgrade must pass the proxy).
 services:
   singlepage:
     build: .
