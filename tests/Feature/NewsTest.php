@@ -191,4 +191,31 @@ class NewsTest extends TestCase
         config(['services.ga4.measurement_id' => 'G-ABC123XYZ9']);
         $this->get(self::SITE.'/')->assertSee('id="consent-banner"', false)->assertSee('G-ABC123XYZ9', false)->assertSee("analytics_storage: 'denied'", false);
     }
+
+    public function test_slugs_cut_on_a_word_boundary_without_trailing_dash(): void
+    {
+        $title = 'Game gratis Epic Games Store minggu ini: Mark of the Ninja Remastered dan satu lagi judul panjang sekali';
+        $slug = \App\Services\NewsSlug::make($title);
+
+        $this->assertLessThanOrEqual(80, strlen($slug));
+        $this->assertStringEndsNotWith('-', $slug);
+        $this->assertStringStartsWith($slug, \Illuminate\Support\Str::slug($title));
+        $this->assertContains(substr(\Illuminate\Support\Str::slug($title), strlen($slug), 1), ['-', '']);
+    }
+
+    public function test_old_slug_redirects_and_delete_endpoint(): void
+    {
+        $res = $this->postJson(self::API.'/articles', $this->payload(), $this->key())->assertCreated();
+        $article = Article::query()->firstOrFail();
+        \Illuminate\Support\Facades\DB::table('article_slug_redirects')->insert(['old_slug' => 'slug-lama-terpotong-dan', 'article_id' => $article->id]);
+
+        $this->get(self::SITE.'/berita/teknologi/slug-lama-terpotong-dan')->assertStatus(301)->assertRedirect($article->url());
+
+        $draft = $this->postJson(self::API.'/articles', $this->payload(['status' => 'draft', 'title' => 'Draf duplikat yang akan dihapus']), $this->key())->assertCreated();
+        $this->getJson(self::API.'/articles?status=draft', $this->key())->assertOk()->assertJsonCount(1, 'articles');
+        $this->deleteJson(self::API.'/articles/'.$draft->json('article.id'))->assertUnauthorized();
+        $this->deleteJson(self::API.'/articles/'.$draft->json('article.id'), [], $this->key())->assertOk();
+        $this->deleteJson(self::API.'/articles/'.$draft->json('article.id'), [], $this->key())->assertNotFound();
+        $this->assertNotNull(Article::query()->find($article->id));
+    }
 }

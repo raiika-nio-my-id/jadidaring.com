@@ -130,6 +130,36 @@ class NewsController extends Controller
         return response()->json(['article' => $this->present($model->fresh())]);
     }
 
+    public function index(Request $request): JsonResponse
+    {
+        $status = $request->query('status');
+
+        $items = Article::query()
+            ->when(in_array($status, Article::STATUSES, true), fn ($q) => $q->where('status', $status))
+            ->orderBy('id')->limit(500)
+            ->get(['id', 'topic', 'slug', 'title', 'status', 'published_at', 'created_at'])
+            ->map(fn (Article $a): array => [
+                'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'status' => $a->status,
+                'published_at' => $a->published_at?->toIso8601String(), 'created_at' => $a->created_at?->toIso8601String(),
+            ]);
+
+        return response()->json(['articles' => $items]);
+    }
+
+    public function destroy(int $article): JsonResponse
+    {
+        $model = Article::query()->find($article);
+
+        if (! $model instanceof Article) {
+            return response()->json(['message' => 'Article not found.'], 404);
+        }
+
+        $model->delete();
+        NewsCache::bump();
+
+        return response()->json(['deleted' => $article]);
+    }
+
     public function moderateComment(Request $request, int $comment): JsonResponse
     {
         $model = ArticleComment::query()->find($comment);
@@ -163,15 +193,7 @@ class NewsController extends Controller
 
     private function uniqueSlug(string $seed): string
     {
-        $base = Str::limit(Str::slug($seed), 80, '');
-        $base = $base !== '' ? $base : 'berita';
-        $slug = $base;
-
-        while (Article::query()->where('slug', $slug)->exists()) {
-            $slug = $base.'-'.Str::lower(Str::random(5));
-        }
-
-        return $slug;
+        return \App\Services\NewsSlug::unique($seed);
     }
 
     /**

@@ -20,3 +20,5 @@ Route::patch('/news/topics/{slug}', [NewsController::class, 'updateTopic'])->nam
 Route::post('/news/articles', [NewsController::class, 'store'])->name('news.articles.store');
 Route::patch('/news/articles/{article}', [NewsController::class, 'update'])->whereNumber('article')->name('news.articles.update');
 Route::patch('/news/comments/{comment}', [NewsController::class, 'moderateComment'])->whereNumber('comment')->name('news.comments.moderate');
+Route::get('/news/articles', [NewsController::class, 'index'])->name('news.articles.index');
+Route::delete('/news/articles/{article}', [NewsController::class, 'destroy'])->whereNumber('article')->name('news.articles.destroy');

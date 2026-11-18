@@ -61,6 +61,15 @@ class NewsController extends Controller
             ];
         });
 
+        if ($data === null) {
+            $redirect = \Illuminate\Support\Facades\DB::table('article_slug_redirects')->where('old_slug', $slug)->value('article_id');
+            $target = $redirect ? Article::query()->visible()->find($redirect) : null;
+
+            if ($target instanceof Article) {
+                return redirect($target->url(), 301);
+            }
+        }
+
         abort_if($data === null || ! array_key_exists($data['topic'], ClayController::TOPICS), 404);
 
         if ($data['topic'] !== strtolower($topik)) {
