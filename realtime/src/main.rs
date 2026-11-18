@@ -3,7 +3,7 @@ mod hub;
 
 use axum::{
     body::Bytes,
-    extract::{ws::{Message, WebSocket, WebSocketUpgrade}, rejection::WebSocketUpgradeRejection, DefaultBodyLimit, Path, Query, State},
+    extract::{ws::{rejection::WebSocketUpgradeRejection, Message, WebSocket, WebSocketUpgrade}, DefaultBodyLimit, Path, Query, State},
     http::{HeaderMap, StatusCode, Uri},
     response::IntoResponse,
     routing::{get, post},
