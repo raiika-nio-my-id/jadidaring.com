@@ -41,11 +41,11 @@
     <header class="clay-header">
         <div class="clay-shell">
             <div class="clay-header__bar">
-                <a href="/" class="clay-brand" aria-label="Beranda Jadidaring">
+                <a href="/" class="clay-brand" aria-label="Beranda Jadi Daring">
                     <span class="clay-brand__logo">
-                        <img src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark.svg') }}" alt="Jadidaring Logo" width="36" height="36">
+                        <img src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark.svg') }}" alt="Jadi Daring" width="36" height="36">
                     </span>
-                    <span class="clay-brand__name">Jadidaring</span>
+                    <span class="clay-brand__text"><span class="clay-brand__name">Jaring</span><span class="clay-brand__sub" aria-hidden="true">Jadi Daring</span></span>
                 </a>
 
                 <nav class="clay-nav" aria-label="Navigasi Utama">
