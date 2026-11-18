@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/u/{username}/komentar/{comment}/sembunyikan', [CommunityController::class, 'hideComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->name('community.comment.hide');
     Route::post('/u/{username}/komentar/{comment}/lapor', [CommunityController::class, 'reportComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->middleware('throttle:20,1');
     Route::post('/u/{username}/lapor', [CommunityController::class, 'report'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1');
+    Route::post('/komunitas/draft-key', [CommunityController::class, 'mintKey'])->middleware('throttle:5,60')->name('community.draftkey');
+    Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:20,60')->name('community.draft.publish');
+    Route::post('/komunitas/halamanku/draft/batal', [CommunityController::class, 'cancelDraft'])->name('community.draft.cancel');
     Route::post('/akun/nama', [AuthController::class, 'updateName'])->middleware('throttle:6,60')->name('member.account.name');
     Route::post('/akun/email', [AuthController::class, 'updateEmail'])->name('member.account.email');
 });

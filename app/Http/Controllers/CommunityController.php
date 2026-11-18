@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MemberDraftKey;
 use App\Models\MemberPage;
+use App\Models\MemberPageDraft;
 use App\Models\MemberPageComment;
 use App\Models\User;
 use App\Services\MemberFrameToken;
@@ -36,7 +38,106 @@ class CommunityController extends Controller
             'metaTitle' => 'Halaman Saya — Jadidaring',
             'metaDescription' => 'Tempel kode HTML halamanmu.',
             'page' => MemberPage::query()->where('user_id', auth()->id())->first(),
+            'draft' => $draft = MemberPageDraft::query()->where('user_id', auth()->id())->first(),
+            'draftFrame' => $draft ? $this->draftFrame(request(), auth()->user(), $draft) : null,
         ]);
+    }
+
+    private function draftFrame(Request $request, User $user, MemberPageDraft $draft): string
+    {
+        $sandbox = (string) config('singlepage.sandbox_domain');
+        $q = '?d=1&t='.MemberFrameToken::mint($draft->tokenId());
+
+        return $sandbox !== '' ? $request->getScheme().'://'.$sandbox.'/'.$user->username.$q : '/u/'.$user->username.'/konten'.$q;
+    }
+
+    /** Mint a one-time draft key (logged-in member, rate limited by route). */
+    public function mintKey(Request $request): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'key' => MemberDraftKey::mint($request->user()->id),
+            'expires_in' => MemberDraftKey::TTL_MINUTES * 60,
+            'endpoint' => 'https://'.TenantPath::host().'/api/komunitas/draft',
+        ], 200, ['Cache-Control' => 'no-store']);
+    }
+
+    /** Session-less, CORS-open endpoint. Creates a DRAFT only; the key is consumed on the first success. */
+    public function apiDraft(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $cors = ['Access-Control-Allow-Origin' => '*', 'Access-Control-Allow-Headers' => 'Content-Type, X-Draft-Key, Authorization', 'Access-Control-Allow-Methods' => 'POST, OPTIONS', 'Cache-Control' => 'no-store'];
+
+        if ($request->isMethod('OPTIONS')) {
+            return response()->json(null, 204, $cors);
+        }
+
+        if (strlen($request->getContent()) > 420000) {
+            return response()->json(['error' => 'Ukuran maksimal 300 KB.'], 413, $cors);
+        }
+
+        $json = str_contains((string) $request->header('Content-Type'), 'json') ? $request->json()->all() : [];
+        $key = (string) ($request->header('X-Draft-Key') ?: $request->bearerToken() ?: ($json['key'] ?? $request->input('key', '')));
+        $html = is_array($json) && isset($json['html']) ? $json['html'] : (empty($json) ? ($request->input('html') ?? $request->getContent()) : '');
+        $title = is_array($json) && isset($json['title']) ? (string) $json['title'] : (string) $request->input('title', '');
+
+        $record = $key !== '' && str_starts_with($key, 'jdk_') ? MemberDraftKey::query()->where('key_hash', MemberDraftKey::hash($key))->first() : null;
+
+        if (! $record || $record->used_at !== null || $record->expires_at->isPast()) {
+            return response()->json(['error' => 'Kunci tidak valid, kedaluwarsa, atau sudah dipakai. Buat prompt baru di jadidaring.com/komunitas.'], 401, $cors);
+        }
+
+        if (! is_string($html) || trim($html) === '') {
+            return response()->json(['error' => 'HTML kosong.'], 422, $cors);
+        }
+
+        try {
+            $clean = MemberPageSanitizer::clean($html);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => collect($e->errors())->flatten()->first()], 422, $cors);
+        }
+
+        if ($title === '' && preg_match('~<title[^>]*>(.*?)</title>~is', $html, $m) === 1) {
+            $title = html_entity_decode($m[1]);
+        }
+        $title = mb_substr(trim(strip_tags($title)) ?: 'Halamanku', 0, 120);
+
+        $ownerId = $record->user_id;
+        $ok = DB::transaction(function () use ($record, $ownerId, $clean, $title): bool {
+            $claimed = MemberDraftKey::query()->whereKey($record->id)->whereNull('used_at')->update(['used_at' => now()]);
+            if ($claimed !== 1) {
+                return false;
+            }
+            MemberPageDraft::query()->updateOrCreate(['user_id' => $ownerId], ['title' => $title, 'html' => $clean, 'source' => 'api']);
+
+            return true;
+        });
+
+        if (! $ok) {
+            return response()->json(['error' => 'Kunci sudah dipakai.'], 401, $cors);
+        }
+
+        return response()->json(['ok' => true, 'status' => 'draft', 'review_url' => 'https://'.TenantPath::host().'/komunitas/halamanku', 'message' => 'Draft tersimpan. Buka review_url (masuk sebagai pemilik) untuk meninjau, lalu Terbitkan atau Batal.'], 201, $cors);
+    }
+
+    public function publishDraft(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $draft = MemberPageDraft::query()->where('user_id', $user->id)->first();
+        abort_unless($draft instanceof MemberPageDraft, 404);
+
+        MemberPage::query()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['title' => $draft->title, 'html' => $draft->html, 'status' => $this->keepHidden($user->id)],
+        );
+        $draft->delete();
+
+        return redirect('/u/'.$user->username)->with('status', 'Halamanmu terbit.');
+    }
+
+    public function cancelDraft(Request $request): RedirectResponse
+    {
+        MemberPageDraft::query()->where('user_id', $request->user()->id)->delete();
+
+        return redirect('/komunitas/halamanku')->with('status', 'Draft dibatalkan.');
     }
 
     public function save(Request $request): RedirectResponse
@@ -57,12 +158,12 @@ class CommunityController extends Controller
 
         $clean = MemberPageSanitizer::clean($raw);
 
-        MemberPage::query()->updateOrCreate(
+        MemberPageDraft::query()->updateOrCreate(
             ['user_id' => $user->id],
-            ['title' => strip_tags($data['title']), 'html' => $clean, 'status' => $this->keepHidden($user->id)],
+            ['title' => strip_tags($data['title']), 'html' => $clean, 'source' => 'paste'],
         );
 
-        return redirect('/u/'.$user->username)->with('status', 'Halamanmu tersimpan.');
+        return redirect('/komunitas/halamanku')->with('status', 'Draft siap ditinjau. Belum tayang sampai kamu menekan Terbitkan.');
     }
 
     /** A page hidden by moderation stays hidden when its owner edits it. */
@@ -102,13 +203,18 @@ class CommunityController extends Controller
     public function content(Request $request, string $username): Response
     {
         $user = User::query()->where('username', $username)->first();
-        $page = $user instanceof User ? MemberPage::query()->where('user_id', $user->id)->first() : null;
-        abort_unless($page instanceof MemberPage && $page->isPublished(), 404);
+        $isDraft = $request->query('d') === '1';
+        $page = $user instanceof User
+            ? ($isDraft ? MemberPageDraft::query()->where('user_id', $user->id)->first() : MemberPage::query()->where('user_id', $user->id)->first())
+            : null;
+        abort_unless($page instanceof MemberPage || $page instanceof MemberPageDraft, 404);
+        abort_unless($isDraft || $page->isPublished(), 404);
+        $tokenId = $page instanceof MemberPageDraft ? $page->tokenId() : $page->id;
 
         $base = $request->getScheme().'://'.strtolower((string) config('singlepage.base_domain'));
 
         // Direct use is refused: needs a fresh signed token from the profile page AND an iframe fetch.
-        if (! MemberFrameToken::valid($request->query('t'), $page->id) || strtolower((string) $request->header('Sec-Fetch-Dest')) !== 'iframe') {
+        if (! MemberFrameToken::valid($request->query('t'), $tokenId) || strtolower((string) $request->header('Sec-Fetch-Dest')) !== 'iframe') {
             $link = e($base.'/u/'.$username);
 
             return response('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Akses langsung tidak diizinkan</title>'

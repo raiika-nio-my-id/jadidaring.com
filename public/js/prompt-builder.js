@@ -40,13 +40,14 @@
     'Kamu adalah desainer UI/UX dan frontend developer profesional. Buatkan SATU halaman web satu-halaman untuk komunitas Jadidaring (jadidaring.com) berdasarkan data pengguna di bagian bawah.',
     '',
     'ATURAN OUTPUT (WAJIB)',
-    '- Balas HANYA dengan satu blok kode markdown berbahasa html yang berisi dokumen lengkap (<!DOCTYPE html> sampai </html>). Tanpa penjelasan di luar blok kode.',
-    '- Satu file: semua CSS di <style>, semua JavaScript di <script>. Tanpa framework, CDN, Google Fonts, <link>, <iframe>, <embed>, <object>, <base>, atau <meta http-equiv>.',
+    '- Hasil akhir: satu blok kode markdown berbahasa html berisi dokumen lengkap (<!DOCTYPE html> sampai </html>). Tanpa penjelasan panjang di luar blok kode.',
+    '- Satu file: CSS di <style>, JavaScript di <script>. Dilarang: <iframe>, <embed>, <object>, <base>, <meta http-equiv>, dan @import dari luar daftar di bawah.',
+    '- Sumber luar yang DIIZINKAN (hanya https): <link rel="stylesheet"> dan <script src> dari fonts.googleapis.com, fonts.gstatic.com, cdn.jsdelivr.net, cdnjs.cloudflare.com, unpkg.com, dan cdn.tailwindcss.com. Domain lain dihapus oleh platform.',
     '- Maksimal 250 KB. Teks halaman memakai {LANG}.',
     '- Taruh semua konten yang bisa diubah (nama, deskripsi, tautan, daftar) dalam satu objek JSON valid di <script type="application/json" id="website-config"> lalu render dengan JavaScript.',
     '',
     'BATASAN KEAMANAN PLATFORM (halaman ditolak bila dilanggar)',
-    '- Dilarang: kolom password/PIN/OTP/kartu, unggah file, form yang mengirim data ke server, pengalihan otomatis, URL javascript:, memuat skrip dari luar.',
+    '- Dilarang: kolom password/PIN/OTP/kartu, unggah file, form yang mengirim data ke server, pengalihan otomatis, URL javascript:, memuat skrip atau stylesheet dari domain di luar daftar yang diizinkan, permintaan jaringan (fetch/XHR/WebSocket diblokir).',
     '- Tautan dan media hanya https:// . Gunakan gambar/audio HANYA dari URL yang diberikan pengguna; jangan mengarang URL. Bila tidak ada gambar, buat latar dengan CSS (gradasi, pola, bentuk).',
     '- Musik: sediakan tombol Putar/Jeda dan pengatur volume; DILARANG autoplay; mulai senyap sampai pengunjung menekan tombol.',
     '- Kursor kustom hanya lewat CSS cursor:url(https://...) dengan fallback, atau kursor buatan sendiri dari CSS/emoji.',
@@ -63,6 +64,32 @@
   ].join('\n');
 
   function val(n) { var e = form.elements[n]; return e && e.value ? String(e.value).trim() : ''; }
+
+  var delivery = '';
+
+  function deliverySection(info, title) {
+    if (!info) {
+      return '\nPENGIRIMAN HASIL\n- Balas dengan satu blok kode html berisi dokumen lengkap. Pengguna akan menempelkannya di jadidaring.com/komunitas/halamanku, lalu meninjau dan menerbitkannya.';
+    }
+    var curl = "curl -sS -X POST " + info.endpoint + " -H 'Content-Type: text/html; charset=utf-8' -H 'X-Draft-Key: " + info.key + "' --data-binary @halaman.html";
+    return [
+      '',
+      'PENGIRIMAN HASIL (kunci sekali pakai, berlaku 60 menit)',
+      '- Setelah dokumen HTML selesai dan sudah kamu periksa, kirim sebagai DRAFT:',
+      '  1) Jika kamu bisa membuat permintaan HTTP: POST ke ' + info.endpoint + ' dengan Content-Type: application/json dan isi {"key":"' + info.key + '","title":"' + (title || 'Halamanku').replace(/["\\\n]/g, ' ') + '","html":"<seluruh dokumen HTML sebagai string JSON>"}. Boleh juga body HTML mentah dengan header X-Draft-Key: ' + info.key + '.',
+      '  2) Jika tidak bisa: balas dengan dua blok kode. Blok pertama berbahasa html berisi dokumen lengkap (pengguna menyimpannya sebagai halaman.html). Blok kedua berbahasa bash berisi persis perintah ini:',
+      '     ' + curl,
+      '- Kunci ini hanya membuat DRAFT dan hangus setelah satu kali berhasil. Halaman TIDAK tayang otomatis: pengguna meninjau di https://jadidaring.com/komunitas/halamanku lalu menekan Terbitkan atau Batal. Jangan membagikan kunci ini ke pihak lain dan jangan menaruhnya di dalam HTML.',
+      '- Jika pengiriman gagal, tampilkan pesan error-nya dan berikan blok html serta perintah curl di atas.'
+    ].join('\n');
+  }
+
+  function mintKey() {
+    if (!form.dataset.mint) { return Promise.resolve(null); }
+    return fetch(form.dataset.mint, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': form.dataset.csrf, 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+  }
 
   function build() {
     var feats = Array.prototype.slice.call(form.querySelectorAll('input[name=feat]:checked')).map(function (c) { return c.value; });
@@ -82,6 +109,7 @@
     add('Arahan tambahan', val('extra'));
     if (/game/i.test(type)) lines.push('Catatan game: hanya mode satu pemain yang berjalan di browser, tanpa server atau multiplayer.');
     if (/friendster/i.test(type)) lines.push('Catatan: tampilkan elemen khas Friendster/MySpace (profil, status, top teman, testimoni dekoratif) tanpa mengarang data orang lain.');
+    lines.push(delivery);
     return lines.join('\n');
   }
 
@@ -104,8 +132,12 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    prompt = build(); preview.value = prompt; result.hidden = false; say('');
-    result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    mintKey().then(function (info) {
+      delivery = deliverySection(info, val('title'));
+      prompt = build(); preview.value = prompt; result.hidden = false;
+      say(info ? 'Kunci draft sekali pakai (60 menit) sudah disisipkan di prompt. Jangan dibagikan.' : (form.dataset.mint ? 'Kunci draft belum tersedia (batas pembuatan tercapai). Prompt tanpa kirim otomatis: tempel hasilnya di Halaman Saya.' : 'Masuk untuk menyertakan kunci kirim draft otomatis.'));
+      result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    });
   });
 
   document.getElementById('pb-copy').addEventListener('click', function () {

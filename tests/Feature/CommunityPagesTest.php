@@ -64,7 +64,9 @@ class CommunityPagesTest extends TestCase
         $user = User::factory()->member()->create(['username' => 'ani_k']);
 
         $this->actingAs($user)->post($this->base().'/komunitas/halamanku', ['title' => 'Halaman Ani', 'html' => $this->hostile()])
-            ->assertRedirect('/u/ani_k');
+            ->assertRedirect('/komunitas/halamanku');
+        $this->assertNull(MemberPage::where('user_id', $user->id)->first());
+        $this->actingAs($user)->post($this->base().'/komunitas/halamanku/draft/terbitkan')->assertRedirect('/u/ani_k');
 
         $page = MemberPage::where('user_id', $user->id)->first();
         $url = $this->base().'/u/ani_k/konten?t='.\App\Services\MemberFrameToken::mint($page->id);

@@ -9,7 +9,7 @@
 
         <section class="clay-card clay-card--lavender pb-card" aria-labelledby="pb-h">
             <h2 id="pb-h">Buat Halamanmu Sendiri</h2>
-            <form id="pb-form" class="clay-form pb-form" autocomplete="off">
+            <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-mint="/komunitas/draft-key" data-csrf="{{ csrf_token() }}" data-endpoint="https://{{ \App\Services\TenantPath::host() }}/api/komunitas/draft"@endauth>
                 <div class="pb-grid">
                     <div><label for="pb-type">Jenis halaman / tujuan</label>
                         <select class="clay-input" id="pb-type" name="type">
@@ -82,13 +82,14 @@
                 <li>Tekan <strong>Buka di ChatGPT</strong> (prompt terisi otomatis) atau <strong>Buka di Gemini</strong> (prompt disalin, tinggal tempel).</li>
                 <li>Tunggu AI menulis kode. Salin <em>seluruh</em> blok kode HTML-nya.</li>
                 @auth
-                    <li>Buka <a href="/komunitas/halamanku">Halaman Saya</a>, tempel kodenya (atau unggah file .html), lalu simpan. Halamanmu langsung tayang di <code>/u/{{ auth()->user()->username }}</code>.</li>
+                    <li>Jika AI-nya bisa mengirim data, ia mengirim draft otomatis memakai kunci sekali pakai di prompt. Jika tidak, ia memberi perintah <code>curl</code> siap jalan, atau tempel sendiri kodenya di <a href="/komunitas/halamanku">Halaman Saya</a>.</li>
+                    <li>Buka <a href="/komunitas/halamanku">Halaman Saya</a>, tinjau <strong>Draft baru</strong>, lalu tekan <strong>Terbitkan</strong> atau <strong>Batal</strong>. Halamanmu tayang di <code>/u/{{ auth()->user()->username }}</code> hanya setelah kamu menerbitkan.</li>
                 @else
                     <li><a href="/masuk">Masuk</a> atau <a href="/daftar">daftar</a> dulu, lalu buka Halaman Saya untuk menempel kodenya.</li>
                 @endauth
                 <li>Pengunjung bisa meninggalkan komentar di halamanmu. Kolom komentar dan menu utama selalu tampil dan tidak bisa dihapus.</li>
             </ol>
-            <p class="news-meta">Keamanan: halamanmu tampil di bingkai terisolasi. Skrip dari luar, kolom password/kartu, dan pengalihan otomatis tidak diizinkan. Maks. 300 KB.</p>
+            <p class="news-meta">Keamanan: halamanmu tampil di bingkai terisolasi. Skrip dari luar daftar CDN tepercaya, kolom password/kartu, dan pengalihan otomatis tidak diizinkan. Maks. 300 KB.</p>
             <p>@auth <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">{{ $mine ? 'Ubah halamanku' : 'Tempel halamanku' }}</a> @endauth</p>
         </section>
 

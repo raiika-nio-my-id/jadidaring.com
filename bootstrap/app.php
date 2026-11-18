@@ -78,6 +78,12 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->middleware('throttle:120,1');
             }
 
+            // One-time-key draft API: no session, no cookies, CORS-open, creates drafts only.
+            Route::domain($base)
+                ->match(['POST', 'OPTIONS'], '/api/komunitas/draft', [\App\Http\Controllers\CommunityController::class, 'apiDraft'])
+                ->middleware('throttle:30,1')
+                ->name('community.api.draft');
+
             // Session-less static assets with immutable caching (independent of nginx rules).
             Route::domain($base)
                 ->get('/a/{path}', \App\Http\Controllers\StaticAssetController::class)
