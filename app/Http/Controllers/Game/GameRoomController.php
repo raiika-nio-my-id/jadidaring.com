@@ -6,6 +6,7 @@ use App\Exceptions\GameRoomException;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use App\Services\GameRoomService;
+use App\Services\MembersOnlyGames;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,10 @@ class GameRoomController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        if ($denied = $this->requireMember($request)) {
+            return $denied;
+        }
+
         return $this->respond(fn (): array => $this->rooms->create($this->profile($request), $request->all()));
     }
 
@@ -60,6 +65,10 @@ class GameRoomController extends Controller
 
     public function act(Request $request, string $tenant, string $code): JsonResponse
     {
+        if ($denied = $this->requireMember($request, $tenant)) {
+            return $denied;
+        }
+
         return $this->respond(fn (): array => $this->rooms->act(
             $this->profile($request, $tenant),
             $code,
@@ -70,6 +79,10 @@ class GameRoomController extends Controller
 
     public function input(Request $request, string $tenant, string $code): JsonResponse
     {
+        if ($denied = $this->requireMember($request, $tenant)) {
+            return $denied;
+        }
+
         return $this->respond(fn (): array => $this->rooms->input(
             $this->profile($request, $tenant),
             $code,
@@ -95,6 +108,17 @@ class GameRoomController extends Controller
             $this->rooms->token($request),
             $request->all(),
         ));
+    }
+
+    private function requireMember(Request $request, ?string $tenant = null): ?JsonResponse
+    {
+        $profile = $this->profile($request, $tenant);
+
+        if (! MembersOnlyGames::applies($profile->subdomain) || MembersOnlyGames::allows($request)) {
+            return null;
+        }
+
+        return response()->json(['error' => 'Masuk dulu untuk membuat gambar baru.', 'login' => '/masuk'], 401);
     }
 
     private function profile(Request $request, ?string $tenant = null): CompanyProfile

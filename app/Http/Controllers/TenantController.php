@@ -7,6 +7,7 @@ use App\Services\GameHub;
 use App\Services\GameHubCatalog;
 use App\Services\JaRingMark;
 use App\Services\LegalNoticeInjector;
+use App\Services\MembersOnlyGames;
 use App\Services\PlayerNameBridge;
 use App\Services\SeoInjector;
 use App\Services\TenantPath;
@@ -81,6 +82,11 @@ class TenantController extends Controller
 
         $html = $seoInjector->inject($html, TenantPath::gameHomeUrl($request, $profile->subdomain));
         $html = $names->inject($html);
+
+        if (MembersOnlyGames::applies($profile->subdomain) && ! MembersOnlyGames::allows($request)) {
+            $banner = MembersOnlyGames::banner('/masuk');
+            $html = str_contains($html, '</body>') ? str_replace('</body>', $banner.'</body>', $html) : $html.$banner;
+        }
 
         $this->trackVisit($profile, $request);
 

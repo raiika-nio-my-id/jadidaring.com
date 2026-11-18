@@ -11,6 +11,12 @@ class TenantPathTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config(['singlepage.members_only_games' => '']);
+    }
+
     public function test_games_are_served_under_game_slug_and_old_paths_are_gone(): void
     {
         $this->publish('drawquarium', '<html><head></head><body>Aquarium</body></html>');

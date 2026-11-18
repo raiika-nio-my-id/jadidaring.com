@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateAdminApiKey;
+use App\Http\Middleware\GameMemberSession;
 use App\Http\Middleware\ResolveTenantPath;
 use App\Services\TenantPath;
 use Illuminate\Foundation\Application;
@@ -34,7 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // /{tenant}/api/game stays on the bare host and www for tabs and
             // clients opened before the move (no redirect, so POSTs survive).
             foreach ([$base => 'bare', $www => 'www'] as $host => $label) {
-                Route::middleware([ResolveTenantPath::class])
+                Route::middleware([GameMemberSession::class, ResolveTenantPath::class])
                     ->domain($host)
                     ->prefix('{tenant}/api/game')
                     ->where(['tenant' => TenantPath::routePattern()])
@@ -42,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->group(base_path('routes/game.php'));
             }
 
-            Route::middleware([ResolveTenantPath::class])
+            Route::middleware([GameMemberSession::class, ResolveTenantPath::class])
                 ->domain($base)
                 ->prefix('game/{tenant}/api/game')
                 ->where(['tenant' => TenantPath::routePattern()])

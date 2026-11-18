@@ -17,6 +17,7 @@ class GameRoomCapacityTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        config(['singlepage.members_only_games' => '']);
 
         Event::fake([GameRoomUpdated::class]);
     }

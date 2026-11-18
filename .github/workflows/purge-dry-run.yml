@@ -1,0 +1,24 @@
+name: User purge DRY RUN (read-only)
+
+# Manual only. This workflow can only run `users:purge` WITHOUT --force, so it
+# never changes data. Executing the purge is a separate, manual server step.
+on:
+  workflow_dispatch:
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dry run on the server
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
+          fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
+          script: |
+            set -euo pipefail
+            docker exec singlepage-app php artisan users:purge --no-ansi
