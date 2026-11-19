@@ -35,7 +35,7 @@ class JsonLdValidTest extends TestCase
             $this->blocks($p);
         }
         $blocks = $this->blocks($a->url());
-        $types = array_column($blocks, '@type');
+        $types = array_map(fn ($b) => $b['@type'] ?? null, $blocks);
         $this->assertContains('NewsArticle', $types);
         $this->assertContains('BreadcrumbList', $types);
         $n = $blocks[array_search('NewsArticle', $types)];
