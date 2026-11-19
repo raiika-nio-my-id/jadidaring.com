@@ -61,8 +61,8 @@ exported first (no admin GET endpoint exists yet).
 | 17 | `malampendakian` | in git (5077dd3) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 18 | `cukurkekinian` | in git (4acc00a) | local build, verified = live (`index.deploy.html`) | no | no |
 | 19 | `pawanghujan` | in git (5426f6a) | local build, verified = live (`index.deploy.html`) | no | no |
-| 20 | `mudikmacet` | in git | local build, verified = live (`index.deploy.html`) | no | no |
-| 21 | `gasingarena` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 20 | `mudikmacet` | in git (b740120) | local build, verified = live (`index.deploy.html`) | no | no |
+| 21 | `gasingarena` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 22 | `dapurpadang3d` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 23 | `dapurpadang` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 24 | `skalateman` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
