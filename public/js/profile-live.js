@@ -13,6 +13,15 @@
   var form = document.getElementById('le-form');
   var stateEl = document.getElementById('le-state');
 
+  /* Measure the sticky main nav so the toolbar and panel never sit under it. */
+  function measureNav() {
+    var bar = document.querySelector('.clay-header__bar') || document.querySelector('.clay-header');
+    if (!bar) return;
+    document.documentElement.style.setProperty('--jd-nav-h', Math.ceil(bar.getBoundingClientRect().bottom + 8) + 'px');
+  }
+  measureNav();
+  window.addEventListener('resize', measureNav);
+
   var initial = JSON.stringify(B.config);
   var cfg = JSON.parse(initial);
   var html = B.html || '';
