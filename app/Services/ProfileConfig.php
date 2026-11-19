@@ -22,6 +22,73 @@ class ProfileConfig
 
     public const MAX_WIDGETS = 14;
 
+    /**
+     * Widgets members can add from "+ Tambah kotak". The profile header and the comment wall are fixed (always
+     * present, never in this list); custom_html is the one custom widget.
+     *
+     * @return list<array{type: string, label: string, hint: string, icon: string, kind: string, multi: bool}>
+     */
+    public static function catalog(): array
+    {
+        $multi = ['quote', 'youtube', 'spotify', 'links'];
+        $rows = [
+            ['about', 'Tentang aku', 'Cerita singkat tentang dirimu.', '📝', 'predefined'],
+            ['status', 'Status', 'Kabar atau mood hari ini.', '💬', 'predefined'],
+            ['counter', 'Penghitung pengunjung', 'Angka pengunjung unik gaya retro.', '🔢', 'predefined'],
+            ['gallery', 'Galeri', 'Sampai 12 foto dengan keterangan.', '🖼️', 'predefined'],
+            ['links', 'Tautan', 'Daftar link ke sosmed atau karyamu.', '🔗', 'predefined'],
+            ['spotify', 'Spotify', 'Tempel link lagu, album, atau playlist.', '🎧', 'predefined'],
+            ['youtube', 'YouTube', 'Tempel link video YouTube.', '▶️', 'predefined'],
+            ['music', 'Musik', 'Pemutar lagu dari link mp3. Tidak autoplay.', '🎵', 'predefined'],
+            ['quote', 'Kutipan', 'Kalimat favorit dan penulisnya.', '❝', 'predefined'],
+            ['friends', 'Teman', 'Sampai 8 teman favoritmu di Jadidaring.', '👯', 'predefined'],
+            ['custom_html', 'HTML kustom', 'Untuk yang jago: HTML/CSS/JS sendiri di kotak terisolasi.', '🧩', 'custom'],
+        ];
+
+        return array_map(fn (array $r): array => ['type' => $r[0], 'label' => $r[1], 'hint' => $r[2], 'icon' => $r[3], 'kind' => $r[4], 'multi' => in_array($r[0], $multi, true)], $rows);
+    }
+
+    /** @return array<string, string> */
+    public static function patternLabels(): array
+    {
+        return ['none' => 'Tanpa pola', 'dots' => 'Titik', 'grid' => 'Kotak', 'stripes' => 'Garis'];
+    }
+
+    /** @return array<string, string> inline CSS for the small swatches in the picker */
+    public static function patternSwatches(): array
+    {
+        $out = [];
+        foreach (self::PATTERNS as $id) {
+            $layer = self::patternLayer($id, 'dark');
+            $out[$id] = $layer === null ? 'background:#ede7ff' : 'background:'.$layer.',#ede7ff';
+        }
+
+        return $out;
+    }
+
+    /** CSS background layer for a pattern id, or null for none. */
+    public static function patternLayer(string $id, string $ink): ?string
+    {
+        return match ($id) {
+            'dots' => 'radial-gradient(rgba(0,0,0,.14) 1.5px,transparent 1.5px) 0 0/22px 22px',
+            'grid' => 'linear-gradient(rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px',
+            'stripes' => 'repeating-linear-gradient(45deg,rgba(0,0,0,.07) 0 8px,transparent 8px 18px)',
+            default => null,
+        };
+    }
+
+    /** @return list<array<string, mixed>> */
+    public static function presets(): array
+    {
+        return [];
+    }
+
+    /** @return list<array{id: string, label: string}> */
+    public static function cursorPresets(): array
+    {
+        return [];
+    }
+
     /** @return array<string, mixed> */
     public static function defaults(): array
     {
@@ -289,11 +356,7 @@ class ProfileConfig
             $layers[] = sprintf('linear-gradient(rgba(0,0,0,%s),rgba(0,0,0,%s))', $b['overlay'], $b['overlay']);
         }
         if ($b['pattern'] !== 'none' && in_array($b['type'], ['pattern', 'gradient', 'color'], true)) {
-            $layers[] = match ($b['pattern']) {
-                'dots' => 'radial-gradient(rgba(0,0,0,.14) 1.5px,transparent 1.5px) 0 0/22px 22px',
-                'grid' => 'linear-gradient(rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px',
-                default => 'repeating-linear-gradient(45deg,rgba(0,0,0,.07) 0 8px,transparent 8px 18px)',
-            };
+            $layers[] = (string) self::patternLayer($b['pattern'], 'dark');
         }
         if ($b['type'] === 'image' && $b['image'] !== '') {
             $layers[] = 'url("'.$b['image'].'") center/cover no-repeat';

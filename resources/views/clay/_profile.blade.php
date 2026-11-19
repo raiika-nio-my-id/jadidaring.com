@@ -6,15 +6,16 @@
     $widgets = $config['widgets'];
     $p = $config['profile'];
     $hasHtml = trim((string) ($customHtml ?? '')) !== '';
+    $edit = (bool) ($edit ?? false);
     $sectionTitles = ['about' => 'Tentang aku', 'status' => 'Status', 'gallery' => 'Galeri', 'links' => 'Tautan', 'counter' => 'Pengunjung', 'music' => 'Musik', 'friends' => 'Top teman', 'quote' => 'Kutipan', 'youtube' => 'Video', 'spotify' => 'Spotify', 'custom_html' => 'Halaman kustom'];
 @endphp
 @unless (in_array($font, $selfFonts, true))
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $font) }}:wght@400;700&amp;display=swap">
 @endunless
 <div class="pf {{ $theme['bg']['fixed'] ? 'pf--fixed' : '' }} {{ $css['cursor'] !== '' ? 'pf--cursor' : '' }}" style="{{ $css['vars'] }}{{ $css['cursor'] }}">
-    <div class="pf-bg" style="{{ $css['bg'] }}" aria-hidden="true"></div>
+    <div class="pf-bg" style="{{ $css['bg'] }}" aria-hidden="true"@if ($edit) data-edit="bg"@endif></div>
     <div class="pf-inner">
-        <header class="pf-card pf-head">
+        <header class="pf-card pf-head"@if ($edit) data-edit="head" data-fixed="1"@endif>
             @if ($p['avatar'] !== '')
                 <img class="pf-avatar" src="{{ $p['avatar'] }}" alt="Foto {{ $owner->name }}" width="112" height="112" referrerpolicy="no-referrer" loading="lazy">
             @else
@@ -24,6 +25,27 @@
                 <h1>{{ $owner->name }}</h1>
                 <p class="pf-user">{{ '@'.$owner->username }}</p>
                 @if ($p['tagline'] !== '')<p class="pf-tagline">{{ $p['tagline'] }}</p>@endif
+                @if (isset($followersCount))
+                    {{-- One stats row (always shown): followers, following, unique visitors + the follow button. --}}
+                    <div class="pf-stats">
+                        <a class="pf-stat" href="/u/{{ $owner->username }}/pengikut"><strong>{{ number_format($followersCount) }}</strong> <span>Pengikut</span></a>
+                        <a class="pf-stat" href="/u/{{ $owner->username }}/mengikuti"><strong>{{ number_format($followingCount ?? 0) }}</strong> <span>Mengikuti</span></a>
+                        <span class="pf-stat" title="Pengunjung unik"><strong>{{ number_format($views) }}</strong> <span>Pengunjung</span></span>
+                        @unless ($edit)
+                            @auth
+                                @if (auth()->id() !== $owner->id)
+                                    @if (! empty($isFollowing))
+                                        <form method="post" action="/u/{{ $owner->username }}/berhenti-mengikuti" class="pf-stats__act">@csrf<button class="clay-btn clay-btn--secondary pf-follow" type="submit">Berhenti mengikuti</button></form>
+                                    @else
+                                        <form method="post" action="/u/{{ $owner->username }}/ikuti" class="pf-stats__act">@csrf<button class="clay-btn clay-btn--primary pf-follow" type="submit">Ikuti</button></form>
+                                    @endif
+                                @endif
+                            @else
+                                <a class="clay-btn clay-btn--primary pf-follow pf-stats__act" href="/masuk?next=/u/{{ $owner->username }}">Masuk untuk mengikuti</a>
+                            @endauth
+                        @endunless
+                    </div>
+                @endif
             </div>
         </header>
 
@@ -34,7 +56,7 @@
                     $wide = in_array($type, ['gallery', 'youtube', 'spotify', 'custom_html'], true);
                     if ($type === 'custom_html' && ! $hasHtml) { continue; }
                 @endphp
-                <section class="pf-card pf-w pf-w--{{ $type }} {{ $wide ? 'pf-w--wide' : '' }}" aria-label="{{ $w['title'] ?? $sectionTitles[$type] }}">
+                <section class="pf-card pf-w pf-w--{{ $type }} {{ $wide ? 'pf-w--wide' : '' }}" aria-label="{{ $w['title'] ?? $sectionTitles[$type] }}"@if ($edit) data-edit="w:{{ $loop->index }}" data-type="{{ $type }}"@endif>
                     @if ($type !== 'custom_html')<h2>{{ $w['title'] ?? $sectionTitles[$type] }}</h2>@endif
                     @switch($type)
                         @case('about')

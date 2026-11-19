@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\MemberDraftKey;
 use App\Models\MemberPage;
-use App\Models\MemberPageDraft;
 use App\Models\MemberPageComment;
+use App\Models\MemberPageDraft;
 use App\Models\User;
-use App\Services\MemberFrameToken;
 use App\Services\EmbedExtractor;
+use App\Services\MemberFrameToken;
 use App\Services\MemberPageSanitizer;
 use App\Services\ProfileConfig;
 use App\Services\ProfilePayload;
 use App\Services\TenantPath;
+use App\Support\Ga4;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -62,7 +64,61 @@ class CommunityController extends Controller
         ]);
     }
 
+    /** Live edit mode: the member edits their own profile in place; every change previews live and saves as a draft first. */
     public function edit(Request $request): View
+    {
+        $user = $request->user();
+        $page = MemberPage::query()->where('user_id', $user->id)->first();
+        $draft = MemberPageDraft::query()->where('user_id', $user->id)->first();
+        $config = $draft ? $draft->profileConfig() : ($page?->profileConfig() ?? ProfileConfig::defaults());
+        $html = $draft ? (string) $draft->html : (string) ($page?->html ?? '');
+
+        return $this->liveView($request, $user, $page, $draft, $config, $html, 'edit');
+    }
+
+    /**
+     * @param  array<string, mixed>  $config
+     * @param  list<array{path: string, from: string, to: string}>  $fixes
+     */
+    private function liveView(Request $request, User $user, ?MemberPage $page, ?MemberPageDraft $draft, array $config, string $html, string $mode, array $fixes = []): View
+    {
+        $frame = null;
+        if (trim($html) !== '') {
+            if ($draft && trim((string) $draft->html) !== '') {
+                $frame = $this->draftFrame($request, $user, $draft);
+            } elseif ($page && trim((string) $page->html) !== '') {
+                $frame = $this->pageFrame($request, $user, $page);
+            }
+        }
+
+        return view('clay.komunitas-live', [
+            'metaTitle' => $mode === 'import' ? 'Pratinjau dari AI — Jadidaring' : 'Edit Profil — Jadidaring',
+            'metaDescription' => 'Atur tampilan profilmu langsung di halamannya.',
+            'noindex' => true,
+            'mode' => $mode,
+            'fixes' => $fixes,
+            'page' => $page,
+            'draft' => $draft,
+            'config' => $config,
+            'customHtml' => $html,
+            'frameSrc' => $frame,
+            'views' => (int) ($page->views ?? 0),
+            'friendPages' => $this->friendPages($config),
+            'owner' => $user,
+            'followersCount' => DB::table('member_follows')->where('followed_id', $user->id)->count(),
+            'followingCount' => DB::table('member_follows')->where('follower_id', $user->id)->count(),
+        ]);
+    }
+
+    private function pageFrame(Request $request, User $user, MemberPage $page): string
+    {
+        $sandbox = (string) config('singlepage.sandbox_domain');
+
+        return ($sandbox !== '' ? $request->getScheme().'://'.$sandbox.'/'.$user->username : '/u/'.$user->username.'/konten').'?t='.MemberFrameToken::mint($page->id);
+    }
+
+    /** The previous form editor, kept reachable as a fallback while the live editor rolls out. */
+    public function editClassic(Request $request): View
     {
         $user = $request->user();
         $page = MemberPage::query()->where('user_id', $user->id)->first();
@@ -112,7 +168,8 @@ class CommunityController extends Controller
 
         return response(view('clay._profile', [
             'owner' => $user, 'config' => $config, 'views' => (int) MemberPage::query()->where('user_id', $user->id)->value('views'),
-            'customHtml' => $hasHtml ? 'x' : '', 'frameSrc' => null, 'friendPages' => $this->friendPages($config),
+            'customHtml' => $hasHtml ? 'x' : '', 'frameSrc' => null, 'friendPages' => $this->friendPages($config), 'edit' => (bool) $request->json('edit'),
+            'followersCount' => DB::table('member_follows')->where('followed_id', $user->id)->count(), 'followingCount' => DB::table('member_follows')->where('follower_id', $user->id)->count(),
         ])->render(), 200, ['Content-Type' => 'text/html; charset=utf-8', 'Cache-Control' => 'no-store']);
     }
 
@@ -125,7 +182,7 @@ class CommunityController extends Controller
     }
 
     /** Mint a one-time draft key (logged-in member, rate limited by route). */
-    public function mintKey(Request $request): \Illuminate\Http\JsonResponse
+    public function mintKey(Request $request): JsonResponse
     {
         return response()->json([
             'key' => MemberDraftKey::mint($request->user()->id),
@@ -135,7 +192,7 @@ class CommunityController extends Controller
     }
 
     /** Session-less, CORS-open endpoint. Creates a DRAFT only; the key is consumed on the first success. */
-    public function apiDraft(Request $request): \Illuminate\Http\JsonResponse
+    public function apiDraft(Request $request): JsonResponse
     {
         $cors = ['Access-Control-Allow-Origin' => '*', 'Access-Control-Allow-Headers' => 'Content-Type, X-Draft-Key, Authorization', 'Access-Control-Allow-Methods' => 'POST, OPTIONS', 'Cache-Control' => 'no-store'];
 
@@ -213,6 +270,14 @@ class CommunityController extends Controller
             $error = (string) collect($e->errors())->flatten()->first();
         }
 
+        if ($config !== null && $error === null) {
+            $page = MemberPage::query()->where('user_id', $user->id)->first();
+            $draft = MemberPageDraft::query()->where('user_id', $user->id)->first();
+            $html = $draft ? (string) $draft->html : (string) ($page?->html ?? '');
+
+            return $this->liveView($request, $user, $page, $draft, $config, $html, 'import', $fixes);
+        }
+
         return view('clay.komunitas-import', [
             'metaTitle' => 'Pratinjau dari AI — Jadidaring', 'metaDescription' => 'Tinjau profil dari AI sebelum disimpan atau diterbitkan.',
             'noindex' => true, 'owner' => $user, 'config' => $config, 'error' => $error, 'fixes' => $fixes,
@@ -282,12 +347,12 @@ class CommunityController extends Controller
             );
             MemberPageDraft::query()->where('user_id', $user->id)->delete();
 
-            \App\Support\Ga4::flash('profile_publish', ['source' => 'ai_import']);
+            Ga4::flash('profile_publish', ['source' => 'ai_import']);
 
             return redirect('/u/'.$user->username)->with('status', 'Profil diperbarui.');
         }
 
-        \App\Support\Ga4::flash('profile_draft_save', ['source' => 'ai_import']);
+        Ga4::flash('profile_draft_save', ['source' => 'ai_import']);
         $existing = MemberPageDraft::query()->where('user_id', $user->id)->first();
         MemberPageDraft::query()->updateOrCreate(
             ['user_id' => $user->id],
@@ -298,7 +363,7 @@ class CommunityController extends Controller
     }
 
     /** Remembers the prompt generator form per member. */
-    public function promptSave(Request $request): \Illuminate\Http\JsonResponse
+    public function promptSave(Request $request): JsonResponse
     {
         $data = $request->validate(['data' => ['required', 'array'], 'data.*' => ['nullable']]);
         $json = json_encode($data['data'], JSON_UNESCAPED_UNICODE);
@@ -309,7 +374,7 @@ class CommunityController extends Controller
         return response()->json(['ok' => true]);
     }
 
-    public function promptReset(Request $request): \Illuminate\Http\JsonResponse
+    public function promptReset(Request $request): JsonResponse
     {
         DB::table('prompt_form_states')->where('user_id', $request->user()->id)->delete();
 
@@ -327,7 +392,7 @@ class CommunityController extends Controller
             ['title' => $draft->title, 'html' => $draft->html, 'config' => $draft->config, 'status' => $this->keepHidden($user->id)],
         );
         $draft->delete();
-        \App\Support\Ga4::flash('profile_publish', ['source' => 'editor']);
+        Ga4::flash('profile_publish', ['source' => 'editor']);
 
         return redirect('/u/'.$user->username)->with('status', 'Halamanmu terbit.');
     }
@@ -350,7 +415,10 @@ class CommunityController extends Controller
             'html' => ['nullable', 'string', 'max:400000'],
             'title' => ['nullable', 'string', 'max:120'],
             'file' => ['nullable', 'file', 'max:300', 'mimes:html,htm,txt'],
+            'action' => ['nullable', 'in:draft,publish'],
+            'source' => ['nullable', 'in:editor,ai_import'],
         ]);
+        $source = $data['source'] ?? 'editor';
 
         $raw = (string) ($data['custom_html'] ?? $data['html'] ?? '');
         if ($request->hasFile('file')) {
@@ -365,7 +433,20 @@ class CommunityController extends Controller
             ['title' => $this->titleFor($data['title'] ?? '', $user), 'html' => $clean, 'source' => 'paste', 'config' => $config],
         );
 
-        \App\Support\Ga4::flash('profile_draft_save', ['source' => 'editor']);
+        if (($data['action'] ?? 'draft') === 'publish') {
+            $draft = MemberPageDraft::query()->where('user_id', $user->id)->firstOrFail();
+            MemberPage::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['title' => $draft->title, 'html' => $draft->html, 'config' => $draft->config, 'status' => $this->keepHidden($user->id)],
+            );
+            $draft->delete();
+            Ga4::flash('profile_publish', ['source' => $source]);
+            $done = redirect('/u/'.$user->username)->with('status', 'Profil diperbarui dan sudah tayang.');
+
+            return $notices !== [] ? $done->with('warn', $notices) : $done;
+        }
+
+        Ga4::flash('profile_draft_save', ['source' => $source]);
         $back = redirect('/komunitas/halamanku')->with('status', 'Draft siap ditinjau. Belum tayang sampai kamu menekan Terbitkan.');
 
         return $notices !== [] ? $back->with('warn', $notices) : $back;
@@ -394,7 +475,7 @@ class CommunityController extends Controller
     }
 
     /**
-     * @param list<array<string, mixed>> $extra widgets converted from embeds, inserted where the Custom HTML widget sits
+     * @param  list<array<string, mixed>>  $extra  widgets converted from embeds, inserted where the Custom HTML widget sits
      * @return array<string, mixed>|null
      */
     private function normalizeConfig(mixed $config, string $html, array $extra = []): ?array
@@ -472,12 +553,7 @@ class CommunityController extends Controller
 
         $config = $page->profileConfig();
         $hasFrame = trim((string) $page->html) !== '' && in_array('custom_html', array_column($config['widgets'], 'type'), true);
-        $sandbox = (string) config('singlepage.sandbox_domain');
-        $frame = null;
-        if ($hasFrame) {
-            $token = MemberFrameToken::mint($page->id);
-            $frame = ($sandbox !== '' ? $request->getScheme().'://'.$sandbox.'/'.$user->username : '/u/'.$user->username.'/konten').'?t='.$token;
-        }
+        $frame = $hasFrame ? $this->pageFrame($request, $user, $page) : null;
 
         $followersCount = DB::table('member_follows')->where('followed_id', $user->id)->count();
         $followingCount = DB::table('member_follows')->where('follower_id', $user->id)->count();
@@ -548,12 +624,12 @@ class CommunityController extends Controller
 
             return response('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Akses langsung tidak diizinkan</title>'
                 .'<p style="font:16px system-ui;padding:2rem">Halaman ini hanya bisa dibuka dari profil di Jadidaring. <a href="'.$link.'">Buka profil @'.e($username).'</a></p>', 403, [
-                'Content-Type' => 'text/html; charset=utf-8',
-                'X-Robots-Tag' => 'noindex, nofollow, noarchive',
-                'Cache-Control' => 'no-store',
-                'Content-Security-Policy' => "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; sandbox",
-                'Referrer-Policy' => 'no-referrer',
-            ]);
+                    'Content-Type' => 'text/html; charset=utf-8',
+                    'X-Robots-Tag' => 'noindex, nofollow, noarchive',
+                    'Cache-Control' => 'no-store',
+                    'Content-Security-Policy' => "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; sandbox",
+                    'Referrer-Policy' => 'no-referrer',
+                ]);
         }
 
         // Repair pages saved while the old sanitizer mangled scroll-behavior / overscroll-behavior.
@@ -572,7 +648,7 @@ class CommunityController extends Controller
         $snippet .= $cursorFix;
         $html = stripos($html, '</body>') !== false ? preg_replace('~</body>~i', $snippet.'</body>', $html, 1) : $html.$snippet;
 
-        $cdn = implode(' ', array_map(fn (string $h): string => 'https://'.$h, \App\Services\MemberPageSanitizer::CDN_HOSTS));
+        $cdn = implode(' ', array_map(fn (string $h): string => 'https://'.$h, MemberPageSanitizer::CDN_HOSTS));
         $csp = implode('; ', [
             'sandbox allow-scripts allow-popups',
             "default-src 'none'",
@@ -615,7 +691,7 @@ class CommunityController extends Controller
 
         MemberPageComment::query()->create(['member_page_id' => $page->id, 'user_id' => $request->user()->id, 'body' => $body]);
 
-        \App\Support\Ga4::flash('comment_post', ['content_type' => 'profile']);
+        Ga4::flash('comment_post', ['content_type' => 'profile']);
 
         return redirect('/u/'.$username.'#komentar')->with('status', 'Komentar terkirim.');
     }

@@ -17,26 +17,6 @@
         @if (! $page->isPublished())<p class="clay-status" role="status">Profil ini disembunyikan moderator dan hanya terlihat olehmu.</p>@endif
         @include('clay._profile')
 
-        <section class="clay-card pf-social" aria-label="Pengikut">
-            <p class="pf-social__counts">
-                <a href="/u/{{ $owner->username }}/pengikut"><strong>{{ number_format($followersCount) }}</strong> pengikut</a>
-                <a href="/u/{{ $owner->username }}/mengikuti"><strong>{{ number_format($followingCount) }}</strong> mengikuti</a>
-            </p>
-            @auth
-                @unless ($isOwner)
-                    <div class="clay-actions">
-                        @if ($isFollowing)
-                            <form method="post" action="/u/{{ $owner->username }}/berhenti-mengikuti">@csrf<button class="clay-btn clay-btn--secondary" type="submit">Berhenti mengikuti</button></form>
-                        @else
-                            <form method="post" action="/u/{{ $owner->username }}/ikuti">@csrf<button class="clay-btn clay-btn--primary" type="submit">Ikuti</button></form>
-                        @endif
-                    </div>
-                @endunless
-            @else
-                <div class="clay-actions"><a class="clay-btn clay-btn--primary" href="/masuk?next=/u/{{ $owner->username }}">Masuk untuk mengikuti</a></div>
-            @endauth
-        </section>
-
         <div class="member-actions">
             @auth
                 @unless ($isOwner)

@@ -1003,3 +1003,4 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .clay-nav__me[aria-current="page"] .clay-me__av { background: var(--clay-surface); }
 .clay-me__tab { display: block; max-width: 100%; }
 .pf-head__text { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 560px) { .pf-stats { justify-content: center; } }
