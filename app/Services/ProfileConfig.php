@@ -119,11 +119,12 @@ class ProfileConfig
     }
 
     /** CSS background layer(s) for a pattern id (constants only, never member input), or null for none. */
-    public static function patternLayer(string $id, string $ink): ?string
+    public static function patternLayer(string $id, string $ink, float $boost = 1.0): ?string
     {
         $c = $ink === 'light' ? '255,255,255' : '0,0,0';
-        $k = $ink === 'light' ? 1.6 : 1.0;
-        $a = static fn (float $v): string => 'rgba('.$c.','.preg_replace('/^0\./', '.', rtrim(rtrim(number_format(min(.6, $v * $k), 3, '.', ''), '0'), '.')).')';
+        $k = ($ink === 'light' ? 1.6 : 1.0) * $boost;
+        $cap = $boost > 1 ? .8 : .6;
+        $a = static fn (float $v): string => 'rgba('.$c.','.preg_replace('/^0\./', '.', rtrim(rtrim(number_format(min($cap, $v * $k), 3, '.', ''), '0'), '.')).')';
         $svg = static function (string $body, int $size) use ($c, $k): string {
             $svg = "<svg xmlns='http://www.w3.org/2000/svg' width='{$size}' height='{$size}' viewBox='0 0 {$size} {$size}'><g fill='rgba({$c},".(0.13 * $k).")'>{$body}</g></svg>";
 
@@ -486,14 +487,14 @@ class ProfileConfig
     }
 
     /** @param array<string, mixed> $b validated theme.bg */
-    public static function bgLayers(array $b): string
+    public static function bgLayers(array $b, float $boost = 1.0): string
     {
         $layers = [];
         if ($b['overlay'] > 0) {
             $layers[] = sprintf('linear-gradient(rgba(0,0,0,%s),rgba(0,0,0,%s))', $b['overlay'], $b['overlay']);
         }
         if ($b['pattern'] !== 'none' && $b['type'] !== 'image') {
-            $layers[] = (string) self::patternLayer($b['pattern'], $b['ink'] ?? 'dark');
+            $layers[] = (string) self::patternLayer($b['pattern'], $b['ink'] ?? 'dark', $boost);
         }
         if ($b['type'] === 'image' && $b['image'] !== '') {
             $layers[] = 'url("'.$b['image'].'") center/cover no-repeat';
@@ -526,12 +527,15 @@ class ProfileConfig
         $rgb = static function (string $hex): string {
             return hexdec(substr($hex, 1, 2)).','.hexdec(substr($hex, 3, 2)).','.hexdec(substr($hex, 5, 2));
         };
+        // Frosted-glass styles blur what is behind them, which flattens the faint built-in patterns: strengthen the pattern and blur less when one is present.
+        $glass = in_array($t['style'] ?? 'bawaan', ['glass', 'liquid'], true);
+        $hasPat = $t['bg']['pattern'] !== 'none' && $t['bg']['type'] !== 'image';
         $vars = sprintf(
-            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card-solid:%s;--pf-rgb:%s;--pf-op:%s;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
-            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $t['colors']['card'], $rgb($t['colors']['card']), $t['card']['opacity'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
+            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card-solid:%s;--pf-rgb:%s;--pf-op:%s;--pf-gb:%dpx;--pf-lb:%dpx;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
+            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $t['colors']['card'], $rgb($t['colors']['card']), $t['card']['opacity'], $hasPat ? 6 : max($t['card']['blur'], 20), $hasPat ? 9 : max($t['card']['blur'], 30), $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
         );
 
-        $bg = 'background:'.self::bgLayers($t['bg']).';';
+        $bg = 'background:'.self::bgLayers($t['bg'], $glass && $hasPat ? 2.6 : 1.0).';';
 
         $cursor = '';
         $cu = $t['cursor'];

@@ -38,4 +38,15 @@ class ProfileStylePresetTest extends TestCase
             $this->assertArrayNotHasKey('style', $p['theme']);
         }
     }
+
+    public function test_glass_with_pattern_strengthens_pattern_and_blurs_less(): void
+    {
+        $th = fn (string $st, string $pat) => ProfileConfig::css(ProfileConfig::validate(['theme' => ['style' => $st, 'bg' => ['pattern' => $pat]]]));
+        $plain = $th('bawaan', 'polka');
+        $glass = $th('glass', 'polka');
+        $this->assertNotSame($plain['bg'], $glass['bg']);
+        $this->assertStringContainsString('--pf-gb:6px', $glass['vars']);
+        $none = $th('glass', 'none');
+        $this->assertStringContainsString('--pf-gb:20px', $none['vars']);
+    }
 }
