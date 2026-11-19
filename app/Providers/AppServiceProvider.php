@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
 
         ResetPassword::toMailUsing(function (object $user, string $token) {
             $url = route('member.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]);
+            Config::set('app.name', 'Jadidaring'); // mail layout header/footer
             $minutes = (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire', 60);
 
             return (new \Illuminate\Notifications\Messages\MailMessage)
