@@ -6,7 +6,7 @@
     <div class="page-heading"><div><h1>Pesan kontak</h1><p class="muted lede">Kiriman dari formulir /kontak di jadidaring.com.</p></div></div>
     @forelse ($messages as $m)
         <article class="card" style="margin-bottom:12px;padding:14px;{{ $m->read_at ? 'opacity:.7' : '' }}">
-            <strong>{{ $m->subject }}</strong> <span class="muted">· {{ $m->name }}@if($m->email) · {{ $m->email }}@endif · {{ $m->created_at->format('d M Y H:i') }}</span>
+            <strong>{{ $m->subject }}</strong> <span class="muted">· {{ $m->name }}@if($m->email) · {{ $m->email }}@endif · {{ $m->created_at->wita() }}</span>
             <p style="white-space:pre-wrap">{{ $m->message }}</p>
             <div class="row-actions">
                 @unless($m->read_at)

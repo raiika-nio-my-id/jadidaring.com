@@ -29,6 +29,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Display helper: storage stays UTC, humans see WITA (Asia/Makassar).
+        // Usage: $date->wita() => "19 Nov 2026, 15.52 WITA"; wita(true) adds the weekday.
+        \Illuminate\Support\Carbon::macro('wita', function (bool $weekday = false): string {
+            /** @var \Carbon\CarbonInterface $this */
+            return $this->copy()->setTimezone('Asia/Makassar')->locale('id')
+                ->translatedFormat(($weekday ? 'l, ' : '').'j M Y, H.i').' WITA';
+        });
+
         // Host-only admin cookies. Never Domain=.jadidaring.com / .jadidaring.test.
         Config::set('session.domain', null);
         Config::set('session.http_only', true);

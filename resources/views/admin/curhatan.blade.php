@@ -13,7 +13,7 @@
     @forelse ($posts as $p)
         <article class="card" style="margin-bottom:12px;padding:14px;{{ $p->is_hidden ? 'opacity:.75' : '' }}">
             <strong>{{ '@'.($p->user?->username ?? '?') }}</strong>
-            <span class="muted">· #{{ $p->id }} · {{ \App\Models\MemberPost::VISIBILITIES[$p->visibility] ?? $p->visibility }} · {{ $p->created_at->format('d M Y H:i') }} · {{ $p->reports_count }} laporan · {{ $p->likes_count }} suka · {{ $p->comments_count }} komentar @if ($p->is_hidden)· <strong>DISEMBUNYIKAN</strong>@endif</span>
+            <span class="muted">· #{{ $p->id }} · {{ \App\Models\MemberPost::VISIBILITIES[$p->visibility] ?? $p->visibility }} · {{ $p->created_at->wita() }} · {{ $p->reports_count }} laporan · {{ $p->likes_count }} suka · {{ $p->comments_count }} komentar @if ($p->is_hidden)· <strong>DISEMBUNYIKAN</strong>@endif</span>
             <p style="white-space:pre-wrap">{{ $p->body }}</p>
             @if ($p->image)<p class="muted">[+ 1 gambar]</p>@endif
             @php $reasons = \Illuminate\Support\Facades\DB::table('member_post_reports')->where('target', 'p:'.$p->id)->whereNotNull('reason')->limit(5)->pluck('reason'); @endphp
