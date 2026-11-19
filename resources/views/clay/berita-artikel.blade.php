@@ -14,7 +14,7 @@
 @endpush
 
 @section('content')
-    <article class="clay-section news-article">
+    <article class="clay-section news-article" data-jd-article data-jd-view="view_article" data-jd-params="{{ json_encode(['article_id' => (int) $article['id'], 'topic' => (string) $article['topic']]) }}">
         <a href="/berita/{{ $article['topic'] }}" class="news-back" data-news-back data-fallback="/berita/{{ $article['topic'] }}"><span aria-hidden="true">&larr;</span> Kembali ke daftar berita</a>
 
 
@@ -37,6 +37,13 @@
         <div class="clay-card news-body">
             {!! \App\Support\NewsBody::render($article['paragraphs']) !!}
         </div>
+
+        @php($shareUrl = urlencode('https://'.config('singlepage.base_domain').'/berita/'.$article['topic'].'/'.$article['slug']))
+        <p class="news-share" aria-label="Bagikan">Bagikan:
+            <a href="https://wa.me/?text={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" data-jd-click="share" data-jd-params='{"method":"whatsapp","content_type":"article","item_id":"{{ (int) $article['id'] }}"}'>WhatsApp</a> ·
+            <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" data-jd-click="share" data-jd-params='{"method":"x","content_type":"article","item_id":"{{ (int) $article['id'] }}"}'>X</a> ·
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" data-jd-click="share" data-jd-params='{"method":"facebook","content_type":"article","item_id":"{{ (int) $article['id'] }}"}'>Facebook</a>
+        </p>
 
         <section class="clay-card clay-card--mint news-sources" aria-labelledby="sumber-h">
             <h2 id="sumber-h">Sumber</h2>

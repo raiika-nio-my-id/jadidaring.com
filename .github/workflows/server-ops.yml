@@ -1,0 +1,67 @@
+name: Server ops (env keys, test-user cleanup)
+
+# Manual only. Whitelisted actions; secret values come from repo secrets and are never echoed.
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Action
+        required: true
+        type: choice
+        options: [set-ga4, set-google-oauth, delete-test-user]
+      value:
+        description: "set-ga4: measurement id (G-XXXX). delete-test-user: username (tmp + digits only)"
+        required: false
+        type: string
+
+jobs:
+  ops:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate input
+        env:
+          ACTION: ${{ inputs.action }}
+          VALUE: ${{ inputs.value }}
+        run: |
+          case "$ACTION" in
+            set-ga4) [[ "$VALUE" =~ ^G-[A-Z0-9]{4,20}$ ]] || { echo "bad GA4 id"; exit 1; } ;;
+            delete-test-user) [[ "$VALUE" =~ ^tmp[0-9]{3,20}$ ]] || { echo "username must match tmp<digits>"; exit 1; } ;;
+          esac
+      - name: Run on the server
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          ACTION: ${{ inputs.action }}
+          VALUE: ${{ inputs.value }}
+          G_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          G_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
+          fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
+          envs: DEPLOY_PATH,ACTION,VALUE,G_ID,G_SECRET
+          script: |
+            set -euo pipefail
+            cd "$DEPLOY_PATH"
+            setkey() {
+              # Rewrite in place (same inode) so the bind-mounted .env stays valid.
+              local k="$1" v="$2" tmp; tmp="$(mktemp)"
+              { grep -v "^${k}=" .env || true; printf '%s=%s\n' "$k" "$v"; } > "$tmp"
+              cat "$tmp" > .env; rm -f "$tmp"
+            }
+            case "$ACTION" in
+              set-ga4|set-google-oauth)
+                cp .env ".env.bak-$(date +%Y%m%d-%H%M%S)"
+                if [ "$ACTION" = set-ga4 ]; then setkey GA4_MEASUREMENT_ID "$VALUE"; else setkey GOOGLE_CLIENT_ID "$G_ID"; setkey GOOGLE_CLIENT_SECRET "$G_SECRET"; fi
+                ls -t .env.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f
+                docker exec singlepage-app php artisan config:clear --no-ansi
+                docker exec singlepage-app php artisan cache:clear --no-ansi || true
+                grep -E '^(GA4_MEASUREMENT_ID|GOOGLE_CLIENT_ID)=' .env | sed -E 's/=(.{12}).*/=\1…/'
+                grep -c '^GOOGLE_CLIENT_SECRET=.\+' .env || true
+                ;;
+              delete-test-user)
+                docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi
+                ;;
+            esac

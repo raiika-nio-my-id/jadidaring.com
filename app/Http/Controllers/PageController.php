@@ -70,6 +70,8 @@ class PageController extends Controller
             'message' => strip_tags($data['message']), 'ip_hash' => hash_hmac('sha256', (string) $request->ip(), (string) config('app.key')),
         ]);
 
+        \App\Support\Ga4::flash('generate_lead', ['form' => 'contact']);
+
         return redirect('/kontak')->with('sent', true);
     }
 

@@ -282,9 +282,12 @@ class CommunityController extends Controller
             );
             MemberPageDraft::query()->where('user_id', $user->id)->delete();
 
+            \App\Support\Ga4::flash('profile_publish', ['source' => 'ai_import']);
+
             return redirect('/u/'.$user->username)->with('status', 'Profil diperbarui.');
         }
 
+        \App\Support\Ga4::flash('profile_draft_save', ['source' => 'ai_import']);
         $existing = MemberPageDraft::query()->where('user_id', $user->id)->first();
         MemberPageDraft::query()->updateOrCreate(
             ['user_id' => $user->id],
@@ -324,6 +327,7 @@ class CommunityController extends Controller
             ['title' => $draft->title, 'html' => $draft->html, 'config' => $draft->config, 'status' => $this->keepHidden($user->id)],
         );
         $draft->delete();
+        \App\Support\Ga4::flash('profile_publish', ['source' => 'editor']);
 
         return redirect('/u/'.$user->username)->with('status', 'Halamanmu terbit.');
     }
@@ -361,6 +365,7 @@ class CommunityController extends Controller
             ['title' => $this->titleFor($data['title'] ?? '', $user), 'html' => $clean, 'source' => 'paste', 'config' => $config],
         );
 
+        \App\Support\Ga4::flash('profile_draft_save', ['source' => 'editor']);
         $back = redirect('/komunitas/halamanku')->with('status', 'Draft siap ditinjau. Belum tayang sampai kamu menekan Terbitkan.');
 
         return $notices !== [] ? $back->with('warn', $notices) : $back;
@@ -609,6 +614,8 @@ class CommunityController extends Controller
         }
 
         MemberPageComment::query()->create(['member_page_id' => $page->id, 'user_id' => $request->user()->id, 'body' => $body]);
+
+        \App\Support\Ga4::flash('comment_post', ['content_type' => 'profile']);
 
         return redirect('/u/'.$username.'#komentar')->with('status', 'Komentar terkirim.');
     }

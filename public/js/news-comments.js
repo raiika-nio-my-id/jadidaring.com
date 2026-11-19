@@ -63,6 +63,7 @@
                   var first = list.querySelector('.news-comments__hint');
                   if (first) { first.remove(); }
                   list.insertBefore(render(res.d.comment), list.firstChild);
+                  if (window.jdTrack) { window.jdTrack('comment_post', { content_type: 'article' }); }
                   form.body.value = '';
               }).catch(function () { msg.textContent = 'Gagal mengirim komentar.'; });
         });

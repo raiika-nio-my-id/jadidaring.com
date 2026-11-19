@@ -61,7 +61,7 @@ class TenantController extends Controller
         ]);
     }
 
-    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names, RealtimeBridge $realtime): Response
+    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names, RealtimeBridge $realtime, \App\Services\GameAnalytics $ga): Response
     {
         $slug = strtolower(trim($slug));
 
@@ -86,6 +86,7 @@ class TenantController extends Controller
         $html = $seoInjector->normalizeGame($html);
         $html = $names->inject($html, MembersOnlyGames::user());
         $html = $realtime->inject($html, $profile->subdomain);
+        $html = $ga->inject($html, $profile->subdomain);
 
         if (MembersOnlyGames::applies($profile->subdomain) && ! MembersOnlyGames::allows($request)) {
             $banner = MembersOnlyGames::banner('/masuk');

@@ -53,6 +53,7 @@ class AuthController extends Controller
 
         RateLimiter::clear($key);
         $request->session()->regenerate();
+        \App\Support\Ga4::flash('login', ['method' => 'password']);
 
         return redirect()->intended(route('member.account'));
     }
@@ -89,6 +90,7 @@ class AuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        \App\Support\Ga4::flash('sign_up', ['method' => 'password']);
 
         return redirect()->route('member.account');
     }

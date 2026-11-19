@@ -30,7 +30,7 @@ class SocialController extends Controller
 
         $user = SocialAuth::resolveUser($provider, (string) $social->getId(), $social->getEmail(), $social->getNickname() ?: $social->getName());
 
-        return $this->finish($request, $user);
+        return $this->finish($request, $user, $provider);
     }
 
     public function telegram(Request $request): RedirectResponse
@@ -45,13 +45,14 @@ class SocialController extends Controller
 
         $user = SocialAuth::resolveUser('telegram', (string) $data['id'], null, (string) ($data['username'] ?? $data['first_name'] ?? ''));
 
-        return $this->finish($request, $user);
+        return $this->finish($request, $user, 'telegram');
     }
 
-    private function finish(Request $request, \App\Models\User $user): RedirectResponse
+    private function finish(Request $request, \App\Models\User $user, string $method): RedirectResponse
     {
         Auth::login($user, true);
         $request->session()->regenerate();
+        \App\Support\Ga4::flash($user->wasRecentlyCreated ? 'sign_up' : 'login', ['method' => $method]);
 
         return redirect()->intended(route('member.account'));
     }

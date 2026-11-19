@@ -1,7 +1,7 @@
 @extends('layouts.clay')
 
 @section('content')
-    <div class="clay-section imp-page">
+    <div class="clay-section imp-page"@if (! $error) data-jd-view="ai_import_open"@endif>
         @if ($error)
             <a href="/komunitas/halamanku" class="news-back"><span aria-hidden="true">&larr;</span> Edit profil</a>
             <h1 class="clay-section__title">Pratinjau dari AI</h1>

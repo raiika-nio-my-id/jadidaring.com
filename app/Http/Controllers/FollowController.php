@@ -33,6 +33,8 @@ class FollowController extends Controller
             'follower_id' => $me->id, 'followed_id' => $target->id, 'created_at' => now(), 'updated_at' => now(),
         ]);
 
+        \App\Support\Ga4::flash('follow', ['content_type' => 'profile']);
+
         return back()->with('status', 'Kamu sekarang mengikuti @'.$target->username.'.');
     }
 
@@ -40,6 +42,8 @@ class FollowController extends Controller
     {
         $target = $this->target($username);
         DB::table('member_follows')->where('follower_id', $request->user()->id)->where('followed_id', $target->id)->delete();
+
+        \App\Support\Ga4::flash('unfollow', ['content_type' => 'profile']);
 
         return back()->with('status', 'Kamu berhenti mengikuti @'.$target->username.'.');
     }

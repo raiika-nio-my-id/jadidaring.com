@@ -7,7 +7,7 @@
         </div>
         <p class="news-lead">Jelajahi profil ala Friendster buatan member Jadidaring. Intip latar, musik, dan galeri mereka, lalu tinggalkan komentar.</p>
 
-        <form class="clay-form pf-explore" method="get" action="/komunitas" role="search">
+        <form class="clay-form pf-explore" method="get" action="/komunitas" role="search"@if (filled($q)) data-jd-view="search" data-jd-params="{{ json_encode(['search_term' => mb_substr((string) $q, 0, 20), 'search_scope' => 'komunitas']) }}"@endif>
             <label for="ex-q" class="sr-only">Cari nama pengguna</label>
             <input class="clay-input" id="ex-q" type="search" name="q" value="{{ $q }}" maxlength="20" placeholder="Cari nama pengguna…" autocomplete="off">
             <label for="ex-s" class="sr-only">Urutkan</label>

@@ -36,7 +36,7 @@
         @else
             <div class="game-grid">
                 @foreach($games as $game)
-                    <a href="/game/{{ $game['subdomain'] }}" class="game-card">
+                    <a href="/game/{{ $game['subdomain'] }}" class="game-card" data-jd-click="select_content" data-jd-params='{"content_type":"game","item_id":"{{ $game['subdomain'] }}"}'>
                         <div class="game-card__media">
                             @if(!empty($game['image']))
                                 <img src="{{ $game['image'] }}" alt="{{ $game['title'] }}" loading="lazy">

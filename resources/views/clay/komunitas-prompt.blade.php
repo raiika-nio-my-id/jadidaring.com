@@ -67,10 +67,10 @@
             <div id="pb-result" hidden>
                 <h3>Prompt kamu siap</h3>
                 <div class="clay-actions">
-                    <button type="button" class="clay-btn clay-btn--primary" id="pb-chatgpt">Buka di ChatGPT</button>
-                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-gemini">Buka di Gemini</button>
-                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-claude">Buka di Claude</button>
-                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-copy">Salin prompt</button>
+                    <button type="button" class="clay-btn clay-btn--primary" id="pb-chatgpt" data-jd-click="prompt_generate" data-jd-params='{"provider":"chatgpt"}'>Buka di ChatGPT</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-gemini" data-jd-click="prompt_generate" data-jd-params='{"provider":"gemini"}'>Buka di Gemini</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-claude" data-jd-click="prompt_generate" data-jd-params='{"provider":"claude"}'>Buka di Claude</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-copy" data-jd-click="prompt_generate" data-jd-params='{"provider":"copy"}'>Salin prompt</button>
                 </div>
                 <p id="pb-toast" class="news-comments__msg" role="status" aria-live="polite"></p>
                 <label for="pb-preview">Pratinjau prompt</label>
