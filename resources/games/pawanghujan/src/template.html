@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, tutorial and colours live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Pawang Hujan · Game Panggil Hujan Padamkan Karhutla</title>
+<meta name="description" content="Pawang Hujan: game arcade solo tentang karhutla. Seret awan ke atas titik api, tahan mangkuk ritual untuk hujan deras, panggil petir, dan jaga hujan turun terus sampai pelangi muncul. Gratis, cocok untuk HP.">
+<meta name="theme-color" content="#2b5d4a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pawang Hujan">
+<meta property="og:description" content="Hutan terbakar, asap menebal. Panggil hujan dan jaga supaya turun terus!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Hutan dan awan Pawang Hujan"></canvas>
+
+<!-- home -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><span class="l1">PAWANG</span><span class="l2">HUJAN</span><span class="drops"><i></i><i></i><i></i><i></i><i></i></span></div>
+    <h1 class="sr-only" data-c="site.name"></h1>
+    <p class="tagline" data-c="site.tagline"></p>
+    <label class="name-field"><span data-t="nameLabel"></span>
+      <input id="nameIn" data-jd-account-name type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring">
+      <small data-t="nameHint"></small>
+    </label>
+    <button type="button" class="btn big primary" id="playBtn"><span class="ic" aria-hidden="true">🌧️</span><span data-t="play"></span></button>
+    <button type="button" class="btn" id="howBtn"><span aria-hidden="true">🥣</span> <span data-t="how"></span></button>
+    <div class="stat-strip" id="statStrip"></div>
+  </div>
+  <footer class="site-footer">
+    <p><strong data-c="site.name"></strong> · <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </footer>
+</main>
+
+<!-- how to -->
+<div class="overlay" id="howDlg" role="dialog" aria-modal="true" aria-labelledby="howTitle" hidden>
+  <div class="dlg">
+    <h2 id="howTitle" data-t="howTitle"></h2>
+    <ul class="how-list"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li><li data-t="how4"></li><li data-t="how5"></li><li data-t="how6"></li></ul>
+    <button type="button" class="btn big primary" id="howPlay" data-t="howPlay"></button>
+    <button type="button" class="btn" id="howClose" data-t="close"></button>
+  </div>
+</div>
+
+<!-- play HUD -->
+<div id="hud" hidden>
+  <div class="hud-top">
+    <button type="button" class="ic-btn" id="pauseBtn" data-t-aria="pause">❚❚</button>
+    <div class="plate">
+      <div class="plate-row"><b id="scoreNum">0</b><span class="mult" id="multTag" hidden>×1</span></div>
+      <div class="plate-sub"><span id="timeNum">0:00</span><span class="sep">·</span><span data-t="level"></span> <span id="lvNum">1</span></div>
+    </div>
+    <button type="button" class="ic-btn" id="muteBtn" data-t-aria="mute">🔊</button>
+  </div>
+  <div class="meters">
+    <div class="meter haze"><span class="mlbl">🌫️ <span data-t="haze"></span></span><div class="bar"><i id="hazeBar"></i></div></div>
+    <div class="meter rain"><span class="mlbl">🌧️ <span data-t="streak"></span></span><div class="bar"><i id="rainBar"></i><em>🌈</em></div></div>
+    <div class="wind" id="windChip" aria-hidden="true"><span id="windArrow">➜</span></div>
+  </div>
+  <div class="coach" id="coach" hidden><b id="coachTxt"></b><small id="coachSub"></small><button type="button" class="skip" id="skipTut" data-t="skip"></button></div>
+  <div class="banner" id="banner" hidden></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <span class="demo-tag" id="demoTag" data-t="demo" hidden></span>
+  <div class="hud-bot">
+    <div class="pawang-name" id="pawangName"></div>
+    <button type="button" class="bowl" id="bowlBtn"><span class="ring"></span><span class="bowl-ic" aria-hidden="true">🥣</span><small id="bowlLbl" data-t="ritualHold"></small></button>
+    <div class="thunder" id="thunderBox"><span class="bolt" aria-hidden="true">⚡</span><b id="thunderNum">0</b><small data-t="thunder"></small><span class="pips" id="thunderPips"><i></i><i></i><i></i></span></div>
+  </div>
+</div>
+
+<!-- pause -->
+<div class="overlay" id="pauseDlg" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden>
+  <div class="dlg">
+    <h2 id="pauseTitle" data-t="pausedTitle"></h2>
+    <p class="muted" data-t="pausedSub"></p>
+    <button type="button" class="btn big primary" id="resumeBtn" data-t="resume"></button>
+    <button type="button" class="btn" id="quitBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<!-- tutorial done -->
+<div class="overlay" id="tutDlg" role="dialog" aria-modal="true" aria-labelledby="tutTitle" hidden>
+  <div class="dlg">
+    <div class="big-ic" aria-hidden="true">🌧️🌈</div>
+    <h2 id="tutTitle" data-t="tutDone"></h2>
+    <ul class="how-list small"><li data-t="how4"></li><li data-t="how5"></li><li data-t="how6"></li></ul>
+    <button type="button" class="btn big primary" id="tutStart" data-t="tutStart"></button>
+  </div>
+</div>
+
+<!-- game over -->
+<div class="overlay over" id="overDlg" role="dialog" aria-modal="true" aria-labelledby="overTitle" hidden>
+  <div class="dlg">
+    <h2 id="overTitle" class="over-title" data-t="overTitle"></h2>
+    <p class="muted" id="overSub"></p>
+    <p class="best-badge" id="bestBadge" data-t="overBest" hidden></p>
+    <div class="stat-grid">
+      <div><small data-t="statScore"></small><b id="oScore"></b></div>
+      <div><small data-t="statTime"></small><b id="oTime"></b></div>
+      <div><small data-t="statOut"></small><b id="oOut"></b></div>
+      <div><small data-t="statRainbow"></small><b id="oRb"></b></div>
+    </div>
+    <button type="button" class="btn big primary" id="againBtn" data-t="again"></button>
+    <button type="button" class="btn" id="menuBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<script id="ph-sim">
+/*SIM*/
+</script>
+<script id="ph-render">
+/*RENDER*/
+</script>
+<script id="ph-app">
+/*APP*/
+</script>
+</body>
+</html>
