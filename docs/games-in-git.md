@@ -52,9 +52,9 @@ exported first (no admin GET endpoint exists yet).
 | 8 | `monyetuluwatu` | in git (5d10d86) | local build, verified = live (`index.deploy.html`) | yes | no |
 | 9 | `penaltitimnas` | in git (6aa1693) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 10 | `tamiyalintasan` | in git (ee4f2e8) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 11 | `kopisenja` | in git | local build, verified = live (`index.deploy.html`) | yes | no |
+| 11 | `kopisenja` | in git (1eb8e6d) | local build, verified = live (`index.deploy.html`) | yes | no |
 | 12 | `mandarinharian` | in git (8ca7329) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 13 | `whoosh` | database | local build, verified = live (`index.deploy.html`) | yes | no |
+| 13 | `whoosh` | in git | local build, verified = live (`index.deploy.html`) | yes | no |
 | 14 | `ttskilat` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 15 | `ikanrakus` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 16 | `drag201` | database | local build, verified = live (`index.deploy.html`) | yes | yes |

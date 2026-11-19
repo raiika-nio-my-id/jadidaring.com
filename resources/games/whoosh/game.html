@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Whoosh Atur Rel &#xB7; Game Atur Wesel Kereta Api Indonesia Online Gratis</title>
+<meta name="description" content="Whoosh Atur Rel: game puzzle kereta api Indonesia di browser. Atur wesel dan lampu sinyal supaya kereta cepat Whoosh, KRL Commuter Line dan kereta barang tidak tabrakan dan tiba tepat waktu. Gratis, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#14213d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Whoosh Atur Rel &#xB7; game atur wesel kereta">
+<meta property="og:description" content="Jadi pengatur perjalanan kereta: Whoosh, KRL dan kereta barang. Belokkan wesel, tahan dengan sinyal, jangan sampai tabrakan!">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#14213d;color:#1d2433;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overscroll-behavior:none}
+body{overflow:hidden}
+body.homing{overflow-y:auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#cv{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block;touch-action:none}
+.dim{position:fixed;inset:0;background:linear-gradient(180deg,rgba(20,33,61,.55),rgba(20,33,61,.25) 40%,rgba(20,33,61,.6));pointer-events:none;transition:opacity .3s}
+.dim.off{opacity:0}
+.hidden{display:none!important}
+.screen{position:relative;z-index:2;min-height:100%;display:flex;flex-direction:column;align-items:center;padding:max(18px,env(safe-area-inset-top)) 14px 24px}
+.home-card{width:100%;max-width:430px;margin-top:4vh;background:rgba(255,252,245,.96);border-radius:26px;padding:22px 18px 16px;box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 0 4px rgba(255,255,255,.25);text-align:center;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:translateY(16px) scale(.96);opacity:0}}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px}
+.lg-train{animation:chug 1.6s ease-in-out infinite;display:flex;align-items:center;gap:3px;filter:drop-shadow(0 3px 2px rgba(0,0,0,.25))}
+.lg-train i{display:block;width:26px;height:20px;background:#f4f6f8;border-radius:5px;border:2px solid #26364a;position:relative}
+.lg-train i:after{content:"";position:absolute;left:0;right:0;top:7px;height:4px;background:#d62839}
+.lg-train .nose{width:40px;border-radius:5px 24px 14px 5px/5px 18px 10px 5px;order:3}.lg-train .nose:before{content:"";position:absolute;right:5px;top:2px;width:12px;height:5px;border-radius:0 8px 0 0;background:#26364a}
+.lg-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:.9}
+.lg-txt .l1{font-weight:900;font-size:34px;letter-spacing:1px;color:#d62839;font-style:italic;text-shadow:2px 2px 0 #ffd6da}
+.lg-txt .l2{font-weight:900;font-size:19px;letter-spacing:4px;color:#14213d}
+.tagline{margin:6px 4px 14px;font-size:14.5px;line-height:1.4;color:#4a4f5c}
+.btn{appearance:none;border:0;border-radius:14px;padding:11px 12px;font:700 15px/1.15 inherit;font-family:inherit;background:#eef1f6;color:#1d2433;cursor:pointer;box-shadow:0 3px 0 #cfd5df;transition:transform .08s,box-shadow .08s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #cfd5df}
+.btn:focus-visible,.hb:focus-visible{outline:3px solid #1c7ed6;outline-offset:2px}
+.btn.big{width:100%;font-size:21px;padding:15px;border-radius:18px}
+.btn.primary{background:linear-gradient(180deg,#ff5a5f,#d62839);color:#fff;box-shadow:0 4px 0 #9b1c2a}
+.btn.primary:active{box-shadow:0 1px 0 #9b1c2a}
+.btn.green{background:linear-gradient(180deg,#51cf66,#2f9e44);color:#fff;box-shadow:0 4px 0 #237a35}
+.row2,.row3{display:flex;gap:8px;margin-top:10px}
+.row2>.btn,.row3>.btn{flex:1}
+.row3 .sq{flex:0 0 48px}
+.btn.mode{flex-direction:row;justify-content:flex-start;text-align:left;padding:10px;background:#fff4d6;box-shadow:0 3px 0 #ebd59a}
+.btn.mode .mi{font-size:22px}
+.btn.mode b{display:block;font-size:15px}
+.btn.mode small{display:block;font-weight:600;font-size:11.5px;color:#7a6a3a;margin-top:2px}
+.stat-line{font-size:12.5px;color:#6b7180;margin:12px 0 0;min-height:1em}
+.seo{max-width:640px;margin:26px auto 0;background:rgba(255,252,245,.9);border-radius:20px;padding:6px 20px 14px;font-size:14px;line-height:1.55;color:#353b48}
+.seo h2{font-size:18px;margin:14px 0 6px}.seo h3{font-size:15px;margin:14px 0 4px}.seo p{margin:4px 0}
+.foot{margin:14px 0 4px;font-size:13px;color:#dfe6f3;text-align:center}.foot p{margin:0 0 4px}.foot a{color:#fff}
+/* HUD */
+.hud{position:fixed;z-index:5;left:0;right:0;top:0;display:flex;align-items:center;gap:8px;padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));background:linear-gradient(180deg,rgba(20,33,61,.82),rgba(20,33,61,0));color:#fff;pointer-events:none}
+.hud>*{pointer-events:auto}
+.hb{appearance:none;border:0;min-width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font:800 17px/1 inherit;font-family:inherit;cursor:pointer;backdrop-filter:blur(4px)}
+.hb:active{background:rgba(255,255,255,.32)}
+#backBtn{font-size:28px;padding-bottom:4px}
+.hname{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.1}
+.hname b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hname span{font-size:11.5px;opacity:.8}
+.hstat{display:flex;align-items:center;gap:12px}
+.hstat b{font-size:17px}.hstat small{font-size:10.5px;opacity:.75;margin-left:3px}
+.hsc,.hdone{display:flex;align-items:baseline}
+.hearts{font-size:15px;letter-spacing:1px;white-space:nowrap}
+.hearts.hit{animation:shake .5s}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+.hbtns{display:flex;gap:6px}
+@media (max-width:560px){.hud{flex-wrap:wrap;row-gap:4px}.hname{flex:1 1 40%}.hstat{order:3;flex:1 1 100%;justify-content:center;gap:18px;background:rgba(0,0,0,.18);border-radius:10px;padding:3px 0}.hb{min-width:36px;height:36px}}
+/* coach + toast */
+.coach{position:fixed;z-index:6;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom));width:min(92vw,440px);background:#fffdf5;border-radius:18px;padding:13px 15px;box-shadow:0 10px 30px rgba(0,0,0,.35);border:3px solid #ffd43b;font-size:15px;line-height:1.4;animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+.coach .ct{font-weight:900;color:#d62839;font-size:12px;letter-spacing:1px;margin-bottom:3px}
+.coach .cb{margin-top:9px;text-align:right}
+.coach.top{bottom:auto;top:max(96px,calc(env(safe-area-inset-top) + 96px))}
+.toast{position:fixed;z-index:6;left:50%;top:max(70px,calc(env(safe-area-inset-top) + 70px));transform:translateX(-50%);background:rgba(20,33,61,.92);color:#fff;border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);white-space:nowrap;max-width:94vw;overflow:hidden;text-overflow:ellipsis}
+b.r{color:#e03131}b.g{color:#2f9e44}
+/* overlay cards */
+.ov{position:fixed;z-index:8;inset:0;background:rgba(10,16,32,.55);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.card{width:100%;max-width:420px;max-height:calc(100dvh - 32px);overflow-y:auto;background:#fffdf7;border-radius:24px;padding:20px 18px 16px;box-shadow:0 20px 60px rgba(0,0,0,.45);animation:pop .35s cubic-bezier(.2,1.4,.4,1);text-align:center}
+.card h2{margin:2px 0 4px;font-size:23px}
+.card .sub{color:#6b7180;font-size:13px;margin:0 0 10px}
+.card p{font-size:14.5px;line-height:1.45;margin:8px 0}
+.card .acts{display:flex;gap:8px;margin-top:14px}.card .acts .btn{flex:1}
+.stars{font-size:44px;letter-spacing:4px;margin:4px 0 6px}
+.stars i{font-style:normal;display:inline-block;color:#dee2e6;transform:scale(.4);opacity:0;animation:star .45s cubic-bezier(.2,1.6,.4,1) forwards}
+.stars i.on{color:#fcc419;text-shadow:0 3px 0 #e8a400}
+@keyframes star{to{transform:scale(1);opacity:1}}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.res-grid div{background:#f1f3f7;border-radius:12px;padding:7px 2px}.res-grid b{display:block;font-size:19px}.res-grid small{font-size:11px;color:#6b7180}
+.big-score{font-size:40px;font-weight:900;color:#d62839;margin:4px 0 0}
+.newrec{display:inline-block;background:#fcc419;color:#5c3d00;border-radius:999px;font-weight:800;font-size:12px;padding:3px 10px;margin-top:4px}
+.name-row{display:flex;gap:8px;margin-top:10px}.name-row input{flex:1;min-width:0;border:2px solid #dee2e6;border-radius:12px;padding:10px 12px;font:600 15px inherit;font-family:inherit;color:#1d2433}
+.name-row input::placeholder{color:#adb5bd}
+.lv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px;text-align:left}
+.lv{appearance:none;border:0;border-radius:14px;padding:10px;background:#f1f3f7;font-family:inherit;cursor:pointer;box-shadow:0 3px 0 #d5dae3;color:#1d2433}
+.lv b{display:block;font-size:14px}.lv small{display:block;font-size:11px;color:#6b7180;margin-top:2px}.lv .ls{font-size:15px;color:#fcc419;margin-top:4px;letter-spacing:1px}.lv .ls .o{color:#ced4da}
+.lv.lock{opacity:.5;cursor:default}
+.lv .n{float:right;font-weight:900;color:#adb5bd}
+.legend{display:flex;flex-direction:column;gap:7px;margin:10px 0;text-align:left}
+.legend div{display:flex;align-items:center;gap:10px;background:#f1f3f7;border-radius:12px;padding:7px 10px;font-size:13.5px;line-height:1.3}
+.legend .tk{flex:0 0 52px;height:14px;border-radius:4px 8px 8px 4px;position:relative}
+.tk.kcic{background:#f4f6f8;border:2px solid #26364a;border-radius:4px 12px 12px 4px}.tk.kcic:after{content:"";position:absolute;left:0;right:6px;top:3px;height:3px;background:#d62839}
+.tk.krl{background:linear-gradient(180deg,#f1f3f5 25%,#e03131 25% 70%,#ffd43b 70% 82%,#f1f3f5 82%);border:2px solid #555}
+.tk.barang{background:repeating-linear-gradient(90deg,#1c4e8a 0 12px,#5c4a3a 12px 14px,#c92a2a 14px 24px,#5c4a3a 24px 26px,#2b8a3e 26px 36px);border:2px solid #333}
+.how-list{text-align:left;padding-left:20px;margin:6px 0;font-size:14px;line-height:1.5}
+.rec-list{text-align:left;margin:8px 0;padding:0;list-style:none;font-size:14px}
+.rec-list li{display:flex;justify-content:space-between;padding:6px 10px;border-radius:10px}.rec-list li:nth-child(odd){background:#f1f3f7}
+.tabs{display:flex;gap:6px;justify-content:center;margin:6px 0}.tabs .btn{padding:7px 12px;font-size:13px}.tabs .btn.on{background:#14213d;color:#fff;box-shadow:0 3px 0 #000}
+.kbd{display:inline-block;border:1px solid #ced4da;border-bottom-width:3px;border-radius:6px;padding:0 5px;font-size:12px;font-weight:700;background:#fff}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
+@keyframes chug{50%{transform:translateX(4px)}}
+.home-card:before{content:"";display:block;height:6px;margin:-22px -18px 16px;border-radius:26px 26px 0 0;background:repeating-linear-gradient(90deg,#d62839 0 22px,#fff 22px 30px,#14213d 30px 52px,#fff 52px 60px)}
+.card.fail{animation:pop .35s,shake .5s .35s}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="tr" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"inputs": ["#nmIn"], "keys": [], "max": 16, "icon": "\ud83d\ude84", "title": "Whoosh Atur Rel", "sub": "Namamu dipakai di rekor Harian & Tanpa Batas.", "accent": "#ffcf3f", "slug": "whoosh"};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<canvas id="cv" aria-label="Peta jalur kereta"></canvas>
+<div id="dim" class="dim"></div>
+
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true">
+      <div class="lg-train"><i class="nose"></i><i></i><i></i></div>
+      <div class="lg-txt"><span class="l1">WHOOSH</span><span class="l2">ATUR REL</span></div>
+    </div>
+    <h1 class="sr-only">Whoosh Atur Rel: game atur wesel kereta api Indonesia</h1>
+    <p class="tagline">Kamu pengatur perjalanan. Belokkan wesel, tahan dengan sinyal. Jangan sampai Whoosh telat, apalagi tabrakan!</p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">&#x25B6;</span> <span id="playLbl">Main</span></button>
+    <div class="row2">
+      <button type="button" class="btn mode" id="dailyBtn"><span class="mi" aria-hidden="true">&#x1F4C5;</span><span><b>Harian</b><small id="dailySub">Jadwal sama untuk semua</small></span></button>
+      <button type="button" class="btn mode" id="endlessBtn"><span class="mi" aria-hidden="true">&#x267E;&#xFE0F;</span><span><b>Tanpa Batas</b><small id="endSub">Makin lama makin padat</small></span></button>
+    </div>
+    <div class="row3">
+      <button type="button" class="btn" id="lvBtn"><span aria-hidden="true">&#x1F5FA;&#xFE0F;</span> Level</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">&#x2753;</span> Cara main</button>
+      <button type="button" class="btn" id="recBtn"><span aria-hidden="true">&#x1F3C6;</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">&#x1F50A;</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+  </div>
+  <section class="seo">
+    <h2>Game kereta api Indonesia: atur wesel dan sinyal</h2>
+    <p>Whoosh Atur Rel adalah game puzzle kereta api buatan Indonesia yang langsung dimainkan di browser HP atau laptop, tanpa download dan tanpa iklan. Kamu berperan sebagai pengatur perjalanan kereta api (PPKA): setiap kereta membawa lencana warna stasiun tujuan. Ketuk <b>wesel</b> untuk membelokkan jalur dan ketuk <b>lampu sinyal</b> untuk menahan kereta sampai jalur aman.</p>
+    <h3>Tiga jenis kereta, tiga sifat</h3>
+    <p><b>Whoosh</b> (Kereta Cepat Jakarta&#x2013;Bandung) melaju paling kencang dan toleransi telatnya paling kecil. <b>KRL Commuter Line</b> datang paling sering dengan kecepatan sedang. <b>Kereta barang</b> pelan dan panjang, jadi sering harus diparkir di jalur simpan supaya Whoosh bisa menyalip.</p>
+    <h3>Dari halte kampung sampai koridor KCIC</h3>
+    <p>Ada 8 level: mulai dari Halte Cikalong dengan satu wesel, Stasiun Bekasi dan Manggarai yang ramai KRL, sampai Koridor Halim&#x2013;Tegalluar dengan tiga jalur dan lima tujuan. Nama stasiun memakai tempat sungguhan seperti Padalarang, Tegalluar, Karawang, Bekasi, Cikarang dan Jatinegara, tapi petanya disederhanakan untuk game.</p>
+    <h3>Adil: ada peringatan sebelum bahaya</h3>
+    <p>Kereta yang akan masuk diumumkan 4 detik sebelumnya lengkap dengan tujuannya. Kalau dua kereta akan bertemu, muncul tanda AWAS dan klakson berbunyi. Wesel juga terkunci saat dilewati kereta (interlocking), ketukanmu diantrekan dan wesel pindah setelah kereta lewat.</p>
+    <h3>Mode Harian dan Tanpa Batas</h3>
+    <p>Mode Harian memberi jadwal kereta yang sama untuk semua pemain setiap hari (ganti tengah malam WITA). Mode Tanpa Batas makin lama makin padat: berapa lama kamu bisa bertahan tanpa tabrakan?</p>
+  </section>
+  <footer class="foot"><p><strong>Whoosh Atur Rel</strong> &#xB7; game kereta gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<div id="hud" class="hud hidden">
+  <button type="button" class="hb" id="backBtn" aria-label="Menu">&#x2039;</button>
+  <div class="hname"><b id="hLevel">Level</b><span id="hPlace"></span></div>
+  <div class="hstat"><span id="hHearts" class="hearts"></span><span class="hsc"><b id="hScore">0</b><small>poin</small></span><span class="hdone"><b id="hDone">0/0</b><small id="hDoneL">kereta</small></span></div>
+  <div class="hbtns"><button type="button" class="hb" id="speedBtn" aria-label="Kecepatan">1&#xD7;</button><button type="button" class="hb" id="pauseBtn" aria-label="Jeda">&#x275A;&#x275A;</button><button type="button" class="hb" id="hMute" aria-label="Suara">&#x1F50A;</button></div>
+</div>
+<div id="coach" class="coach hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<div id="ov" class="ov hidden"><div class="card" id="ovCard"></div></div>
+<script id="wr-sim">
+// Whoosh Atur Rel: stations + level maps. World is 16 x 9 cells, trains enter on the left (x=0) and leave on the right (x=16).
+// edges: [from, to] or [from, to, laneY] (passing loop). Paths are auto-drawn: 35 degree turnouts, rounded corners.
+var WR_DATA = {
+  stations: {
+    PDL: { n: 'Padalarang', c: '#e63946', ch: 'P', ty: ['kcic'] },
+    TGL: { n: 'Tegalluar', c: '#f25f9c', ch: 'T', ty: ['kcic'] },
+    KRW: { n: 'Karawang', c: '#f59f00', ch: 'K', ty: ['kcic'] },
+    BKS: { n: 'Bekasi', c: '#228be6', ch: 'B', ty: ['krl'] },
+    CKR: { n: 'Cikarang', c: '#7950f2', ch: 'C', ty: ['krl'] },
+    JNG: { n: 'Jatinegara', c: '#15aabf', ch: 'J', ty: ['krl'] },
+    GDG: { n: 'Gudang', c: '#8a6a4f', ch: 'G', ty: ['barang'] }
+  },
+  levels: [
+    { id: 'L1', name: 'Halte Cikalong', place: 'Kampung', theme: 'kampung', hearts: 5, pace: 0.68,
+      blurb: 'Satu wesel, dua tujuan. Belajar membelokkan kereta.',
+      nodes: { E: [0, 4.5], S1: [4, 4.5], A: [16, 2.5], B: [16, 6.5] },
+      edges: [['E', 'S1'], ['S1', 'A'], ['S1', 'B']],
+      exits: { A: 'CKR', B: 'GDG' }, entries: { E: 'Purwakarta' }, sw0: { S1: 1 },
+      trains: [[1, 'E', 'krl', 'A'], [9, 'E', 'barang', 'B'], [17, 'E', 'krl', 'A'], [21.5, 'E', 'barang', 'B'], [27.5, 'E', 'krl', 'A'], [31.5, 'E', 'krl', 'A']] },
+    { id: 'L2', name: 'Kampung Sukamaju', place: 'Kampung', theme: 'kampung', hearts: 5, pace: 0.7,
+      blurb: 'Dua jalur bertemu. Tahan satu kereta dengan lampu sinyal.',
+      intro: 'Dua jalur bertemu di satu titik. Ketuk <b>lampu sinyal</b> jadi <b class="r">MERAH</b> untuk menahan kereta, ketuk lagi jadi <b class="g">HIJAU</b> untuk jalan.',
+      focus: 'sig',
+      nodes: { E1: [0, 2.5], E2: [0, 6.5], M: [6, 4.5], S: [8.5, 4.5], A: [16, 2.5], B: [16, 6.5] },
+      edges: [['E1', 'M'], ['E2', 'M'], ['M', 'S'], ['S', 'A'], ['S', 'B']],
+      exits: { A: 'BKS', B: 'GDG' }, entries: { E1: 'Manggarai', E2: 'Priok' },
+      gen: { n: 9, gap: 5.2, seed: 2, mix: { krl: 3, barang: 2 }, first: 2 } },
+    { id: 'L3', name: 'Desa Tiga Cabang', place: 'Kampung', theme: 'kampung', hearts: 5, pace: 0.72,
+      blurb: 'Dua wesel berurutan, tiga tujuan. Cepat ganti arah!',
+      nodes: { E: [0, 4], S1: [3, 4], S2: [7, 6], A: [16, 1.8], B: [16, 6], C: [16, 8.2] },
+      edges: [['E', 'S1'], ['S1', 'A'], ['S1', 'S2'], ['S2', 'B'], ['S2', 'C']],
+      exits: { A: 'BKS', B: 'CKR', C: 'GDG' }, entries: { E: 'Purwakarta' },
+      gen: { n: 10, gap: 4.6, seed: 3, mix: { krl: 3, barang: 1 } } },
+    { id: 'L4', name: 'Petak Kedunggedeh', place: 'Jalur Simpan', theme: 'koridor', hearts: 5, pace: 0.72,
+      blurb: 'Whoosh datang! Simpan kereta barang di jalur samping biar Whoosh menyalip.',
+      intro: '<b>Whoosh</b> hampir 3\u00d7 lebih cepat dan tidak boleh telat. Belokkan <b>kereta barang</b> ke <b>jalur simpan</b> (bawah), tahan dengan sinyal merah, biarkan Whoosh menyalip.',
+      focus: 'loop',
+      nodes: { E: [0, 4.5], S1: [2.5, 4.5], M1: [11, 4.5], S2: [12.8, 4.5], A: [16, 3], B: [16, 6] },
+      edges: [['E', 'S1'], ['S1', 'M1'], ['S1', 'M1', 6.3], ['M1', 'S2'], ['S2', 'A'], ['S2', 'B']],
+      exits: { A: 'PDL', B: 'GDG' }, entries: { E: 'Halim' },
+      trains: [[1, 'E', 'barang', 'B'], [7, 'E', 'kcic', 'A'], [15, 'E', 'barang', 'B'], [20.5, 'E', 'kcic', 'A'], [27, 'E', 'kcic', 'A'], [32, 'E', 'barang', 'B'], [37.5, 'E', 'kcic', 'A'], [44, 'E', 'barang', 'B'], [48.5, 'E', 'kcic', 'A'], [55, 'E', 'kcic', 'A']] },
+    { id: 'L5', name: 'Stasiun Bekasi', place: 'Stasiun Kota', theme: 'kota', hearts: 4, pace: 0.8,
+      blurb: 'Jalur pindah menyeberang ke jalur bawah. Atur sinyal di pertemuan.',
+      nodes: { E1: [0, 2], S1: [3, 2], S3: [12, 2], A: [16, 0.9], B: [16, 3.3], E2: [0, 7], M2: [10.5, 7], S2: [12.5, 7], C: [16, 5.8], D: [16, 8.2] },
+      edges: [['E1', 'S1'], ['S1', 'S3'], ['S3', 'A'], ['S3', 'B'], ['S1', 'M2'], ['E2', 'M2'], ['M2', 'S2'], ['S2', 'C'], ['S2', 'D']],
+      exits: { A: 'BKS', B: 'CKR', C: 'KRW', D: 'GDG' }, entries: { E1: 'Manggarai', E2: 'Halim' },
+      gen: { n: 13, gap: 3.6, seed: 5, mix: { krl: 3, kcic: 2, barang: 2 } } },
+    { id: 'L6', name: 'Stasiun Manggarai', place: 'Stasiun Kota', theme: 'kota', hearts: 4, pace: 0.82,
+      blurb: 'Tiga jalur masuk, KRL datang terus. Jam sibuk!',
+      nodes: { E1: [0, 1.5], E2: [0, 4.5], E3: [0, 7.5], M1: [5, 4.5], S1: [7, 4.5], S2: [10, 2.4], A: [16, 1.2], B: [16, 3.6], M4: [13, 5.8], C: [16, 5.8], S3: [4.5, 7.5], D: [16, 7.5] },
+      edges: [['E1', 'M1'], ['E2', 'M1'], ['M1', 'S1'], ['S1', 'S2'], ['S2', 'A'], ['S2', 'B'], ['S1', 'M4'], ['M4', 'C'], ['E3', 'S3'], ['S3', 'D'], ['S3', 'M4']],
+      exits: { A: 'JNG', B: 'BKS', C: 'CKR', D: 'GDG' }, entries: { E1: 'Tanah Abang', E2: 'Sudirman', E3: 'Priok' },
+      gen: { n: 15, gap: 3.1, seed: 6, mix: { krl: 5, barang: 2 } } },
+    { id: 'L7', name: 'Simpang Karawang', place: 'Koridor KCIC', theme: 'koridor', hearts: 4, pace: 0.8,
+      blurb: 'Whoosh, KRL, dan barang campur. Jalur simpan + jalur pindah.',
+      nodes: { E1: [0, 2.2], S1: [2.2, 2.2], M3: [8.5, 2.2], M1: [10.5, 2.2], S4: [12.3, 2.2], A: [16, 1.1], B: [16, 3.3], E2: [0, 6.2], S2: [2.5, 6.2], S5: [12, 6.2], C: [16, 5.2], D: [16, 7.4] },
+      edges: [['E1', 'S1'], ['S1', 'M3'], ['M3', 'M1'], ['S1', 'M1', 0.8], ['M1', 'S4'], ['S4', 'A'], ['S4', 'B'], ['E2', 'S2'], ['S2', 'S5'], ['S2', 'M3'], ['S5', 'C'], ['S5', 'D']],
+      exits: { A: 'PDL', B: 'GDG', C: 'CKR', D: 'BKS' }, entries: { E1: 'Halim', E2: 'Manggarai' },
+      gen: { n: 15, gap: 3.4, seed: 7, mix: { kcic: 3, krl: 3, barang: 2 } } },
+    { id: 'L8', name: 'Koridor Halim\u2013Tegalluar', place: 'Koridor Penuh', theme: 'koridor', hearts: 4, pace: 0.8,
+      blurb: 'Final: tiga jalur, tiga jenis kereta, lima tujuan. Jadilah PPKA terbaik!',
+      nodes: { E1: [0, 1.5], S1: [3, 1.5], S7: [12.5, 1.5], A: [16, 0.6], B: [16, 2.6], E2: [0, 4.5], S2: [2, 4.5], M4: [8, 4.5], M2: [12, 4.5], S5: [13.6, 4.5], C: [16, 3.8], D: [16, 5.4], E3: [0, 7.5], M3: [7, 7.5], S3: [8.6, 7.5], F: [16, 7.5] },
+      edges: [['E1', 'S1'], ['S1', 'S7'], ['S7', 'A'], ['S7', 'B'], ['S1', 'M4'], ['E2', 'S2'], ['S2', 'M4'], ['M4', 'M2'], ['M2', 'S5'], ['S5', 'C'], ['S5', 'D'], ['S2', 'M3'], ['E3', 'M3'], ['M3', 'S3'], ['S3', 'F'], ['S3', 'M2']],
+      exits: { A: 'PDL', B: 'TGL', C: 'BKS', D: 'CKR', F: 'GDG' }, entries: { E1: 'Halim', E2: 'Manggarai', E3: 'Priok' },
+      gen: { n: 18, gap: 3.5, seed: 8, mix: { kcic: 3, krl: 3, barang: 2 } } }
+  ]
+};
+// Whoosh Atur Rel simulation: track graph, trains, switches (wesel), signals, collisions, scoring, prediction and a look-ahead bot.
+// Pure logic (no DOM) so node tests and the in-page demo share it.
+var WR = (function () {
+  'use strict';
+  var SPEC = {
+    kcic: { name: 'Whoosh', v: 2.7, L: 1.75, cars: 3, tol: 2.5, pts: 150, w: 3 },
+    krl: { name: 'KRL', v: 1.6, L: 2.0, cars: 4, tol: 5, pts: 100, w: 1.5 },
+    barang: { name: 'Kereta Barang', v: 0.95, L: 2.9, cars: 6, tol: 12, pts: 120, w: 0.6 }
+  };
+  var Z = 0.9, SIG = 1.15, GAP = 1.2, ZL = 0.5, ACC = 2.4, TAN = 1 / Math.tan(35 * Math.PI / 180);
+
+  function rng(seed) { var s = (seed >>> 0) || 1; return function () { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+  function hash(str) { var h = 2166136261; for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+  // ---------- map ----------
+  function round(pts) { // rounded corners on interior points
+    if (pts.length < 3) return pts;
+    var out = [pts[0]];
+    for (var i = 1; i < pts.length - 1; i++) {
+      var p = pts[i], a = pts[i - 1], b = pts[i + 1];
+      var la = Math.hypot(p[0] - a[0], p[1] - a[1]), lb = Math.hypot(b[0] - p[0], b[1] - p[1]);
+      var r = Math.min(0.8, la / 2, lb / 2);
+      var p0 = [p[0] + (a[0] - p[0]) / la * r, p[1] + (a[1] - p[1]) / la * r], p1 = [p[0] + (b[0] - p[0]) / lb * r, p[1] + (b[1] - p[1]) / lb * r];
+      for (var k = 0; k <= 8; k++) { var t = k / 8, u = 1 - t; out.push([u * u * p0[0] + 2 * u * t * p[0] + t * t * p1[0], u * u * p0[1] + 2 * u * t * p[1] + t * t * p1[1]]); }
+    }
+    out.push(pts[pts.length - 1]);
+    return out.filter(function (q, i) { return !i || Math.hypot(q[0] - out[i - 1][0], q[1] - out[i - 1][1]) > 1e-6; });
+  }
+  function build(def) {
+    var nodes = {}, edges = [];
+    Object.keys(def.nodes).forEach(function (id) { var n = def.nodes[id]; nodes[id] = { id: id, x: n[0], y: n[1], inn: [], out: [] }; });
+    def.edges.forEach(function (e, i) { nodes[e[0]].out.push(i); nodes[e[1]].inn.push(i); });
+    def.edges.forEach(function (e, i) {
+      var A = nodes[e[0]], B = nodes[e[1]], dy = B.y - A.y, divA = A.out.length > 1, mrgB = B.inn.length > 1, pts;
+      if (e.length > 2) { var ly = e[2]; pts = [[A.x, A.y], [A.x + Math.abs(ly - A.y) * TAN, ly], [B.x - Math.abs(ly - B.y) * TAN, ly], [B.x, B.y]]; }
+      else if (Math.abs(dy) < 1e-6 || (divA && mrgB)) pts = [[A.x, A.y], [B.x, B.y]];
+      else if (mrgB) pts = [[A.x, A.y], [B.x - Math.abs(dy) * TAN, A.y], [B.x, B.y]];
+      else pts = [[A.x, A.y], [A.x + Math.abs(dy) * TAN, B.y], [B.x, B.y]];
+      pts = round(pts.filter(function (q, k) { return !k || Math.hypot(q[0] - pts[k - 1][0], q[1] - pts[k - 1][1]) > 1e-6; }));
+      var cum = [0]; for (var k = 1; k < pts.length; k++) cum.push(cum[k - 1] + Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]));
+      edges.push({ id: i, from: e[0], to: e[1], pts: pts, cum: cum, len: cum[cum.length - 1], loop: e.length > 2 });
+    });
+    var sw = [], sig = [], entries = [], exits = [];
+    Object.keys(nodes).forEach(function (id) {
+      var n = nodes[id];
+      if (n.out.length === 2) sw.push(id);
+      if (n.inn.length === 2) n.inn.forEach(function (ei) { sig.push(ei); });
+      if (!n.inn.length) entries.push(id);
+      if (!n.out.length) exits.push(id);
+    });
+    var map = { def: def, nodes: nodes, edges: edges, switches: sw, signals: sig, entries: entries, exits: exits, sigOn: {} };
+    sig.forEach(function (ei) { map.sigOn[ei] = true; });
+    // controls in reading order (x, then y) for keyboard cycling
+    map.controls = sw.map(function (id) { return { k: 'w', id: id, x: nodes[id].x, y: nodes[id].y }; })
+      .concat(sig.map(function (ei) { var p = pos(map, ei, sigS(map, ei)); return { k: 's', id: ei, x: p.x, y: p.y }; }))
+      .sort(function (a, b) { return a.x - b.x || a.y - b.y; });
+    map.dist = {}; // shortest path length entry -> exit
+    entries.forEach(function (en) { exits.forEach(function (ex) { var d = sp(map, en, ex); if (d < Infinity) map.dist[en + '>' + ex] = d; }); });
+    return map;
+  }
+  function sp(map, a, b) {
+    var best = {}, st = [[a, 0]];
+    while (st.length) { var c = st.pop(); if (best[c[0]] !== undefined && best[c[0]] <= c[1]) continue; best[c[0]] = c[1]; map.nodes[c[0]].out.forEach(function (ei) { st.push([map.edges[ei].to, c[1] + map.edges[ei].len]); }); }
+    return best[b] === undefined ? Infinity : best[b];
+  }
+  function sigS(map, ei) { return map.edges[ei].len - SIG; }
+  function pos(map, ei, s) {
+    var e = map.edges[ei], p = e.pts, c = e.cum, n = p.length;
+    if (s <= 0) { var dx = p[1][0] - p[0][0], dy = p[1][1] - p[0][1], l = Math.hypot(dx, dy); return { x: p[0][0] + dx / l * s, y: p[0][1] + dy / l * s, a: Math.atan2(dy, dx) }; }
+    if (s >= e.len) { var dx2 = p[n - 1][0] - p[n - 2][0], dy2 = p[n - 1][1] - p[n - 2][1], l2 = Math.hypot(dx2, dy2), o = s - e.len; return { x: p[n - 1][0] + dx2 / l2 * o, y: p[n - 1][1] + dy2 / l2 * o, a: Math.atan2(dy2, dx2) }; }
+    var lo = 0, hi = n - 1; while (hi - lo > 1) { var m = (lo + hi) >> 1; if (c[m] <= s) lo = m; else hi = m; }
+    var t = (s - c[lo]) / (c[hi] - c[lo] || 1);
+    return { x: p[lo][0] + (p[hi][0] - p[lo][0]) * t, y: p[lo][1] + (p[hi][1] - p[lo][1]) * t, a: Math.atan2(p[hi][1] - p[lo][1], p[hi][0] - p[lo][0]) };
+  }
+  // point at distance d behind the head of train tr
+  function trainPoint(map, tr, d) {
+    var k = tr.edges.length - 1, s = tr.s - d;
+    while (s < 0 && k > 0) { k--; s += map.edges[tr.edges[k]].len; }
+    return pos(map, tr.edges[k], s);
+  }
+
+  // ---------- schedule ----------
+  function reach(map, entry, type) {
+    return map.exits.filter(function (ex) { return map.dist[entry + '>' + ex] !== undefined && WR_DATA.stations[map.def.exits[ex]].ty.indexOf(type) >= 0; });
+  }
+  function schedule(map, seed, n, gap, mix, t0) {
+    var R = rng(seed), out = [], last = {}, types = Object.keys(mix), tot = 0;
+    types.forEach(function (k) { tot += mix[k]; });
+    var t = t0 === undefined ? 1.5 : t0;
+    for (var i = 0; i < n; i++) {
+      var opts = [];
+      map.entries.forEach(function (en) { types.forEach(function (ty) { var ex = reach(map, en, ty); if (ex.length) opts.push([en, ty, ex, mix[ty] / tot]); }); });
+      var r = R() * opts.reduce(function (a, o) { return a + o[3]; }, 0), o = opts[0];
+      for (var j = 0; j < opts.length; j++) { r -= opts[j][3]; if (r <= 0) { o = opts[j]; break; } }
+      var dest = o[2][Math.floor(R() * o[2].length)], tt = Math.max(t, (last[o[0]] || -99));
+      out.push([Math.round(tt * 10) / 10, o[0], o[1], dest]);
+      last[o[0]] = tt + SPEC[o[1]].L / SPEC[o[1]].v + 1.2;
+      t += gap * (0.7 + R() * 0.6);
+    }
+    return out.sort(function (a, b) { return a[0] - b[0]; });
+  }
+
+  // ---------- state ----------
+  function newGame(map, opts) {
+    opts = opts || {};
+    // t366u: pace k < 1 = slow motion (trains slower AND timetable stretched by 1/k) -> more reaction time everywhere
+    var def = map.def, k = opts.pace || (opts.endless ? 0.8 : def.pace) || 1, H = opts.endless ? 5 : (def.hearts || 3);
+    var st = { map: map, t: 0, trains: [], sw: {}, sig: {}, queue: [], hearts: H, maxH: H, k: k, wrongN: 0, score: 0, pend: {}, nextId: 1,
+      ok: 0, late: 0, wrong: 0, crash: 0, lost: 0, total: 0, events: [], over: null, lostAcc: 0, endless: !!opts.endless, wreck: [] };
+    map.switches.forEach(function (id) { st.sw[id] = (def.sw0 && def.sw0[id]) || 0; });
+    map.signals.forEach(function (ei) { st.sig[ei] = 1; });
+    if (opts.endless) { st.gen = { seed: opts.seed >>> 0, i: 0, next: 1.5 }; st.total = Infinity; }
+    else {
+      st.queue = (def.trains ? def.trains.map(function (q) { return q.slice(); }) : schedule(map, def.gen.seed * 7919 + 13, def.gen.n, def.gen.gap, def.gen.mix, def.gen.first))
+        .map(function (q) { q[0] = Math.round(q[0] / k * 10) / 10; return q; });
+      st.total = st.queue.length;
+    }
+    return st;
+  }
+  function endlessNext(st) {
+    var g = st.gen, gap = Math.max(2.3, 5.0 - g.i * 0.045) / (st.k || 1); // t366u: gentler ramp
+    var q = schedule(st.map, g.seed + g.i * 977, 1, gap, { kcic: 3, krl: 3, barang: 2 }, g.next)[0];
+    g.i++; g.next = q[0] + gap * (0.75 + rng(g.seed + g.i)() * 0.5);
+    st.queue.push(q);
+  }
+  function nextEdge(st, ei) { var n = st.map.nodes[st.map.edges[ei].to]; if (!n.out.length) return null; return n.out.length === 2 ? n.out[st.sw[n.id]] : n.out[0]; }
+  function occ(map, tr) { // [[edge, lo, hi], ...] from head backwards
+    var r = [], rem = SPEC[tr.type].L, k = tr.edges.length - 1, hi = tr.s;
+    while (true) {
+      var lo = hi - rem;
+      if (lo < 0 && k > 0) { r.push([tr.edges[k], 0, hi]); rem = -lo; k--; hi = map.edges[tr.edges[k]].len; continue; }
+      r.push([tr.edges[k], lo, hi]); break;
+    }
+    return r;
+  }
+  function live(tr) { return tr.st === 'run' || tr.st === 'leave'; }
+  function locked(st, nodeId) { // interlocking: a switch cannot move while a train is over it
+    var map = st.map, n = map.nodes[nodeId];
+    return st.trains.some(function (tr) {
+      if (!live(tr)) return false;
+      return occ(map, tr).some(function (o) {
+        if (n.inn.indexOf(o[0]) >= 0 && o[2] > map.edges[o[0]].len - 0.15) return true;
+        return n.out.indexOf(o[0]) >= 0 && o[1] < ZL;
+      });
+    });
+  }
+  function toggle(st, c) {
+    if (st.over) return false;
+    if (c.k === 'w') {
+      if (locked(st, c.id)) { // queue the flip until the train has passed
+        if (st.pend[c.id] !== undefined) delete st.pend[c.id]; else st.pend[c.id] = 1 - st.sw[c.id];
+        st.events.push({ e: 'locked', id: c.id, pend: st.pend[c.id] !== undefined }); return false;
+      }
+      delete st.pend[c.id]; st.sw[c.id] = 1 - st.sw[c.id]; st.events.push({ e: 'switch', id: c.id }); return true;
+    }
+    st.sig[c.id] = st.sig[c.id] ? 0 : 1; st.events.push({ e: 'signal', id: c.id, on: st.sig[c.id] }); return true;
+  }
+  function pending(st) {
+    for (var id in st.pend) if (!locked(st, id)) { if (st.sw[id] !== st.pend[id]) { st.sw[id] = st.pend[id]; st.events.push({ e: 'switch', id: id, auto: 1 }); } delete st.pend[id]; }
+  }
+  function spawn(st) {
+    if (st.gen) while (st.gen.next <= st.t + 6) endlessNext(st);
+    var used = {};
+    for (var i = 0; i < st.queue.length; i++) {
+      var q = st.queue[i];
+      if (q[0] > st.t) break;
+      if (used[q[1]]) continue;
+      used[q[1]] = 1;
+      var e0 = st.map.nodes[q[1]].out[0], blocked = st.trains.some(function (tr) {
+        return live(tr) && occ(st.map, tr).some(function (o) { return o[0] === e0 && o[1] < GAP + 0.15; });
+      });
+      if (blocked) continue;
+      var sp = SPEC[q[2]];
+      st.trains.push({ id: st.nextId++, type: q[2], dest: q[3], entry: q[1], edges: [e0], s: 0, v: sp.v * st.k, t0: q[0], ideal: st.map.dist[q[1] + '>' + q[3]] / (sp.v * st.k), lost: 0, st: 'run', warn: 0 });
+      st.events.push({ e: 'spawn', id: st.nextId - 1, type: q[2] });
+      st.queue.splice(i, 1); i--;
+    }
+  }
+  function leaderLimit(st, tr) {
+    var map = st.map, e = tr.edges[tr.edges.length - 1], lim = Infinity;
+    if (tr.st === 'run' && map.sigOn[e] && !st.sig[e] && tr.s <= sigS(map, e) + 1e-6) lim = sigS(map, e) - tr.s;
+    var nx = tr.st === 'run' ? nextEdge(st, e) : null, el = map.edges[e].len;
+    for (var i = 0; i < st.trains.length; i++) {
+      var o = st.trains[i]; if (o === tr || !live(o)) continue;
+      var oc = occ(map, o);
+      for (var j = 0; j < oc.length; j++) {
+        var q = oc[j];
+        if (q[0] === e && q[1] > tr.s - 0.05) lim = Math.min(lim, q[1] - tr.s - GAP);
+        else if (nx !== null && q[0] === nx && el - tr.s < 4) {
+          var k = o.edges.indexOf(nx); if (k > 0 && o.edges[k - 1] === e) lim = Math.min(lim, el - tr.s + q[1] - GAP);
+        }
+      }
+    }
+    return lim;
+  }
+  function arrive(st, tr, exitId) {
+    var sp = SPEC[tr.type], ok = exitId === tr.dest, delay = st.t - tr.t0 - tr.ideal, on = ok && delay <= sp.tol * 2 / st.k + 0.05, pts = 0; // t366u: 2x (and pace-scaled) on-time window
+    if (ok && on) { st.ok++; pts = sp.pts; } else if (ok) { st.late++; pts = Math.round(sp.pts * 0.6); } else { st.wrong++; if (st.gen && ++st.wrongN % 2 === 0) st.hearts--; } // endless/daily: every 2nd wrong destination costs a heart
+    st.score += pts; tr.st = 'leave'; tr.res = ok ? (on ? 'ok' : 'late') : 'wrong';
+    st.events.push({ e: 'arrive', id: tr.id, type: tr.type, res: tr.res, pts: pts, exit: exitId, delay: delay });
+  }
+  function step(st, dt) {
+    if (st.over) return;
+    var map = st.map; st.t += dt; spawn(st); pending(st);
+    var lims = st.trains.map(function (tr) { return live(tr) ? leaderLimit(st, tr) : 0; });
+    for (var i = 0; i < st.trains.length; i++) {
+      var tr = st.trains[i]; if (!live(tr)) continue;
+      var sp = SPEC[tr.type];
+      var vmax = sp.v * st.k; tr.v = Math.min(vmax, tr.v + ACC * st.k * dt);
+      var ds = tr.v * dt;
+      if (ds > lims[i]) { ds = Math.max(0, lims[i]); tr.v = Math.min(tr.v, ds / dt); }
+      var lost = dt * (1 - ds / dt / vmax); tr.lost += lost; st.lostAcc += lost * sp.w;
+      tr.s += ds;
+      var e = tr.edges[tr.edges.length - 1];
+      while (tr.st === 'run' && tr.s > map.edges[e].len) {
+        var nx = nextEdge(st, e);
+        if (nx === null) { arrive(st, tr, map.edges[e].to); break; }
+        tr.s -= map.edges[e].len; tr.edges.push(nx); e = nx;
+      }
+      if (tr.st === 'leave' && tr.s - sp.L > map.edges[e].len + 0.2) tr.st = 'gone';
+      // trim history
+      var need = sp.L + 0.5, acc = tr.s, k = tr.edges.length - 1;
+      while (k > 0 && acc < need) { k--; acc += map.edges[tr.edges[k]].len; }
+      if (k > 1) { tr.edges.splice(0, k - 1); }
+    }
+    collide(st);
+    st.trains = st.trains.filter(function (tr) { return tr.st !== 'gone' && !(tr.st === 'crash' && st.t - tr.ct > 1.6); });
+    if (st.hearts <= 0) { st.over = 'fail'; st.events.push({ e: 'over', res: 'fail' }); }
+    else if (!st.gen && !st.queue.length && !st.trains.some(function (tr) { return tr.st === 'run' || tr.st === 'leave'; })) { st.over = 'win'; st.events.push({ e: 'over', res: 'win' }); }
+  }
+  function collide(st) {
+    var map = st.map, L = st.trains.filter(live), oc = L.map(function (tr) { return occ(map, tr); });
+    var hit = null;
+    for (var a = 0; a < L.length && !hit; a++) for (var b = a + 1; b < L.length && !hit; b++) {
+      for (var i = 0; i < oc[a].length && !hit; i++) for (var j = 0; j < oc[b].length && !hit; j++) {
+        var p = oc[a][i], q = oc[b][j];
+        if (p[0] === q[0] && p[1] < q[2] - 0.02 && q[1] < p[2] - 0.02) hit = [a, b, p[0], Math.max(p[1], q[1])];
+      }
+      if (!hit) { var z = zoneHit(map, L[a], oc[a], L[b], oc[b]); if (z) hit = [a, b, z[0], z[1]]; }
+    }
+    if (!hit) return;
+    var A = L[hit[0]], B = L[hit[1]], p = pos(map, hit[2], Math.min(Math.max(hit[3], 0), map.edges[hit[2]].len));
+    [A, B].forEach(function (tr) { tr.st = 'crash'; tr.ct = st.t; });
+    st.crash++; st.hearts--; st.score = Math.max(0, st.score - 50);
+    st.events.push({ e: 'crash', ids: [A.id, B.id], x: p.x, y: p.y });
+    if (!st.pred) collide(st);
+  }
+  function zoneLabels(map, tr, oc) { // merge-node fouling zones: node -> inbound edge used
+    var r = {};
+    oc.forEach(function (o) {
+      var e = map.edges[o[0]], to = map.nodes[e.to], fr = map.nodes[e.from];
+      if (to.inn.length === 2 && o[2] > e.len - Z) r[to.id] = o[0];
+      if (fr.inn.length === 2 && o[1] < Z) { var k = tr.edges.indexOf(o[0]); r[fr.id] = k > 0 ? tr.edges[k - 1] : -1; }
+    });
+    return r;
+  }
+  function zoneHit(map, A, oa, B, ob) {
+    var za = zoneLabels(map, A, oa), zb = zoneLabels(map, B, ob);
+    for (var n in za) if (n in zb && za[n] !== zb[n]) { var ei = map.nodes[n].out[0]; return [ei, 0]; }
+    return null;
+  }
+  function routeExit(st, tr) {
+    var e = tr.edges[tr.edges.length - 1];
+    for (var i = 0; i < 40; i++) { var nx = nextEdge(st, e); if (nx === null) return st.map.edges[e].to; e = nx; }
+    return null;
+  }
+  function clone(st) {
+    var c = {}; for (var k in st) c[k] = st[k];
+    c.trains = st.trains.map(function (tr) { var t = {}; for (var k2 in tr) t[k2] = tr[k2]; t.edges = tr.edges.slice(); return t; });
+    c.sw = Object.assign({}, st.sw); c.pend = Object.assign({}, st.pend); c.sig = Object.assign({}, st.sig); c.queue = st.queue.slice(); c.events = [];
+    if (st.gen) c.gen = Object.assign({}, st.gen);
+    c.pred = true; return c;
+  }
+  // look ahead with current controls: first crash (point + trains) within T seconds
+  function predict(st, T) {
+    var c = clone(st), dt = 0.05;
+    for (var t = 0; t < (T || 3); t += dt) {
+      step(c, dt);
+      for (var i = 0; i < c.events.length; i++) if (c.events[i].e === 'crash') { var ev = c.events[i]; return { t: t, x: ev.x, y: ev.y, ids: ev.ids }; }
+      c.events.length = 0; if (c.over) break;
+    }
+    return null;
+  }
+  // ---------- bot ----------
+  // distance from each running train to switch nodes along its current route (first 4 edges)
+  function approach(st) {
+    var map = st.map, r = {};
+    st.trains.forEach(function (tr) {
+      if (tr.st !== 'run') return;
+      var e = tr.edges[tr.edges.length - 1], d = map.edges[e].len - tr.s;
+      for (var i = 0; i < 4; i++) {
+        var to = map.edges[e].to;
+        if (map.nodes[to].out.length === 2 && (!r[to] || r[to].d > d)) r[to] = { d: d, tr: tr };
+        e = nextEdge(st, e); if (e === null) break; d += map.edges[e].len;
+      }
+    });
+    return r;
+  }
+  var NEAR = 2.6;
+  function autoSwitch(st) { // future decisions in a rollout: far switches point the next train towards its destination
+    var map = st.map, ap = approach(st);
+    for (var id in ap) {
+      if (ap[id].d < NEAR) continue;
+      var tr = ap[id].tr, n = map.nodes[id], best = -1, bd = Infinity;
+      n.out.forEach(function (ei, k) { var d = sp(map, map.edges[ei].to, tr.dest); if (d < bd) { bd = d; best = k; } });
+      if (best >= 0 && st.sw[id] !== best) { if (locked(st, id)) st.pend[id] = best; else st.sw[id] = best; }
+    }
+  }
+  function relevant(st) {
+    var ap = approach(st);
+    return st.map.controls.filter(function (c) { return c.k === 's' || (ap[c.id] && ap[c.id].d < NEAR + 0.4); });
+  }
+  function rollout(st, acts, T) {
+    var c = clone(st), dt = 0.08, cost = 0, base = st.lostAcc;
+    acts.forEach(function (a) { toggle(c, a); cost += 0.4; });
+    for (var t = 0; t < T; t += dt) {
+      autoSwitch(c); step(c, dt);
+      var w = 1 - 0.5 * t / T;
+      for (var i = 0; i < c.events.length; i++) {
+        var ev = c.events[i];
+        if (ev.e === 'crash') cost += 1000 * w;
+        else if (ev.e === 'arrive') cost += ev.res === 'wrong' ? 500 * w : ev.res === 'late' ? -20 : -60;
+      }
+      for (var qi = 0; qi < c.queue.length && c.queue[qi][0] < c.t; qi++) cost += dt * SPEC[c.queue[qi][2]].w * 12;
+      c.events.length = 0; if (c.over) break;
+    }
+    c.trains.forEach(function (tr) { // commitment: where would each train end up with these settings?
+      if (tr.st !== 'run') return;
+      var e = tr.edges[tr.edges.length - 1], sws = 0, ex = null;
+      for (var i = 0; i < 40; i++) { var n = c.map.nodes[c.map.edges[e].to]; if (!n.out.length) { ex = n.id; break; } if (n.out.length === 2) sws++; e = nextEdge(c, e); }
+      var good = ex === tr.dest;
+      cost += sws ? (good ? -10 : 60 / sws) : (good ? -20 : 400);
+    });
+    return cost + (c.lostAcc - base) * 12;
+  }
+  function bot(st, T) {
+    var rel = relevant(st), cands = [[]];
+    rel.forEach(function (c, i) { cands.push([c]); for (var j = i + 1; j < rel.length; j++) if (rel[j].k !== c.k || c.k === 'w') cands.push([c, rel[j]]); });
+    var best = null, bc = Infinity;
+    cands.forEach(function (a) { var v = rollout(st, a, T || 8); if (v < bc - 1e-6) { bc = v; best = a; } });
+    return best || [];
+  }
+  function stars(st) {
+    if (st.over === 'fail') return 0;
+    var n = st.total, good = st.ok + st.late;
+    // t366u: easier thresholds; late arrivals count as good
+    if (!st.crash && st.wrong <= 1 && good >= Math.ceil(n * 0.85) && st.ok >= Math.ceil(n * 0.5)) return 3;
+    if (st.crash <= 2 && good >= Math.ceil(n * 0.55)) return 2;
+    return 1;
+  }
+  return { _rollout: rollout, _auto: autoSwitch, SPEC: SPEC, Z: Z, SIG: SIG, build: build, pos: pos, trainPoint: trainPoint, newGame: newGame, step: step, toggle: toggle, locked: locked,
+    nextEdge: nextEdge, routeExit: routeExit, predict: predict, bot: bot, stars: stars, clone: clone, schedule: schedule, sigS: sigS, rng: rng, hash: hash, occ: occ, reach: reach };
+})();
+if (typeof module !== 'undefined') module.exports = WR;
+</script>
+<script id="wr-render">
+// Whoosh Atur Rel renderer: canvas, schematic top-down rail yard. Landscape = flow left->right; portrait = transposed (top->bottom).
+var WRR = (function () {
+  'use strict';
+  var cv, cx, W = 0, H = 0, DPR = 1, cs = 40, ox = 0, oy = 0, rot = false, map = null, theme = 'kampung', bg = null, stKey = '';
+  var TH = {
+    kampung: { base: '#a6d46f', base2: '#93c75f', ballast: '#c9b99b', wood: '#7a5133', rail: '#5f6b78', field: '#bde27f', row: '#9cc95c' },
+    kota: { base: '#cfc8b8', base2: '#c2baa8', ballast: '#b7ab97', wood: '#6b4a32', rail: '#56616d', field: '#d9d3c4', row: '#bfb7a6' },
+    koridor: { base: '#9fd07a', base2: '#86bd64', ballast: '#c7b89c', wood: '#74502f', rail: '#5a6673', field: '#c2e48a', row: '#a3cf68' }
+  };
+  function init(c) { cv = c; cx = c.getContext('2d'); }
+  function resize() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    var r = cv.getBoundingClientRect(); W = Math.max(50, r.width); H = Math.max(50, r.height);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    layout(); bg = null;
+  }
+  // world bounds: x -1.1..18.5 (exit signs on the right), y -0.45..9.45
+  var X0 = -1.1, X1 = 18.5, Y0 = -0.45, Y1 = 9.45, padT = 0, padB = 0;
+  function setPad(t, b) { if (t === padT && b === padB) return; padT = t; padB = b; layout(); bg = null; }
+  function layout() {
+    rot = H > W * 1.05; var Hh = H - padT - padB;
+    var wx = X1 - X0, wy = Y1 - Y0;
+    if (rot) wx += 0.5; // portrait: room for the station cards under the exits
+    cs = rot ? Math.min(W / wy, Hh / wx) : Math.min(W / wx, Hh / wy);
+    if (rot) { ox = (W - wy * cs) / 2 - Y0 * cs; oy = padT + (Hh - wx * cs) / 2 - X0 * cs; }
+    else { ox = (W - wx * cs) / 2 - X0 * cs; oy = padT + (Hh - wy * cs) / 2 - Y0 * cs; }
+  }
+  function S(x, y) { return rot ? [ox + y * cs, oy + x * cs] : [ox + x * cs, oy + y * cs]; }
+  function toW(sx, sy) { return rot ? { x: (sy - oy) / cs, y: (sx - ox) / cs } : { x: (sx - ox) / cs, y: (sy - oy) / cs }; }
+  function ang(a) { return rot ? Math.PI / 2 - a : a; }
+  var tint = null;
+  function setLevel(m, th, tn) { map = m; theme = th || 'kampung'; tint = tn || null; bg = null; }
+
+  // ---------- static layer ----------
+  function distToTrack(x, y) {
+    var best = 99;
+    map.edges.forEach(function (e) { for (var i = 1; i < e.pts.length; i++) { var a = e.pts[i - 1], b = e.pts[i], dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy, t = l2 ? Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / l2)) : 0; best = Math.min(best, Math.hypot(x - a[0] - dx * t, y - a[1] - dy * t)); } });
+    return best;
+  }
+  function rect(c, x, y, w, h) { var p = S(x, y), q = S(x + w, y + h); c.rect(Math.min(p[0], q[0]), Math.min(p[1], q[1]), Math.abs(q[0] - p[0]), Math.abs(q[1] - p[1])); }
+  function rrect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function polyPath(c, pts, off) {
+    c.beginPath();
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i], q;
+      if (off) { var a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; q = S(p[0] - dy / l * off, p[1] + dx / l * off); }
+      else q = S(p[0], p[1]);
+      if (i) c.lineTo(q[0], q[1]); else c.moveTo(q[0], q[1]);
+    }
+  }
+  function extPts(e) { // exits/entries run past the border into the portal
+    var p = e.pts.slice(), A = map.nodes[e.from], B = map.nodes[e.to];
+    if (!A.inn.length) p.unshift([p[0][0] - 1.4, p[0][1]]);
+    if (!B.out.length) p.push([p[p.length - 1][0] + 0.9, p[p.length - 1][1]]);
+    return p;
+  }
+  function buildBg() {
+    var T = TH[theme], c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height;
+    var g = c.getContext('2d'); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // ground
+    var gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, T.base); gr.addColorStop(1, T.base2); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    var R = WR.rng(WR.hash(map.def.id + theme));
+    // subtle grass/concrete speckle
+    for (var i = 0; i < 260; i++) { var p = S(X0 + R() * (X1 - X0), Y0 + R() * (Y1 - Y0)); g.fillStyle = 'rgba(255,255,255,' + (0.05 + R() * 0.07) + ')'; g.fillRect(p[0], p[1], cs * 0.08, cs * 0.08); g.fillStyle = 'rgba(0,0,0,' + (0.03 + R() * 0.05) + ')'; g.fillRect(p[0] + cs * 0.3, p[1] + cs * 0.2, cs * 0.06, cs * 0.06); }
+    decor(g, T, R);
+    // map frame
+    g.save(); g.strokeStyle = 'rgba(60,40,20,.18)'; g.lineWidth = cs * 0.06; g.setLineDash([cs * 0.25, cs * 0.18]); g.beginPath(); rect(g, 0, -0.2, 16, 9.4); g.stroke(); g.restore();
+    // tracks: shadow, ballast, sleepers, rails
+    var E = map.edges.map(extPts);
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    E.forEach(function (p) { g.strokeStyle = 'rgba(40,30,10,.18)'; g.lineWidth = cs * 0.62; polyPath(g, p.map(function (q) { return [q[0] + 0.05, q[1] + 0.07]; })); g.stroke(); });
+    E.forEach(function (p) { g.strokeStyle = T.ballast; g.lineWidth = cs * 0.56; polyPath(g, p); g.stroke(); });
+    E.forEach(function (p) { g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = cs * 0.42; polyPath(g, p); g.stroke(); });
+    g.lineCap = 'butt';
+    E.forEach(function (p) { g.strokeStyle = T.wood; g.lineWidth = cs * 0.4; g.setLineDash([cs * 0.07, cs * 0.15]); polyPath(g, p); g.stroke(); });
+    g.setLineDash([]); g.lineCap = 'round';
+    E.forEach(function (p) { [-0.1, 0.1].forEach(function (o) { g.strokeStyle = T.rail; g.lineWidth = cs * 0.055; polyPath(g, p, o); g.stroke(); g.strokeStyle = 'rgba(255,255,255,.55)'; g.lineWidth = cs * 0.02; polyPath(g, p, o - 0.012); g.stroke(); }); });
+    // entry portals (tunnel mouths)
+    map.entries.forEach(function (id) { portal(g, map.nodes[id], true); });
+    map.exits.forEach(function (id) { station(g, map.nodes[id], WR_DATA.stations[map.def.exits[id]]); });
+    // vignette + optional dusk tint
+    var vg = g.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(20,20,40,.28)'); g.fillStyle = vg; g.fillRect(0, 0, W, H);
+    if (tint === 'senja') { var tg = g.createLinearGradient(0, 0, 0, H); tg.addColorStop(0, 'rgba(255,140,60,.22)'); tg.addColorStop(1, 'rgba(120,60,160,.18)'); g.fillStyle = tg; g.fillRect(0, 0, W, H); }
+    return c;
+  }
+  function portal(g, n, entry) {
+    var p = S(n.x - 1.05, n.y), r = cs * 0.48;
+    g.save(); g.translate(p[0], p[1]); if (rot) g.rotate(Math.PI / 2);
+    g.fillStyle = '#7d6a55'; rrect(g, -r * 0.9, -r * 1.25, r * 1.5, r * 2.5, r * 0.35); g.fill();
+    g.fillStyle = '#2b2420'; rrect(g, -r * 0.5, -r * 0.8, r * 1.2, r * 1.6, r * 0.6); g.fill();
+    g.strokeStyle = '#a89379'; g.lineWidth = 2; rrect(g, -r * 0.9, -r * 1.25, r * 1.5, r * 2.5, r * 0.35); g.stroke();
+    g.restore();
+    var lb = map.def.entries && map.def.entries[n.id];
+    if (lb) { var q = rot ? S(n.x - 1.1, n.y + 0.55) : S(n.x - 0.15, n.y - 0.98); label(g, 'dari ' + lb, q[0], q[1], 'rgba(30,30,40,.72)', '#fff', Math.max(9, cs * 0.24), 'left'); }
+  }
+  function label(g, txt, x, y, bgc, fg, fs, align) {
+    g.save(); g.font = '700 ' + fs + 'px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; var w = g.measureText(txt).width + fs * 0.9, h = fs * 1.55;
+    var lx = align === 'left' ? x : x - w / 2; lx = Math.max(4, Math.min(W - w - 4, lx));
+    g.fillStyle = bgc; rrect(g, lx, y - h / 2, w, h, h / 2); g.fill(); g.fillStyle = fg; g.textBaseline = 'middle'; g.textAlign = 'left'; g.fillText(txt, lx + fs * 0.45, y + 0.5); g.restore();
+  }
+  function exGap() { var ys = map.exits.map(function (id) { return map.nodes[id].y; }).sort(function (a, b) { return a - b; }), m = 9; for (var i = 1; i < ys.length; i++) m = Math.min(m, ys[i] - ys[i - 1]); return m; }
+  function station(g, n, sd) {
+    if (rot) {
+      var c0 = S(16.25, n.y), rr = cs, bw = Math.min(1.9, exGap() - 0.12) * rr, bh = 1.25 * rr, x0 = c0[0] - bw / 2, y0 = c0[1];
+      g.fillStyle = 'rgba(0,0,0,.18)'; rrect(g, x0 + 2, y0 + 3, bw, bh, 0.16 * rr); g.fill();
+      g.fillStyle = '#fff8ec'; rrect(g, x0, y0, bw, bh, 0.16 * rr); g.fill();
+      g.fillStyle = sd.c; rrect(g, x0, y0, bw, 0.55 * rr, 0.16 * rr); g.fill(); g.fillRect(x0, y0 + 0.35 * rr, bw, 0.2 * rr);
+      g.fillStyle = '#fff'; g.font = '900 ' + (0.4 * rr) + 'px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(sd.ch, c0[0], y0 + 0.29 * rr);
+      var f2 = Math.max(8, Math.min(0.26 * rr, 13)), nm2 = sd.n; g.font = '800 ' + f2 + 'px system-ui,sans-serif'; g.fillStyle = '#2b2b33';
+      while (g.measureText(nm2).width > bw - 4 && f2 > 7) { f2 -= 0.5; g.font = '800 ' + f2 + 'px system-ui,sans-serif'; }
+      while (g.measureText(nm2).width > bw - 4 && nm2.length > 4) nm2 = nm2.slice(0, -2) + '.';
+      g.fillText(nm2, c0[0], y0 + 0.78 * rr); g.font = '700 ' + (f2 * 0.75) + 'px system-ui,sans-serif'; g.fillStyle = '#7b6f63'; g.fillText(sd.ty[0] === 'kcic' ? 'Whoosh' : sd.ty[0] === 'krl' ? 'KRL' : 'Barang', c0[0], y0 + 1.03 * rr);
+      return;
+    }
+    // platform canopy beyond the border, colour stripe + name
+    var p = S(16.15, n.y), r = cs;
+    g.save(); g.translate(p[0], p[1]); if (rot) g.rotate(Math.PI / 2);
+    g.fillStyle = 'rgba(0,0,0,.18)'; rrect(g, 0.06 * r, -0.36 * r + 0.08 * r, 2.2 * r, 0.72 * r, 0.16 * r); g.fill();
+    g.fillStyle = '#fff8ec'; rrect(g, 0, -0.36 * r, 2.2 * r, 0.72 * r, 0.16 * r); g.fill();
+    g.fillStyle = sd.c; rrect(g, 0, -0.36 * r, 0.62 * r, 0.72 * r, 0.16 * r); g.fill(); g.fillRect(0.4 * r, -0.36 * r, 0.22 * r, 0.72 * r);
+    g.fillStyle = '#fff'; g.font = '900 ' + (0.42 * r) + 'px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(sd.ch, 0.31 * r, 0.02 * r);
+    var fs = Math.max(7.5, Math.min(0.27 * r, 15)); g.font = '800 ' + fs + 'px system-ui,sans-serif'; g.fillStyle = '#2b2b33'; g.textAlign = 'left';
+    var nm = sd.n; while (g.measureText(nm).width > 1.48 * r && fs > 7.5) { fs -= 0.5; g.font = '800 ' + fs + 'px system-ui,sans-serif'; }
+    while (g.measureText(nm).width > 1.5 * r && nm.length > 4) nm = nm.slice(0, -2) + '.';
+    g.fillText(nm, 0.7 * r, -0.07 * r);
+    g.font = '700 ' + (fs * 0.72) + 'px system-ui,sans-serif'; g.fillStyle = '#7b6f63'; g.fillText(sd.ty[0] === 'kcic' ? 'Whoosh' : sd.ty[0] === 'krl' ? 'KRL' : 'Barang', 0.7 * r, 0.2 * r);
+    g.restore();
+  }
+  function decor(g, T, R) {
+    var items = [];
+    function free(x, y, rad) { if (distToTrack(x, y) < rad + 0.55) return false; return !items.some(function (o) { return Math.hypot(o[0] - x, o[1] - y) < o[2] + rad; }); }
+    var nF = theme === 'kota' ? 0 : 14, nH = theme === 'kota' ? 26 : 9, nT = theme === 'kota' ? 14 : 34;
+    for (var i = 0; i < 300 && nF; i++) { // fields
+      var x = R() * 15.4 + 0.3, y = R() * 8.6 + 0.2, w = 1.1 + R() * 1.4, h = 0.8 + R() * 0.9;
+      if (!free(x + w / 2, y + h / 2, Math.max(w, h) / 2 + 0.1)) continue;
+      items.push([x + w / 2, y + h / 2, Math.max(w, h) / 2]); nF--;
+      g.fillStyle = T.field; g.beginPath(); rect(g, x, y, w, h); g.fill();
+      g.strokeStyle = T.row; g.lineWidth = Math.max(1, cs * 0.035);
+      for (var k = 0.15; k < w; k += 0.22) { g.beginPath(); var a = S(x + k, y + 0.08), b = S(x + k, y + h - 0.08); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); }
+      g.strokeStyle = 'rgba(120,90,50,.35)'; g.lineWidth = Math.max(1, cs * 0.05); g.beginPath(); rect(g, x, y, w, h); g.stroke();
+    }
+    if (theme === 'koridor') for (var j = 0; j < 4; j++) { var hx = R() * 16, hy = R() * 9; if (distToTrack(hx, hy) < 1.6) continue; var p = S(hx, hy); var rg = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], cs * 1.6); rg.addColorStop(0, 'rgba(60,110,50,.35)'); rg.addColorStop(1, 'rgba(60,110,50,0)'); g.fillStyle = rg; g.beginPath(); g.arc(p[0], p[1], cs * 1.6, 0, 7); g.fill(); }
+    var roofs = theme === 'kota' ? ['#e9ecef', '#ced4da', '#ffd8a8', '#a5d8ff', '#f8f9fa', '#ffc9c9'] : ['#c0392b', '#d35400', '#a84300', '#b03a2e'];
+    for (var i2 = 0; i2 < 600 && nH; i2++) { // houses / buildings
+      var bw = theme === 'kota' ? 0.7 + R() * 0.9 : 0.5 + R() * 0.35, bh = theme === 'kota' ? 0.6 + R() * 0.8 : 0.42 + R() * 0.25, bx = R() * 15.6 + 0.2, by = R() * 8.7 + 0.15;
+      if (!free(bx + bw / 2, by + bh / 2, Math.max(bw, bh) / 2 + 0.05)) continue;
+      items.push([bx + bw / 2, by + bh / 2, Math.max(bw, bh) / 2]); nH--;
+      g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); rect(g, bx + 0.08, by + 0.1, bw, bh); g.fill();
+      var rc = roofs[Math.floor(R() * roofs.length)]; g.fillStyle = rc; g.beginPath(); rect(g, bx, by, bw, bh); g.fill();
+      if (theme === 'kota') { g.fillStyle = 'rgba(0,0,0,.08)'; g.beginPath(); rect(g, bx + bw * 0.12, by + bh * 0.12, bw * 0.76, bh * 0.76); g.fill(); g.fillStyle = 'rgba(80,90,100,.35)'; g.beginPath(); rect(g, bx + bw * 0.2, by + bh * 0.2, bw * 0.2, bh * 0.2); g.fill(); }
+      else { g.strokeStyle = 'rgba(0,0,0,.25)'; g.lineWidth = Math.max(1, cs * 0.04); g.beginPath(); var a1 = S(bx, by + bh / 2), b1 = S(bx + bw, by + bh / 2); g.moveTo(a1[0], a1[1]); g.lineTo(b1[0], b1[1]); g.stroke(); g.fillStyle = 'rgba(255,255,255,.15)'; g.beginPath(); rect(g, bx, by, bw, bh / 2); g.fill(); }
+    }
+    for (var i3 = 0; i3 < 400 && nT; i3++) { // trees / palms
+      var tx = R() * 16, ty = R() * 9, tr = 0.22 + R() * 0.2;
+      if (!free(tx, ty, tr)) continue; items.push([tx, ty, tr]); nT--;
+      var p2 = S(tx, ty);
+      g.fillStyle = 'rgba(0,0,0,.2)'; g.beginPath(); g.arc(p2[0] + cs * 0.07, p2[1] + cs * 0.09, tr * cs, 0, 7); g.fill();
+      var col = ['#4f8a3a', '#3f7d32', '#5a9a40', '#2f6b2a'][Math.floor(R() * 4)];
+      if (R() < 0.45 && theme !== 'kota') { g.strokeStyle = col; g.lineWidth = cs * 0.07; g.lineCap = 'round'; for (var k2 = 0; k2 < 6; k2++) { var an = k2 / 6 * Math.PI * 2 + R(); g.beginPath(); g.moveTo(p2[0], p2[1]); g.lineTo(p2[0] + Math.cos(an) * tr * cs * 1.3, p2[1] + Math.sin(an) * tr * cs * 1.3); g.stroke(); } g.fillStyle = '#8b5a2b'; g.beginPath(); g.arc(p2[0], p2[1], cs * 0.06, 0, 7); g.fill(); }
+      else { g.fillStyle = col; g.beginPath(); g.arc(p2[0], p2[1], tr * cs, 0, 7); g.fill(); g.fillStyle = 'rgba(255,255,255,.16)'; g.beginPath(); g.arc(p2[0] - tr * cs * 0.3, p2[1] - tr * cs * 0.3, tr * cs * 0.5, 0, 7); g.fill(); }
+    }
+    if (theme === 'kampung') for (var i4 = 0; i4 < 200; i4++) { var px = R() * 15 + 0.5, py = R() * 8 + 0.5; if (!free(px, py, 0.55)) continue; items.push([px, py, 0.55]); var p3 = S(px, py); g.fillStyle = '#6cc0e5'; g.beginPath(); g.ellipse(p3[0], p3[1], cs * 0.55, cs * 0.36, 0, 0, 7); g.fill(); g.strokeStyle = 'rgba(255,255,255,.5)'; g.lineWidth = 1.5; g.beginPath(); g.ellipse(p3[0] - cs * 0.1, p3[1] - cs * 0.06, cs * 0.25, cs * 0.1, 0, 0, 7); g.stroke(); break; }
+  }
+
+  // ---------- dynamic ----------
+  var CARS = {
+    kcic: [0.62, 0.55, 0.55], krl: [0.47, 0.47, 0.47, 0.47], barang: [0.55, 0.44, 0.44, 0.44, 0.44, 0.44]
+  };
+  var CONT = ['#c92a2a', '#2b8a3e', '#e67700', '#1864ab', '#868e96', '#5f3dc4'];
+  function carShape(c, type, i, len, wd, tr) {
+    var L = len * cs, w = wd * cs, h = L / 2, hw = w / 2;
+    if (type === 'kcic') {
+      c.fillStyle = '#f4f6f8';
+      if (i === 0) { c.beginPath(); c.moveTo(h, 0); c.quadraticCurveTo(h * 0.2, -hw * 1.05, -h, -hw); c.lineTo(-h, hw); c.quadraticCurveTo(h * 0.2, hw * 1.05, h, 0); c.fill(); }
+      else { rrect(c, -h, -hw, L, w, w * 0.3); c.fill(); }
+      c.fillStyle = '#d62839'; c.fillRect(-h + 1, -hw * 0.18, L * (i === 0 ? 0.62 : 1) - 2, hw * 0.36);
+      c.fillStyle = '#26364a'; if (i === 0) { c.beginPath(); c.ellipse(h * 0.25, 0, h * 0.28, hw * 0.55, 0, 0, 7); c.fill(); }
+      else c.fillRect(-h * 0.8, -hw * 0.75, L * 0.8, hw * 0.22);
+    } else if (type === 'krl') {
+      c.fillStyle = '#f1f3f5'; rrect(c, -h, -hw, L, w, w * 0.22); c.fill();
+      c.fillStyle = '#e03131'; c.fillRect(-h, -hw * 0.45, L, hw * 0.9);
+      c.fillStyle = '#ffd43b'; c.fillRect(-h, hw * 0.45, L, hw * 0.16);
+      if (i === 0) { c.fillStyle = '#212529'; c.fillRect(h - L * 0.2, -hw * 0.7, L * 0.14, hw * 1.4); }
+      if (i === tr) { c.fillStyle = '#212529'; c.fillRect(-h + L * 0.06, -hw * 0.7, L * 0.12, hw * 1.4); }
+    } else {
+      if (i === 0) { c.fillStyle = '#1c4e8a'; rrect(c, -h, -hw, L, w, w * 0.2); c.fill(); c.fillStyle = '#f08c00'; c.fillRect(h - L * 0.28, -hw, L * 0.28, w); c.fillStyle = '#e9ecef'; c.fillRect(-h + L * 0.15, -hw * 0.5, L * 0.38, hw); }
+      else { c.fillStyle = '#5c4a3a'; c.fillRect(-h, -hw * 0.82, L, hw * 1.64); c.fillStyle = CONT[(tr * 7 + i * 3) % CONT.length]; rrect(c, -h + L * 0.05, -hw * 0.92, L * 0.9, w * 0.92, 2); c.fill(); c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = 1; for (var k = 1; k < 5; k++) { c.beginPath(); c.moveTo(-h + L * k / 5, -hw * 0.85); c.lineTo(-h + L * k / 5, hw * 0.85); c.stroke(); } }
+    }
+  }
+  function drawTrain(c, st, tr, now, ui) {
+    var cars = CARS[tr.type], d = 0, wd = tr.type === 'barang' ? 0.36 : 0.32, crash = tr.st === 'crash', ct = crash ? now - tr.ct : 0, head = null;
+    var R = crash ? WR.rng(tr.id * 31) : null;
+    for (var i = 0; i < cars.length; i++) {
+      var f = WR.trainPoint(map, tr, d), b = WR.trainPoint(map, tr, d + cars[i]);
+      var pf = S(f.x, f.y), pb = S(b.x, b.y), a = Math.atan2(pf[1] - pb[1], pf[0] - pb[0]), mx = (pf[0] + pb[0]) / 2, my = (pf[1] + pb[1]) / 2;
+      if (crash) { var k = Math.min(1, ct * 3); a += (R() - 0.5) * 1.4 * k; mx += (R() - 0.5) * cs * 0.6 * k; my += (R() - 0.5) * cs * 0.6 * k; }
+      if (!i) head = { x: pf[0], y: pf[1], a: a, mx: mx, my: my };
+      c.save(); c.translate(mx + cs * 0.06, my + cs * 0.08); c.rotate(a); c.fillStyle = 'rgba(0,0,0,.25)'; rrect(c, -cars[i] * cs / 2, -wd * cs / 2, cars[i] * cs, wd * cs, 3); c.fill(); c.restore();
+      c.save(); c.translate(mx, my); c.rotate(a); if (crash) c.globalAlpha = Math.max(0.25, 1 - ct * 0.5);
+      carShape(c, tr.type, i, cars[i] - 0.04, wd, tr.type === 'krl' ? cars.length - 1 : tr.id);
+      if (ui.warn && ui.warn[tr.id] && !crash) { c.strokeStyle = 'rgba(255,40,40,' + (0.55 + 0.45 * Math.sin(now * 18)) + ')'; c.lineWidth = 3; rrect(c, -cars[i] * cs / 2, -wd * cs / 2, cars[i] * cs, wd * cs, 4); c.stroke(); }
+      c.restore();
+      d += cars[i] + 0.04;
+    }
+    if (!head || crash) return head;
+    // headlight
+    if (tr.type !== 'barang' || true) { c.save(); c.translate(head.x, head.y); c.rotate(head.a); var lg = c.createRadialGradient(0, 0, 0, cs * 0.5, 0, cs * 0.6); lg.addColorStop(0, 'rgba(255,245,180,.55)'); lg.addColorStop(1, 'rgba(255,245,180,0)'); c.fillStyle = lg; c.beginPath(); c.moveTo(0, 0); c.lineTo(cs * 1.0, -cs * 0.32); c.lineTo(cs * 1.0, cs * 0.32); c.fill(); c.restore(); }
+    // destination badge (+ route check)
+    var sd = WR_DATA.stations[map.def.exits[tr.dest]], br = Math.max(7, cs * 0.2), bp = WR.trainPoint(map, tr, cars[0] * 0.55), q = S(bp.x, bp.y);
+    var stopped = tr.st === 'run' && tr.v < 0.05, sp = WR.SPEC[tr.type];
+    if (tr.st === 'run' && tr.lost > 0.05) { var fr = Math.min(1, tr.lost / (sp.tol * 2 / (st.k || 1))); c.strokeStyle = fr >= 1 ? '#e03131' : fr > 0.6 ? '#f76707' : '#fab005'; c.lineWidth = Math.max(2.5, cs * 0.07); c.beginPath(); c.arc(q[0], q[1], br + 3, -Math.PI / 2, -Math.PI / 2 + fr * Math.PI * 2); c.stroke(); }
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(q[0], q[1], br + 1.5, 0, 7); c.fill();
+    c.fillStyle = sd.c; c.beginPath(); c.arc(q[0], q[1], br, 0, 7); c.fill();
+    c.fillStyle = '#fff'; c.font = '900 ' + Math.round(br * 1.2) + 'px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(sd.ch, q[0], q[1] + 0.5);
+    if (tr.st === 'run') {
+      var ex = WR.routeExit(st, tr), good = ex === tr.dest, mr = br * 0.62, mx2 = q[0] + br * 0.95, my2 = q[1] - br * 0.95;
+      c.fillStyle = good ? '#2f9e44' : '#e03131'; c.beginPath(); c.arc(mx2, my2, mr, 0, 7); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = Math.max(1.5, mr * 0.32); c.beginPath();
+      if (good) { c.moveTo(mx2 - mr * 0.45, my2); c.lineTo(mx2 - mr * 0.1, my2 + mr * 0.38); c.lineTo(mx2 + mr * 0.5, my2 - mr * 0.38); } else { c.moveTo(mx2 - mr * 0.4, my2 - mr * 0.4); c.lineTo(mx2 + mr * 0.4, my2 + mr * 0.4); c.moveTo(mx2 + mr * 0.4, my2 - mr * 0.4); c.lineTo(mx2 - mr * 0.4, my2 + mr * 0.4); }
+      c.stroke();
+      if (stopped && tr.type === 'kcic') { c.font = '800 ' + Math.max(9, cs * 0.22) + 'px system-ui,sans-serif'; c.fillStyle = '#c92a2a'; c.fillText('\u23f1', q[0] - br * 1.3, q[1] - br * 1.1); }
+    }
+    if (tr.type === 'barang' && tr.st === 'run' && tr.v > 0.3 && ui.fx && Math.random() < 0.06) ui.fx.push({ k: 'smoke', x: bp.x, y: bp.y, t: now, life: 1.4 });
+    return head;
+  }
+  function drawSwitch(c, st, id, now, ui) {
+    var n = map.nodes[id], act = map.edges[n.out[st.sw[id]]], ina = map.edges[n.out[1 - st.sw[id]]], p = S(n.x, n.y);
+    // active branch glow
+    c.save(); c.lineCap = 'round';
+    c.strokeStyle = 'rgba(255,214,10,.9)'; c.lineWidth = cs * 0.14; c.beginPath();
+    for (var s = 0; s <= 1.3; s += 0.1) { var q = WR.pos(map, act.id, s), sq = S(q.x, q.y); if (s) c.lineTo(sq[0], sq[1]); else c.moveTo(sq[0], sq[1]); }
+    c.stroke();
+    var e1 = WR.pos(map, ina.id, 0.55), se = S(e1.x, e1.y); c.strokeStyle = '#e03131'; c.lineWidth = cs * 0.08;
+    c.beginPath(); c.moveTo(se[0] - cs * 0.13, se[1] - cs * 0.13); c.lineTo(se[0] + cs * 0.13, se[1] + cs * 0.13); c.moveTo(se[0] + cs * 0.13, se[1] - cs * 0.13); c.lineTo(se[0] - cs * 0.13, se[1] + cs * 0.13); c.stroke();
+    // button
+    var r = Math.max(13, cs * 0.36), lk = WR.locked(st, id), pend = st.pend[id] !== undefined, sel = ui.sel && ui.sel.k === 'w' && ui.sel.id === id;
+    var bump = ui.bump && ui.bump[id] ? Math.max(0, 1 - (now - ui.bump[id]) * 4) : 0;
+    r *= 1 + bump * 0.25;
+    c.fillStyle = 'rgba(0,0,0,.25)'; c.beginPath(); c.arc(p[0] + 2, p[1] + 3, r, 0, 7); c.fill();
+    c.fillStyle = lk ? 'rgba(90,90,100,.85)' : 'rgba(255,196,0,.95)'; c.beginPath(); c.arc(p[0], p[1], r, 0, 7); c.fill();
+    c.strokeStyle = '#fff'; c.lineWidth = Math.max(2, r * 0.16); c.stroke();
+    var tq = WR.pos(map, act.id, 1.0), tqs = S(tq.x, tq.y), aa = Math.atan2(tqs[1] - p[1], tqs[0] - p[0]);
+    c.save(); c.translate(p[0], p[1]); c.rotate(aa); c.fillStyle = lk ? '#ddd' : '#3d2b00'; c.beginPath(); c.moveTo(r * 0.62, 0); c.lineTo(-r * 0.25, -r * 0.45); c.lineTo(-r * 0.05, 0); c.lineTo(-r * 0.25, r * 0.45); c.closePath(); c.fill(); c.restore();
+    if (pend) { c.strokeStyle = 'rgba(255,255,255,' + (0.5 + 0.5 * Math.sin(now * 10)) + ')'; c.lineWidth = 3; c.setLineDash([4, 4]); c.beginPath(); c.arc(p[0], p[1], r + 5, 0, 7); c.stroke(); c.setLineDash([]); }
+    if (sel) { c.strokeStyle = '#1c7ed6'; c.lineWidth = 3; c.beginPath(); c.arc(p[0], p[1], r + 8 + Math.sin(now * 6) * 2, 0, 7); c.stroke(); }
+    c.restore();
+    return p;
+  }
+  function sigGeom(ei) {
+    var e = map.edges[ei], s = WR.sigS(map, ei), q = WR.pos(map, ei, s), to = map.nodes[e.to], fr = map.nodes[e.from];
+    var other = map.edges[to.inn[0] === ei ? to.inn[1] : to.inn[0]], oy = map.nodes[other.from].y, side = fr.y < oy ? -1 : fr.y > oy ? 1 : (e.loop ? 1 : -1);
+    if (e.loop) side = map.edges[ei].pts[1][1] < to.y ? -1 : 1;
+    var nx = -Math.sin(q.a), ny = Math.cos(q.a), sgn = (ny * side >= 0) ? 1 : -1;
+    return { q: q, lx: q.x + nx * 0.55 * sgn, ly: q.y + ny * 0.55 * sgn };
+  }
+  function drawSignal(c, st, ei, now, ui) {
+    var g = sigGeom(ei), on = st.sig[ei], tp = S(g.q.x, g.q.y), lp = S(g.lx, g.ly), r = Math.max(11, cs * 0.27), sel = ui.sel && ui.sel.k === 's' && ui.sel.id === ei;
+    c.save();
+    if (!on) { c.strokeStyle = '#e03131'; c.lineWidth = cs * 0.09; c.lineCap = 'round'; var aa = ang(g.q.a) + Math.PI / 2; c.beginPath(); c.moveTo(tp[0] + Math.cos(aa) * cs * 0.3, tp[1] + Math.sin(aa) * cs * 0.3); c.lineTo(tp[0] - Math.cos(aa) * cs * 0.3, tp[1] - Math.sin(aa) * cs * 0.3); c.stroke(); }
+    c.strokeStyle = '#495057'; c.lineWidth = Math.max(2, cs * 0.06); c.beginPath(); c.moveTo(tp[0], tp[1]); c.lineTo(lp[0], lp[1]); c.stroke();
+    c.fillStyle = 'rgba(0,0,0,.28)'; rrect(c, lp[0] - r + 2, lp[1] - r + 3, r * 2, r * 2, r * 0.5); c.fill();
+    c.fillStyle = '#212529'; rrect(c, lp[0] - r, lp[1] - r, r * 2, r * 2, r * 0.5); c.fill();
+    var col = on ? '#40c057' : '#fa5252', gl = c.createRadialGradient(lp[0], lp[1], 0, lp[0], lp[1], r * 2.2);
+    gl.addColorStop(0, on ? 'rgba(64,192,87,.55)' : 'rgba(250,82,82,.6)'); gl.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = gl; c.beginPath(); c.arc(lp[0], lp[1], r * 2.2, 0, 7); c.fill();
+    c.fillStyle = col; c.beginPath(); c.arc(lp[0], lp[1], r * 0.62, 0, 7); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.6)'; c.beginPath(); c.arc(lp[0] - r * 0.2, lp[1] - r * 0.22, r * 0.2, 0, 7); c.fill();
+    if (sel) { c.strokeStyle = '#1c7ed6'; c.lineWidth = 3; c.beginPath(); c.arc(lp[0], lp[1], r + 7 + Math.sin(now * 6) * 2, 0, 7); c.stroke(); }
+    c.restore();
+    return lp;
+  }
+  function upcoming(c, st, now) {
+    var seen = {};
+    st.queue.forEach(function (q) {
+      if (seen[q[1]]) return; seen[q[1]] = 1;
+      var dt = q[0] - st.t; if (dt > 4) return;
+      var n = map.nodes[q[1]], p = S(n.x - 0.35, n.y), r = Math.max(10, cs * 0.26), sd = WR_DATA.stations[map.def.exits[q[3]]];
+      var blink = 0.55 + 0.45 * Math.sin(now * 9);
+      c.save(); c.globalAlpha = Math.min(1, (4 - dt) / 1.2);
+      c.fillStyle = 'rgba(20,24,32,.8)'; c.beginPath(); c.arc(p[0], p[1], r * 1.35, 0, 7); c.fill();
+      c.strokeStyle = '#ffd43b'; c.lineWidth = 3; c.beginPath(); c.arc(p[0], p[1], r * 1.35, -Math.PI / 2, -Math.PI / 2 + Math.max(0, Math.min(1, 1 - dt / 4)) * Math.PI * 2); c.stroke();
+      c.fillStyle = sd.c; c.beginPath(); c.arc(p[0], p[1], r * 0.95, 0, 7); c.fill();
+      c.fillStyle = '#fff'; c.font = '900 ' + Math.round(r * 1.05) + 'px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(sd.ch, p[0], p[1] + 0.5);
+      var tl = q[2] === 'kcic' ? 'WHOOSH' : q[2] === 'krl' ? 'KRL' : 'BARANG', fs = Math.max(9, cs * 0.21);
+      var lp = S(n.x - 0.35, n.y + 0.75); label(c, tl, lp[0], lp[1], q[2] === 'kcic' ? 'rgba(214,40,57,' + blink + ')' : 'rgba(20,24,32,.78)', '#fff', fs, 'center');
+      c.restore();
+    });
+  }
+  function draw(st, ui) {
+    var now = ui.now; if (!map) return;
+    if (!bg) bg = buildBg();
+    var c = cx; c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(bg, 0, 0);
+    c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    if (ui.shake && now < ui.shake) { var k = (ui.shake - now) * 14; c.translate((Math.random() - 0.5) * k, (Math.random() - 0.5) * k); }
+    for (var ci = 0; ci < 3; ci++) { var cx0 = ((now * (0.012 + ci * 0.004) + ci * 0.37) % 1.4 - 0.2) * W, cy0 = H * (0.2 + ci * 0.3), cr = Math.max(W, H) * 0.16; var cg = c.createRadialGradient(cx0, cy0, 0, cx0, cy0, cr); cg.addColorStop(0, 'rgba(20,30,50,.10)'); cg.addColorStop(1, 'rgba(20,30,50,0)'); c.fillStyle = cg; c.beginPath(); c.ellipse(cx0, cy0, cr * 1.4, cr, 0, 0, 7); c.fill(); }
+    if (!st) return;
+    st.trains.forEach(function (tr) { if (tr.type !== 'kcic' || tr.v < 1.6 || tr.st === 'crash') return; var L = WR.SPEC.kcic.L; for (var k = 0; k < 3; k++) { var a = WR.trainPoint(map, tr, L + 0.1 + k * 0.05), b = WR.trainPoint(map, tr, L + 0.9 + k * 0.35), pa = S(a.x, a.y), pb = S(b.x, b.y), off = (k - 1) * cs * 0.12, ax = -(pb[1] - pa[1]), ay = pb[0] - pa[0], al = Math.hypot(ax, ay) || 1; ax = ax / al * off; ay = ay / al * off; var lg = c.createLinearGradient(pa[0], pa[1], pb[0], pb[1]); lg.addColorStop(0, 'rgba(255,255,255,.75)'); lg.addColorStop(1, 'rgba(255,255,255,0)'); c.strokeStyle = lg; c.lineWidth = 2; c.beginPath(); c.moveTo(pa[0] + ax, pa[1] + ay); c.lineTo(pb[0] + ax, pb[1] + ay); c.stroke(); } });
+    map.switches.forEach(function (id) { drawSwitch(c, st, id, now, ui); });
+    st.trains.forEach(function (tr) { drawTrain(c, st, tr, now, ui); });
+    map.signals.forEach(function (ei) { drawSignal(c, st, ei, now, ui); });
+    // switch buttons again (outline over trains) so they stay tappable/visible
+    map.switches.forEach(function (id) { var n = map.nodes[id], p = S(n.x, n.y); c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = 2; c.beginPath(); c.arc(p[0], p[1], Math.max(13, cs * 0.36), 0, 7); c.stroke(); });
+    var want = {}; st.trains.forEach(function (tr) { if (tr.st === 'run' && WR.routeExit(st, tr) === tr.dest) want[tr.dest] = 1; });
+    map.exits.forEach(function (id) { if (!want[id]) return; var n = map.nodes[id], p = S(16, n.y), sd = WR_DATA.stations[map.def.exits[id]]; c.globalAlpha = 0.35 + 0.25 * Math.sin(now * 5); c.fillStyle = sd.c; c.beginPath(); c.arc(p[0], p[1], cs * 0.32, 0, 7); c.fill(); c.globalAlpha = 1; });
+    upcoming(c, st, now);
+    if (ui.pred) { var pp = S(ui.pred.x, ui.pred.y), pr = cs * (0.55 + 0.15 * Math.sin(now * 14)); c.strokeStyle = 'rgba(255,30,30,.9)'; c.lineWidth = 4; c.beginPath(); c.arc(pp[0], pp[1], pr, 0, 7); c.stroke(); c.fillStyle = 'rgba(255,30,30,.2)'; c.fill(); c.fillStyle = '#fff'; label(c, '! AWAS' + (ui.pred.t > 0.6 ? ' ' + Math.ceil(ui.pred.t) + ' dtk' : ''), pp[0], pp[1] - pr - cs * 0.25, 'rgba(224,49,49,.95)', '#fff', Math.max(10, cs * 0.24), 'center'); }
+    if (ui.showKeys) map.controls.forEach(function (ct, i) { if (i > 8) return; var p = ct.k === 'w' ? S(ct.x, ct.y) : (function () { var g = sigGeom(ct.id); return S(g.lx, g.ly); })(); label(c, String(i + 1), p[0] + cs * 0.42, p[1] + cs * 0.42, 'rgba(28,126,214,.92)', '#fff', Math.max(9, cs * 0.2), 'center'); });
+    fx(c, ui, now);
+    if (ui.coach) pointer(c, ui.coach, now);
+  }
+  function fx(c, ui, now) {
+    if (!ui.fx) return;
+    ui.fx = ui.fx.filter(function (f) { return now - f.t < f.life; });
+    ui.fx.forEach(function (f) {
+      var k = (now - f.t) / f.life, p = S(f.x, f.y);
+      if (f.k === 'smoke') { c.fillStyle = 'rgba(90,90,90,' + (0.35 * (1 - k)) + ')'; c.beginPath(); c.arc(p[0] + k * cs * 0.3, p[1] - k * cs * 0.5, cs * (0.1 + k * 0.25), 0, 7); c.fill(); }
+      else if (f.k === 'boom') {
+        c.fillStyle = 'rgba(255,240,200,' + (0.8 * (1 - k * 3)) + ')'; if (k < 0.33) { c.beginPath(); c.arc(p[0], p[1], cs * (0.5 + k * 6), 0, 7); c.fill(); }
+        f.parts.forEach(function (q) { c.fillStyle = q[4]; c.globalAlpha = 1 - k; c.beginPath(); c.arc(p[0] + q[0] * k * cs * 2.2, p[1] + q[1] * k * cs * 2.2 + k * k * cs, cs * q[2] * (1 - k * 0.5), 0, 7); c.fill(); c.globalAlpha = 1; });
+      } else if (f.k === 'txt') {
+        var y = p[1] - k * cs * 1.1; c.globalAlpha = Math.min(1, (1 - k) * 2); label(c, f.s, p[0], y, f.bg, '#fff', Math.max(11, cs * 0.3), 'center'); c.globalAlpha = 1;
+      } else if (f.k === 'ring') { c.strokeStyle = f.col; c.globalAlpha = 1 - k; c.lineWidth = 4; c.beginPath(); c.arc(p[0], p[1], cs * (0.3 + k * 1.2), 0, 7); c.stroke(); c.globalAlpha = 1; }
+      else if (f.k === 'conf') { f.parts.forEach(function (q) { c.fillStyle = q[4]; c.save(); c.translate(p[0] + q[0] * k * cs * 3, p[1] + q[1] * k * cs * 3 + k * k * cs * 3); c.rotate(k * 10 * q[2]); c.fillRect(-4, -2, 8, 4); c.restore(); }); }
+    });
+  }
+  function pointer(c, co, now) {
+    var p = co.sig !== undefined ? (function () { var g = sigGeom(co.sig); return S(g.lx, g.ly); })() : S(co.x, co.y), b = Math.sin(now * 6) * cs * 0.15;
+    c.save(); c.strokeStyle = 'rgba(255,255,255,.95)'; c.lineWidth = 4; c.beginPath(); c.arc(p[0], p[1], cs * 0.7 + Math.sin(now * 6) * 4, 0, 7); c.stroke();
+    c.font = Math.round(cs * 0.75) + 'px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'top'; c.fillText('\ud83d\udc46', p[0] + cs * 0.25, p[1] + cs * 0.3 + b); c.restore();
+  }
+  function boom(ui, x, y, now) { var parts = []; for (var i = 0; i < 26; i++) { var a = Math.random() * 7, v = 0.3 + Math.random(); parts.push([Math.cos(a) * v, Math.sin(a) * v, 0.06 + Math.random() * 0.12, 0, ['#ff922b', '#ffd43b', '#fa5252', '#868e96', '#495057'][i % 5]]); } ui.fx.push({ k: 'boom', x: x, y: y, t: now, life: 1.1, parts: parts }); }
+  function confetti(ui, x, y, now) { var parts = []; for (var i = 0; i < 40; i++) { var a = Math.random() * 7, v = 0.3 + Math.random(); parts.push([Math.cos(a) * v, Math.sin(a) * v - 0.6, Math.random() - 0.5, 0, ['#ff6b6b', '#ffd43b', '#51cf66', '#339af0', '#cc5de8', '#fff'][i % 6]]); } ui.fx.push({ k: 'conf', x: x, y: y, t: now, life: 1.6, parts: parts }); }
+  // tap -> nearest control
+  function pick(sx, sy, st) {
+    var best = null, bd = Math.max(30, cs * 0.85);
+    map.controls.forEach(function (ct) {
+      var ps = [];
+      if (ct.k === 'w') { var n = map.nodes[ct.id]; ps.push(S(n.x, n.y)); }
+      else { var g = sigGeom(ct.id); ps.push(S(g.lx, g.ly)); ps.push(S(g.q.x, g.q.y)); }
+      ps.forEach(function (p) { var d = Math.hypot(p[0] - sx, p[1] - sy) * (ct.k === 's' ? 0.92 : 1); if (d < bd) { bd = d; best = ct; } });
+    });
+    return best;
+  }
+  function screenOf(x, y) { return S(x, y); }
+  function sigPoint(ei) { var g = sigGeom(ei); return { x: g.lx, y: g.ly }; }
+  return { setPad: setPad, init: init, resize: resize, setLevel: setLevel, draw: draw, pick: pick, boom: boom, confetti: confetti, screenOf: screenOf, sigPoint: sigPoint, cell: function () { return cs; }, isRot: function () { return rot; } };
+})();
+</script>
+<script id="wr-app">
+// Whoosh Atur Rel: screens, input, audio, storage, tutorial.
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var LV = WR_DATA.levels, ST = WR_DATA.stations, MAPS = {};
+  function mapOf(i) { return MAPS[i] || (MAPS[i] = WR.build(LV[i])); }
+  // ---------- storage ----------
+  function ld(k, d) { try { var v = localStorage.getItem('whoosh.' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function sv(k, v) { try { localStorage.setItem('whoosh.' + k, JSON.stringify(v)); } catch (e) { } }
+  var stars = ld('stars', {}), best = ld('best', {}), rec = ld('rec', { daily: {}, endless: [] }), muted = !!ld('mute', false), tutDone = !!ld('tut', false), seen = ld('seen', {});
+  function today() { var d = new Date(Date.now() + 8 * 3600e3); return d.toISOString().slice(0, 10); }
+  function todayLabel() { var d = new Date(Date.now() + 8 * 3600e3), m = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']; return d.getUTCDate() + ' ' + m[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+  // ---------- audio ----------
+  var AC = null, master = null;
+  function ac() {
+    if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); master = AC.createGain(); master.gain.value = 0.7; master.connect(AC.destination); } catch (e) { AC = null; } }
+    if (AC && AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  function tone(f, t, dur, type, vol, f2, lp) {
+    if (muted || !ac()) return; var c = AC, t0 = c.currentTime + (t || 0), o = c.createOscillator(), g = c.createGain(), out = g;
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol || 0.2, t0 + 0.015); g.gain.setValueAtTime(vol || 0.2, t0 + Math.max(0.02, dur - 0.08)); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g);
+    if (lp) { var fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = lp; g.connect(fl); out = fl; }
+    out.connect(master); o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+  var NB = null;
+  function noise(t, dur, vol, ftype, f1, f2, q) {
+    if (muted || !ac()) return; var c = AC;
+    if (!NB) { NB = c.createBuffer(1, c.sampleRate, c.sampleRate); var d = NB.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    var s = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain(), t0 = c.currentTime + (t || 0);
+    s.buffer = NB; s.loop = true; fl.type = ftype || 'bandpass'; fl.Q.value = q || 1; fl.frequency.setValueAtTime(f1, t0); if (f2) fl.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + Math.min(0.05, dur / 3)); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    s.connect(fl); fl.connect(g); g.connect(master); s.start(t0); s.stop(t0 + dur + 0.05);
+  }
+  var SFX = {
+    horn: function (ty) {
+      if (ty === 'kcic') { [0, 0.62].forEach(function (t) { tone(698, t, 0.5, 'sawtooth', 0.07, 0, 2200); tone(880, t, 0.5, 'sawtooth', 0.06, 0, 2200); }); }
+      else if (ty === 'krl') { [0, 0.22, 0.6, 0.82].forEach(function (t) { tone(587, t, 0.17, 'square', 0.05, 0, 1800); tone(740, t, 0.17, 'square', 0.04, 0, 1800); }); }
+      else { tone(196, 0, 1.3, 'sawtooth', 0.09, 0, 1200); tone(247, 0, 1.3, 'sawtooth', 0.07, 0, 1200); }
+    },
+    bell: function () { tone(1250, 0, 0.18, 'triangle', 0.08); tone(1250, 0.24, 0.18, 'triangle', 0.08); },
+    sw: function () { noise(0, 0.07, 0.25, 'bandpass', 2400, 0, 2); tone(140, 0, 0.09, 'sine', 0.2, 70); },
+    lock: function () { tone(330, 0, 0.09, 'square', 0.05); tone(262, 0.1, 0.12, 'square', 0.05); },
+    sig: function (on) { tone(on ? 880 : 440, 0, 0.12, 'sine', 0.13, on ? 1175 : 330); },
+    ok: function () { [523, 659, 784].forEach(function (f, i) { tone(f, i * 0.07, 0.18, 'triangle', 0.12); }); },
+    late: function () { tone(523, 0, 0.16, 'triangle', 0.1); tone(392, 0.12, 0.2, 'triangle', 0.1); },
+    wrong: function () { tone(180, 0, 0.32, 'sawtooth', 0.09, 120, 900); },
+    crash: function () { noise(0, 0.9, 0.6, 'lowpass', 3000, 200, 0.7); tone(70, 0, 0.6, 'sine', 0.4, 35); noise(0.05, 0.5, 0.25, 'bandpass', 900, 300, 3); },
+    whoosh: function () { noise(0, 0.7, 0.18, 'bandpass', 400, 3200, 1.5); },
+    win: function () { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.12, 0.28, 'triangle', 0.13); tone(f / 2, i * 0.12, 0.28, 'sine', 0.07); }); },
+    fail: function () { [392, 330, 262].forEach(function (f, i) { tone(f, i * 0.18, 0.3, 'triangle', 0.12); }); },
+    tap: function () { tone(660, 0, 0.05, 'sine', 0.08); }
+  };
+  function setMute(m) { muted = m; sv('mute', m); $('muteBtn').textContent = $('hMute').textContent = m ? '\ud83d\udd07' : '\ud83d\udd0a'; if (!m) SFX.tap(); }
+  // ---------- game state ----------
+  var cv = $('cv'), G = null, mode = 'home', paused = false, hold = false, speed = 1, overlay = false;
+  var ui = { fx: [], sel: null, pred: null, warn: {}, now: 0, bump: {}, showKeys: false, coach: null, shake: 0 };
+  var demo = null, botT = 0, predT = 0, hornAt = {}, tut = null, acc = 0, demoBotCfg = null;
+  WRR.init(cv);
+  function newDemo(lvIdx) {
+    var m = mapOf(lvIdx); demo = { kind: 'demo', lv: lvIdx, map: m, st: WR.newGame(m, { endless: true, pace: 1, seed: (Math.random() * 1e9) | 0 }) };
+    WRR.setLevel(m, LV[lvIdx].theme);
+  }
+  function start(kind, lvIdx, seed) {
+    var m = mapOf(lvIdx), st = WR.newGame(m, kind === 'level' ? {} : { endless: true, seed: seed });
+    G = { kind: kind, lv: lvIdx, map: m, st: st, seed: seed, saved: false };
+    WRR.setLevel(m, LV[lvIdx].theme, kind === 'level' ? null : 'senja'); ui.fx = []; ui.sel = null; ui.pred = null; ui.warn = {}; ui.coach = null; hornAt = {}; acc = 0;
+    paused = false; hold = false; tut = null; speed = 1; $('speedBtn').textContent = '1\u00d7';
+    setMode('play'); hud(true);
+    var L = LV[lvIdx];
+    $('hLevel').textContent = kind === 'level' ? (lvIdx + 1) + '. ' + L.name : kind === 'daily' ? 'Harian \u00b7 ' + todayLabel() : 'Tanpa Batas';
+    $('hPlace').textContent = kind === 'level' ? L.place : L.name;
+    if (kind === 'level' && lvIdx === 0 && !tutDone) { tut = { step: 0 }; showIntro(true); }
+    else showIntro(false);
+  }
+  function setMode(m) {
+    mode = m; document.body.classList.toggle('homing', m === 'home');
+    $('home').classList.toggle('hidden', m !== 'home'); $('hud').classList.toggle('hidden', m === 'home');
+    $('dim').classList.toggle('off', m !== 'home');
+    document.documentElement.classList.toggle('jr-hub-off', m === 'play');
+    if (m === 'home') { closeOv(); coach(null); hideToast(); if (!demo || demo.st.over) newDemo(7); else WRR.setLevel(demo.map, LV[demo.lv].theme); refreshHome(); window.scrollTo(0, 0); }
+  }
+  function cur() { return mode === 'home' ? demo : G; }
+  // ---------- events -> feedback ----------
+  function drain(g) {
+    var st = g.st, evs = st.events, live = g === G && mode === 'play';
+    for (var i = 0; i < evs.length; i++) {
+      var e = evs[i];
+      if (!live) { if (e.e === 'crash') { WRR.boom(ui, e.x, e.y, ui.now); } continue; }
+      if (e.e === 'spawn') { if (e.type === 'kcic') SFX.whoosh(); }
+      else if (e.e === 'switch') { SFX.sw(); ui.bump[e.id] = ui.now; }
+      else if (e.e === 'locked') { SFX.lock(); toast(e.pend ? '\u23f3 Wesel terkunci, kereta lewat. Pindah setelah lewat.' : 'Antrean wesel dibatalkan'); }
+      else if (e.e === 'signal') SFX.sig(e.on);
+      else if (e.e === 'arrive') {
+        var n = g.map.nodes[e.exit], txt = e.res === 'ok' ? '+' + e.pts + ' Tepat!' : e.res === 'late' ? '+' + e.pts + ' Telat ' + Math.round(e.delay) + 's' : 'Salah tujuan!';
+        ui.fx.push({ k: 'txt', x: n.x - 0.9, y: n.y - 0.4, t: ui.now, life: 1.5, s: txt, bg: e.res === 'ok' ? 'rgba(47,158,68,.95)' : e.res === 'late' ? 'rgba(247,103,7,.95)' : 'rgba(224,49,49,.95)' });
+        ui.fx.push({ k: 'ring', x: n.x, y: n.y, t: ui.now, life: 0.7, col: e.res === 'ok' ? '#51cf66' : e.res === 'late' ? '#ff922b' : '#fa5252' });
+        if (e.res === 'ok') SFX.ok(); else if (e.res === 'late') SFX.late(); else SFX.wrong(); if (e.res === 'wrong' && st.gen) { toast('\u274c Salah tujuan! Nyawa -1'); var hh = $('hHearts'); hh.classList.remove('hit'); void hh.offsetWidth; hh.classList.add('hit'); }
+        if (tut && tut.step === 1 && e.id === 1) { tut.step = 2; coachMsg('Tepat waktu! \ud83c\udf89', 'Lencana <b>\u2713 hijau</b> di kereta artinya wesel sudah mengarah ke tujuannya. <b>\u2717 merah</b> artinya salah jalur.', 3500); }
+      } else if (e.e === 'crash') {
+        WRR.boom(ui, e.x, e.y, ui.now); ui.shake = ui.now + 0.5; SFX.crash(); var h = $('hHearts'); h.classList.remove('hit'); void h.offsetWidth; h.classList.add('hit');
+        toast(st.hearts > 0 ? '\ud83d\udca5 Tabrakan! Sisa nyawa ' + st.hearts : '\ud83d\udca5 Tabrakan!'); if (navigator.vibrate) try { navigator.vibrate(180); } catch (x) { }
+      } else if (e.e === 'over') { setTimeout(function () { if (G && G.st === st) finish(); }, e.res === 'win' ? 700 : 1300); }
+    }
+    evs.length = 0;
+  }
+  // ---------- tutorial (L1 first play) ----------
+  function nearNode(st, id, node, d) { var tr = st.trains.filter(function (t) { return t.id === id && t.st === 'run'; })[0]; if (!tr) return null; var e = st.map.edges[tr.edges[tr.edges.length - 1]]; return e.to === node && e.len - tr.s < d ? tr : null; }
+  function tutTick() {
+    if (!tut || !G) return; var st = G.st, s1 = G.map.nodes.S1;
+    if (tut.step === 0) { var t1 = nearNode(st, 1, 'S1', 1.9); if (t1) { if (WR.routeExit(st, t1) === t1.dest) { tut.step = 1; return; } hold = true; tut.target = 'S1'; ui.coach = { x: s1.x, y: s1.y }; coach('<div class="ct">LANGKAH 1 \u00b7 WESEL</div>KRL ini menuju <b>Cikarang</b> (lencana ungu <b>C</b>), tapi wesel kuning mengarah ke Gudang. <b>Ketuk wesel</b> untuk membelokkan!', true); } }
+    else if (tut.step === 2) { var t2 = nearNode(st, 2, 'S1', 2.4); if (t2) { if (WR.routeExit(st, t2) === t2.dest) { tut.step = 4; return; } hold = true; tut.target = 'S1'; ui.coach = { x: s1.x, y: s1.y }; coach('<div class="ct">LANGKAH 2</div>Kereta barang ke <b>Gudang</b> (lencana cokelat <b>G</b>). Lihat tanda <b class="r">\u2717</b> merah? Jalurnya salah. Ketuk wesel lagi!', true); } }
+    else if (tut.step === 4 && st.t > 14) { tut.step = 5; coachMsg('Sekarang giliranmu!', 'Kereta berikutnya diumumkan di ujung kiri 4 detik sebelum masuk. Wesel <b>terkunci</b> saat dilewati kereta, ketukanmu diantrekan \u23f3.', 5500); }
+  }
+  function tutAct(ct) {
+    if (!tut || !hold) return true; if (ct.k !== 'w' || ct.id !== tut.target) return false;
+    hold = false; ui.coach = null; coach(null); tut.step = tut.step === 0 ? 1 : 4; return true;
+  }
+  // ---------- input ----------
+  function act(ct) {
+    if (mode !== 'play' || !G || G.st.over || overlay || paused) return;
+    if (!tutAct(ct)) return;
+    ac(); WR.toggle(G.st, ct); drain(G); predT = 0;
+  }
+  cv.addEventListener('pointerdown', function (ev) {
+    if (mode !== 'play') return; ev.preventDefault(); var r = cv.getBoundingClientRect(), ct = WRR.pick(ev.clientX - r.left, ev.clientY - r.top, G.st);
+    if (ct) { ui.sel = ui.showKeys ? ct : null; act(ct); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    var k = ev.key.toLowerCase(); if (ev.target && ev.target.tagName === 'INPUT') return;
+    if (mode !== 'play' || !G) return;
+    if (overlay) { if (k === 'enter' || k === ' ') { var b = document.querySelector('#ovCard .btn.primary,#ovCard .btn.green'); if (b) { ev.preventDefault(); b.click(); } } else if (k === 'escape' && paused) resume(); return; }
+    var cs = G.map.controls, idx = ui.sel ? cs.indexOf(ui.sel) : -1;
+    if (k === 'a' || k === 'arrowleft' || k === 'arrowup' && false) { ui.showKeys = true; ui.sel = cs[(idx - 1 + cs.length) % cs.length]; ev.preventDefault(); }
+    else if (k === 'd' || k === 'arrowright' || k === 'tab') { ui.showKeys = true; ui.sel = cs[(idx + 1) % cs.length]; ev.preventDefault(); }
+    else if (k === 'w' || k === 's' || k === ' ' || k === 'enter' || k === 'arrowup' || k === 'arrowdown') { ui.showKeys = true; if (!ui.sel) ui.sel = tut && tut.target ? cs.filter(function (c) { return c.id === tut.target; })[0] : cs[0]; else act(ui.sel); ev.preventDefault(); }
+    else if (/^[1-9]$/.test(k)) { ui.showKeys = true; var c = cs[+k - 1]; if (c) { ui.sel = c; act(c); } }
+    else if (k === 'p' || k === 'escape') pause();
+    else if (k === 'f') toggleSpeed();
+    else if (k === 'm') setMute(!muted);
+  });
+  // ---------- overlays ----------
+  function openOv(html) { $('ovCard').className = 'card'; $('ovCard').innerHTML = html; $('ov').classList.remove('hidden'); overlay = true; var f = $('ovCard').querySelector('.btn.primary,.btn.green'); if (f && matchMedia('(hover:hover)').matches) f.focus({ preventScroll: true }); }
+  function closeOv() { $('ov').classList.add('hidden'); overlay = false; }
+  function on(id, fn) { var e = $(id); if (e) e.onclick = function () { ac(); fn(); }; }
+  var LEG = '<div class="legend"><div><span class="tk kcic"></span><span><b>Whoosh</b> \u00b7 paling cepat, toleransi telat \u00b16 dtk</span></div><div><span class="tk krl"></span><span><b>KRL</b> \u00b7 sering datang, toleransi \u00b112 dtk</span></div><div><span class="tk barang"></span><span><b>Kereta barang</b> \u00b7 pelan &amp; panjang, toleransi \u00b130 dtk</span></div></div>';
+  function showIntro(tutorial) {
+    var L = LV[G.lv], m = G.map, n = G.st.total, h;
+    if (G.kind === 'level') {
+      h = '<div class="sub">LEVEL ' + (G.lv + 1) + ' \u00b7 ' + L.place.toUpperCase() + '</div><h2>' + L.name + '</h2><p>' + (L.intro || L.blurb) + '</p>';
+      if (G.lv === 0 || !seen.legend) h += LEG;
+      h += '<p class="sub">' + n + ' kereta \u00b7 ' + m.switches.length + ' wesel \u00b7 ' + m.signals.length + ' sinyal \u00b7 \u2764\ufe0f\u00d7' + G.st.hearts + '</p>';
+    } else {
+      h = '<div class="sub">' + (G.kind === 'daily' ? 'HARIAN \u00b7 ' + todayLabel().toUpperCase() : 'TANPA BATAS') + '</div><h2>' + L.name + '</h2><p>' + (G.kind === 'daily' ? 'Jadwal kereta hari ini sama untuk semua pemain. Makin lama makin padat, bertahan selama mungkin!' : 'Kereta datang terus dan makin rapat. 3 nyawa, berapa poin yang bisa kamu kumpulkan?') + '</p>' + LEG;
+    }
+    h += '<div class="acts"><button type="button" class="btn big primary" id="goBtn">Mulai \u25b6</button></div>';
+    openOv(h); seen.legend = 1; sv('seen', seen);
+    on('goBtn', function () {
+      closeOv(); SFX.horn('krl');
+      if (G.kind === 'level' && !seen[L.id] && (L.id === 'L2' || L.id === 'L4')) { seen[L.id] = 1; sv('seen', seen); var tg = L.id === 'L2' ? { sig: m.signals[0] } : { x: m.nodes[m.switches[0]].x, y: m.nodes[m.switches[0]].y }; ui.coach = tg; setTimeout(function () { if (ui.coach === tg) ui.coach = null; }, 6000); }
+    });
+  }
+  function pause() {
+    if (mode !== 'play' || overlay || G.st.over) return; paused = true;
+    openOv('<h2>Jeda</h2><p class="sub">' + $('hLevel').textContent + '</p><div class="acts" style="flex-direction:column"><button type="button" class="btn big green" id="resBtn">Lanjut \u25b6</button><button type="button" class="btn" id="rstBtn">\u21bb Ulangi</button><button type="button" class="btn" id="howP">\u2753 Cara main</button><button type="button" class="btn" id="menuBtn">\ud83c\udfe0 Menu</button></div>');
+    on('resBtn', resume); on('rstBtn', function () { start(G.kind, G.lv, G.seed); }); on('menuBtn', function () { setMode('home'); }); on('howP', function () { how(true); });
+  }
+  function resume() { closeOv(); paused = false; }
+  function toggleSpeed() { speed = speed === 1 ? 2 : 1; $('speedBtn').textContent = speed + '\u00d7'; }
+  function finish() {
+    var st = G.st, h; hold = false; coach(null); ui.coach = null; ui.pred = null; ui.warn = {};
+    if (G.kind === 'level') {
+      var s = WR.stars(st), id = LV[G.lv].id, nb = st.score > (best[id] || 0) && s > 0;
+      if (s > (stars[id] || 0)) stars[id] = s; if (nb) best[id] = st.score; sv('stars', stars); sv('best', best);
+      if (G.lv === 0 && tut) { tutDone = true; sv('tut', true); }
+      if (s) { SFX.win(); WRR.confetti(ui, 8, 4.5, ui.now); if (s === 3) setTimeout(function () { WRR.confetti(ui, 4, 3, ui.now); WRR.confetti(ui, 12, 6, ui.now); }, 350); } else SFX.fail();
+      h = '<div class="sub">LEVEL ' + (G.lv + 1) + ' \u00b7 ' + LV[G.lv].name.toUpperCase() + '</div><h2>' + (s === 3 ? 'Sempurna!' : s ? 'Level selesai!' : 'Gagal, 3 tabrakan') + '</h2>';
+      h += '<div class="stars">' + [1, 2, 3].map(function (k, i) { return '<i class="' + (s >= k ? 'on' : '') + '" style="animation-delay:' + (0.15 + i * 0.18) + 's">\u2605</i>'; }).join('') + '</div>';
+      h += '<div class="big-score">' + st.score + '</div>' + (nb ? '<span class="newrec">REKOR BARU</span>' : '<div class="sub">rekor: ' + (best[id] || 0) + '</div>');
+      h += grid(st) + '<p class="sub">' + (s === 3 ? 'Tanpa tabrakan, maks 1 salah jalur, \u226585% sampai tujuan.' : '\u2605\u2605\u2605 = tanpa tabrakan, maks 1 salah jalur, \u226585% sampai tujuan (telat tetap dihitung).') + '</p>';
+      var nx = G.lv + 1 < LV.length && s > 0;
+      h += '<div class="acts"><button type="button" class="btn" id="mBtn">\ud83c\udfe0</button><button type="button" class="btn" id="rBtn">\u21bb Ulangi</button>' + (nx ? '<button type="button" class="btn primary" id="nBtn">Lanjut \u25b6</button>' : '') + '</div>';
+      openOv(h); if (!s) $('ovCard').classList.add('fail'); on('rBtn', function () { start('level', G.lv); }); on('mBtn', function () { setMode('home'); }); if (nx) on('nBtn', function () { start('level', G.lv + 1); });
+    } else {
+      SFX.fail(); var list = G.kind === 'daily' ? (rec.daily[today()] || []) : rec.endless, bestS = list.length ? list[0].s : 0, nb2 = st.score > bestS;
+      h = '<div class="sub">' + (G.kind === 'daily' ? 'HARIAN \u00b7 ' + todayLabel().toUpperCase() : 'TANPA BATAS') + '</div><h2>Perjalanan selesai</h2><div class="big-score">' + st.score + '</div>' + (nb2 ? '<span class="newrec">REKOR BARU</span>' : '<div class="sub">rekor: ' + bestS + '</div>');
+      h += grid(st) + '<p class="sub">Bertahan ' + Math.round(st.t) + ' detik \u00b7 ' + (st.ok + st.late) + ' kereta tiba</p>';
+      h += '<div class="name-row"><input id="nmIn" maxlength="16" placeholder="JadiDaring" autocomplete="off" aria-label="Nama"><button type="button" class="btn green" id="svBtn">Simpan</button></div>';
+      h += '<div class="acts"><button type="button" class="btn" id="mBtn">\ud83c\udfe0</button>' + (G.kind === 'daily' ? '<button type="button" class="btn" id="shBtn">\ud83d\udce4 Bagikan</button>' : '') + '<button type="button" class="btn primary" id="rBtn">\u21bb Lagi</button></div>';
+      openOv(h); if (window.JDNG && JDNG.name) $('nmIn').value = JDNG.name; // t367u: name from the jd-namegate modal
+      on('svBtn', function () { saveRec($('nmIn').value.trim() || 'JadiDaring'); $('svBtn').disabled = true; $('svBtn').textContent = '\u2713'; });
+      on('rBtn', function () { autoSave(); start(G.kind, G.lv, G.kind === 'daily' ? G.seed : (Math.random() * 1e9) | 0); }); on('mBtn', function () { autoSave(); setMode('home'); });
+      if (G.kind === 'daily') on('shBtn', share);
+    }
+  }
+  function grid(st) { return '<div class="res-grid"><div><b>' + st.ok + '</b><small>tepat</small></div><div><b>' + st.late + '</b><small>telat</small></div><div><b>' + st.wrong + '</b><small>salah</small></div><div><b>' + st.crash + '</b><small>tabrakan</small></div></div>'; }
+  function saveRec(name) {
+    if (!G || G.saved) return; G.saved = true; var st = G.st, e = { n: name.slice(0, 16), s: st.score, t: Math.round(st.t) };
+    var list = G.kind === 'daily' ? (rec.daily[today()] = rec.daily[today()] || []) : rec.endless;
+    list.push(e); list.sort(function (a, b) { return b.s - a.s; }); list.length = Math.min(list.length, 10);
+    if (G.kind === 'daily') { var ks = Object.keys(rec.daily).sort(); while (ks.length > 14) delete rec.daily[ks.shift()]; }
+    sv('rec', rec);
+  }
+  function autoSave() { if (G && G.kind !== 'level' && !G.saved && G.st.score > 0) saveRec((window.JDNG && JDNG.name) || 'JadiDaring'); }
+  function share() {
+    var st = G.st, txt = '\ud83d\ude84 Whoosh Atur Rel \u00b7 Harian ' + todayLabel() + '\n' + st.score + ' poin \u00b7 ' + st.ok + ' tepat waktu \u00b7 bertahan ' + Math.round(st.t) + ' dtk\nBisa kalahkan? https://whoosh.jadidaring.com/';
+    if (navigator.share) navigator.share({ text: txt }).catch(function () { }); else window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+  }
+  function how(fromPause) {
+    openOv('<h2>Cara main</h2><ol class="how-list"><li>Setiap kereta punya <b>lencana warna</b> stasiun tujuan. Antar ke stasiun dengan warna yang sama.</li><li>Ketuk <b>wesel kuning</b> untuk memindah jalur. Garis kuning = arah aktif.</li><li>Ketuk <b>lampu sinyal</b>: <b class="r">merah</b> menahan kereta, <b class="g">hijau</b> jalan.</li><li>Tanda <b class="r">AWAS</b> + klakson = dua kereta akan bertabrakan. Cepat tahan salah satunya!</li><li>Kereta yang ditahan terlalu lama jadi <b>telat</b> (lingkaran oranye). Whoosh paling tidak sabar.</li><li>Wesel terkunci saat dilewati kereta, ketukanmu diantrekan \u23f3.</li></ol>' + LEG + '<p class="sub">Keyboard: <span class="kbd">A</span>/<span class="kbd">D</span> pilih, <span class="kbd">W</span>/<span class="kbd">Spasi</span> ketuk, <span class="kbd">1</span>-<span class="kbd">9</span> langsung, <span class="kbd">P</span> jeda, <span class="kbd">F</span> 2\u00d7, <span class="kbd">M</span> suara</p><div class="acts"><button type="button" class="btn big primary" id="okH">Oke!</button></div>');
+    on('okH', function () { if (fromPause) pause.call(null, closeOv()); else closeOv(); });
+  }
+  function levels() {
+    var h = '<h2>Pilih level</h2><p class="sub">' + totalStars() + ' / ' + LV.length * 3 + ' \u2605</p><div class="lv-grid">';
+    LV.forEach(function (L, i) { var open = i === 0 || stars[LV[i - 1].id] > 0, s = stars[L.id] || 0; h += '<button type="button" class="lv' + (open ? '' : ' lock') + '" data-i="' + i + '"' + (open ? '' : ' disabled') + '><span class="n">' + (i + 1) + '</span><b>' + (open ? '' : '\ud83d\udd12 ') + L.name + '</b><small>' + L.place + '</small><div class="ls">' + [1, 2, 3].map(function (k) { return s >= k ? '\u2605' : '<span class="o">\u2605</span>'; }).join('') + '</div></button>'; });
+    h += '</div><div class="acts"><button type="button" class="btn" id="cl">Tutup</button></div>';
+    openOv(h); on('cl', closeOv);
+    Array.prototype.forEach.call(document.querySelectorAll('.lv[data-i]'), function (b) { b.onclick = function () { ac(); closeOv(); start('level', +b.dataset.i); }; });
+  }
+  function records(tab) {
+    tab = tab || 'daily'; var list = tab === 'daily' ? (rec.daily[today()] || []) : rec.endless;
+    var h = '<h2>Rekor</h2><div class="tabs"><button type="button" class="btn' + (tab === 'daily' ? ' on' : '') + '" id="tD">Harian hari ini</button><button type="button" class="btn' + (tab === 'endless' ? ' on' : '') + '" id="tE">Tanpa Batas</button><button type="button" class="btn' + (tab === 'lv' ? ' on' : '') + '" id="tL">Level</button></div>';
+    if (tab === 'lv') h += '<ul class="rec-list">' + LV.map(function (L, i) { return '<li><span>' + (i + 1) + '. ' + L.name + '</span><span>' + ('\u2605'.repeat(stars[L.id] || 0) || '\u2013') + ' \u00b7 ' + (best[L.id] || 0) + '</span></li>'; }).join('') + '</ul>';
+    else h += list.length ? '<ul class="rec-list">' + list.map(function (e, i) { return '<li><span>' + (i + 1) + '. ' + esc(e.n) + '</span><b>' + e.s + '</b></li>'; }).join('') + '</ul>' : '<p class="sub">Belum ada rekor. Main dulu!</p>';
+    h += '<p class="sub">Rekor tersimpan di perangkat ini.</p><div class="acts"><button type="button" class="btn" id="cl">Tutup</button></div>';
+    openOv(h); on('cl', closeOv); on('tD', function () { records('daily'); }); on('tE', function () { records('endless'); }); on('tL', function () { records('lv'); });
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function totalStars() { return LV.reduce(function (a, L) { return a + (stars[L.id] || 0); }, 0); }
+  function nextLevel() { for (var i = 0; i < LV.length; i++) if (!stars[LV[i].id]) return i; return LV.length - 1; }
+  function refreshHome() {
+    var n = nextLevel(); $('playLbl').textContent = !tutDone && !stars.L1 ? 'Main (tutorial)' : 'Main \u00b7 Level ' + (n + 1);
+    var d = rec.daily[today()]; $('dailySub').textContent = d && d.length ? 'Rekor hari ini: ' + d[0].s : todayLabel();
+    $('endSub').textContent = rec.endless.length ? 'Rekor: ' + rec.endless[0].s : 'Makin lama makin padat';
+    var ts = totalStars(); $('statLine').textContent = ts ? '\u2b50 ' + ts + ' / ' + LV.length * 3 + ' bintang \u00b7 ' + Object.keys(stars).length + ' level selesai' : 'Gratis \u00b7 tanpa download \u00b7 tanpa iklan';
+  }
+  // ---------- coach / toast ----------
+  var coachTimer = 0, toastTimer = 0;
+  function coach(html, top) { var c = $('coach'); clearTimeout(coachTimer); if (!html) { c.classList.add('hidden'); return; } c.innerHTML = html; c.classList.toggle('top', !!top && WRR.isRot()); c.classList.remove('hidden'); }
+  function coachMsg(t, b, ms) { coach('<div class="ct">' + t.toUpperCase() + '</div>' + b); coachTimer = setTimeout(function () { coach(null); }, ms); }
+  function toast(t) { var e = $('toast'); e.textContent = t; e.classList.remove('hidden'); clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, 2200); }
+  function hideToast() { $('toast').classList.add('hidden'); }
+  function hud(force) {
+    if (!G) return; var st = G.st, mx = st.maxH || LV[G.lv].hearts || 3, hs = '';
+    for (var i = 0; i < mx; i++) hs += i < st.hearts ? '\u2764\ufe0f' : '\ud83d\udda4';
+    if (hud.h !== hs || force) { $('hHearts').textContent = hs; hud.h = hs; }
+    $('hScore').textContent = st.score;
+    $('hDone').textContent = G.kind === 'level' ? (st.ok + st.late + st.wrong + st.crash) + '/' + st.total : Math.round(st.t) + 's';
+    $('hDoneL').textContent = G.kind === 'level' ? 'kereta' : 'waktu';
+  }
+  // ---------- loop ----------
+  var last = 0, DT = 1 / 60;
+  function frame(ts) {
+    var now = ts / 1000, dt = Math.min(0.05, last ? now - last : 0); last = now; ui.now = now;
+    var g = cur();
+    if (g && !(mode === 'play' && (paused || hold || overlay))) {
+      acc += dt * (mode === 'play' ? speed : 1);
+      while (acc >= DT) {
+        acc -= DT;
+        if (g !== G || mode !== 'play') { botT -= DT; if (botT <= 0) { botT = 0.3; WR.bot(g.st, 6).forEach(function (a) { WR.toggle(g.st, a); }); } }
+        WR.step(g.st, DT); drain(g);
+        if (g === G && mode === 'play') {
+          tutTick(); if (hold) { acc = 0; break; }
+          g.st.queue.forEach(function (q) { if (!q.ann && q[0] - g.st.t < 4) { q.ann = 1; SFX.bell(); } });
+        }
+        if (g.st.over && g !== G) { newDemo(g.lv); g = cur(); }
+      }
+      if (mode === 'play' && g === G && !g.st.over) {
+        predT -= dt; if (predT <= 0) {
+          predT = 0.2; var p = WR.predict(g.st, 5); ui.pred = p; ui.warn = {};
+          if (p) { p.ids.forEach(function (id) { ui.warn[id] = 1; }); var key = p.ids.join('-'); if (!hornAt[key] || now - hornAt[key] > 3.5) { hornAt[key] = now; var tr = g.st.trains.filter(function (t) { return p.ids.indexOf(t.id) >= 0; }).sort(function (a, b) { return WR.SPEC[b.type].v - WR.SPEC[a.type].v; })[0]; SFX.horn(tr ? tr.type : 'krl'); } }
+        }
+      }
+    } else if (!g) acc = 0;
+    if (g && g === G && mode === 'play' && g.st.over) { ui.pred = null; ui.warn = {}; }
+    if (mode === 'play') hud();
+    var hp = mode === 'home' ? 0 : $('hud').offsetHeight; WRR.setPad(hp, mode === 'home' ? 0 : 6);
+    WRR.draw(g ? g.st : null, ui);
+    requestAnimationFrame(frame);
+  }
+  // ---------- wiring ----------
+  on('playBtn', function () { start('level', nextLevel()); });
+  on('dailyBtn', function () { start('daily', 7, WR.hash('whoosh|' + today())); });
+  on('endlessBtn', function () { start('endless', 7, (Math.random() * 1e9) | 0); });
+  on('lvBtn', levels); on('howBtn', function () { how(false); }); on('recBtn', function () { records(); });
+  on('muteBtn', function () { setMute(!muted); }); on('hMute', function () { setMute(!muted); });
+  on('backBtn', pause); on('pauseBtn', pause); on('speedBtn', toggleSpeed);
+  $('ov').addEventListener('pointerdown', function (e) { if (e.target === $('ov') && !(G && mode === 'play')) closeOv(); });
+  window.addEventListener('resize', function () { WRR.resize(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden && mode === 'play' && G && !G.st.over && !overlay) pause(); });
+  $('muteBtn').textContent = $('hMute').textContent = muted ? '\ud83d\udd07' : '\ud83d\udd0a';
+  WRR.resize();
+  function route() {
+    var h = location.hash.slice(1);
+    if (h === 'demo') { // hub snapshot: busy corridor run by the bot with the HUD showing
+      newDemo(7); G = demo; G.kind = 'demo'; mode = 'demo'; $('home').classList.add('hidden'); $('hud').classList.remove('hidden'); $('dim').classList.add('off'); document.documentElement.classList.add('jr-hub-off');
+      $('hLevel').textContent = 'Koridor Halim\u2013Tegalluar'; $('hPlace').textContent = 'Whoosh \u00b7 KRL \u00b7 Barang'; for (var i = 0; i < 900; i++) { if (i % 18 === 0) WR.bot(demo.st, 6).forEach(function (a) { WR.toggle(demo.st, a); }); WR.step(demo.st, DT); } demo.st.events.length = 0;
+      hud = (function (orig) { return function () { var s = demo.st; $('hHearts').textContent = '\u2764\ufe0f\u2764\ufe0f\u2764\ufe0f'.slice(0, s.hearts * 2) || '\ud83d\udda4'; $('hScore').textContent = s.score; $('hDone').textContent = Math.round(s.t) + 's'; $('hDoneL').textContent = 'waktu'; }; })(hud);
+      mode = 'demo-play'; return;
+    }
+    var m = /^(L[1-8])$/.exec(h); if (h === 'tutorial') { tutDone = false; start('level', 0); return; }
+    if (m) { start('level', LV.map(function (L) { return L.id; }).indexOf(m[1])); return; }
+    setMode('home');
+  }
+  route();
+  // demo route keeps the bot playing with the HUD on
+  var _cur = cur; cur = function () { return mode === 'demo-play' ? demo : _cur(); };
+  var _hudCall = function () { if (mode === 'demo-play') hud(); }; setInterval(_hudCall, 250);
+  requestAnimationFrame(frame);
+  window.__whoosh = { get G() { return G; }, get demo() { return demo; }, get mode() { return mode; }, start: start, act: act, ui: ui };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Whoosh Atur Rel · Game Atur Wesel Kereta Api Indonesia Online Gratis</title>
+<meta name="description" content="Whoosh Atur Rel: game puzzle kereta api Indonesia di browser. Atur wesel dan lampu sinyal supaya kereta cepat Whoosh, KRL Commuter Line dan kereta barang tidak tabrakan dan tiba tepat waktu. Gratis, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#14213d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Whoosh Atur Rel · game atur wesel kereta">
+<meta property="og:description" content="Jadi pengatur perjalanan kereta: Whoosh, KRL dan kereta barang. Belokkan wesel, tahan dengan sinyal, jangan sampai tabrakan!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Peta jalur kereta"></canvas>
+<div id="dim" class="dim"></div>
+
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true">
+      <div class="lg-train"><i class="nose"></i><i></i><i></i></div>
+      <div class="lg-txt"><span class="l1">WHOOSH</span><span class="l2">ATUR REL</span></div>
+    </div>
+    <h1 class="sr-only">Whoosh Atur Rel: game atur wesel kereta api Indonesia</h1>
+    <p class="tagline">Kamu pengatur perjalanan. Belokkan wesel, tahan dengan sinyal. Jangan sampai Whoosh telat, apalagi tabrakan!</p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">▶</span> <span id="playLbl">Main</span></button>
+    <div class="row2">
+      <button type="button" class="btn mode" id="dailyBtn"><span class="mi" aria-hidden="true">📅</span><span><b>Harian</b><small id="dailySub">Jadwal sama untuk semua</small></span></button>
+      <button type="button" class="btn mode" id="endlessBtn"><span class="mi" aria-hidden="true">♾️</span><span><b>Tanpa Batas</b><small id="endSub">Makin lama makin padat</small></span></button>
+    </div>
+    <div class="row3">
+      <button type="button" class="btn" id="lvBtn"><span aria-hidden="true">🗺️</span> Level</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">❓</span> Cara main</button>
+      <button type="button" class="btn" id="recBtn"><span aria-hidden="true">🏆</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">🔊</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+  </div>
+  <section class="seo">
+    <h2>Game kereta api Indonesia: atur wesel dan sinyal</h2>
+    <p>Whoosh Atur Rel adalah game puzzle kereta api buatan Indonesia yang langsung dimainkan di browser HP atau laptop, tanpa download dan tanpa iklan. Kamu berperan sebagai pengatur perjalanan kereta api (PPKA): setiap kereta membawa lencana warna stasiun tujuan. Ketuk <b>wesel</b> untuk membelokkan jalur dan ketuk <b>lampu sinyal</b> untuk menahan kereta sampai jalur aman.</p>
+    <h3>Tiga jenis kereta, tiga sifat</h3>
+    <p><b>Whoosh</b> (Kereta Cepat Jakarta–Bandung) melaju paling kencang dan toleransi telatnya paling kecil. <b>KRL Commuter Line</b> datang paling sering dengan kecepatan sedang. <b>Kereta barang</b> pelan dan panjang, jadi sering harus diparkir di jalur simpan supaya Whoosh bisa menyalip.</p>
+    <h3>Dari halte kampung sampai koridor KCIC</h3>
+    <p>Ada 8 level: mulai dari Halte Cikalong dengan satu wesel, Stasiun Bekasi dan Manggarai yang ramai KRL, sampai Koridor Halim–Tegalluar dengan tiga jalur dan lima tujuan. Nama stasiun memakai tempat sungguhan seperti Padalarang, Tegalluar, Karawang, Bekasi, Cikarang dan Jatinegara, tapi petanya disederhanakan untuk game.</p>
+    <h3>Adil: ada peringatan sebelum bahaya</h3>
+    <p>Kereta yang akan masuk diumumkan 4 detik sebelumnya lengkap dengan tujuannya. Kalau dua kereta akan bertemu, muncul tanda AWAS dan klakson berbunyi. Wesel juga terkunci saat dilewati kereta (interlocking), ketukanmu diantrekan dan wesel pindah setelah kereta lewat.</p>
+    <h3>Mode Harian dan Tanpa Batas</h3>
+    <p>Mode Harian memberi jadwal kereta yang sama untuk semua pemain setiap hari (ganti tengah malam WITA). Mode Tanpa Batas makin lama makin padat: berapa lama kamu bisa bertahan tanpa tabrakan?</p>
+  </section>
+  <footer class="foot"><p><strong>Whoosh Atur Rel</strong> · game kereta gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<div id="hud" class="hud hidden">
+  <button type="button" class="hb" id="backBtn" aria-label="Menu">‹</button>
+  <div class="hname"><b id="hLevel">Level</b><span id="hPlace"></span></div>
+  <div class="hstat"><span id="hHearts" class="hearts"></span><span class="hsc"><b id="hScore">0</b><small>poin</small></span><span class="hdone"><b id="hDone">0/0</b><small id="hDoneL">kereta</small></span></div>
+  <div class="hbtns"><button type="button" class="hb" id="speedBtn" aria-label="Kecepatan">1×</button><button type="button" class="hb" id="pauseBtn" aria-label="Jeda">❚❚</button><button type="button" class="hb" id="hMute" aria-label="Suara">🔊</button></div>
+</div>
+<div id="coach" class="coach hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<div id="ov" class="ov hidden"><div class="card" id="ovCard"></div></div>
+<script id="wr-sim">
+/*SIM*/
+</script>
+<script id="wr-render">
+/*RENDER*/
+</script>
+<script id="wr-app">
+/*APP*/
+</script>
+</body>
+</html>
