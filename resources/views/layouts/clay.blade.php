@@ -53,6 +53,9 @@
     <style>{!! \App\Support\InlineCss::fonts() !!}{!! \App\Support\InlineCss::clay() !!}</style>
     @include('partials.theme-boot')
     @stack('head')
+    @unless (str_contains($__env->yieldContent('bodyclass'), 'is-game-page') || str_contains($__env->yieldContent('bodyclass'), 'is-embed'))
+    <link rel="stylesheet" href="{{ \App\Support\AssetUrl::to('css/jd-vt.css') }}">
+    @endunless
 </head>
 <body class="{{ trim($__env->yieldContent('bodyclass')) }}">
     <header class="clay-header">
@@ -154,5 +157,8 @@
     <script src="{{ \App\Support\AssetUrl::to('js/local-time.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/jd-filters.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/jd-jiggle.js') }}" defer></script>
+    @unless (str_contains($__env->yieldContent('bodyclass'), 'is-game-page') || str_contains($__env->yieldContent('bodyclass'), 'is-embed'))
+    <script src="{{ \App\Support\AssetUrl::to('js/jd-vt.js') }}" defer></script>
+    @endunless
 </body>
 </html>
