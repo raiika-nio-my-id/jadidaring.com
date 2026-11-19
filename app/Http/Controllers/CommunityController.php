@@ -382,6 +382,15 @@ class CommunityController extends Controller
         $snippet = '<script>(function(){function s(){try{var b=document.body,h=Math.max(b?b.scrollHeight:0,document.documentElement.scrollHeight);parent.postMessage({jdFrameHeight:Math.ceil(h)},"*")}catch(e){}}'
             .'addEventListener("load",s);addEventListener("DOMContentLoaded",s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s)}'
             .'if(window.ResizeObserver){new ResizeObserver(s).observe(document.documentElement);if(document.body)new ResizeObserver(s).observe(document.body)}setInterval(s,1000)})();</script>';
+        // A page that draws its own cursor (a small fixed element following the mouse) must not
+        // also show the OS cursor: hide it page-wide, but keep the text caret in form fields.
+        $cursorFix = '<script>(function(){if(matchMedia("(pointer:coarse)").matches)return;var x=0,y=0,n=0,done=0;'
+            .'function hide(){if(done)return;done=1;var st=document.createElement("style");st.textContent="html,html *,html *::before,html *::after{cursor:none!important}input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]),textarea,[contenteditable=true],[contenteditable=\"\"]{cursor:text!important}";(document.head||document.documentElement).appendChild(st)}'
+            .'function scan(){if(done)return;var b=document.body;if(b&&getComputedStyle(b).cursor==="none"&&getComputedStyle(document.documentElement).cursor==="none"){}'
+            .'var els=document.body?document.body.getElementsByTagName("*"):[];var lim=Math.min(els.length,2500);for(var i=0;i<lim;i++){var e=els[i];var c=getComputedStyle(e);var pos=c.position;if(pos!=="fixed"&&pos!=="absolute")continue;if(pos==="absolute"&&c.pointerEvents!=="none")continue;if(c.display==="none"||c.visibility==="hidden")continue;'
+            .'var r=e.getBoundingClientRect();if(r.width<2||r.height<2||r.width>120||r.height>120)continue;var cx=r.left+r.width/2,cy=r.top+r.height/2;if(Math.abs(cx-x)<=60&&Math.abs(cy-y)<=60&&(Math.abs(cx-x)>0||Math.abs(cy-y)>0||c.pointerEvents==="none")){hide();return}}}'
+            .'addEventListener("mousemove",function(ev){x=ev.clientX;y=ev.clientY;n++;if(n===4||n===40||n===200)setTimeout(scan,120)},{passive:true})})();</script>';
+        $snippet .= $cursorFix;
         $html = stripos($html, '</body>') !== false ? preg_replace('~</body>~i', $snippet.'</body>', $html, 1) : $html.$snippet;
 
         $cdn = implode(' ', array_map(fn (string $h): string => 'https://'.$h, \App\Services\MemberPageSanitizer::CDN_HOSTS));

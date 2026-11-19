@@ -907,3 +907,7 @@ body {
   :root:not([data-theme="light"]) .clay-logo--light { display: none; }
   :root:not([data-theme="light"]) .clay-logo--dark { display: block; }
 }
+
+/* Custom profile cursor: one cursor only. Links/buttons use it too, text fields keep the caret; touch is unaffected. */
+.pf--cursor a, .pf--cursor button, .pf--cursor summary, .pf--cursor label, .pf--cursor select, .pf--cursor [role="button"] { cursor: inherit; }
+.pf--cursor input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]), .pf--cursor textarea { cursor: text; }

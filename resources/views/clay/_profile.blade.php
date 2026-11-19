@@ -11,7 +11,7 @@
 @unless (in_array($font, $selfFonts, true))
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $font) }}:wght@400;700&amp;display=swap">
 @endunless
-<div class="pf {{ $theme['bg']['fixed'] ? 'pf--fixed' : '' }}" style="{{ $css['vars'] }}{{ $css['cursor'] }}">
+<div class="pf {{ $theme['bg']['fixed'] ? 'pf--fixed' : '' }} {{ $css['cursor'] !== '' ? 'pf--cursor' : '' }}" style="{{ $css['vars'] }}{{ $css['cursor'] }}">
     <div class="pf-bg" style="{{ $css['bg'] }}" aria-hidden="true"></div>
     <div class="pf-inner">
         <header class="pf-card pf-head">

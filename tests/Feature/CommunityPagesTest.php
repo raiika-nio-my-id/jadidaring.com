@@ -95,6 +95,20 @@ class CommunityPagesTest extends TestCase
         $this->assertStringContainsString('jdFrameHeight', $r->getContent());
     }
 
+    public function test_content_hides_os_cursor_when_page_draws_its_own_but_keeps_text_caret(): void
+    {
+        $user = User::factory()->member()->create(['username' => 'cur_k']);
+        $html = '<!doctype html><html><head><style>#c{position:fixed;left:0;top:0;width:20px;height:20px;border-radius:50%;background:red;pointer-events:none}</style></head><body><div id="c"></div><a href="#x">link</a><input id="i"><script>addEventListener("mousemove",function(e){var c=document.getElementById("c");c.style.left=e.clientX-10+"px";c.style.top=e.clientY-10+"px"})</script></body></html>';
+        $this->actingAs($user)->post($this->base().'/komunitas/halamanku', ['title' => 'Kursor', 'html' => $html])->assertRedirect('/komunitas/halamanku');
+        $this->actingAs($user)->post($this->base().'/komunitas/halamanku/draft/terbitkan')->assertRedirect('/u/cur_k');
+        $page = MemberPage::where('user_id', $user->id)->first();
+        $res = $this->get($this->base().'/u/cur_k/konten?t='.\App\Services\MemberFrameToken::mint($page->id), ['Sec-Fetch-Dest' => 'iframe'])->assertOk()
+            ->assertSee('cursor:none!important', false)->assertSee('cursor:text!important', false);
+        if (getenv('DUMP_CONTENT')) {
+            file_put_contents(getenv('DUMP_CONTENT'), $res->getContent());
+        }
+    }
+
     public function test_viewer_renders_trusted_wall_and_nav_outside_a_sandboxed_iframe(): void
     {
         $owner = User::factory()->member()->create(['username' => 'budi_x']);
