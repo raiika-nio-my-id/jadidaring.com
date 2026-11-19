@@ -83,13 +83,13 @@ exported first (no admin GET endpoint exists yet).
 | 36 | `mahjong-master` | database | no local copy: export the database html first | yes | yes |
 | 37 | `explodingkitten` | database | no local copy: export the database html first | yes | yes |
 | 38 | `mahjong` | database | no local copy: export the database html first | yes | yes |
-| 39 | `tiltingball` | in git | no local copy: export the database html first | no | no |
+| 39 | `tiltingball` | in git (ace822d) | no local copy: export the database html first | no | no |
 | 40 | `boxing` | database | no local copy: export the database html first | no | no |
 | 41 | `spiderman` | database | no local copy: export the database html first | no | no |
 | 42 | `kehidupankonoha` | database | no local copy: export the database html first | yes | yes |
 | 43 | `mlbbpicker` | database | no local copy: export the database html first | no | no |
 | 44 | `clubgame` | database | no local copy: export the database html first | no | no |
-| 45 | `idle-game` | database | no local copy: export the database html first | no | no |
+| 45 | `idle-game` | in git | no local copy: export the database html first | no | no |
 <!-- inventory:end -->
 
 ## After: game as code
