@@ -153,5 +153,6 @@
     <script src="{{ \App\Support\AssetUrl::to('js/theme.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/local-time.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/jd-filters.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/jd-jiggle.js') }}" defer></script>
 </body>
 </html>

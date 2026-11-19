@@ -1130,3 +1130,10 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
   .jd-ind { transition: none !important; }
   .jd-enter *, .jd-chips > * { animation: none !important; }
 }
+
+/* ===== Chip jiggle / deflate (trial, own commit) ===== */
+@keyframes jd-jig { 0% { transform: scale(1) rotate(0); } 25% { transform: scale(1.1) rotate(-3deg); } 50% { transform: scale(.97) rotate(2deg); } 75% { transform: scale(1.03) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes jd-deflate { 0% { transform: scale(1); } 40% { transform: scale(.88); } 100% { transform: scale(1); } }
+.jd-chips > .jd-jig { animation: jd-jig .42s cubic-bezier(.3,.7,.4,1); }
+.jd-chips > .jd-deflate { animation: jd-deflate .32s ease-out; }
+@media (prefers-reduced-motion: reduce) { .jd-chips > .jd-jig, .jd-chips > .jd-deflate { animation: none !important; } }
