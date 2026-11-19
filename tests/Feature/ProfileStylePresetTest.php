@@ -29,6 +29,7 @@ class ProfileStylePresetTest extends TestCase
         $this->assertSame('cartoon', $c['style']);
         $this->assertContains('Comic Neue', $c['styleFonts']);
         $this->assertStringContainsString('--pf-card-solid:#', $c['vars']);
+        $this->assertMatchesRegularExpression('/--pf-rgb:\d+,\d+,\d+;--pf-op:0\.88;/', $c['vars']); // glass presets derive alpha from the member's card opacity
     }
 
     public function test_colour_presets_do_not_carry_a_style(): void

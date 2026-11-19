@@ -527,8 +527,8 @@ class ProfileConfig
             return hexdec(substr($hex, 1, 2)).','.hexdec(substr($hex, 3, 2)).','.hexdec(substr($hex, 5, 2));
         };
         $vars = sprintf(
-            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card-solid:%s;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
-            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $t['colors']['card'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
+            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card-solid:%s;--pf-rgb:%s;--pf-op:%s;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
+            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $t['colors']['card'], $rgb($t['colors']['card']), $t['card']['opacity'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
         );
 
         $bg = 'background:'.self::bgLayers($t['bg']).';';

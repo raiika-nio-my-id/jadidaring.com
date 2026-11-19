@@ -203,7 +203,7 @@
   function stylePicker() {
     var cur = cfg.theme.style || 'bawaan';
     var c = cfg.theme.colors;
-    var tv = '--pf-text:' + c.text + ';--pf-accent:' + c.accent + ';--pf-link:' + c.link + ';--pf-card-solid:' + c.card + ';--pf-card:' + c.card + ';--pf-radius:14px;--pf-blur:0px;--pf-font:Nunito,system-ui,sans-serif;';
+    var tv = '--pf-text:' + c.text + ';--pf-accent:' + c.accent + ';--pf-link:' + c.link + ';--pf-card-solid:' + c.card + ';--pf-rgb:' + [1, 3, 5].map(function (i) { return parseInt(c.card.substr(i, 2), 16); }).join(',') + ';--pf-op:' + (cfg.theme.card.opacity || 0.88) + ';--pf-card:' + c.card + ';--pf-radius:14px;--pf-blur:0px;--pf-font:Nunito,system-ui,sans-serif;';
     var wrap = h('div', { cls: 'le-field' }, [
       h('p', { cls: 'le-flabel', text: 'Preset gaya' }),
       h('p', { cls: 'le-hint', text: 'Ubah tampilan kartu dan header sekaligus (permukaan, tepi, bayangan, font). Warna tetap bisa kamu atur di bawah. Gaya bertanda ● memakai warna sendiri agar tetap terbaca.' })
