@@ -12,7 +12,7 @@
                         data-request-access="write"></script>
                 </div>
             @else
-                <a class="clay-btn clay-btn--sky" href="{{ route('member.social.redirect', $provider) }}">{{ ucfirst($provider) }}</a>
+                <a class="clay-btn clay-btn--sky" href="{{ route('member.social.redirect', $provider) }}">{{ $provider === 'github' ? 'GitHub' : ucfirst($provider) }}</a>
             @endif
         @endforeach
     </div>
