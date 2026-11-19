@@ -1,0 +1,66 @@
+@zh
+# Animals
+金鱼 眼镜蛇 公鸡 小马 棕熊 小猪 啄木鸟 蝌蚪
+# Food
+包子 馒头 粽子 汤圆 烤鸭 糖葫芦 臭豆腐 小笼包 烧卖 油条 豆浆 麻婆豆腐 宫保鸡丁 担担面 肉夹馍 年糕 八宝粥 蛋挞 叉烧包 云吞 凉皮 方便面 奶茶 绿茶 黄油 可乐 鸡腿 煎蛋
+# Fruits & Veggies
+萝卜 青椒 柚子
+# Vehicles
+滑板车 高铁 地铁 战斗机 校车
+# Home
+双人床 日历 花盆 饭碗 洗发水 纸巾 扳手 保温瓶
+# School
+水彩 圆规 量角器 彩色铅笔 奖状 课桌
+# Clothes
+发夹 发箍 蝴蝶结 背心 旗袍 草帽
+# Nature
+刮风 彗星 日食 树根 弯月 落叶 山谷
+# Places
+宫殿 公寓 操场 理发店 温室 修车厂 钟楼 公园 高速公路 铁轨
+# Landmarks
+故宫 天安门 兵马俑 东方明珠 西湖 黄山 桂林山水 布达拉宫 天坛 雷峰塔
+# Jobs
+赛车手 面包师 考古学家 建筑工人 外卖员
+# Sports & Games
+空手道 功夫 围棋 飞行棋 跳远 跳高 踢毽子 多米诺
+# Music & Culture
+二胡 古筝 琵琶 春联 京剧 剪纸 中国结 手鼓 三角铁 长号 磁带
+# Fantasy
+小矮人 飞天扫帚 神灯 精灵 飞马 巫师帽 魔豆 水晶鞋 毒苹果 南瓜马车 金蛋 传送门 魔镜 孙悟空
+# Technology
+无线网 电线 插头 监控摄像头 触摸屏 复印机 充电器 显示器 扫描仪
+# Actions
+洗衣服 熨衣服 滑倒 偷看 牙疼 头晕 拖地 缝衣服 织毛衣 晒衣服 闻花香 好热 好冷 发呆
+# Body
+双手 脚丫 刘海 汗水 创可贴
+# Adventure & Party
+野餐篮
+@th
+# Food
+ส้มตำ|ต้มยำกุ้ง|ผัดไทย|ข้าวเหนียวมะม่วง|ข้าวเหนียว|ไก่ย่าง|ชาไทย|โรตี|ขนมครก|ลูกชิ้น|ข้าวมันไก่|ทองหยอด|บัวลอย|น้ำมะพร้าว|ไข่เจียว
+# Vehicles
+ตุ๊กตุ๊ก|เรือหางยาว|รถสองแถว|รถไฟฟ้า
+# Places
+วัดอรุณ|ตลาดน้ำ|พระบรมมหาราชวัง|ร้านสะดวกซื้อ
+# Music & Culture
+ลอยกระทง|กระทง|สงกรานต์|ปืนฉีดน้ำ|พวงมาลัย|ชฎา|โขน|มวยไทย|ตะกร้อ|ไหว้|ศาลพระภูมิ|ขันน้ำ
+@vi
+# Food
+phở|bún chả|bánh chưng|bánh xèo|gỏi cuốn|cà phê sữa đá|bánh bao|xôi|chè|trà đá|bánh cuốn|cơm tấm|bún bò|bánh tét|mứt tết|kẹo dừa
+# Vehicles
+xe ôm|xe buýt hai tầng|ghe
+# Clothes
+áo dài|nón lá|khăn rằn
+# Places
+chùa một cột|hồ gươm|cầu vàng|chợ bến thành|phố cổ|ruộng bậc thang
+# Music & Culture
+múa rối nước|đèn ông sao|hoa mai|hoa đào|câu đối|bánh pháo|đàn bầu|đàn tranh|trống đồng|tò he
+@ms
+# Food
+nasi lemak|roti canai|teh tarik|cendol|laksa|rendang|ketupat|lemang|char kuey teow|mee goreng|apam balik|ais kacang|keropok lekor|murtabak|kuih lapis|nasi kerabu|otak-otak|roti jala|kuih bahulu|dodol|milo ais
+# Music & Culture
+wau bulan|congkak|sepak takraw|batik|songkok|baju kurung|baju melayu|kompang|bunga raya|pelita|duit raya
+# Places
+menara kl|jambatan pulau pinang|kampung|rumah panjang|masjid|surau|kedai mamak|pasar malam
+# Animals
+harimau malaya|orang utan|tapir|burung enggang|kancil|penyu belimbing

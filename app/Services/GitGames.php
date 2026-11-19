@@ -63,6 +63,8 @@ class GitGames
         $out = preg_replace_callback('/<head\b[^>]*>/i', fn (array $m) => $m[0].$head, $html, 1, $count);
         $html = is_string($out) && $count > 0 ? $out : $head.$html;
 
+        $html = self::accountName($html);
+
         $id = (string) config('services.ga4.measurement_id');
 
         if (preg_match('/^G-[A-Z0-9]{4,20}$/', $id) === 1 && ! str_contains($html, GameAnalytics::MARKER)) {
@@ -72,6 +74,30 @@ class GitGames
         }
 
         return $html;
+    }
+
+    public const ACCOUNT_NAME_MARKER = 'data-jd-account-name-lock';
+
+    /**
+     * Right after the player-name bridge (window.__JD_ME): name fields listed by the game's name gate are filled
+     * with the account name and made read-only (public/js/account-name.js). Games without the bridge are untouched.
+     */
+    private static function accountName(string $html): string
+    {
+        if (str_contains($html, self::ACCOUNT_NAME_MARKER) || ! str_contains($html, PlayerNameBridge::MARKER)) {
+            return $html;
+        }
+
+        $script = is_file(public_path('js/account-name.js')) ? (string) file_get_contents(public_path('js/account-name.js')) : '';
+
+        if ($script === '' || str_contains($script, '</script')) {
+            return $html;
+        }
+
+        $tag = '<script '.self::ACCOUNT_NAME_MARKER.'>'.trim($script).'</script>';
+        $out = preg_replace_callback('/<script\s+'.preg_quote(PlayerNameBridge::MARKER, '/').'\b[^>]*>[\s\S]*?<\/script>/i', fn (array $m) => $m[0].$tag, $html, 1, $count);
+
+        return is_string($out) && $count > 0 ? $out : $html;
     }
 
     /**

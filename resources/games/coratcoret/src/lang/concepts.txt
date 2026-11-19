@@ -1,0 +1,723 @@
+# en;id;ms;vi;th;zh   ('/' = accepted alternatives, the first one is shown)
+# Animals
+cat;kucing;kucing;mèo;แมว;猫/小猫/猫咪
+dog;anjing;anjing;chó;หมา/สุนัข;狗/小狗
+fish;ikan;ikan;cá;ปลา;鱼/小鱼
+bird;burung;burung;chim;นก;鸟/小鸟
+elephant;gajah;gajah;voi;ช้าง;大象
+giraffe;jerapah;zirafah;hươu cao cổ;ยีราฟ;长颈鹿
+tiger;harimau;harimau;hổ/cọp;เสือ;老虎
+rabbit/bunny;kelinci;arnab;thỏ;กระต่าย;兔子/兔
+turtle/tortoise;kura-kura;kura-kura/penyu;rùa;เต่า;乌龟
+snake;ular;ular;rắn;งู;蛇
+butterfly;kupu-kupu;rama-rama;bướm;ผีเสื้อ;蝴蝶
+ant;semut;semut;kiến;มด;蚂蚁
+spider;laba-laba;labah-labah;nhện;แมงมุม;蜘蛛
+chicken/hen;ayam;ayam;gà;ไก่;鸡/小鸡
+duck;bebek/itik;itik;vịt;เป็ด;鸭子/鸭
+cow;sapi;lembu;bò;วัว;牛/奶牛
+goat;kambing;kambing;dê;แพะ;山羊
+horse;kuda;kuda;ngựa;ม้า;马
+monkey;monyet;monyet;khỉ;ลิง;猴子
+crocodile;buaya;buaya;cá sấu;จระเข้;鳄鱼
+octopus;gurita;kurita/sotong kurita;bạch tuộc;ปลาหมึกยักษ์;章鱼
+whale;paus;ikan paus;cá voi;ปลาวาฬ;鲸鱼
+shark;hiu;ikan yu;cá mập;ฉลาม;鲨鱼
+crab;kepiting;ketam;cua;ปู;螃蟹
+lion;singa;singa;sư tử;สิงโต;狮子
+zebra;zebra;kuda belang/zebra;ngựa vằn;ม้าลาย;斑马
+bear;beruang;beruang;gấu;หมี;熊
+panda;panda;panda;gấu trúc;แพนด้า;熊猫
+kangaroo;kanguru;kanggaru;chuột túi/kangaroo;จิงโจ้;袋鼠
+camel;unta;unta;lạc đà;อูฐ;骆驼
+rhino/rhinoceros;badak;badak sumbu;tê giác;แรด;犀牛
+hippo/hippopotamus;kuda nil;badak air;hà mã;ฮิปโป;河马
+deer;rusa;rusa;hươu/nai;กวาง;鹿/小鹿
+squirrel;tupai;tupai;sóc;กระรอก;松鼠
+mouse/rat;tikus;tikus;chuột;หนู;老鼠
+bat;kelelawar;kelawar;dơi;ค้างคาว;蝙蝠
+owl;burung hantu;burung hantu;cú mèo/cú;นกฮูก;猫头鹰
+peacock;merak;burung merak;chim công;นกยูง;孔雀
+penguin;penguin;penguin;chim cánh cụt;เพนกวิน;企鹅
+dolphin;lumba-lumba;ikan lumba-lumba;cá heo;โลมา;海豚
+starfish;bintang laut;tapak sulaiman;sao biển;ปลาดาว;海星
+jellyfish;ubur-ubur;obor-obor;sứa;แมงกะพรุน;水母
+frog;katak/kodok;katak;ếch;กบ;青蛙
+snail;siput;siput;ốc sên;หอยทาก;蜗牛
+bee;lebah;lebah;ong;ผึ้ง;蜜蜂
+mosquito;nyamuk;nyamuk;muỗi;ยุง;蚊子
+dragonfly;capung;pepatung;chuồn chuồn;แมลงปอ;蜻蜓
+hedgehog;landak;landak;nhím;เม่น;刺猬
+seahorse;kuda laut;kuda laut;cá ngựa;ม้าน้ำ;海马
+parrot;burung beo;burung kakak tua;vẹt;นกแก้ว;鹦鹉
+eagle;elang;helang;đại bàng;นกอินทรี;老鹰
+swan;angsa;angsa;thiên nga;หงส์;天鹅
+sheep;domba;biri-biri;cừu;แกะ;绵羊/羊
+pigeon;merpati;burung merpati;bồ câu;นกพิราบ;鸽子
+ladybug;kepik;kumbang kura-kura;bọ rùa;เต่าทอง;瓢虫
+caterpillar;ulat;ulat bulu;sâu bướm/con sâu;หนอนผีเสื้อ/หนอน;毛毛虫
+polar bear;beruang kutub;beruang kutub;gấu bắc cực;หมีขั้วโลก;北极熊
+fox;rubah;rubah;cáo;สุนัขจิ้งจอก/จิ้งจอก;狐狸
+flamingo;flamingo;flamingo;hồng hạc;นกฟลามิงโก;火烈鸟
+lobster;lobster;udang karang;tôm hùm;กุ้งมังกร;龙虾
+shrimp/prawn;udang;udang;tôm;กุ้ง;虾/大虾
+wolf;serigala;serigala;sói/chó sói;หมาป่า;狼
+gorilla;gorila;gorila;khỉ đột;กอริลลา;大猩猩
+koala;koala;koala;gấu koala;โคอาล่า;考拉
+squid;cumi-cumi;sotong;mực;ปลาหมึก;鱿鱼
+worm;cacing;cacing;giun;ไส้เดือน;蚯蚓
+# Food
+ice cream;es krim;aiskrim;kem;ไอศกรีม;冰淇淋
+birthday cake;kue ulang tahun;kek hari jadi;bánh sinh nhật;เค้กวันเกิด;生日蛋糕
+bread;roti;roti;bánh mì;ขนมปัง;面包
+egg;telur;telur;trứng;ไข่;鸡蛋/蛋
+coffee;kopi;kopi;cà phê;กาแฟ;咖啡
+pizza;pizza;piza/pizza;pizza;พิซซ่า;披萨
+burger/hamburger;burger;burger;hamburger/bánh hamburger;แฮมเบอร์เกอร์;汉堡/汉堡包
+hot dog;hot dog;hot dog;hot dog/xúc xích kẹp;ฮอทดอก;热狗
+french fries/fries;kentang goreng;kentang goreng;khoai tây chiên;เฟรนช์ฟรายส์/มันฝรั่งทอด;薯条
+noodles;mi/mie;mi/mee;mì;บะหมี่/ก๋วยเตี๋ยว;面条/面
+sausage;sosis;sosej;xúc xích;ไส้กรอก;香肠
+cheese;keju;keju;phô mai;ชีส;奶酪
+candy;permen;gula-gula;kẹo;ลูกอม;糖果
+chocolate;cokelat;coklat;sô cô la;ช็อกโกแลต;巧克力
+donut;donat;donat;bánh donut;โดนัท;甜甜圈
+milk;susu;susu;sữa;นม;牛奶
+tea;teh;teh;trà;ชา;茶
+juice;jus;jus;nước ép;น้ำผลไม้;果汁
+honey;madu;madu;mật ong;น้ำผึ้ง;蜂蜜
+popcorn;popcorn;bertih jagung/popcorn;bỏng ngô;ป๊อปคอร์น;爆米花
+sandwich;sandwich;sandwic;bánh sandwich;แซนด์วิช;三明治
+salad;salad;salad;salad/rau trộn;สลัด;沙拉
+soup;sup;sup;súp/canh;ซุป;汤
+spaghetti;spageti;spageti;mì ý;สปาเกตตี;意大利面
+cookie/biscuit;biskuit;biskut;bánh quy;คุกกี้;饼干
+sushi;sushi;sushi;sushi;ซูชิ;寿司
+fried chicken;ayam goreng;ayam goreng;gà rán;ไก่ทอด;炸鸡
+pudding;puding;puding;pudding;พุดดิ้ง;布丁
+jelly;agar-agar;agar-agar/jeli;thạch;เยลลี่;果冻
+steak;steak;stik;bít tết;สเต๊ก;牛排
+lollipop;lolipop;lolipop;kẹo mút;อมยิ้ม;棒棒糖
+cotton candy;gulali/arum manis;gula-gula kapas;kẹo bông gòn;สายไหม;棉花糖
+bubble tea;bubble tea;teh boba;trà sữa trân châu;ชานมไข่มุก;珍珠奶茶
+rice;nasi;nasi;cơm;ข้าว;米饭
+fried rice;nasi goreng;nasi goreng;cơm chiên/cơm rang;ข้าวผัด;炒饭
+dumpling;pangsit;ladu;sủi cảo/há cảo;เกี๊ยว;饺子
+porridge;bubur;bubur;cháo;โจ๊ก;粥/白粥
+satay;sate;sate;thịt xiên nướng;สะเต๊ะ;烤串/沙爹
+mooncake;kue bulan;kuih bulan;bánh trung thu;ขนมไหว้พระจันทร์;月饼
+spring roll;lumpia;popia;chả giò/nem rán;ปอเปี๊ยะ;春卷
+hotpot;hot pot;steamboat;lẩu;สุกี้/หม้อไฟ;火锅
+tofu;tahu;tauhu;đậu phụ/đậu hũ;เต้าหู้;豆腐
+pancake;panekuk;lempeng;bánh kếp;แพนเค้ก;松饼/煎饼
+toast;roti bakar;roti bakar;bánh mì nướng;ขนมปังปิ้ง;吐司
+cupcake;kue mangkuk;kek cawan;bánh cupcake;คัพเค้ก;纸杯蛋糕
+# Fruits & Veggies
+banana;pisang;pisang;chuối;กล้วย;香蕉
+apple;apel;epal;táo;แอปเปิ้ล;苹果
+watermelon;semangka;tembikai;dưa hấu;แตงโม;西瓜
+pineapple;nanas;nanas;dứa/thơm;สับปะรด;菠萝
+durian;durian;durian;sầu riêng;ทุเรียน;榴莲
+mango;mangga;mangga;xoài;มะม่วง;芒果
+orange;jeruk;oren;cam;ส้ม;橙子/橘子
+grapes;anggur;anggur;nho;องุ่น;葡萄
+carrot;wortel;lobak merah;cà rốt;แครอท;胡萝卜
+corn;jagung;jagung;ngô/bắp;ข้าวโพด;玉米
+chili;cabai/cabe;cili;ớt;พริก;辣椒
+tomato;tomat;tomato;cà chua;มะเขือเทศ;西红柿/番茄
+strawberry;stroberi;strawberi;dâu tây;สตรอว์เบอร์รี/สตรอเบอร์รี่;草莓
+cherry;ceri;ceri;anh đào/cherry;เชอร์รี่;樱桃
+papaya;pepaya;betik;đu đủ;มะละกอ;木瓜
+coconut;kelapa;kelapa;dừa;มะพร้าว;椰子
+avocado;alpukat;avokado;bơ;อะโวคาโด;牛油果
+lemon/lime;lemon/jeruk nipis;lemon/limau;chanh;มะนาว;柠檬
+kiwi;kiwi;kiwi;kiwi;กีวี;猕猴桃
+dragon fruit;buah naga;buah naga;thanh long;แก้วมังกร;火龙果
+eggplant;terong;terung;cà tím;มะเขือม่วง;茄子
+potato;kentang;kentang;khoai tây;มันฝรั่ง;土豆/马铃薯
+onion;bawang merah;bawang;hành tây;หัวหอม;洋葱
+garlic;bawang putih;bawang putih;tỏi;กระเทียม;大蒜
+broccoli;brokoli;brokoli;bông cải xanh/súp lơ xanh;บรอกโคลี;西兰花
+cabbage;kubis/kol;kobis;bắp cải;กะหล่ำปลี;白菜/卷心菜
+cucumber;timun;timun;dưa chuột/dưa leo;แตงกวา;黄瓜
+pumpkin;labu;labu;bí ngô/bí đỏ;ฟักทอง;南瓜
+mushroom;jamur;cendawan;nấm;เห็ด;蘑菇
+spinach;bayam;bayam;rau chân vịt/cải bó xôi;ผักโขม;菠菜
+peanut;kacang tanah;kacang tanah;đậu phộng/lạc;ถั่วลิสง;花生
+sugarcane;tebu;tebu;mía;อ้อย;甘蔗
+pear;pir;pear;lê;ลูกแพร์;梨/梨子
+lychee;leci;laici;vải;ลิ้นจี่;荔枝
+peach;persik;pic;đào;ลูกพีช;桃子/桃
+mangosteen;manggis;manggis;măng cụt;มังคุด;山竹
+rambutan;rambutan;rambutan;chôm chôm;เงาะ;红毛丹
+starfruit;belimbing;belimbing;khế;มะเฟือง;杨桃
+jackfruit;nangka;nangka;mít;ขนุน;菠萝蜜
+melon;melon;tembikai susu;dưa lưới;เมลอน;哈密瓜
+peas;kacang polong;kacang pis;đậu hà lan;ถั่วลันเตา;豌豆
+ginger;jahe;halia;gừng;ขิง;生姜/姜
+sweet potato;ubi;ubi keledek;khoai lang;มันเทศ;红薯
+pomegranate;delima;delima;lựu;ทับทิม;石榴
+lettuce;selada;daun salad;xà lách;ผักกาดหอม;生菜
+# Vehicles
+bicycle/bike;sepeda;basikal;xe đạp;จักรยาน;自行车
+motorcycle/motorbike;motor/sepeda motor;motosikal;xe máy;มอเตอร์ไซค์;摩托车
+car;mobil;kereta;ô tô/xe hơi;รถยนต์/รถ;汽车/车
+bus;bus;bas;xe buýt;รถบัส/รถเมล์;公交车/巴士
+train;kereta api;kereta api;tàu hỏa/xe lửa;รถไฟ;火车
+airplane/plane;pesawat;kapal terbang;máy bay;เครื่องบิน;飞机
+boat/ship;perahu/kapal;bot/kapal;thuyền/tàu thủy;เรือ;船/小船/轮船
+helicopter;helikopter;helikopter;trực thăng;เฮลิคอปเตอร์;直升机
+rocket;roket;roket;tên lửa;จรวด;火箭
+truck;truk;lori;xe tải;รถบรรทุก;卡车
+ambulance;ambulans;ambulans;xe cứu thương;รถพยาบาล;救护车
+fire truck;mobil pemadam;jentera bomba;xe cứu hỏa;รถดับเพลิง;消防车
+police car;mobil polisi;kereta polis;xe cảnh sát;รถตำรวจ;警车
+taxi;taksi;teksi;taxi;แท็กซี่;出租车
+tractor;traktor;traktor;máy kéo;รถไถ;拖拉机
+excavator;ekskavator;jengkaut;máy xúc;รถขุด;挖掘机
+submarine;kapal selam;kapal selam;tàu ngầm;เรือดำน้ำ;潜水艇
+hot air balloon;balon udara;belon udara panas;khinh khí cầu;บอลลูน;热气球
+cable car;kereta gantung;kereta kabel;cáp treo;กระเช้าลอยฟ้า;缆车
+race car;mobil balap;kereta lumba;xe đua;รถแข่ง;赛车
+bulldozer;buldoser;jentolak;xe ủi;รถดันดิน;推土机
+stroller;kereta dorong;kereta sorong bayi;xe đẩy em bé;รถเข็นเด็ก;婴儿车
+garbage truck;truk sampah;lori sampah;xe rác;รถขยะ;垃圾车
+sailboat;perahu layar;perahu layar;thuyền buồm;เรือใบ;帆船
+wheelchair;kursi roda;kerusi roda;xe lăn;รถเข็นคนพิการ/วีลแชร์;轮椅
+pedicab/rickshaw;becak;beca;xích lô;สามล้อ;三轮车
+canoe;kano;kanu;xuồng/ca nô;เรือแคนู;独木舟
+jeep;jip;jip;xe jeep;รถจี๊ป;吉普车
+# Home
+umbrella;payung;payung;ô/dù;ร่ม;雨伞/伞
+key;kunci;kunci;chìa khóa;กุญแจ;钥匙
+door;pintu;pintu;cửa;ประตู;门/大门
+window;jendela;tingkap;cửa sổ;หน้าต่าง;窗户
+chair;kursi;kerusi;ghế;เก้าอี้;椅子
+table;meja;meja;bàn;โต๊ะ;桌子
+bed;kasur/tempat tidur;katil;giường;เตียง;床
+lamp;lampu;lampu;đèn;โคมไฟ;台灯/灯
+television/tv;televisi/tv;televisyen/tv;tivi/ti vi;ทีวี/โทรทัศน์;电视
+fridge/refrigerator;kulkas;peti sejuk;tủ lạnh;ตู้เย็น;冰箱
+fan;kipas angin;kipas;quạt;พัดลม;电风扇/风扇
+broom;sapu;penyapu;chổi;ไม้กวาด;扫帚
+bucket;ember;baldi;xô;ถังน้ำ;水桶
+scissors;gunting;gunting;kéo;กรรไกร;剪刀
+toothbrush;sikat gigi;berus gigi;bàn chải đánh răng;แปรงสีฟัน;牙刷
+mirror;cermin;cermin;gương;กระจก;镜子
+sofa/couch;sofa;sofa;ghế sofa/sofa;โซฟา;沙发
+pillow;bantal;bantal;gối;หมอน;枕头
+blanket;selimut;selimut;chăn;ผ้าห่ม;被子
+wardrobe/closet;lemari;almari;tủ quần áo;ตู้เสื้อผ้า;衣柜
+bookshelf;rak buku;rak buku;giá sách/kệ sách;ชั้นหนังสือ;书架
+wall clock/clock;jam dinding/jam;jam dinding/jam;đồng hồ treo tường/đồng hồ;นาฬิกาแขวน/นาฬิกา;挂钟/钟
+vase;vas bunga;pasu bunga;bình hoa/lọ hoa;แจกัน;花瓶
+pot;panci;periuk;nồi;หม้อ;锅
+frying pan;wajan;kuali;chảo;กระทะ;炒锅
+spoon;sendok;sudu;thìa/muỗng;ช้อน;勺子
+fork;garpu;garpu;nĩa;ส้อม;叉子
+knife;pisau;pisau;dao;มีด;刀/菜刀
+plate;piring;pinggan;đĩa;จาน;盘子
+glass/cup;gelas;gelas/cawan;cốc/ly;แก้วน้ำ/แก้ว;杯子
+bowl;mangkuk;mangkuk;bát/chén;ชาม;碗
+teapot;teko;teko;ấm trà;กาน้ำชา;茶壶
+stove;kompor;dapur gas;bếp ga;เตาแก๊ส;煤气灶
+oven;oven;ketuhar;lò nướng;เตาอบ;烤箱
+blender;blender;pengisar;máy xay sinh tố;เครื่องปั่น;搅拌机
+rice cooker;penanak nasi/rice cooker;periuk nasi;nồi cơm điện;หม้อหุงข้าว;电饭锅
+iron;setrika;seterika;bàn là/bàn ủi;เตารีด;熨斗
+washing machine;mesin cuci;mesin basuh;máy giặt;เครื่องซักผ้า;洗衣机
+carpet/rug;karpet;permaidani;thảm;พรม;地毯
+curtain;tirai/gorden;langsir;rèm cửa;ผ้าม่าน;窗帘
+towel;handuk;tuala;khăn tắm;ผ้าเช็ดตัว;毛巾
+soap;sabun;sabun;xà phòng;สบู่;肥皂
+toothpaste;pasta gigi;ubat gigi;kem đánh răng;ยาสีฟัน;牙膏
+toilet;toilet/kloset;tandas;bồn cầu;ชักโครก;马桶
+faucet/tap;keran;paip air;vòi nước;ก๊อกน้ำ;水龙头
+shower;pancuran/shower;pancuran mandi;vòi sen;ฝักบัว;淋浴/花洒
+trash can/bin;tempat sampah;tong sampah;thùng rác;ถังขยะ;垃圾桶
+mop;alat pel/pel;mop;cây lau nhà;ไม้ถูพื้น;拖把
+screwdriver;obeng;pemutar skru;tua vít;ไขควง;螺丝刀
+hammer;palu;tukul;búa;ค้อน;锤子
+nail;paku;paku;đinh;ตะปู;钉子
+saw;gergaji;gergaji;cưa;เลื่อย;锯子
+ladder;tangga;tangga;thang;บันได;梯子
+flashlight;senter;lampu suluh;đèn pin;ไฟฉาย;手电筒
+hanger;gantungan baju;penyangkut baju;móc áo;ไม้แขวนเสื้อ;衣架
+comb;sisir;sikat;lược;หวี;梳子
+alarm clock;jam weker;jam loceng;đồng hồ báo thức;นาฬิกาปลุก;闹钟
+box;kardus/kotak;kotak;hộp/thùng giấy;กล่อง;纸箱/箱子
+chopsticks;sumpit;penyepit;đũa;ตะเกียบ;筷子
+piggy bank;celengan;tabung duit;heo đất/lợn đất;กระปุกออมสิน;存钱罐
+doorbell;bel pintu;loceng pintu;chuông cửa;กริ่งประตู;门铃
+padlock/lock;gembok;kunci mangga;ổ khóa;แม่กุญแจ;锁/挂锁
+remote control/remote;remot;alat kawalan jauh/remote;điều khiển;รีโมท;遥控器
+vacuum cleaner;penyedot debu/vacuum;pembersih vakum;máy hút bụi;เครื่องดูดฝุ่น;吸尘器
+# School
+pencil;pensil;pensel;bút chì;ดินสอ;铅笔
+book;buku;buku;sách/quyển sách;หนังสือ;书/书本
+eraser;penghapus;pemadam;cục tẩy/tẩy;ยางลบ;橡皮
+ruler;penggaris;pembaris;thước kẻ/thước;ไม้บรรทัด;尺子
+pen;pulpen/pena;pen;bút bi/bút;ปากกา;笔/圆珠笔/钢笔
+sharpener;rautan;pengasah pensel;gọt bút chì;กบเหลาดินสอ;卷笔刀
+crayon;krayon;krayon;bút sáp màu;สีเทียน;蜡笔
+paintbrush;kuas;berus cat;cọ vẽ;พู่กัน;画笔/毛笔
+blackboard;papan tulis;papan hitam;bảng đen/bảng;กระดานดำ;黑板
+chalk;kapur tulis;kapur;phấn;ชอล์ก;粉笔
+marker;spidol;pen penanda;bút lông;ปากกาเมจิก;马克笔
+globe;bola dunia;glob;quả địa cầu;ลูกโลก;地球仪
+calculator;kalkulator;kalkulator;máy tính bỏ túi;เครื่องคิดเลข;计算器
+glue;lem;gam;keo dán/hồ dán;กาว;胶水
+tape;selotip;pita pelekat;băng dính;เทปใส/เทป;胶带
+stapler;stepler/staples;pengokot;dập ghim;แม็กเย็บกระดาษ/แม็ก;订书机
+uniform;seragam;pakaian seragam;đồng phục;ชุดนักเรียน;校服
+school bag;tas sekolah;beg sekolah;cặp sách;กระเป๋านักเรียน;书包
+pencil case;kotak pensil;kotak pensel;hộp bút;กล่องดินสอ;铅笔盒/文具盒
+envelope;amplop;sampul surat;phong bì;ซองจดหมาย;信封
+paper plane;pesawat kertas;kapal terbang kertas;máy bay giấy;เครื่องบินกระดาษ;纸飞机
+dictionary;kamus;kamus;từ điển;พจนานุกรม;字典
+water bottle;botol minum;botol air;bình nước;ขวดน้ำ;水壶/水瓶
+lunch box;kotak bekal;bekas makanan;hộp cơm;กล่องข้าว;饭盒/便当盒
+paper clip;klip kertas;klip kertas;kẹp giấy;คลิปหนีบกระดาษ;回形针
+notebook;buku tulis;buku nota;vở/sổ tay;สมุด;笔记本
+# Clothes
+glasses;kacamata;cermin mata;kính/mắt kính;แว่นตา/แว่น;眼镜
+hat;topi;topi;mũ/nón;หมวก;帽子
+shoes;sepatu;kasut;giày;รองเท้า;鞋子/鞋
+socks;kaos kaki;stoking;tất/vớ;ถุงเท้า;袜子
+shirt;kemeja;kemeja;áo sơ mi;เสื้อเชิ้ต;衬衫
+bag;tas;beg;túi xách/túi;กระเป๋า;包/包包/手提包
+watch;jam tangan;jam tangan;đồng hồ đeo tay;นาฬิกาข้อมือ;手表
+pants/trousers;celana;seluar;quần;กางเกง;裤子
+skirt;rok;skirt;chân váy/váy;กระโปรง;裙子
+dress;gaun;gaun;đầm;ชุดเดรส/เดรส;连衣裙
+jacket;jaket;jaket;áo khoác;เสื้อแจ็คเก็ต/แจ็คเก็ต;夹克/外套
+sweater;sweter;baju sejuk;áo len;เสื้อกันหนาว;毛衣
+t-shirt/tshirt;kaos;baju-t/t-shirt;áo phông/áo thun;เสื้อยืด;t恤/短袖
+sandals/flip flops;sandal;selipar;dép;รองเท้าแตะ;拖鞋/凉鞋
+gloves;sarung tangan;sarung tangan;găng tay;ถุงมือ;手套
+scarf;syal;selendang;khăn quàng cổ;ผ้าพันคอ;围巾
+belt;ikat pinggang;tali pinggang;thắt lưng;เข็มขัด;腰带/皮带
+necklace;kalung;rantai leher/kalung;dây chuyền;สร้อยคอ;项链
+ring;cincin;cincin;nhẫn;แหวน;戒指
+bracelet;gelang;gelang;vòng tay;กำไล;手镯
+earrings;anting;subang;bông tai;ต่างหู;耳环
+wallet;dompet;dompet;ví;กระเป๋าสตางค์;钱包
+helmet;helm;topi keledar;mũ bảo hiểm;หมวกกันน็อก;头盔
+pajamas;piyama;baju tidur;đồ ngủ;ชุดนอน;睡衣
+apron;celemek;apron;tạp dề;ผ้ากันเปื้อน;围裙
+face mask;masker;pelitup muka;khẩu trang;หน้ากากอนามัย;口罩
+raincoat;jas hujan;baju hujan;áo mưa;เสื้อกันฝน;雨衣
+goggles;kacamata renang;cermin mata renang;kính bơi;แว่นตาว่ายน้ำ;泳镜
+bow tie;dasi kupu-kupu;tali leher kupu-kupu;nơ cổ;หูกระต่าย;领结
+tie/necktie;dasi;tali leher;cà vạt;เนคไท;领带
+button;kancing;butang;cúc áo/nút áo;กระดุม;纽扣/扣子
+zipper;resleting;zip;khóa kéo;ซิป;拉链
+sneakers;sepatu olahraga;kasut sukan;giày thể thao;รองเท้าผ้าใบ;运动鞋
+high heels;sepatu hak tinggi;kasut tumit tinggi;giày cao gót;รองเท้าส้นสูง;高跟鞋
+sunglasses;kacamata hitam;cermin mata hitam;kính râm;แว่นกันแดด;墨镜
+# Nature
+sun;matahari;matahari;mặt trời;ดวงอาทิตย์/พระอาทิตย์;太阳
+moon;bulan;bulan;mặt trăng;ดวงจันทร์/พระจันทร์;月亮
+star;bintang;bintang;ngôi sao/sao;ดาว;星星
+tree;pohon;pokok;cây;ต้นไม้;树/大树
+flower;bunga;bunga;hoa/bông hoa;ดอกไม้;花/花朵
+rainbow;pelangi;pelangi;cầu vồng;รุ้ง/สายรุ้ง;彩虹
+cloud;awan;awan;mây/đám mây;เมฆ;云/白云
+rain;hujan;hujan;mưa;ฝน;雨/下雨
+lightning;petir;kilat;tia chớp/sét;ฟ้าผ่า;闪电
+snow;salju;salji;tuyết;หิมะ;雪/雪花
+mountain;gunung;gunung;núi;ภูเขา;山/高山
+beach;pantai;pantai;bãi biển;ชายหาด;海滩
+island;pulau;pulau;đảo/hòn đảo;เกาะ;岛/小岛
+river;sungai;sungai;sông/dòng sông;แม่น้ำ;河/河流
+volcano;gunung berapi;gunung berapi;núi lửa;ภูเขาไฟ;火山
+waterfall;air terjun;air terjun;thác nước;น้ำตก;瀑布
+lake;danau;tasik;hồ;ทะเลสาบ;湖/湖泊
+sea/ocean;laut;laut;biển;ทะเล;大海/海
+wave;ombak;ombak;sóng;คลื่น;海浪
+cave;gua;gua;hang động;ถ้ำ;山洞
+desert;gurun;gurun;sa mạc;ทะเลทราย;沙漠
+cactus;kaktus;kaktus;xương rồng;กระบองเพชร;仙人掌
+palm tree;pohon kelapa;pokok kelapa;cây dừa;ต้นมะพร้าว;椰子树
+leaf;daun;daun;lá cây/lá;ใบไม้;树叶
+grass;rumput;rumput;cỏ;หญ้า;草/草地
+rock/stone;batu;batu;đá/hòn đá;ก้อนหิน/หิน;石头
+sand;pasir;pasir;cát;ทราย;沙子
+forest;hutan;hutan;rừng;ป่า;森林
+rice field;sawah;sawah padi;ruộng lúa;ทุ่งนา;稻田
+tornado;tornado;puting beliung;lốc xoáy;พายุทอร์นาโด;龙卷风
+wind;angin;angin;gió;ลม;风
+shooting star;bintang jatuh;tahi bintang;sao băng;ดาวตก;流星
+planet;planet;planet;hành tinh;ดาวเคราะห์;星球/行星
+earth;bumi;bumi;trái đất;โลก;地球
+sunflower;bunga matahari;bunga matahari;hoa hướng dương;ดอกทานตะวัน;向日葵
+rose;mawar;mawar;hoa hồng;ดอกกุหลาบ;玫瑰
+lotus;teratai;teratai;hoa sen;ดอกบัว;荷花/莲花
+bird nest;sarang burung;sarang burung;tổ chim;รังนก;鸟窝
+footprint;jejak kaki;tapak kaki;dấu chân;รอยเท้า;脚印
+ice cube;es batu;ais;đá viên;น้ำแข็ง;冰块
+sunset;matahari terbenam;matahari terbenam;hoàng hôn;พระอาทิตย์ตก;日落
+snowman;manusia salju;orang salji;người tuyết;ตุ๊กตาหิมะ;雪人
+bamboo;bambu;buluh;cây tre/tre;ต้นไผ่/ไผ่;竹子
+pine tree;pohon cemara;pokok pain;cây thông;ต้นสน;松树
+pond;kolam;kolam;ao;สระน้ำ;池塘
+cliff;tebing;tebing;vách đá;หน้าผา;悬崖
+coral;terumbu karang;batu karang;san hô;ปะการัง;珊瑚
+mud;lumpur;lumpur;bùn;โคลน;泥巴
+fog;kabut;kabus;sương mù;หมอก;雾/大雾
+flood;banjir;banjir;lũ lụt;น้ำท่วม;洪水
+# Places
+house;rumah;rumah;nhà/ngôi nhà;บ้าน;房子
+bridge;jembatan;jambatan;cầu/cây cầu;สะพาน;桥/大桥
+tower;menara;menara;tháp/tòa tháp;หอคอย;塔/高塔
+castle;istana;istana;lâu đài;ปราสาท;城堡
+school;sekolah;sekolah;trường học;โรงเรียน;学校
+market;pasar;pasar;chợ;ตลาด;市场/菜市场
+lighthouse;mercusuar;rumah api;hải đăng;ประภาคาร;灯塔
+windmill;kincir angin;kincir angin;cối xay gió;กังหันลม;风车
+hospital;rumah sakit;hospital;bệnh viện;โรงพยาบาล;医院
+police station;kantor polisi;balai polis;đồn cảnh sát;สถานีตำรวจ;警察局
+train station;stasiun;stesen kereta api;nhà ga;สถานีรถไฟ;火车站
+airport;bandara;lapangan terbang;sân bay;สนามบิน;机场
+harbor/port;pelabuhan;pelabuhan;bến cảng;ท่าเรือ;港口
+zoo;kebun binatang;zoo;sở thú;สวนสัตว์;动物园
+playground;taman bermain;taman permainan;sân chơi;สนามเด็กเล่น;游乐场/游乐园
+swimming pool;kolam renang;kolam renang;hồ bơi;สระว่ายน้ำ;游泳池
+library;perpustakaan;perpustakaan;thư viện;ห้องสมุด;图书馆
+shop/store;toko;kedai;cửa hàng;ร้านค้า;商店
+restaurant;restoran;restoran;nhà hàng;ร้านอาหาร;餐厅
+cinema;bioskop;pawagam;rạp chiếu phim;โรงหนัง;电影院
+museum;museum;muzium;bảo tàng;พิพิธภัณฑ์;博物馆
+stadium;stadion;stadium;sân vận động;สนามกีฬา;体育场
+gas station;pom bensin;stesen minyak;cây xăng;ปั๊มน้ำมัน;加油站
+skyscraper;gedung pencakar langit;bangunan pencakar langit;tòa nhà chọc trời;ตึกระฟ้า;摩天大楼
+tree house;rumah pohon;rumah pokok;nhà trên cây;บ้านต้นไม้;树屋
+well;sumur;perigi;giếng;บ่อน้ำ;水井
+fence;pagar;pagar;hàng rào;รั้ว;篱笆
+tunnel;terowongan;terowong;đường hầm;อุโมงค์;隧道
+garden;kebun;taman;vườn/khu vườn;สวน;花园
+farm;peternakan;ladang;nông trại;ฟาร์ม;农场
+factory;pabrik;kilang;nhà máy;โรงงาน;工厂
+post office;kantor pos;pejabat pos;bưu điện;ไปรษณีย์;邮局
+bus stop;halte bus;perhentian bas;trạm xe buýt;ป้ายรถเมล์;公交站
+bakery;toko roti;kedai roti;tiệm bánh;ร้านเบเกอรี่;面包店
+prison/jail;penjara;penjara;nhà tù;คุก;监狱
+pyramid;piramida;piramid;kim tự tháp;พีระมิด;金字塔
+igloo;igloo;igloo;lều tuyết;อิกลู;冰屋
+kitchen;dapur;dapur;nhà bếp;ห้องครัว;厨房
+bathroom;kamar mandi;bilik mandi;phòng tắm;ห้องน้ำ;浴室
+garage;garasi;garaj;nhà để xe;โรงรถ;车库
+balcony;balkon;balkoni;ban công;ระเบียง;阳台
+fountain;air mancur;air pancut;đài phun nước;น้ำพุ;喷泉
+statue;patung;patung;tượng/bức tượng;รูปปั้น;雕像
+temple;candi/kuil;kuil;chùa/ngôi chùa;วัด;寺庙
+street lamp;lampu jalan;lampu jalan;đèn đường;เสาไฟ;路灯
+zebra crossing/crosswalk;zebra cross;lintasan zebra;vạch qua đường;ทางม้าลาย;斑马线
+parking lot;parkiran;tempat letak kereta;bãi đỗ xe;ที่จอดรถ;停车场
+# Landmarks
+great wall;tembok besar cina;tembok besar china;vạn lý trường thành;กำแพงเมืองจีน;长城
+eiffel tower;menara eiffel;menara eiffel;tháp eiffel;หอไอเฟล;埃菲尔铁塔
+statue of liberty;patung liberty;patung liberty;tượng nữ thần tự do;เทพีเสรีภาพ;自由女神像
+leaning tower of pisa;menara pisa;menara condong pisa;tháp nghiêng pisa;หอเอนปิซา;比萨斜塔
+petronas towers;menara petronas;menara berkembar petronas;tháp đôi petronas;ตึกแฝดปิโตรนาส;双子塔
+merlion;merlion;merlion;tượng sư tử biển;เมอร์ไลออน;鱼尾狮
+sydney opera house;gedung opera sydney;rumah opera sydney;nhà hát opera sydney;โอเปร่าเฮาส์;悉尼歌剧院
+mount fuji;gunung fuji;gunung fuji;núi phú sĩ;ภูเขาไฟฟูจิ;富士山
+taj mahal;taj mahal;taj mahal;đền taj mahal;ทัชมาฮาล;泰姬陵
+big ben;big ben;big ben;tháp big ben;บิ๊กเบน;大本钟
+borobudur;borobudur;candi borobudur;đền borobudur;บุโรพุทโธ;婆罗浮屠
+angkor wat;angkor wat;angkor wat;đền angkor wat;นครวัด;吴哥窟
+ha long bay;teluk ha long;teluk ha long;vịnh hạ long;อ่าวฮาลอง;下龙湾
+# Jobs
+astronaut;astronot;angkasawan;phi hành gia;นักบินอวกาศ;宇航员
+doctor;dokter;doktor;bác sĩ;หมอ;医生
+chef;koki;cef/tukang masak;đầu bếp;เชฟ/พ่อครัว;厨师
+fisherman;nelayan;nelayan;ngư dân;ชาวประมง;渔夫
+clown;badut;badut;chú hề;ตัวตลก;小丑
+police officer/police;polisi;polis;cảnh sát;ตำรวจ;警察
+firefighter;pemadam kebakaran;ahli bomba/bomba;lính cứu hỏa;นักดับเพลิง;消防员
+teacher;guru;cikgu/guru;giáo viên/cô giáo;ครู;老师
+nurse;perawat/suster;jururawat;y tá;พยาบาล;护士
+farmer;petani;petani;nông dân;ชาวนา;农民
+pilot;pilot;juruterbang;phi công;นักบิน;飞行员
+soldier;tentara;askar;bộ đội/lính;ทหาร;军人/士兵
+security guard;satpam;pengawal keselamatan;bảo vệ;ยาม/รปภ;保安
+mail carrier/postman;tukang pos;posmen;người đưa thư;บุรุษไปรษณีย์;邮递员
+driver;sopir;pemandu;tài xế;คนขับรถ;司机
+mechanic;montir;mekanik;thợ sửa xe;ช่างซ่อมรถ;修理工
+barber;tukang cukur;tukang gunting rambut;thợ cắt tóc;ช่างตัดผม;理发师
+tailor;penjahit;tukang jahit;thợ may;ช่างตัดเสื้อ;裁缝
+painter/artist;pelukis;pelukis;họa sĩ;จิตรกร;画家
+singer;penyanyi;penyanyi;ca sĩ;นักร้อง;歌手
+photographer;fotografer;jurugambar;nhiếp ảnh gia;ช่างภาพ;摄影师
+magician;pesulap;ahli silap mata;ảo thuật gia;นักมายากล;魔术师
+reporter;wartawan;wartawan;phóng viên;นักข่าว;记者
+gardener;tukang kebun;tukang kebun;người làm vườn;คนสวน;园丁
+dentist;dokter gigi;doktor gigi;nha sĩ;หมอฟัน;牙医
+judge;hakim;hakim;thẩm phán;ผู้พิพากษา;法官
+scientist;ilmuwan;saintis;nhà khoa học;นักวิทยาศาสตร์;科学家
+cashier;kasir;juruwang;thu ngân;แคชเชียร์;收银员
+flight attendant;pramugari;pramugari;tiếp viên hàng không;แอร์โฮสเตส;空姐
+ship captain/captain;kapten kapal;kapten kapal;thuyền trưởng;กัปตันเรือ;船长
+carpenter;tukang kayu;tukang kayu;thợ mộc;ช่างไม้;木匠
+electrician;tukang listrik;juruelektrik;thợ điện;ช่างไฟฟ้า;电工
+detective;detektif;detektif;thám tử;นักสืบ;侦探
+vet/veterinarian;dokter hewan;doktor haiwan;bác sĩ thú y;สัตวแพทย์;兽医
+waiter;pelayan;pelayan;bồi bàn/phục vụ;พนักงานเสิร์ฟ;服务员
+lifeguard;penjaga pantai;penyelamat pantai;cứu hộ;ไลฟ์การ์ด;救生员
+courier/delivery;kurir;kurier;người giao hàng/shipper;พนักงานส่งของ;快递员
+tour guide;pemandu wisata;pemandu pelancong;hướng dẫn viên;ไกด์;导游
+# Sports & Games
+ball;bola;bola;bóng/quả bóng;ลูกบอล;球
+kite;layang-layang;layang-layang/wau;diều/cánh diều;ว่าว;风筝
+balloon;balon;belon;bóng bay;ลูกโป่ง;气球
+soccer/football;sepak bola;bola sepak;bóng đá;ฟุตบอล;足球
+badminton;bulu tangkis/badminton;badminton;cầu lông;แบดมินตัน;羽毛球
+swimming;berenang;berenang;bơi lội/bơi;ว่ายน้ำ;游泳
+swing;ayunan;buaian;xích đu;ชิงช้า;秋千
+slide;perosotan;gelongsor;cầu trượt;สไลเดอร์;滑梯
+basketball;basket;bola keranjang;bóng rổ;บาสเกตบอล;篮球
+volleyball;voli;bola tampar;bóng chuyền;วอลเลย์บอล;排球
+tennis;tenis;tenis;quần vợt/tennis;เทนนิส;网球
+table tennis/ping pong;tenis meja;ping pong;bóng bàn;ปิงปอง;乒乓球
+golf;golf;golf;golf;กอล์ฟ;高尔夫
+boxing;tinju;tinju;quyền anh;มวย;拳击
+archery;panahan;memanah;bắn cung;ยิงธนู;射箭
+jump rope;lompat tali;lompat tali;nhảy dây;กระโดดเชือก;跳绳
+rock climbing;panjat tebing;panjat tebing;leo núi đá;ปีนผา;攀岩
+surfing;selancar;luncur ombak;lướt sóng;โต้คลื่น;冲浪
+skiing;ski;bermain ski;trượt tuyết;สกี;滑雪
+bowling;bowling;boling;bowling;โบว์ลิ่ง;保龄球
+chess;catur;catur;cờ vua;หมากรุก;象棋/国际象棋
+spinning top;gasing;gasing;con quay;ลูกข่าง;陀螺
+marbles;kelereng;guli;bi;ลูกแก้ว;弹珠
+hide and seek;petak umpet;sorok-sorok;trốn tìm;ซ่อนหา;捉迷藏
+tug of war;tarik tambang;tarik tali;kéo co;ชักเย่อ;拔河
+yoyo;yoyo;yoyo;yo-yo;โยโย่;溜溜球
+seesaw;jungkat-jungkit;jongkang-jongket;bập bênh;กระดานหก;跷跷板
+carousel;komidi putar;karusel;vòng quay ngựa gỗ;ม้าหมุน;旋转木马
+ferris wheel;bianglala;roda ferris;vòng đu quay;ชิงช้าสวรรค์;摩天轮
+trampoline;trampolin;trampolin;bạt nhún;แทรมโพลีน;蹦床
+trophy;piala;piala;cúp;ถ้วยรางวัล;奖杯
+medal;medali;pingat;huy chương;เหรียญรางวัล/เหรียญ;奖牌
+whistle;peluit;wisel;còi/cái còi;นกหวีด;口哨/哨子
+racket;raket;raket;vợt;ไม้แบด/ไม้เทนนิส;球拍
+roller skates;sepatu roda;kasut roda;giày trượt patin;รองเท้าสเก็ต;轮滑鞋/轮滑
+skateboard;papan luncur/skateboard;papan selaju;ván trượt;สเก็ตบอร์ด;滑板
+goal;gawang;gol;khung thành;ประตูฟุตบอล;球门
+weightlifting;angkat besi;angkat berat;cử tạ;ยกน้ำหนัก;举重
+gymnastics;senam;gimnastik;thể dục dụng cụ;ยิมนาสติก;体操
+yoga;yoga;yoga;yoga;โยคะ;瑜伽
+marathon;maraton;maraton;chạy marathon;วิ่งมาราธอน;马拉松
+rubik's cube/rubik;rubik;kiub rubik/rubik;khối rubik/rubik;รูบิค;魔方
+doll;boneka;anak patung;búp bê;ตุ๊กตา;娃娃/布娃娃
+playing cards/cards;kartu;daun terup;bộ bài/bài;ไพ่;扑克牌
+dice;dadu;dadu;xúc xắc;ลูกเต๋า;骰子
+sandcastle;istana pasir;istana pasir;lâu đài cát;ปราสาททราย;沙堡
+puzzle/jigsaw;puzzle;teka-teki jigsaw/jigsaw;tranh ghép hình;จิ๊กซอว์;拼图
+toy blocks/lego;balok mainan/lego;blok mainan/lego;đồ chơi xếp hình/lego;ตัวต่อ/เลโก้;积木
+# Music & Culture
+guitar;gitar;gitar;đàn ghi ta/ghi ta;กีตาร์;吉他
+drum;drum/gendang;dram/gendang;trống/cái trống;กลอง;鼓/架子鼓
+piano;piano;piano;đàn piano/piano;เปียโน;钢琴
+violin;biola;biola;đàn violin/violin;ไวโอลิน;小提琴
+flute;suling/seruling;seruling;sáo;ขลุ่ย;笛子
+trumpet;terompet;trompet;kèn trumpet/kèn;ทรัมเป็ต/แตร;小号
+gong;gong;gong;cồng chiêng/cồng;ฆ้อง;锣/铜锣
+saxophone;saksofon;saksofon;kèn saxophone/saxophone;แซกโซโฟน;萨克斯
+harmonica;harmonika;harmonika;kèn harmonica;ฮาร์โมนิกา;口琴
+ukulele;ukulele;ukulele;đàn ukulele/ukulele;อูคูเลเล่;尤克里里
+lion dance;barongsai;tarian singa;múa lân;เชิดสิงโต;舞狮
+dragon dance;tarian naga;tarian naga;múa rồng;เชิดมังกร;舞龙
+lantern;lampion;tanglung;đèn lồng;โคม/โคมไฟจีน;灯笼
+firecracker;petasan;mercun;pháo/pháo nổ;ประทัด;鞭炮
+red envelope;angpao;angpau;lì xì/bao lì xì;อั่งเปา;红包
+mask;topeng;topeng;mặt nạ;หน้ากาก;面具/脸谱
+hand fan;kipas tangan;kipas tangan;quạt giấy;พัด;扇子
+maracas;marakas;marakas;maracas;มาราคัส;沙锤
+accordion;akordeon;akordion;đàn accordion/accordion;แอคคอร์เดียน;手风琴
+xylophone;xilofon;zilofon;đàn mộc cầm;ระนาด;木琴
+cello;selo;selo;đàn cello/cello;เชลโล;大提琴
+harp;harpa;harpa;đàn hạc;พิณ;竖琴
+stage;panggung;pentas;sân khấu;เวที;舞台
+concert;konser;konsert;buổi hòa nhạc/hòa nhạc;คอนเสิร์ต;演唱会/音乐会
+choir;paduan suara;koir;dàn hợp xướng;คณะประสานเสียง;合唱团
+karaoke;karaoke;karaoke;karaoke;คาราโอเกะ;卡拉ok
+music note;not balok/not musik;not muzik;nốt nhạc;โน้ตดนตรี;音符
+headphones;headset;fon kepala;tai nghe;หูฟัง;耳机
+vinyl record;piringan hitam;piring hitam;đĩa than;แผ่นเสียง;唱片
+shadow puppet;wayang;wayang kulit;múa rối bóng;หนังตะลุง;皮影戏
+# Fantasy
+robot;robot;robot;người máy/robot;หุ่นยนต์;机器人
+ghost;hantu;hantu;ma/con ma;ผี;鬼/幽灵
+dinosaur;dinosaurus;dinosaur;khủng long;ไดโนเสาร์;恐龙
+dragon;naga;naga;rồng/con rồng;มังกร;龙/巨龙
+mermaid;putri duyung;puteri duyung;nàng tiên cá;นางเงือก;美人鱼
+pirate;bajak laut;lanun;cướp biển;โจรสลัด;海盗
+crown;mahkota;mahkota;vương miện;มงกุฎ;皇冠
+treasure;harta karun;harta karun;kho báu;สมบัติ;宝藏
+witch;penyihir;ahli sihir;phù thủy;แม่มด;巫婆/女巫
+fairy;peri;pari-pari;nàng tiên/tiên;นางฟ้า;仙女
+unicorn;unicorn;unikorn;kỳ lân;ยูนิคอร์น;独角兽
+alien;alien;makhluk asing/alien;người ngoài hành tinh;มนุษย์ต่างดาว;外星人
+ufo;ufo;ufo;đĩa bay;จานบิน;飞碟
+ninja;ninja;ninja;ninja;นินจา;忍者
+cowboy;koboi;koboi;cao bồi;คาวบอย;牛仔
+knight;kesatria;kesatria;hiệp sĩ;อัศวิน;骑士
+giant;raksasa;gergasi;người khổng lồ;ยักษ์;巨人
+zombie;zombi;zombi;xác sống/zombie;ซอมบี้;僵尸
+mummy;mumi;mumia;xác ướp;มัมมี่;木乃伊
+monster;monster;raksasa/monster;quái vật;สัตว์ประหลาด;怪兽/怪物
+superhero;pahlawan super;adiwira;siêu anh hùng;ซูเปอร์ฮีโร่;超级英雄
+magic wand;tongkat sihir;tongkat sakti;đũa phép;ไม้กายสิทธิ์;魔法棒/魔杖
+flying carpet;karpet terbang;permaidani terbang;thảm bay;พรมวิเศษ;魔毯/飞毯
+genie;jin;jin;thần đèn;จีนี่;灯神
+prince;pangeran;putera;hoàng tử;เจ้าชาย;王子
+princess;putri;puteri;công chúa;เจ้าหญิง;公主
+king;raja;raja;vua/nhà vua;พระราชา;国王
+queen;ratu;permaisuri;nữ hoàng;ราชินี;王后/女王
+crystal ball;bola kristal;bola kristal;quả cầu pha lê;ลูกแก้ววิเศษ;水晶球
+werewolf;manusia serigala;manusia serigala;người sói;มนุษย์หมาป่า;狼人
+sword;pedang;pedang;kiếm/thanh kiếm;ดาบ;剑/宝剑
+shield;perisai;perisai;khiên/cái khiên;โล่;盾牌
+armor;baju zirah;baju besi;áo giáp;ชุดเกราะ;盔甲
+time machine;mesin waktu;mesin masa;cỗ máy thời gian;ไทม์แมชชีน;时光机
+angel;malaikat;malaikat;thiên thần;เทวดา;天使
+# Technology
+phone/smartphone;telepon/hp;telefon;điện thoại;โทรศัพท์/มือถือ;手机/电话
+laptop;laptop;komputer riba/laptop;máy tính xách tay/laptop;แล็ปท็อป/โน้ตบุ๊ก;笔记本电脑
+camera;kamera;kamera;máy ảnh;กล้องถ่ายรูป/กล้อง;相机
+microphone/mic;mikrofon;mikrofon;micrô/mic;ไมโครโฟน/ไมค์;麦克风/话筒
+battery;baterai;bateri;pin;แบตเตอรี่;电池
+magnet;magnet;magnet;nam châm;แม่เหล็ก;磁铁
+computer;komputer;komputer;máy tính;คอมพิวเตอร์;电脑
+radio;radio;radio;radio/đài;วิทยุ;收音机
+printer;printer;pencetak;máy in;เครื่องพิมพ์;打印机
+satellite;satelit;satelit;vệ tinh;ดาวเทียม;卫星
+telescope;teleskop;teleskop;kính thiên văn;กล้องโทรทรรศน์;望远镜
+microscope;mikroskop;mikroskop;kính hiển vi;กล้องจุลทรรศน์;显微镜
+drone;drone;dron;drone/máy bay không người lái;โดรน;无人机
+traffic light;lampu lalu lintas;lampu isyarat;đèn giao thông;ไฟจราจร;红绿灯
+speaker;pengeras suara/speaker;pembesar suara;loa;ลำโพง;音箱/喇叭
+projector;proyektor;projektor;máy chiếu;โปรเจกเตอร์;投影仪
+light bulb;bohlam;mentol;bóng đèn;หลอดไฟ;灯泡
+game controller;stik game;alat kawalan permainan;tay cầm chơi game;จอยเกม;游戏手柄
+tablet;tablet;tablet;máy tính bảng;แท็บเล็ต;平板电脑
+robot vacuum;robot vakum;robot vakum;robot hút bụi;หุ่นยนต์ดูดฝุ่น;扫地机器人
+atm;mesin atm/atm;mesin atm/atm;cây atm/atm;ตู้เอทีเอ็ม;取款机
+solar panel;panel surya;panel solar;tấm pin mặt trời;แผงโซลาร์เซลล์;太阳能板
+antenna;antena;antena;ăng ten;เสาอากาศ;天线
+power bank;power bank;power bank;sạc dự phòng;แบตสำรอง;充电宝
+elevator/lift;lift;lif;thang máy;ลิฟต์;电梯
+escalator;eskalator;eskalator;thang cuốn;บันไดเลื่อน;扶梯/自动扶梯
+qr code;kode qr;kod qr;mã qr;คิวอาร์โค้ด;二维码
+keyboard;keyboard;papan kekunci;bàn phím;คีย์บอร์ด;键盘
+computer mouse;mouse;tetikus;chuột máy tính;เมาส์;鼠标
+typewriter;mesin ketik;mesin taip;máy đánh chữ;เครื่องพิมพ์ดีด;打字机
+walkie talkie;walkie talkie/ht;walkie talkie;bộ đàm;วิทยุสื่อสาร;对讲机
+# Actions
+sleeping/sleep;tidur;tidur;ngủ;นอนหลับ/นอน;睡觉
+crying/cry;menangis;menangis;khóc;ร้องไห้;哭/哭泣
+laughing/laugh;tertawa;ketawa;cười;หัวเราะ;笑/大笑
+sneezing/sneeze;bersin;bersin;hắt hơi;จาม;打喷嚏
+dancing/dance;menari;menari;nhảy múa/múa;เต้น/เต้นรำ;跳舞
+fishing;memancing;memancing;câu cá;ตกปลา;钓鱼
+eating/eat;makan;makan;ăn;กิน/กินข้าว;吃饭/吃
+drinking/drink;minum;minum;uống;ดื่ม/ดื่มน้ำ;喝水/喝
+bathing/bath;mandi;mandi;tắm;อาบน้ำ;洗澡
+running/run;berlari/lari;berlari/lari;chạy;วิ่ง;跑步/跑
+jumping/jump;melompat;melompat;nhảy;กระโดด;跳/跳跃
+cooking/cook;memasak;memasak;nấu ăn;ทำอาหาร;做饭
+reading/read;membaca;membaca;đọc sách;อ่านหนังสือ;看书
+writing/write;menulis;menulis;viết;เขียน;写字
+singing/sing;bernyanyi;menyanyi;hát;ร้องเพลง;唱歌
+sweeping/sweep;menyapu;menyapu;quét nhà;กวาดบ้าน;扫地
+camping;berkemah;berkhemah;cắm trại;ตั้งแคมป์;露营
+hiking;mendaki;mendaki;leo núi;ปีนเขา;爬山
+diving;menyelam;menyelam;lặn;ดำน้ำ;潜水
+flying/fly;terbang;terbang;bay;บิน;飞/飞翔
+yawning/yawn;menguap;menguap;ngáp;หาว;打哈欠
+cycling;bersepeda;berbasikal;đạp xe;ปั่นจักรยาน;骑车
+gardening;berkebun;berkebun;làm vườn;ทำสวน;种花/园艺
+taking a photo/selfie;memotret/selfie;mengambil gambar/swafoto;chụp ảnh;ถ่ายรูป;拍照
+painting;melukis;melukis;vẽ tranh;วาดรูป;画画
+hugging/hug;berpelukan;berpeluk;ôm;กอด;拥抱
+waving;melambai;melambai;vẫy tay;โบกมือ;挥手
+clapping/clap;bertepuk tangan;bertepuk tangan;vỗ tay;ปรบมือ;鼓掌
+kicking/kick;menendang;menendang;cú đá/đá;เตะ;踢球/踢
+hiding/hide;bersembunyi;bersembunyi;trốn;ซ่อน;躲藏
+whispering/whisper;berbisik;berbisik;thì thầm;กระซิบ;说悄悄话
+shouting/shout;berteriak;menjerit;hét;ตะโกน;大喊
+shopping;berbelanja/belanja;membeli-belah;mua sắm;ช้อปปิ้ง;购物
+crossing the road;menyeberang;melintas jalan;qua đường;ข้ามถนน;过马路
+queuing/queue;mengantre;beratur;xếp hàng;เข้าคิว;排队
+typing;mengetik;menaip;đánh máy;พิมพ์ดีด;打字
+phone call/calling;menelepon;menelefon;gọi điện;คุยโทรศัพท์;打电话
+handshake;bersalaman;bersalaman;bắt tay;จับมือ;握手
+dreaming/dream;bermimpi;bermimpi;mơ/nằm mơ;ฝัน;做梦
+whistling;bersiul;bersiul;huýt sáo;ผิวปาก;吹口哨
+blowing candles;meniup lilin;meniup lilin;thổi nến;เป่าเทียน;吹蜡烛
+angry;marah;marah;tức giận/giận;โกรธ;生气
+surprised;kaget;terkejut;ngạc nhiên;ตกใจ;吃惊
+shy;malu;malu;mắc cỡ/xấu hổ;เขิน/อาย;害羞
+hungry;lapar;lapar;đói;หิว;饿/肚子饿
+thirsty;haus;dahaga/haus;khát;กระหายน้ำ/หิวน้ำ;口渴
+# Body
+eye/eyes;mata;mata;mắt;ตา;眼睛
+nose;hidung;hidung;mũi;จมูก;鼻子
+ear/ears;telinga;telinga;tai;หู;耳朵
+mouth;mulut;mulut;miệng;ปาก;嘴巴/嘴
+tooth/teeth;gigi;gigi;răng;ฟัน;牙齿/牙
+hand;tangan;tangan;tay/bàn tay;มือ;手
+foot/feet;kaki;kaki;chân/bàn chân;เท้า;脚
+thumb;jempol;ibu jari;ngón cái;นิ้วโป้ง;大拇指
+hair;rambut;rambut;tóc;ผม;头发
+mustache;kumis;misai;ria mép;หนวด;八字胡/胡子
+beard;jenggot;janggut;râu;เครา;大胡子
+eyebrow;alis;kening;lông mày;คิ้ว;眉毛
+tongue;lidah;lidah;lưỡi;ลิ้น;舌头
+muscle;otot;otot;cơ bắp;กล้ามเนื้อ/กล้าม;肌肉
+bone;tulang;tulang;xương;กระดูก;骨头
+fingernail;kuku;kuku;móng tay;เล็บ;指甲
+finger;jari;jari;ngón tay;นิ้ว;手指
+knee;lutut;lutut;đầu gối;หัวเข่า/เข่า;膝盖
+shoulder;bahu;bahu;vai;ไหล่;肩膀
+cheek;pipi;pipi;má;แก้ม;脸颊
+chin;dagu;dagu;cằm;คาง;下巴
+neck;leher;leher;cổ;คอ;脖子
+belly/stomach;perut;perut;bụng;ท้อง;肚子
+back;punggung;belakang badan;lưng;หลัง;后背
+lips;bibir;bibir;môi;ริมฝีปาก;嘴唇
+eyelashes;bulu mata;bulu mata;lông mi;ขนตา;睫毛
+ponytail;kuncir;ekor kuda;tóc đuôi ngựa;ผมหางม้า;马尾辫
+braid;kepang;tocang;bím tóc;ผมเปีย;辫子
+bald;botak;botak;đầu trọc/hói;หัวล้าน;光头
+tears;air mata;air mata;nước mắt;น้ำตา;眼泪
+smile;senyum;senyum;nụ cười/cười mỉm;รอยยิ้ม/ยิ้ม;微笑
+dimple;lesung pipi;lesung pipit;má lúm đồng tiền;ลักยิ้ม;酒窝
+braces;kawat gigi;pendakap gigi;niềng răng;เหล็กดัดฟัน;牙套
+bandage;perban;pembalut;băng gạc;ผ้าพันแผล;绷带
+# Adventure & Party
+gift/present;kado/hadiah;hadiah;quà/món quà;ของขวัญ;礼物
+candle;lilin;lilin;nến/cây nến;เทียน;蜡烛
+fireworks;kembang api;bunga api;pháo hoa;ดอกไม้ไฟ;烟花
+tent;tenda;khemah;lều/cái lều;เต็นท์;帐篷
+campfire;api unggun;unggun api;lửa trại;กองไฟ;篝火
+map;peta;peta;bản đồ;แผนที่;地图
+anchor;jangkar;sauh;mỏ neo;สมอเรือ/สมอ;船锚/锚
+compass;kompas;kompas;la bàn;เข็มทิศ;指南针
+rope;tali;tali;dây thừng/sợi dây;เชือก;绳子
+sleeping bag;kantong tidur;beg tidur;túi ngủ;ถุงนอน;睡袋
+confetti;konfeti;konfeti;pháo giấy;กระดาษโปรย;彩纸/彩带
+fishing rod;kail/joran;joran;cần câu;คันเบ็ด;鱼竿
+message in a bottle;botol pesan;botol pesanan;thư trong chai;ขวดจดหมาย;漂流瓶
+life buoy;pelampung;pelampung;phao cứu sinh;ห่วงยาง;救生圈
+fishing net;jaring ikan;jaring ikan;lưới đánh cá;แห;渔网
+torch;obor;obor;đuốc/ngọn đuốc;คบเพลิง;火把
+parachute;parasut;payung terjun;dù nhảy;ร่มชูชีพ;降落伞
+party hat;topi pesta;topi parti;mũ sinh nhật;หมวกปาร์ตี้;派对帽
+treasure chest;peti harta karun;peti harta karun;rương kho báu;หีบสมบัติ;宝箱
+backpack;ransel;beg galas;ba lô;กระเป๋าเป้/เป้;背包
+picnic;piknik;berkelah/piknik;dã ngoại/picnic;ปิกนิก;野餐
+raft;rakit;rakit;bè/cái bè;แพ;木筏
+treasure map;peta harta karun;peta harta karun;bản đồ kho báu;แผนที่สมบัติ;藏宝图

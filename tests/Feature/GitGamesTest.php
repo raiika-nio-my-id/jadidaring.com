@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -135,6 +135,7 @@ class GitGamesTest extends TestCase
     {
         return [
             'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
+            'coratcoret' => ['coratcoret', 'JDNG_CFG'],
         ];
     }
 
@@ -162,6 +163,23 @@ class GitGamesTest extends TestCase
         $html = (string) file_get_contents(resource_path('games/'.$slug.'/game.html'));
         $this->assertSame(1, preg_match('/^[\x00-\x7f]*$/', $html));
         $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
-        $this->assertStringContainsString('window.__JD_ME', $html, 'the game reads the account name');
+        $this->assertTrue(str_contains($html, 'window.__JD_ME') || str_contains($html, 'JDNG_CFG'), 'the game reads the account name itself or through the shared name gate lock');
+    }
+
+    public function test_shared_name_gate_games_get_the_account_name_lock_after_the_bridge(): void
+    {
+        $this->publish('coratcoret');
+        $user = \App\Models\User::factory()->create(['name' => 'Budi Akun', 'role' => \App\Enums\UserRole::Member]);
+
+        $html = (string) $this->actingAs($user)->get(self::HOST.'/game/coratcoret/play')->assertOk()->getContent();
+
+        $bridge = strpos($html, 'data-jdng-name-bridge');
+        $lock = strpos($html, 'data-jd-account-name-lock');
+        $this->assertNotFalse($bridge);
+        $this->assertNotFalse($lock);
+        $this->assertGreaterThan($bridge, $lock, 'the lock runs after window.__JD_ME is set');
+        $this->assertLessThan(strpos($html, 'window.JDNG_CFG'), $lock, 'the lock runs before the game reads its saved name');
+        $this->assertStringContainsString('"name":"Budi Akun"', $html);
+        $this->assertSame(1, substr_count($html, 'data-jd-account-name-lock'));
     }
 }
