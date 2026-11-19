@@ -43,7 +43,8 @@
             <div class="clay-header__bar">
                 <a href="/" class="clay-brand" aria-label="Jaring Jadi Daring, beranda">
                     <span class="clay-brand__logo">
-                        <img src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark.svg') }}" alt="Jadi Daring" width="36" height="36">
+                        <img class="clay-logo clay-logo--light" src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark-light.svg') }}" alt="Jadi Daring" width="36" height="36">
+                        <img class="clay-logo clay-logo--dark" src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark-white.svg') }}" alt="" width="36" height="36" aria-hidden="true">
                     </span>
                     <span class="clay-brand__text"><span class="clay-brand__name">Jaring</span><span class="clay-brand__sub" aria-hidden="true">Jadi Daring</span></span>
                 </a>
