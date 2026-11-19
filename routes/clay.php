@@ -7,25 +7,44 @@ use App\Http\Controllers\Member\AuthController;
 use App\Http\Controllers\Member\PasswordResetController;
 use App\Http\Controllers\Member\SocialController;
 use App\Http\Controllers\TenantController;
+use App\Http\Middleware\OptionalSession;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\Route;
+
+// Public, anonymous-cacheable pages: no session or cookies unless the visitor already has a session cookie.
+$guestCache = [StartSession::class, ShareErrorsFromSession::class, PreventRequestForgery::class];
+$cached = static fn (\Illuminate\Routing\Route $r) => $r->withoutMiddleware($guestCache)->middleware([OptionalSession::class, 'public.cache']);
 
 // Canonical public host (bare domain). Static paths are registered before
 // the legacy /{tenant} client-site group, so they always win.
-Route::get('/', [ClayController::class, 'home'])->name('clay.home');
-Route::get('/berita', [NewsController::class, 'index'])->name('clay.berita');
-Route::get('/berita/{topik}', [NewsController::class, 'topic'])->name('clay.berita.topik');
-Route::get('/berita/{topik}/{slug}', [NewsController::class, 'show'])->name('clay.berita.artikel');
+$cached(Route::get('/', [ClayController::class, 'home'])->name('clay.home'));
+$cached(Route::get('/berita/rss.xml', [\App\Http\Controllers\FeedController::class, 'rss'])->name('clay.rss'));
+$cached(Route::get('/berita', [NewsController::class, 'index'])->name('clay.berita'));
+$cached(Route::get('/berita/{topik}', [NewsController::class, 'topic'])->name('clay.berita.topik'));
+$cached(Route::get('/berita/{topik}/{slug}', [NewsController::class, 'show'])->name('clay.berita.artikel'));
 Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'])->name('clay.berita.komentar');
 Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
-Route::get('/game', [ClayController::class, 'game'])->name('clay.game');
-Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas');
+$cached(Route::get('/game', [ClayController::class, 'game'])->name('clay.game'));
+$cached(Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas'));
 Route::get('/komunitas/buat', [CommunityController::class, 'prompt'])->name('community.prompt');
 Route::get('/u/{username}/pengikut', [\App\Http\Controllers\FollowController::class, 'followers'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.followers');
 Route::get('/u/{username}/mengikuti', [\App\Http\Controllers\FollowController::class, 'following'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.following');
 Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.show');
-Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms');
-Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots');
-Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('clay.sitemap');
+$cached(Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms'));
+$cached(Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots'));
+$cached(Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('clay.sitemap'));
+
+// Feeds, images, static pages and the contact form.
+$cached(Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss']));
+$cached(Route::get('/news-sitemap.xml', [\App\Http\Controllers\FeedController::class, 'newsSitemap'])->name('clay.newssitemap'));
+Route::get('/gambar-berita/{id}-{width}.webp', [\App\Http\Controllers\NewsImageController::class, 'show'])->whereNumber(['id', 'width'])->withoutMiddleware($guestCache)->name('clay.berita.gambar');
+foreach (['tentang' => 'tentang', 'kebijakan-redaksi' => 'redaksi', 'kebijakan-privasi' => 'privasi'] as $path => $page) {
+    $cached(Route::get('/'.$path, [\App\Http\Controllers\PageController::class, $page])->name('clay.page.'.$page));
+}
+Route::get('/kontak', [\App\Http\Controllers\PageController::class, 'contact'])->name('clay.contact');
+Route::post('/kontak', [\App\Http\Controllers\PageController::class, 'send'])->middleware('throttle:5,10')->name('clay.contact.send');
 
 Route::get('/game/{slug}', [TenantController::class, 'showGame'])->name('clay.game.show');
 Route::get('/game/{slug}/', [TenantController::class, 'showGame']);

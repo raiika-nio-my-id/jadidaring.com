@@ -61,6 +61,17 @@ return Application::configure(basePath: dirname(__DIR__))
                     })->where('any', '(?!up$).*');
                 });
 
+            // The old GameHub host is retired: everything goes to the game catalogue (or the matching game page).
+            Route::domain('gamehub.'.$base)->group(function () use ($base): void {
+                Route::match(['GET', 'HEAD'], '/{any?}', function (Request $request, ?string $any = null) use ($base) {
+                    $slug = strtolower(explode('/', trim((string) $any, '/'))[0] ?? '');
+                    $exists = $slug !== '' && preg_match('/^[a-z0-9-]{1,63}$/', $slug) === 1
+                        && \App\Models\CompanyProfile::query()->live()->games()->where('subdomain', $slug)->exists();
+
+                    return redirect()->away('https://'.$base.'/game'.($exists ? '/'.$slug : ''), 301);
+                })->where('any', '(?!up$).*');
+            });
+
             // Member page content: no session/cookie middleware, sandbox CSP set by the controller.
             Route::domain($base)
                 ->get('/u/{username}/konten', [\App\Http\Controllers\CommunityController::class, 'content'])
@@ -111,6 +122,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_PROTO,
         );
 
+        $middleware->prepend(\App\Http\Middleware\SecureTransport::class);
+
         $isAdminHost = static fn (Request $request): bool => strtolower($request->getHost()) === strtolower((string) config('singlepage.admin_domain'));
 
         $middleware->redirectGuestsTo(fn (Request $request) => $isAdminHost($request) ? route('login') : route('member.login'));
@@ -118,6 +131,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin.api' => AuthenticateAdminApiKey::class,
+            'public.cache' => \App\Http\Middleware\PublicCache::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
