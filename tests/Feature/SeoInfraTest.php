@@ -173,4 +173,22 @@ class SeoInfraTest extends TestCase
         $this->assertStringContainsString('href="https://jadidaring.com/game/x"', $out);
         $this->assertStringContainsString('<html class="a" lang="id">', $i->normalizeGame('<html class="a"><head></head>'));
     }
+
+    public function test_old_subdomains_redirect_by_allowlist_without_cookies(): void
+    {
+        foreach (config('old_subdomains') as $sub => $path) {
+            $r = $this->get('http://'.$sub.'.jadidaring.test/x?a=b')->assertStatus(301);
+            $this->assertSame('https://jadidaring.test'.$path.'?a=b', $r->headers->get('Location'));
+            $this->assertSame([], $r->headers->getCookies());
+        }
+
+        $this->assertSame('/demo3/', config('old_subdomains.demo3'));
+        $this->assertSame('/game/coratcoret', config('old_subdomains.drawguess'));
+
+        foreach (['rapiin', 'pinball', 'admin', 'invoiceku', 'api', 'mail', 'random'] as $sub) {
+            $this->assertArrayNotHasKey($sub, config('old_subdomains'));
+        }
+
+        $this->get('http://rapiin.jadidaring.test/')->assertNotFound();
+    }
 }

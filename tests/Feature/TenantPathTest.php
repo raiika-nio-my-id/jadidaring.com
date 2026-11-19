@@ -29,7 +29,7 @@ class TenantPathTest extends TestCase
 
         $this->get('http://jadidaring.test/drawquarium')->assertNotFound();
         $this->get('http://jadidaring.test/drawquarium/')->assertNotFound();
-        $this->get('http://drawquarium.jadidaring.test/')->assertNotFound();
+        $this->get('http://drawquarium.jadidaring.test/')->assertRedirect('https://jadidaring.test/game/drawquarium');
         $this->get('http://jadidaring.test/game/missing')->assertNotFound();
     }
 

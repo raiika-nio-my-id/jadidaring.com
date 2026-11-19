@@ -73,6 +73,18 @@ return Application::configure(basePath: dirname(__DIR__))
                 })->where('any', '(?!up$).*');
             });
 
+            // Old client/game subdomains (explicit allowlist in config/old_subdomains.php): 301 to the path
+            // on the apex domain. No web middleware, so no session/CSRF cookies. Query string is kept.
+            foreach ((array) config('old_subdomains', []) as $sub => $path) {
+                Route::domain($sub.'.'.$base)->group(function () use ($path, $base): void {
+                    Route::match(['GET', 'HEAD'], '/{any?}', function (Request $request) use ($path, $base) {
+                        $qs = $request->getQueryString();
+
+                        return redirect()->away('https://'.$base.$path.($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);
+                    })->where('any', '(?!up$).*');
+                });
+            }
+
             // Member page content: no session/cookie middleware, sandbox CSP set by the controller.
             Route::domain($base)
                 ->get('/u/{username}/konten', [\App\Http\Controllers\CommunityController::class, 'content'])
