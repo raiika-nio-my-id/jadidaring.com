@@ -25,3 +25,7 @@
         <button class="clay-btn clay-btn--primary ch-send" type="submit">Kirim</button>
     </div>
 </form>
+
+@once
+    <script src="{{ \App\Support\AssetUrl::to('js/jd-crop.js') }}" defer></script>
+@endonce

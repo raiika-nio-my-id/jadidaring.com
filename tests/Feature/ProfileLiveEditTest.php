@@ -33,7 +33,7 @@ class ProfileLiveEditTest extends TestCase
         $r->assertSee('id="le-stage"', false)->assertSee('data-edit="head"', false)->assertSee('data-edit="bg"', false)
             ->assertSee('data-edit="w:0"', false)->assertSee('data-edit="wall"', false)
             ->assertSee('Simpan draft')->assertSee('Terbitkan')->assertSee('Batal')->assertSee('Tambah kotak')
-            ->assertSee('profile-live.js', false)->assertSee('Pengunjung');
+            ->assertSee('profile-live.js', false)->assertSee('jd-crop.js', false)->assertSee('Pengunjung');
         $this->actingAs($u)->get($this->base().'/komunitas/halamanku/klasik')->assertRedirect('/komunitas/halamanku');
     }
 

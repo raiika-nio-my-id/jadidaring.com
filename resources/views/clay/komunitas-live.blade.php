@@ -129,6 +129,7 @@
 
     <script type="application/json" id="le-boot">{!! json_encode($boot, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
     <script src="{{ \App\Support\AssetUrl::to('js/member-frame.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/jd-crop.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/profile-live.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/profile-ai-widget.js') }}" defer></script>
 @endsection

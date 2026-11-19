@@ -68,13 +68,24 @@
         };
         text.addEventListener('input', grow);
         grow();
-        file.addEventListener('change', function () {
-            var f = file.files && file.files[0];
-            if (!f) { preview.hidden = true; return; }
-            if (f.size > 5 * 1024 * 1024) { window.alert('Ukuran gambar maksimal 5 MB.'); file.value = ''; preview.hidden = true; return; }
+        var setFile = function (f) {
+            try { var dt = new DataTransfer(); dt.items.add(f); file.files = dt.files; } catch (e) {}
+            if (img.src && /^blob:/.test(img.src)) URL.revokeObjectURL(img.src);
             img.src = URL.createObjectURL(f);
             preview.hidden = false;
-        });
+        };
+        var take = function (f) {
+            if (!f) { preview.hidden = true; return; }
+            if (f.size > 5 * 1024 * 1024) { window.alert('Ukuran gambar maksimal 5 MB.'); file.value = ''; preview.hidden = true; return; }
+            var step = window.JdCrop ? window.JdCrop.pick(f, 'curhat') : Promise.resolve(f);
+            step.then(function (cf) { if (cf) { setFile(cf); } else { file.value = ''; preview.hidden = true; } });
+        };
+        file.addEventListener('change', function () { take(file.files && file.files[0]); });
+        /* paste or drop an image straight into the text box: same crop step */
+        var imgOf = function (dt) { var l = dt && dt.files ? Array.prototype.filter.call(dt.files, function (x) { return /^image\//.test(x.type); }) : []; return l[0] || null; };
+        text.addEventListener('paste', function (e) { var f = imgOf(e.clipboardData); if (f) { e.preventDefault(); take(f); } });
+        text.addEventListener('dragover', function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') >= 0) e.preventDefault(); });
+        text.addEventListener('drop', function (e) { var f = imgOf(e.dataTransfer); if (f) { e.preventDefault(); take(f); } });
         composer.querySelector('[data-ch-rm]').addEventListener('click', function () {
             file.value = '';
             preview.hidden = true;

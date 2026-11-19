@@ -426,6 +426,8 @@
     return box;
   }
 
+  /* every upload goes through the shared crop step first (JdCrop, public/js/jd-crop.js); cancelled = null */
+  function cropped(f, kind) { return window.JdCrop ? window.JdCrop.pick(f, kind) : Promise.resolve(f); }
   /* uploads (stage 2): POST multipart, server re-encodes; returns {url} */
   function uploadButton(kind, lbl, onDone) {
     if (!B.uploadEnabled) return null;
@@ -435,8 +437,11 @@
     inp.addEventListener('change', function () {
       var f = inp.files && inp.files[0];
       if (!f) return;
-      if (f.size > 5 * 1024 * 1024) { msg.textContent = 'Ukuran maksimal 5 MB.'; return; }
-      var fd = new FormData(); fd.append('image', f); fd.append('kind', kind);
+      if (f.size > 5 * 1024 * 1024) { msg.textContent = 'Ukuran maksimal 5 MB.'; inp.value = ''; return; }
+      inp.value = '';
+      cropped(f, kind).then(function (cf) {
+      if (!cf) { msg.textContent = ''; return; }
+      var fd = new FormData(); fd.append('image', cf, cf.name || 'foto'); fd.append('kind', kind);
       msg.textContent = 'Mengunggah…';
       fetch(B.upload, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': B.csrf, 'Accept': 'application/json' }, body: fd })
         .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }); })
@@ -445,7 +450,7 @@
           msg.textContent = 'Terunggah.'; onDone(res.j.url);
         })
         .catch(function () { msg.textContent = 'Gagal mengunggah. Cek koneksi.'; });
-      inp.value = '';
+      });
     });
     return h('div', { cls: 'le-upload' }, [inp, h('label', { 'for': id, cls: 'clay-btn clay-btn--secondary le-add', text: '⬆ ' + lbl }), msg]);
   }
@@ -652,10 +657,13 @@
     var f = avInput.files && avInput.files[0]; avInput.value = '';
     if (!f) return;
     if (f.size > 5 * 1024 * 1024) { toast('Foto maksimal 5 MB.'); return; }
+    cropped(f, 'avatar').then(function (cf) { if (cf) avatarUpload(cf); });
+  });
+  function avatarUpload(f) {
     var wrap = stage.querySelector('.pf-avwrap'); if (wrap) wrap.classList.add('is-busy');
     var local = URL.createObjectURL(f);
     var img = stage.querySelector('.pf-avwrap img'); if (img) img.src = local;
-    var fd = new FormData(); fd.append('image', f); fd.append('kind', 'avatar');
+    var fd = new FormData(); fd.append('image', f, f.name || 'foto'); fd.append('kind', 'avatar');
     fetch(B.upload, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': B.csrf, 'Accept': 'application/json' }, body: fd })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }, function () { return { ok: false, status: r.status, j: null }; }); })
       .then(function (res) {
@@ -665,7 +673,7 @@
         if (current === 'head') reopen(true);
       })
       .catch(function () { if (wrap) wrap.classList.remove('is-busy'); toast('Foto gagal diunggah. Cek koneksi.'); render(); });
-  });
+  }
   var toastEl = h('div', { cls: 'le-toast', role: 'status', 'aria-live': 'polite' });
   document.body.appendChild(toastEl);
   var toastT = null;
