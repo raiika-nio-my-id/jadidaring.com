@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: site texts (Indonesian + English), avatars, palette and links live in this JSON ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<title>Sambung Coret · Cerita & Gambar Berantai 2–8 Pemain (Indonesia & English)</title>
+<meta name="description" content="Sambung Coret: game berantai ala telepon-teleponan untuk 2–8 pemain. Sambung cerita satu kalimat per giliran, atau gambar bareng di satu kanvas dari sebuah judul. Akhiri dengan slideshow hasil yang kocak. Bisa latihan lawan bot.">
+<meta name="theme-color" content="#f6efe0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sambung Coret">
+<meta property="og:description" content="Cerita berlanjut & gambar berlanjut bareng teman, lalu tonton slideshow hasilnya.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<a class="skip" href="#main" data-t="skip">Lewati ke konten</a>
+<main id="main" tabindex="-1">
+  <!-- ============ HOME ============ -->
+  <div id="home" class="screen">
+    <header class="site-header">
+      <div class="wrap hdr">
+        <span class="brand"><span class="brand-mark" aria-hidden="true">✏️</span><span><strong data-c="site.name">Sambung Coret</strong><small data-t="tagline"></small></span></span>
+        <div class="langsw" role="group" aria-label="Bahasa / Language"><button type="button" class="lb" data-lang="id">ID</button><button type="button" class="lb" data-lang="en">EN</button></div>
+      </div>
+    </header>
+    <section class="hero wrap" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="kicker" data-t="heroKicker"></p>
+        <h1 id="heroTitle" data-t="heroTitle"></h1>
+        <p class="lead" data-t="heroSub"></p>
+        <ul class="facts" id="facts"></ul>
+      </div>
+      <div class="strip" aria-hidden="true">
+        <div class="panel p1"><span class="pin"></span><b data-t="stripA"></b><i class="doodle d-sun"></i></div>
+        <div class="panel p2"><span class="pin"></span><b data-t="stripB"></b><i class="doodle d-cat"></i></div>
+        <div class="panel p3"><span class="pin"></span><b data-t="stripC"></b><i class="doodle d-boom"></i></div>
+      </div>
+    </section>
+    <section class="wrap play-grid" id="mainkan">
+      <article class="card">
+        <h2 data-t="setupTitle"></h2>
+        <label class="field"><span><span data-t="name"></span> <em class="gm-badge" id="gmNickBadge">(GM)</em></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+        <p class="field-label" data-t="avatar"></p>
+        <div class="av-pick" id="avPick" role="radiogroup"></div>
+      </article>
+      <article class="card">
+        <h2 data-t="playTitle"></h2>
+        <div class="practice">
+          <div class="row"><button type="button" class="btn yellow big" id="practiceBtn" data-t="practice"></button></div>
+          <div class="row sm"><span class="muted" data-t="bots"></span><div class="seg" id="botCount" role="radiogroup"><button type="button" data-v="0">0</button><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="5">5</button><button type="button" data-v="7">7</button></div></div>
+          <p class="muted small" data-t="practiceSub"></p>
+        </div>
+        <h3 data-t="onlineTitle"></h3>
+        <div class="row">
+          <button type="button" class="btn primary online-btn" id="createPrivate" data-t="createPrivate" disabled></button>
+          <button type="button" class="btn teal online-btn" id="quickMatch" data-t="quickMatch" disabled></button>
+        </div>
+        <form class="row" id="joinForm" autocomplete="off">
+          <label class="field grow"><span data-t="codeLabel"></span><input type="text" id="codeInput" maxlength="6" autocapitalize="characters" spellcheck="false" data-tp="codePh"></label>
+          <button type="submit" class="btn ghost online-btn" id="joinBtn" data-t="join" disabled></button>
+        </form>
+        <p class="note" id="onlineNote" role="status" aria-live="polite"></p>
+      </article>
+    </section>
+    <section class="wrap card gm-card" id="gmRooms" aria-labelledby="gmTitle" hidden>
+      <div class="gm-top"><h2 id="gmTitle" data-t="gmTitle"></h2><button type="button" class="btn ghost small" id="gmRefresh" data-t="gmRefresh"></button></div>
+      <p class="muted small" id="gmNote" role="status" aria-live="polite"></p>
+      <ul class="gm-list" id="gmList"></ul>
+    </section>
+    <section class="wrap card how" id="cara" aria-labelledby="howTitle">
+      <h2 id="howTitle" data-t="howTitle"></h2>
+      <ol class="steps" id="howList"></ol>
+      <h3 data-t="modesTitle"></h3>
+      <div class="modes">
+        <div class="mode-card m-cerita"><b data-t="modeCerita"></b><p data-th="modeCeritaDesc"></p></div>
+        <div class="mode-card m-gambar"><b data-t="modeGambar"></b><p data-th="modeGambarDesc"></p></div>
+      </div>
+      <h3 data-t="lenTitle"></h3>
+      <ul class="lenlist" id="lenList"></ul>
+    </section>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p><strong data-c="site.name">Sambung Coret</strong> · <span data-t="footerNote"></span></p>
+        <p class="small" data-t="platformNote"></p>
+        <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ LOBBY ============ -->
+  <div id="lobby" class="screen" hidden>
+    <div class="wrap lobby-wrap">
+      <div class="lobby-top">
+        <button type="button" class="icon-btn" id="lobbyExit" data-ta="exit">✕</button>
+        <h2 data-t="lobbyTitle"></h2>
+        <span class="conn" id="conn" role="status" aria-live="polite"></span>
+      </div>
+      <div class="card code-card" id="codeCard">
+        <div><small data-t="roomCode"></small><b class="code" id="roomCode"></b></div>
+        <button type="button" class="btn primary" id="inviteBtn" data-t="invite"></button>
+      </div>
+      <div class="lobby-grid">
+        <div class="card">
+          <h3><span data-t="players"></span> <small id="pCount"></small></h3>
+          <ul class="plist" id="plist"></ul>
+          <div class="row sm">
+            <button type="button" class="btn ghost small" id="addBot" data-t="addBot"></button>
+          </div>
+          <form class="row sm" id="localForm" autocomplete="off" hidden>
+            <label class="field grow"><span data-t="localName"></span><input type="text" id="localName" maxlength="24" data-tp="localPh"></label>
+            <button type="submit" class="btn ghost small" data-t="addLocal"></button>
+          </form>
+          <p class="muted small" id="localNote" data-t="localNote" hidden></p>
+        </div>
+        <div class="card">
+          <h3 data-t="settings"></h3>
+          <div class="setting"><span data-t="mode"></span><div class="seg" data-k="mode"><button type="button" data-v="cerita" data-t="modeCerita"></button><button type="button" data-v="gambar" data-t="modeGambar"></button></div></div>
+          <div class="setting"><span data-t="length"></span><div class="seg" data-k="len"><button type="button" data-v="p1" data-t="len_p1"></button><button type="button" data-v="p2" data-t="len_p2"></button><button type="button" data-v="p3" data-t="len_p3"></button></div></div>
+          <div class="setting"><span data-t="lengthG"></span><div class="seg" data-k="len"><button type="button" data-v="g3">3</button><button type="button" data-v="g5">5</button><button type="button" data-v="g8">8</button><button type="button" data-v="g12">12</button></div></div>
+          <p class="muted small set-note" id="lenNote"></p>
+          <div class="setting"><span data-t="timerText"></span><div class="seg" data-k="tt"><button type="button" data-v="45">45s</button><button type="button" data-v="60">60s</button><button type="button" data-v="90">90s</button></div></div>
+          <div class="setting" id="dtRow"><span data-t="timerDraw"></span><div class="seg" data-k="dt"><button type="button" data-v="60">60s</button><button type="button" data-v="80">80s</button><button type="button" data-v="120">120s</button></div></div>
+        </div>
+      </div>
+      <div class="start-row">
+        <p class="note" id="lobbyNote" aria-live="polite"></p>
+        <button type="button" class="btn coral big" id="startBtn" data-t="start"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PLAY ============ -->
+  <div id="play" class="screen play" hidden>
+    <div class="topbar">
+      <button type="button" class="icon-btn" id="playExit" data-ta="exit">✕</button>
+      <b class="pill" id="stepPill"></b>
+      <b class="pill kind" id="kindPill"></b>
+      <span class="grow"></span>
+      <div class="timer" id="timer" role="timer"><span class="bar"><i id="timerBar"></i></span><b id="timerNum">60</b></div>
+      <b class="pill code-pill" id="codePill"></b>
+      <button type="button" class="icon-btn" id="muteBtn" data-ta="mute">🔊</button>
+    </div>
+    <ul class="dstrip" id="dstrip" aria-label="Progress"></ul>
+    <div class="stage" id="stage">
+      <!-- story sentence -->
+      <section class="task t-sent" id="taskSent" hidden>
+        <div class="note-card story-card">
+          <h3 id="sentHead"></h3>
+          <ol class="story" id="storySoFar"></ol>
+        </div>
+        <form class="note-card write" id="sentForm" autocomplete="off">
+          <label for="sentInput" class="lbl" id="sentLabel"></label>
+          <textarea id="sentInput" rows="3" maxlength="160" enterkeyhint="send"></textarea>
+          <div class="write-row"><small class="cnt" id="sentCnt">0/160</small><span class="grow"></span><button type="button" class="btn ghost small" id="sentIdea" data-t="idea"></button><button type="submit" class="btn coral" id="sentSend" data-t="send"></button></div>
+        </form>
+      </section>
+      <!-- title -->
+      <section class="task t-title" id="taskTitle" hidden>
+        <form class="note-card write title-card" id="titleForm" autocomplete="off">
+          <h3 data-t="titleHead"></h3>
+          <p class="muted" data-t="titleSub"></p>
+          <input type="text" id="titleInput" maxlength="48" enterkeyhint="send" data-tp="titlePh">
+          <div class="write-row"><small class="cnt" id="titleCnt">0/48</small><span class="grow"></span><button type="button" class="btn ghost small" id="titleIdea" data-t="idea"></button><button type="submit" class="btn coral" id="titleSend" data-t="send"></button></div>
+        </form>
+      </section>
+      <!-- draw -->
+      <section class="task t-draw" id="taskDraw" hidden>
+        <div class="draw-head"><span class="tag-title" data-t="titleTag"></span><b id="drawTitle"></b><small id="drawWho"></small></div>
+        <div class="draw-body">
+          <div class="board-wrap"><canvas id="board" width="960" height="720" aria-label="Kanvas"></canvas></div>
+          <div class="tools" id="tools">
+            <div class="tgroup tools-k" role="radiogroup"><button type="button" data-tool="brush" class="on" data-ta="tBrush">✏️</button><button type="button" data-tool="eraser" data-ta="tEraser">🧽</button><button type="button" data-tool="fill" data-ta="tFill">🪣</button></div>
+            <div class="tgroup sizes" id="sizes"></div>
+            <div class="tgroup pal" id="pal"></div>
+            <div class="tgroup acts"><button type="button" id="undoBtn" data-ta="undo">↶</button><button type="button" id="clearBtn" data-ta="clearMine">🗑</button></div>
+            <div class="ink"><small data-t="ink"></small><span class="bar"><i id="inkBar"></i></span></div>
+            <button type="button" class="btn coral done-btn" id="drawSend" data-t="doneDraw"></button>
+          </div>
+        </div>
+      </section>
+      <!-- waiting / watching -->
+      <section class="task t-wait" id="taskWait" hidden>
+        <div class="note-card wait-card"><div class="big-emoji" id="waitEmoji">✅</div><h3 id="waitHead"></h3><p class="muted" id="waitSub"></p></div>
+      </section>
+    </div>
+    <div class="splash" id="splash" hidden aria-live="assertive"><div class="splash-card"><small id="splashStep"></small><b id="splashText"></b><span class="num" id="splashNum">3</span></div></div>
+    <div class="splash handoff" id="handoff" hidden role="dialog" aria-modal="true"><div class="splash-card"><small data-t="handTo"></small><b id="handName"></b><p class="muted" data-t="handSub"></p><button type="button" class="btn coral big" id="handGo" data-t="handGo"></button></div></div>
+  </div>
+
+  <!-- ============ SLIDESHOW ============ -->
+  <div id="show" class="screen show" hidden>
+    <div class="wrap show-wrap">
+      <div class="show-top">
+        <button type="button" class="icon-btn" id="showExit" data-ta="exit">✕</button>
+        <div class="grow"><h2 data-t="showTitle"></h2><p class="muted" id="showSub"></p></div>
+        <button type="button" class="btn ghost small" id="followBtn" hidden data-t="followHost"></button>
+      </div>
+      <div class="tabs" id="albumTabs" role="tablist"></div>
+      <div class="show-main">
+      <div class="show-col">
+      <article class="note-card show-card" id="showCard">
+        <header class="show-head"><span class="owner" id="showOwner"></span><b id="showAlbumTitle"></b></header>
+        <ol class="story show-story" id="showStory" hidden></ol>
+        <div class="show-draw" id="showDraw" hidden>
+          <div class="board-wrap"><canvas id="showBoard" width="960" height="720" aria-label="Hasil gambar"></canvas></div>
+          <p class="caption" id="showCaption" aria-live="polite"></p>
+        </div>
+      </article>
+      <div class="show-ctrl">
+        <button type="button" class="btn ghost small" id="prevAlbum" data-t="prevAlbum"></button>
+        <button type="button" class="btn ghost small" id="prevStep" data-ta="prevStep">◀</button>
+        <button type="button" class="btn teal small" id="playBtn" data-t="autoplay"></button>
+        <button type="button" class="btn ghost small" id="nextStep" data-ta="nextStep">▶</button>
+        <button type="button" class="btn ghost small" id="nextAlbum" data-t="nextAlbum"></button>
+        <button type="button" class="btn ghost small" id="allBtn" data-t="showAll"></button>
+        <button type="button" class="btn ghost small" id="saveBtn"></button>
+      </div>
+      <div class="show-next" id="showNextRow">
+        <p class="note" id="showHint" aria-live="polite"></p>
+        <button type="button" class="btn coral" id="nextPlayer" hidden></button>
+      </div>
+      </div>
+      <aside class="card chat" id="chatBox" aria-labelledby="chatTitle">
+        <h3 id="chatTitle" data-t="chatTitle"></h3>
+        <ol class="chat-list" id="chatList" aria-live="polite"></ol>
+        <form class="chat-form" id="chatForm" autocomplete="off">
+          <select id="chatWho" hidden data-ta="chatWho"></select>
+          <input type="text" id="chatInput" maxlength="120" data-tp="chatPh" data-ta="chatPh" enterkeyhint="send">
+          <button type="submit" class="btn teal small" id="chatSend" data-t="chatSend"></button>
+        </form>
+      </aside>
+      </div>
+      <div class="start-row">
+        <p class="note" id="showNote"></p>
+        <button type="button" class="btn coral big" id="rematchBtn" data-t="rematch"></button>
+        <button type="button" class="btn ghost" id="showMenu" data-t="menu"></button>
+      </div>
+    </div>
+  </div>
+</main>
+<canvas class="fx" id="fx" aria-hidden="true"></canvas>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script id="sc-rules">
+/*RULES*/
+</script>
+<script id="sc-net">
+/*NET*/
+</script>
+<script id="sc-app">
+/*APP*/
+</script>
+</body>
+</html>
