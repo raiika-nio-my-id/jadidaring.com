@@ -1,0 +1,175 @@
+/* Filter/tab chips: swap only the listing (fetch + DOMParser), pushState, popstate; any failure = normal navigation.
+   Chips: one swipeable row with edge fades, active chip scrolled into view, sliding indicator. */
+(function () {
+  'use strict';
+  var doc = document, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  function still() { return reduce && reduce.matches; }
+  var bars = doc.querySelectorAll('[data-jd-chips]');
+  var slots = doc.querySelectorAll('[data-jd-slot]');
+
+  /* ---------- chip rows: fades, scroll into view, indicator ---------- */
+  function activeOf(bar) { return bar.querySelector('[aria-current="page"], .is-active'); }
+  function fades(bar) {
+    var max = bar.scrollWidth - bar.clientWidth;
+    bar.classList.toggle('jd-fade-l', bar.scrollLeft > 4);
+    bar.classList.toggle('jd-fade-r', max > 4 && bar.scrollLeft < max - 4);
+  }
+  function tone(a) {
+    if (!a) return '';
+    if (/pill--peach/.test(a.className)) return 'peach';
+    if (/pill--sky/.test(a.className)) return 'sky';
+    return 'lavender';
+  }
+  function place(bar, animate) {
+    var a = activeOf(bar), ind = bar._jdInd;
+    if (!ind) return;
+    if (!a) { ind.style.opacity = '0'; return; }
+    ind.setAttribute('data-tone', tone(a));
+    ind.style.transition = animate && !still() ? '' : 'none';
+    ind.style.opacity = '1';
+    ind.style.width = a.offsetWidth + 'px';
+    ind.style.height = a.offsetHeight + 'px';
+    ind.style.transform = 'translate(' + a.offsetLeft + 'px,' + a.offsetTop + 'px)';
+  }
+  function reveal(bar, smooth) {
+    var a = activeOf(bar);
+    if (!a || bar.scrollWidth <= bar.clientWidth) return;
+    var left = a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2;
+    bar.scrollTo({ left: Math.max(0, left), behavior: smooth && !still() ? 'smooth' : 'auto' });
+  }
+  function initBar(bar) {
+    bar.classList.add('jd-chips');
+    var ind = doc.createElement('span');
+    ind.className = 'jd-ind'; ind.setAttribute('aria-hidden', 'true');
+    bar.insertBefore(ind, bar.firstChild);
+    bar._jdInd = ind;
+    bar.addEventListener('scroll', function () { fades(bar); }, { passive: true });
+    place(bar, false); reveal(bar, false); fades(bar);
+    ind.offsetWidth; // flush, then allow transitions
+  }
+  bars.forEach(initBar);
+  window.addEventListener('resize', function () { bars.forEach(function (b) { place(b, false); fades(b); }); });
+  /* the home page has plain scroll rows without data-jd-chips */
+  doc.querySelectorAll('.pills-bar:not([data-jd-chips])').forEach(function (bar) {
+    bar.classList.add('jd-chips');
+    bar.addEventListener('scroll', function () { fades(bar); }, { passive: true });
+    fades(bar);
+  });
+
+  if (!slots.length || !window.fetch || !window.DOMParser || !history.pushState) return;
+
+  /* ---------- in-place swap ---------- */
+  var ctl = null, cur = loc(location.href);
+  function loc(u) { var a = new URL(u, location.href); return a.pathname + a.search; }
+  history.replaceState({ jd: 1 }, '', location.href);
+
+  function sameChips(href) { return href; }
+  function syncChips(next) {
+    var nb = next.querySelectorAll('[data-jd-chips]');
+    bars.forEach(function (bar, i) {
+      var n = nb[i]; if (!n) return;
+      var links = bar.querySelectorAll('a'), nl = n.querySelectorAll('a');
+      var prev = activeOf(bar);
+      if (links.length !== nl.length) { bar.innerHTML = n.innerHTML; initBar(bar); return; }
+      var newActive = null;
+      links.forEach(function (a, k) {
+        var b = nl[k];
+        var on = b.getAttribute('aria-current') === 'page' || b.classList.contains('is-active');
+        a.classList.toggle('is-active', on && !a.matches('.ch-tab'));
+        if (on) { a.setAttribute('aria-current', 'page'); newActive = a; } else a.removeAttribute('aria-current');
+        a.setAttribute('href', b.getAttribute('href'));
+      });
+      place(bar, true); reveal(bar, true);
+      bar.dispatchEvent(new CustomEvent('jd:chipchange', { detail: { next: newActive, prev: prev } }));
+    });
+  }
+  function head(next) {
+    if (next.title) doc.title = next.title;
+    ['link[rel="canonical"]', 'meta[property="og:url"]', 'meta[name="description"]', 'meta[property="og:description"]', 'meta[property="og:title"]'].forEach(function (sel) {
+      var a = doc.head.querySelector(sel), b = next.head.querySelector(sel);
+      if (a && b) a.setAttribute(a.hasAttribute('content') ? 'content' : 'href', b.getAttribute(a.hasAttribute('content') ? 'content' : 'href'));
+    });
+    var ra = doc.head.querySelector('meta[name="robots"]'), rb = next.head.querySelector('meta[name="robots"]');
+    if (rb && !ra) { ra = doc.createElement('meta'); ra.name = 'robots'; doc.head.appendChild(ra); }
+    if (ra) { if (rb) ra.setAttribute('content', rb.getAttribute('content')); else ra.remove(); }
+  }
+  function enter(el) {
+    el.classList.remove('jd-enter'); void el.offsetWidth;
+    var kids = el.querySelectorAll('.news-card, .game-card, .pf-mini, .ch-card, .clay-empty');
+    kids.forEach(function (k, i) { k.style.setProperty('--i', Math.min(i, 11)); });
+    el.classList.add('jd-enter');
+  }
+  function fail(url) { location.href = url; }
+
+  function go(url, push, scrollTop) {
+    if (ctl) ctl.abort();
+    ctl = new AbortController();
+    var my = ctl;
+    slots.forEach(function (s) { s.classList.add('jd-loading'); });
+    var t = setTimeout(function () { fail(url); }, 12000);
+    fetch(url, { credentials: 'same-origin', signal: my.signal, headers: { 'Accept': 'text/html', 'X-Requested-With': 'jd-swap' } })
+      .then(function (r) {
+        var ct = r.headers.get('content-type') || '';
+        if (!r.ok || ct.indexOf('text/html') < 0) throw 0;
+        return r.text().then(function (h) { return { h: h, url: r.url || url }; });
+      })
+      .then(function (res) {
+        clearTimeout(t);
+        var next = new DOMParser().parseFromString(res.h, 'text/html'), ok = true;
+        slots.forEach(function (s) { if (!next.querySelector('[data-jd-slot="' + s.getAttribute('data-jd-slot') + '"]')) ok = false; });
+        if (!ok || next.querySelectorAll('[data-jd-chips]').length !== bars.length) throw 0;
+        slots.forEach(function (s) {
+          s.innerHTML = next.querySelector('[data-jd-slot="' + s.getAttribute('data-jd-slot') + '"]').innerHTML;
+          s.classList.remove('jd-loading');
+          if (s.getAttribute('data-jd-slot') === 'list') enter(s);
+        });
+        syncChips(next); head(next);
+        var fin = loc(res.url);
+        if (push) history.pushState({ jd: 1 }, '', fin);
+        else if (fin !== loc(location.href)) history.replaceState({ jd: 1 }, '', fin);
+        cur = fin;
+        var l = doc.querySelector('[data-jd-slot="list"]');
+        var tm = doc.querySelectorAll('time[data-jd-time]');
+        if (tm.length && window.__jdLocalTime) window.__jdLocalTime();
+        doc.querySelectorAll('[data-jd-slot] [data-jd-view]').forEach(function (el) {
+          try { var p = JSON.parse(el.getAttribute('data-jd-params') || '{}'); if (window.jdTrack) window.jdTrack(el.getAttribute('data-jd-view'), p); } catch (e) {}
+        });
+        if (scrollTop && l) {
+          var y = l.getBoundingClientRect().top + window.scrollY - 90;
+          if (y < window.scrollY) window.scrollTo({ top: Math.max(0, y), behavior: still() ? 'auto' : 'smooth' });
+        }
+      })
+      .catch(function (e) { clearTimeout(t); if (e && e.name === 'AbortError') return; fail(url); });
+  }
+
+  doc.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    var inChips = a.closest('[data-jd-chips]');
+    var inPager = a.closest('[data-jd-slot="list"] .pager, [data-jd-slot="list"] .pf-pager');
+    if (!inChips && !inPager) return;
+    var u = new URL(a.href, location.href);
+    if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search && u.hash)) return;
+    e.preventDefault();
+    if (loc(u.href) === cur && inChips) return;
+    go(u.href, true, !!inPager);
+  });
+  doc.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (e.defaultPrevented || !f.matches || !f.matches('form[data-jd-form]') || (f.method || 'get').toLowerCase() !== 'get') return;
+    e.preventDefault();
+    var u = new URL(f.action, location.href), fd = new FormData(f);
+    u.search = '';
+    fd.forEach(function (v, k) { if (String(v) !== '') u.searchParams.append(k, v); });
+    go(u.href, true, false);
+  });
+  doc.addEventListener('change', function (e) {
+    var s = e.target;
+    if (s && s.matches && s.matches('form[data-jd-form] select') && s.form.requestSubmit) s.form.requestSubmit();
+  });
+  window.addEventListener('popstate', function () {
+    if (loc(location.href) === cur) return;
+    go(location.href, false, false);
+  });
+})();

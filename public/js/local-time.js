@@ -17,6 +17,7 @@
     if (wd) s = new Intl.DateTimeFormat('id-ID', { weekday: 'long', timeZone: tz }).format(d) + ', ' + s;
     return s;
   }
+  function run() {
   var els = document.querySelectorAll('time[data-jd-time]');
   for (var i = 0; i < els.length; i++) {
     var el = els[i], d = new Date(el.getAttribute('datetime'));
@@ -26,4 +27,6 @@
     var t = el.querySelector('[data-jd-t]') || el;
     t.textContent = s;
   }
+  }
+  run(); window.__jdLocalTime = run;
 })();

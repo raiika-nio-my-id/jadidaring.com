@@ -8,7 +8,7 @@
                 <p style="color: var(--clay-ink-2); font-size: 15px; margin-top: 4px;">Mainkan aneka permainan peramban langsung tanpa instalasi.</p>
             </div>
 
-            <div class="pills-bar" style="margin-bottom: 0;" aria-label="Urutkan Game">
+            <div class="pills-bar" data-jd-chips style="margin-bottom: 0;" aria-label="Urutkan Game">
                 <a href="/game?sort=views"
                    class="clay-pill clay-pill--peach @if($sort === 'views') is-active @endif"
                    @if($sort === 'views') aria-current="page" @endif>
@@ -27,6 +27,7 @@
             </div>
         </div>
 
+        <div data-jd-slot="list">
         @if($games->isEmpty())
             <div class="clay-card clay-card--peach clay-empty">
                 <div class="clay-empty__icon" aria-hidden="true">&#127918;</div>
@@ -62,5 +63,6 @@
                 @endforeach
             </div>
         @endif
+        </div>
     </div>
 @endsection

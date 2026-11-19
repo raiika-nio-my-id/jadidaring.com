@@ -2,11 +2,13 @@
 
 @section('content')
     <div class="clay-section">
+        <div data-jd-slot="top">
         <div class="clay-section__header">
             <h1 class="clay-section__title">Berita: {{ $topicName }}</h1>
         </div>
+        </div>
 
-        <div class="pills-bar" aria-label="Topik Berita">
+        <div class="pills-bar" data-jd-chips aria-label="Topik Berita">
             <a href="/berita" class="clay-pill clay-pill--sky">Semua</a>
             @foreach($topics as $slug => $name)
                 <a href="/berita/{{ $slug }}"
@@ -17,7 +19,9 @@
             @endforeach
         </div>
 
+        <div data-jd-slot="list">
         @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Belum ada artikel untuk topik '.strtolower($topicName).'. Pantau terus pembaruan dari redaksi kami!'])
         @include('clay._pagination')
+        </div>
     </div>
 @endsection

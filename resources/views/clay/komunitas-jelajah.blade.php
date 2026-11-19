@@ -2,13 +2,16 @@
 
 @section('content')
     <div class="clay-section">
+        <div data-jd-slot="top">
         <div class="clay-section__header">
             <h1 class="clay-section__title">Komunitas</h1>
         </div>
         <p class="news-lead">Jelajahi profil ala Friendster buatan member Jadidaring. Intip latar, musik, dan galeri mereka, lalu tinggalkan komentar.</p>
+        </div>
         @include('clay._komunitas-tabs')
 
-        <form class="clay-form pf-explore" method="get" action="/komunitas" role="search"@if (filled($q)) data-jd-view="search" data-jd-params="{{ json_encode(['search_term' => mb_substr((string) $q, 0, 20), 'search_scope' => 'komunitas']) }}"@endif>
+        <div data-jd-slot="list">
+        <form class="clay-form pf-explore" data-jd-form method="get" action="/komunitas" role="search"@if (filled($q)) data-jd-view="search" data-jd-params="{{ json_encode(['search_term' => mb_substr((string) $q, 0, 20), 'search_scope' => 'komunitas']) }}"@endif>
             <label for="ex-q" class="sr-only">Cari nama pengguna</label>
             <input type="hidden" name="tab" value="profil">
             <input class="clay-input" id="ex-q" type="search" name="q" value="{{ $q }}" maxlength="20" placeholder="Cari nama pengguna…" autocomplete="off">
@@ -53,5 +56,6 @@
                 @if ($pages->hasMorePages())<a class="clay-btn" href="{{ $pages->nextPageUrl() }}" rel="next">Berikutnya &rarr;</a>@endif
             </nav>
         @endif
+        </div>
     </div>
 @endsection
