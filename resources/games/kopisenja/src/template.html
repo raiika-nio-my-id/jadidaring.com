@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, drinks, recipes, ingredients, customers, modes and tutorial live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Kopi Senja · Game Barista Kedai Kopi: Es Kopi Susu Gula Aren &amp; Latte Art</title>
+<meta name="description" content="Kopi Senja: game barista kedai kopi kekinian gratis di HP tanpa download. Racik es kopi susu gula aren, café latte, cappuccino, matcha latte, kopi tubruk dan es cokelat sesuai pesanan, gambar latte art pakai usap jari, dan kejar antrean jam pulang kantor. Ada Shift Biasa, Rush Senja dan Tantangan Harian.">
+<meta name="theme-color" content="#2c1912">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kopi Senja">
+<meta property="og:description" content="Jadi barista kedai kopi kekinian: racik kopi susu gula aren, latte art, kejar antrean senja!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Kedai kopi senja: pelanggan, meja bar dan gelas yang sedang diracik"></canvas>
+
+<!-- home -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo-cup" aria-hidden="true"><span class="steam s1"></span><span class="steam s2"></span><span class="steam s3"></span><i class="cup"></i></div>
+    <div class="logo" aria-hidden="true"><span class="l1">KOPI</span><span class="l2">SENJA</span></div>
+    <h1 class="sr-only" data-c="site.name"></h1>
+    <p class="tagline" data-c="site.tagline"></p>
+    <label class="name-field"><span data-t="nameLabel"></span>
+      <input id="nameIn" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring">
+    </label>
+    <div class="modes">
+      <button type="button" class="btn big primary mode" id="playBiasa" data-mode="biasa"><span class="ic" aria-hidden="true">☕</span><span class="mt"><b data-t="modeBiasa"></b><small data-t="modeBiasaSub"></small></span></button>
+      <button type="button" class="btn big mode rush" id="playRush" data-mode="rush"><span class="ic" aria-hidden="true">🚦</span><span class="mt"><b data-t="modeRush"></b><small data-t="modeRushSub"></small></span></button>
+      <button type="button" class="btn big mode daily" id="playHarian" data-mode="harian"><span class="ic" aria-hidden="true">📅</span><span class="mt"><b data-t="modeHarian"></b><small id="harianSub"></small></span></button>
+    </div>
+    <div class="row2">
+      <button type="button" class="btn" id="tutBtn"><span aria-hidden="true">🎓</span> <span data-t="how"></span></button>
+      <button type="button" class="btn" id="recBtn"><span aria-hidden="true">🏆</span> <span data-t="records"></span></button>
+      <button type="button" class="btn sq" id="homeMute" data-t-aria="mute">🔊</button>
+    </div>
+    <div class="stat-strip" id="statStrip"></div>
+  </div>
+  <footer class="site-footer">
+    <p><strong data-c="site.name"></strong> · <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </footer>
+</main>
+
+<!-- records -->
+<div class="overlay" id="recDlg" role="dialog" aria-modal="true" aria-labelledby="recTitle" hidden>
+  <div class="dlg">
+    <h2 id="recTitle" data-t="recTitle"></h2>
+    <div class="stat-grid" id="recGrid"></div>
+    <ul class="how-list small"><li data-t="tips1"></li><li data-t="tips2"></li><li data-t="tips3"></li></ul>
+    <button type="button" class="btn big primary" id="recClose" data-t="close"></button>
+  </div>
+</div>
+
+<!-- play HUD -->
+<div id="hud" hidden>
+  <div class="hud-top">
+    <button type="button" class="ic-btn" id="pauseBtn" data-t-aria="pause">❚❚</button>
+    <div class="plate">
+      <span class="clock" id="clock">16:30</span>
+      <span class="prog" id="progNum">0/6</span>
+      <span class="money" id="money">Rp 0</span>
+    </div>
+    <button type="button" class="ic-btn" id="muteBtn" data-t-aria="mute">🔊</button>
+  </div>
+  <section class="order" id="orderCard" aria-live="polite">
+    <div class="o-head"><span class="o-who" id="oWho"></span><span class="o-combo" id="oCombo" hidden></span></div>
+    <div class="o-name" id="oName"></div>
+    <ol class="chips" id="chips"></ol>
+    <div class="patience" id="patience"><i id="patBar"></i></div>
+  </section>
+  <div class="bubble" id="bubble" hidden></div>
+  <div class="coach" id="coach" hidden><b id="coachTxt"></b><div class="coach-btns"><button type="button" class="cbtn ok" id="coachOk" data-t="ok"></button><button type="button" class="cbtn" id="skipTut" data-t="skip"></button></div></div>
+  <div class="banner" id="banner" hidden></div>
+  <div class="receipt" id="receipt" hidden><div class="r-stars" id="rStars"></div><div class="r-line" id="rLine"></div><div class="r-tip" id="rTip"></div></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <span class="demo-tag" id="demoTag" data-t="demo" hidden></span>
+  <div class="bar-panel" id="panel"><div class="ings" id="ings"></div></div>
+  <div class="art-hud" id="artHud" hidden>
+    <div class="art-top"><b id="artTitle"></b><small data-t="artHint"></small><div class="art-time"><i id="artBar"></i></div></div>
+    <div class="art-btns"><button type="button" class="btn" id="artSkip" data-t="skipArt"></button><button type="button" class="btn primary" id="artDone">✓ Sajikan</button></div>
+  </div>
+</div>
+
+<!-- pause -->
+<div class="overlay" id="pauseDlg" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden>
+  <div class="dlg">
+    <h2 id="pauseTitle" data-t="pausedTitle"></h2>
+    <p class="muted" data-t="pausedSub"></p>
+    <button type="button" class="btn big primary" id="resumeBtn" data-t="resume"></button>
+    <button type="button" class="btn" id="quitBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<!-- tutorial done -->
+<div class="overlay" id="tutDlg" role="dialog" aria-modal="true" aria-labelledby="tutTitle" hidden>
+  <div class="dlg">
+    <div class="big-ic" aria-hidden="true">☕🤍</div>
+    <h2 id="tutTitle" data-t="tutDone"></h2>
+    <p class="muted" data-t="tutDoneSub"></p>
+    <ul class="how-list small"><li data-t="tips1"></li><li data-t="tips2"></li><li data-t="tips3"></li></ul>
+    <button type="button" class="btn big primary" id="tutStart" data-t="tutStart"></button>
+  </div>
+</div>
+
+<!-- end of shift -->
+<div class="overlay over" id="endDlg" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+  <div class="dlg">
+    <h2 id="endTitle" class="over-title" data-t="endTitle"></h2>
+    <p class="muted" id="endSub"></p>
+    <p class="best-badge" id="bestBadge" data-t="endBest" hidden></p>
+    <div class="big-score"><small data-t="score"></small><b id="eScore">0</b></div>
+    <div class="cup-list" id="cupList"></div>
+    <div class="stat-grid three">
+      <div><small data-t="endOmzet"></small><b id="eMoney"></b></div>
+      <div><small data-t="endTips"></small><b id="eTips"></b></div>
+      <div><small data-t="endCombo"></small><b id="eCombo"></b></div>
+    </div>
+    <button type="button" class="btn big primary" id="againBtn" data-t="again"></button>
+    <button type="button" class="btn" id="menuBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<script id="ks-sim">
+/*SIM*/
+</script>
+<script id="ks-render">
+/*RENDER*/
+</script>
+<script id="ks-app">
+/*APP*/
+</script>
+</body>
+</html>

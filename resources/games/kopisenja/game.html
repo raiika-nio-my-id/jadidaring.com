@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, drinks, recipes, ingredients, customers, modes and tutorial live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+{
+ "site": {
+  "name": "Kopi Senja",
+  "slug": "kopisenja",
+  "tagline": "Jadi barista kedai kopi kekinian. Racik es kopi susu gula aren, gambar latte art, kejar antrean jam pulang kantor!"
+ },
+ "game": {
+  "modes": {
+   "biasa": {
+    "orders": 6,
+    "patience": 34,
+    "artTime": 7,
+    "tipMul": 1,
+    "queue": 3
+   },
+   "rush": {
+    "orders": 8,
+    "patience": 23,
+    "artTime": 5,
+    "tipMul": 1.5,
+    "queue": 4
+   },
+   "harian": {
+    "orders": 7,
+    "patience": 30,
+    "artTime": 6,
+    "tipMul": 1.2,
+    "queue": 3
+   }
+  },
+  "clockStart": 990,
+  "clockEnd": 1140,
+  "lowPatience": 0.35,
+  "artGood": 0.62,
+  "artBad": 0.3,
+  "tipPerStar": 1000,
+  "speedTip": 3000,
+  "comboStep": 0.1,
+  "comboMax": 5,
+  "demoSeed": "senja-demo",
+  "tutorialDrinks": [
+   "aren",
+   "latte"
+  ]
+ },
+ "ingredients": [
+  {
+   "id": "aren",
+   "name": "Gula Aren",
+   "emoji": "\ud83c\udf6f",
+   "color": "#7a3f12"
+  },
+  {
+   "id": "susu",
+   "name": "Susu",
+   "emoji": "\ud83e\udd5b",
+   "color": "#f4ead8"
+  },
+  {
+   "id": "es",
+   "name": "Es Batu",
+   "emoji": "\ud83e\uddca",
+   "color": "#cfeeff"
+  },
+  {
+   "id": "shot",
+   "name": "Espresso",
+   "emoji": "\u2615",
+   "color": "#3b1d0e"
+  },
+  {
+   "id": "foam",
+   "name": "Foam Susu",
+   "emoji": "\u2601\ufe0f",
+   "color": "#fff8ee"
+  },
+  {
+   "id": "matcha",
+   "name": "Matcha",
+   "emoji": "\ud83c\udf75",
+   "color": "#7fae3e"
+  },
+  {
+   "id": "coklat",
+   "name": "Cokelat",
+   "emoji": "\ud83c\udf6b",
+   "color": "#5a2d17"
+  },
+  {
+   "id": "bubuk",
+   "name": "Kopi Bubuk",
+   "emoji": "\ud83e\uded8",
+   "color": "#2a160b"
+  },
+  {
+   "id": "gula",
+   "name": "Gula Pasir",
+   "emoji": "\ud83e\uddc2",
+   "color": "#ffffff"
+  },
+  {
+   "id": "air",
+   "name": "Air Panas",
+   "emoji": "\ud83d\udca7",
+   "color": "#9fd3ff"
+  }
+ ],
+ "drinks": [
+  {
+   "id": "aren",
+   "name": "Es Kopi Susu Gula Aren",
+   "short": "Kopsus Aren",
+   "steps": [
+    "aren",
+    "susu",
+    "es",
+    "shot"
+   ],
+   "iced": true,
+   "price": 22000,
+   "w": 4
+  },
+  {
+   "id": "latte",
+   "name": "Caf\u00e9 Latte",
+   "short": "Latte",
+   "steps": [
+    "shot",
+    "susu",
+    "foam"
+   ],
+   "art": "heart",
+   "price": 28000,
+   "w": 2
+  },
+  {
+   "id": "cappu",
+   "name": "Cappuccino",
+   "short": "Cappuccino",
+   "steps": [
+    "shot",
+    "shot",
+    "foam"
+   ],
+   "art": "leaf",
+   "price": 27000,
+   "w": 2
+  },
+  {
+   "id": "matcha",
+   "name": "Matcha Latte",
+   "short": "Matcha",
+   "steps": [
+    "matcha",
+    "air",
+    "foam"
+   ],
+   "art": "swirl",
+   "price": 26000,
+   "w": 2
+  },
+  {
+   "id": "tubruk",
+   "name": "Kopi Tubruk",
+   "short": "Tubruk",
+   "steps": [
+    "bubuk",
+    "gula",
+    "air"
+   ],
+   "price": 10000,
+   "w": 2
+  },
+  {
+   "id": "coklat",
+   "name": "Es Cokelat",
+   "short": "Es Cokelat",
+   "steps": [
+    "coklat",
+    "susu",
+    "es"
+   ],
+   "iced": true,
+   "price": 20000,
+   "w": 2
+  }
+ ],
+ "art": {
+  "heart": {
+   "name": "Hati",
+   "emoji": "\ud83e\udd0d"
+  },
+  "leaf": {
+   "name": "Daun (Rosetta)",
+   "emoji": "\ud83c\udf3f"
+  },
+  "swirl": {
+   "name": "Pusaran",
+   "emoji": "\ud83c\udf00"
+  }
+ },
+ "customers": [
+  {
+   "name": "Mas Ojol",
+   "skin": "#c98b5e",
+   "hair": "#1b1410",
+   "shirt": "#2fae4f",
+   "hat": "helm"
+  },
+  {
+   "name": "Mbak Kantoran",
+   "skin": "#e2b38c",
+   "hair": "#2b1a12",
+   "shirt": "#3b5ba5",
+   "hat": "hijab",
+   "hijab": "#c2547a"
+  },
+  {
+   "name": "Pak Satpam",
+   "skin": "#a8724c",
+   "hair": "#111",
+   "shirt": "#2a3550",
+   "hat": "peci"
+  },
+  {
+   "name": "Kak Mahasiswa",
+   "skin": "#d9a27a",
+   "hair": "#3a2416",
+   "shirt": "#e2a43a",
+   "hat": ""
+  },
+  {
+   "name": "Bu Guru",
+   "skin": "#c9946a",
+   "hair": "#222",
+   "shirt": "#9a4fb0",
+   "hat": "hijab",
+   "hijab": "#4f8a8b"
+  },
+  {
+   "name": "Bang Startup",
+   "skin": "#e8c09c",
+   "hair": "#20160f",
+   "shirt": "#111827",
+   "hat": "cap"
+  },
+  {
+   "name": "Teh Freelancer",
+   "skin": "#f0c7a1",
+   "hair": "#4a2a17",
+   "shirt": "#e46f5b",
+   "hat": ""
+  },
+  {
+   "name": "Om Pensiunan",
+   "skin": "#b98060",
+   "hair": "#cfcfcf",
+   "shirt": "#7a5a3a",
+   "hat": "peci"
+  }
+ ],
+ "lines": {
+  "order": [
+   "Satu {d} ya, Kak!",
+   "{d}, gulanya pas ya!",
+   "Aku mau {d}, cepet ya, abis lembur nih.",
+   "Pesan {d} dong, buat nemenin macet.",
+   "{d} satu, Mas/Mbak barista!"
+  ],
+  "happy": [
+   "Mantap, enak banget!",
+   "Wih, ini sih langganan!",
+   "Cantik banget latte art-nya!",
+   "Pas! Semangat lagi deh."
+  ],
+  "ok": [
+   "Lumayan, makasih ya.",
+   "Oke, enak kok.",
+   "Bolehlah."
+  ],
+  "sad": [
+   "Kok rasanya aneh ya...",
+   "Hmm, bukan ini pesananku.",
+   "Lama banget, Kak..."
+  ],
+  "leave": [
+   "Kelamaan! Aku cabut deh.",
+   "Udah ditunggu ojol, dadah!"
+  ]
+ },
+ "text": {
+  "nameLabel": "Nama barista",
+  "nameHint": "Muncul di papan rekor HP ini.",
+  "baristaDefault": "Barista",
+  "play": "Buka Kedai",
+  "modeBiasa": "Shift Biasa",
+  "modeBiasaSub": "6 pesanan \u00b7 santai",
+  "modeRush": "Rush Senja",
+  "modeRushSub": "8 pesanan \u00b7 cepat, tip \u00d71,5",
+  "modeHarian": "Tantangan Harian",
+  "modeHarianSub": "Pesanan sama untuk semua \u00b7 {date}",
+  "how": "Cara main",
+  "records": "Rekor",
+  "mute": "Matikan suara",
+  "unmute": "Nyalakan suara",
+  "pause": "Jeda",
+  "pausedTitle": "Jeda dulu \u2615",
+  "pausedSub": "Pelanggan ikut menunggu. Santai.",
+  "resume": "Lanjut",
+  "menu": "Menu utama",
+  "close": "Tutup",
+  "order": "Pesanan",
+  "recipe": "Resep",
+  "queue": "Antre",
+  "served": "{n}/{m}",
+  "skipArt": "Lewati",
+  "artTitle": "Latte art: {a}",
+  "artHint": "Usap di atas foam, ikuti bayangan pola!",
+  "artGreat": "Cantik banget!",
+  "artOk": "Lumayan!",
+  "artBad": "Hmm, abstrak...",
+  "wrong": "Salah bahan! Harusnya {i}",
+  "rightStep": "Pas!",
+  "serve": "Disajikan!",
+  "leave": "Pelanggan pergi!",
+  "combo": "Combo \u00d7{n}!",
+  "rushBanner": "JAM PULANG KANTOR! \ud83d\udea6",
+  "lastOrder": "Pesanan terakhir!",
+  "rp": "Rp",
+  "starsLbl": "Bintang",
+  "tipLbl": "Tip",
+  "priceLbl": "Harga",
+  "next": "Pelanggan berikutnya \u25b6",
+  "seeEnd": "Lihat hasil shift \u25b6",
+  "endTitle": "Kedai tutup! \ud83c\udf19",
+  "endSub": "{who} melayani {n} pelanggan, {s}\u2605 rata-rata.",
+  "endBest": "\ud83c\udfc6 Rekor baru!",
+  "endOmzet": "Omzet",
+  "endTips": "Total tip",
+  "endStars": "Total \u2605",
+  "endPerfect": "Cangkir 5\u2605",
+  "endCombo": "Combo terbaik",
+  "again": "Main lagi",
+  "recTitle": "Rekor kedai",
+  "recNone": "Belum ada shift. Yuk buka kedai!",
+  "best": "Skor terbaik",
+  "shifts": "Shift",
+  "cups": "Cangkir",
+  "today": "Harian hari ini",
+  "tips1": "Ikuti urutan resep dari kiri ke kanan. Salah bahan = bintang turun.",
+  "tips2": "Makin cepat disajikan, makin besar tip-nya. Cangkir \u22654\u2605 beruntun = combo.",
+  "tips3": "Latte art: usap mengikuti bayangan. Kalau buru-buru, tekan Lewati.",
+  "tutDone": "Siap buka kedai!",
+  "tutDoneSub": "Kamu sudah bisa racik kopi dan bikin latte art. Sekarang antrean pulang kantor menunggu.",
+  "tutStart": "Mulai Shift Biasa",
+  "tut1": "Pelanggan pesan Es Kopi Susu Gula Aren. Lihat resepnya di kartu pesanan.",
+  "tut2": "Ketuk bahan yang menyala sesuai urutan: gula aren dulu!",
+  "tut3": "Mantap! Lanjut ketuk bahan berikutnya sampai gelas penuh.",
+  "tut4": "Caf\u00e9 Latte punya latte art. Racik dulu: espresso, susu, foam.",
+  "tut5": "Sekarang usap jarimu di atas foam mengikuti bayangan hati.",
+  "ok": "Oke",
+  "skip": "Lewati tutorial",
+  "demo": "DEMO",
+  "footerNote": "Game barista gratis tanpa download, tanpa iklan.",
+  "shareTxt": "Aku dapat skor {s} di Kopi Senja hari ini \u2615",
+  "score": "Skor",
+  "dailyDone": "Harian hari ini sudah dimainkan. Skormu: {s}. Main lagi tetap boleh (rekor terbaik disimpan)."
+ },
+ "tutorial": [
+  {
+   "id": "order",
+   "text": "tut1"
+  },
+  {
+   "id": "tap",
+   "text": "tut2"
+  },
+  {
+   "id": "more",
+   "text": "tut3"
+  },
+  {
+   "id": "latte",
+   "text": "tut4"
+  },
+  {
+   "id": "art",
+   "text": "tut5"
+  }
+ ]
+}
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Kopi Senja &#xB7; Game Barista Kedai Kopi: Es Kopi Susu Gula Aren &amp; Latte Art</title>
+<meta name="description" content="Kopi Senja: game barista kedai kopi kekinian gratis di HP tanpa download. Racik es kopi susu gula aren, caf&#xE9; latte, cappuccino, matcha latte, kopi tubruk dan es cokelat sesuai pesanan, gambar latte art pakai usap jari, dan kejar antrean jam pulang kantor. Ada Shift Biasa, Rush Senja dan Tantangan Harian.">
+<meta name="theme-color" content="#2c1912">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kopi Senja">
+<meta property="og:description" content="Jadi barista kedai kopi kekinian: racik kopi susu gula aren, latte art, kejar antrean senja!">
+<style>
+:root{--ink:#2a1610;--cream:#fff4e4;--latte:#f2d7b6;--caramel:#f2a65a;--aren:#7a3f12;--espresso:#3b1d0e;--rose:#e8607a;--dusk:#5a2e4a;--gold:#ffd23f;--mint:#7fd18b;--card:rgba(255,244,228,.97);--shadow:0 6px 0 rgba(40,18,8,.45),0 16px 34px rgba(0,0,0,.4);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#2c1912;color:var(--ink);overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+body{overflow:hidden;touch-action:manipulation}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-user-select:none;user-select:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;width:100%;padding:10px 14px;border:0;border-radius:16px;background:#fff;color:var(--ink);font-weight:800;font-size:16px;box-shadow:0 4px 0 #cfa784,0 8px 16px rgba(40,18,8,.2);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #cfa784}
+.btn:focus-visible,.ic-btn:focus-visible,.ing:focus-visible,.cbtn:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn.big{min-height:60px;font-size:19px;border-radius:20px}
+.btn.primary{background:linear-gradient(180deg,#ffb36b,#f2853a 55%,#d9622a);color:#fff;box-shadow:0 5px 0 #8a3510,0 10px 22px rgba(140,50,10,.4);text-shadow:0 1px 0 rgba(0,0,0,.3)}
+.btn.primary:active{box-shadow:0 2px 0 #8a3510}
+.btn .ic{font-size:26px}
+.btn.sq{width:54px;flex:0 0 54px;font-size:20px;padding:0}
+.modes{display:flex;flex-direction:column;gap:9px;width:100%}
+.btn.mode{justify-content:flex-start;text-align:left;padding:8px 14px}
+.btn.mode .mt{display:flex;flex-direction:column;line-height:1.1}
+.btn.mode b{font-size:19px;font-weight:1000}
+.btn.mode small{font-size:12px;font-weight:700;opacity:.85}
+.btn.mode.rush{background:linear-gradient(180deg,#8a4a7a,#5a2e4a);color:#ffe9f2;box-shadow:0 5px 0 #2e1226,0 10px 20px rgba(60,10,40,.35)}
+.btn.mode.daily{background:linear-gradient(180deg,#fff,#f7e3c9);box-shadow:0 5px 0 #c99a6e}
+/* home */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:max(52px,env(safe-area-inset-top)) 16px max(10px,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;z-index:5;background:linear-gradient(180deg,rgba(30,12,20,.15),rgba(30,12,10,.6))}
+.home-card{width:min(390px,100%);display:flex;flex-direction:column;align-items:center;gap:11px;padding:20px 18px 16px;background:var(--card);border-radius:28px;box-shadow:var(--shadow);border:3px solid #fff;position:relative;margin:auto 0 8px;background-image:radial-gradient(120% 60% at 50% 0%,rgba(255,200,140,.45),rgba(255,236,210,0) 70%),repeating-linear-gradient(90deg,rgba(122,63,18,.03) 0 2px,transparent 2px 16px)}
+.home-card::before{content:"";position:absolute;left:22px;right:22px;top:-12px;height:22px;border-radius:12px;background:repeating-linear-gradient(90deg,#e8607a 0 22px,#fff4e4 22px 44px);box-shadow:0 3px 0 rgba(0,0,0,.2);clip-path:polygon(0 0,100% 0,100% 60%,97% 100%,94% 60%,91% 100%,88% 60%,85% 100%,82% 60%,79% 100%,76% 60%,73% 100%,70% 60%,67% 100%,64% 60%,61% 100%,58% 60%,55% 100%,52% 60%,49% 100%,46% 60%,43% 100%,40% 60%,37% 100%,34% 60%,31% 100%,28% 60%,25% 100%,22% 60%,19% 100%,16% 60%,13% 100%,10% 60%,7% 100%,4% 60%,0 100%)}
+.logo-cup{position:relative;width:74px;height:66px;margin-top:4px}
+.logo-cup .cup{position:absolute;left:8px;bottom:6px;width:50px;height:38px;background:linear-gradient(90deg,#f0e4d4,#fff 40%,#dccbb6);border-radius:4px 4px 24px 24px;box-shadow:0 4px 0 rgba(60,30,10,.3)}
+.logo-cup .cup::before{content:"";position:absolute;left:3px;right:3px;top:-5px;height:11px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#fffaf2 0 30%,#b77a45 32% 70%,#7a3f12 72%);box-shadow:0 0 0 3px #fff}
+.logo-cup .cup::after{content:"";position:absolute;right:-14px;top:7px;width:13px;height:17px;border:5px solid #f0e4d4;border-left:0;border-radius:0 12px 12px 0}
+.logo-cup::after{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;border-radius:50%;background:#e8dccd;box-shadow:0 3px 0 rgba(60,30,10,.25)}
+.steam{position:absolute;bottom:44px;width:7px;height:20px;border-radius:7px;background:rgba(160,110,80,.35);animation:steam 2.2s ease-in-out infinite}
+.steam.s1{left:20px}.steam.s2{left:31px;animation-delay:.5s}.steam.s3{left:42px;animation-delay:1s}
+@keyframes steam{0%{transform:translateY(8px) scaleY(.6);opacity:0}40%{opacity:1}100%{transform:translateY(-14px) translateX(4px) scaleY(1.2);opacity:0}}
+.logo{position:relative;display:flex;flex-direction:column;align-items:center;line-height:.86;transform:rotate(-3deg)}
+.logo .l1,.logo .l2{font-weight:1000;letter-spacing:2px;-webkit-text-stroke:2px #2a1006;paint-order:stroke fill}
+.logo .l1{font-size:clamp(44px,13vw,62px);color:#f2a65a;text-shadow:0 5px 0 #2a1006,0 9px 14px rgba(0,0,0,.25)}
+.logo .l2{font-size:clamp(36px,11vw,52px);color:#ffd6e2;margin-top:2px;text-shadow:0 4px 0 #2a1006,0 0 18px rgba(232,96,122,.75)}
+.tagline{margin:0;text-align:center;font-weight:700;color:#6b3a1a;line-height:1.35;font-size:14px}
+.name-field{width:100%;display:flex;flex-direction:column;gap:4px;font-weight:800;font-size:13px;color:#6b3a1a}
+.name-field input{width:100%;min-height:46px;padding:10px 14px;border:3px solid #ebcaa6;border-radius:14px;background:#fff;color:var(--ink);font:700 18px/1.2 inherit;font-family:inherit}
+.name-field input::placeholder{color:#a9a3a0;opacity:1;font-weight:600}
+.row2{display:flex;gap:8px;width:100%}
+.stat-strip{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:13px;font-weight:700;color:#6b3a1a}
+.stat-strip:empty{display:none}
+.stat-strip span{background:#fbe2c8;border-radius:999px;padding:5px 10px}
+.site-footer{margin-top:8px;text-align:center;font-size:12px;color:#f3e6d6;background:rgba(30,14,10,.7);border-radius:14px;padding:6px 12px}
+.site-footer p{margin:0 0 2px}
+.site-footer a{color:#ffd08a;font-weight:700}
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(30,12,10,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.dlg{width:min(380px,100%);max-height:calc(100% - 8px);overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:center;gap:11px;padding:22px 18px 18px;background:var(--card);border:3px solid #fff;border-radius:26px;box-shadow:var(--shadow);text-align:center;animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+.dlg h2{margin:0;font-size:24px;font-weight:1000;color:#3a1a10}
+.muted{margin:-4px 0 0;color:#7a5a44;font-weight:600;font-size:14px}
+.how-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;text-align:left;font-weight:600;line-height:1.35}
+.how-list li{background:#fbe5cf;border-radius:12px;padding:8px 10px}
+.how-list.small{font-size:13px}
+.big-ic{font-size:44px;animation:bob 2s ease-in-out infinite}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.overlay.over{background:radial-gradient(circle at 50% 30%,rgba(242,166,90,.35),rgba(30,12,10,.7))}
+.over-title{font-size:clamp(28px,8vw,34px)!important;color:var(--gold)!important;-webkit-text-stroke:2px #3a1d06;paint-order:stroke fill;text-shadow:0 4px 0 #3a1d06}
+.best-badge{margin:0;padding:6px 14px;border-radius:999px;background:linear-gradient(90deg,#ffe07a,#ffb627);font-weight:900;animation:bob 1.4s ease-in-out infinite}
+.big-score{display:flex;flex-direction:column;line-height:1}
+.big-score small{font-weight:800;color:#7a5a44;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.big-score b{font-size:46px;font-weight:1000;color:#d9622a;font-variant-numeric:tabular-nums;text-shadow:0 3px 0 rgba(90,40,10,.2)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.stat-grid.three{grid-template-columns:1fr 1fr 1fr}
+.stat-grid div{background:#fbe5cf;border-radius:14px;padding:8px 6px;display:flex;flex-direction:column}
+.stat-grid small{font-size:11px;font-weight:700;color:#7a5a44}
+.stat-grid b{font-size:17px;font-weight:1000;font-variant-numeric:tabular-nums}
+.cup-list{display:flex;flex-direction:column;gap:4px;width:100%;font-size:13px;font-weight:700}
+.cup-list div{display:flex;justify-content:space-between;gap:8px;background:#fff;border-radius:10px;padding:5px 10px;box-shadow:inset 0 0 0 2px #f1d6bb;animation:pop .3s both}
+.cup-list span:last-child{color:#c98a00;white-space:nowrap}
+.cup-list .gone span:last-child{color:#b04040}
+/* HUD */
+#hud{position:fixed;inset:0;z-index:6;pointer-events:none}
+#hud>*{pointer-events:auto}
+#hud>.toasts,#hud>.banner,#hud>.bubble,#hud>.demo-tag,#hud>.receipt{pointer-events:none}
+.hud-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:8px;padding:max(8px,env(safe-area-inset-top)) 10px 0;max-width:780px;margin:0 auto}
+.ic-btn{flex:0 0 auto;width:46px;height:46px;border:0;border-radius:15px;background:var(--card);font-size:18px;font-weight:900;box-shadow:0 4px 0 rgba(40,18,8,.5);display:grid;place-items:center;line-height:1}
+.ic-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(40,18,8,.5)}
+.plate{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:6px;height:46px;background:linear-gradient(180deg,#a8683a,#7a4422);border:2px solid #d39a62;border-radius:16px;padding:0 10px;color:#fff3e0;font-weight:900;font-size:15px;box-shadow:0 4px 0 rgba(40,18,8,.5),inset 0 1px 0 rgba(255,255,255,.25);white-space:nowrap;font-variant-numeric:tabular-nums}
+.plate .clock::before{content:"\1F553  "}
+.plate .prog{background:rgba(0,0,0,.25);border-radius:999px;padding:3px 9px;font-size:13px}
+.plate .money{color:#ffe7a6}
+.plate .money.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.25);color:#fff}}
+.order{position:absolute;left:10px;right:10px;top:calc(max(8px,env(safe-area-inset-top)) + 54px);max-width:520px;margin:0 auto;background:#fffaf1;border-radius:16px;padding:8px 10px 9px;box-shadow:0 5px 0 rgba(40,18,8,.45),0 10px 20px rgba(0,0,0,.25);border:2px solid #fff;background-image:repeating-linear-gradient(180deg,transparent 0 21px,rgba(122,63,18,.06) 21px 22px)}
+.order::before{content:"";position:absolute;left:50%;top:-7px;width:44px;height:12px;margin-left:-22px;border-radius:3px;background:rgba(242,166,90,.8);transform:rotate(-3deg)}
+.order.pop{animation:order-in .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes order-in{from{transform:translateY(-20px) rotate(-3deg);opacity:0}}
+.o-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:#8a6a52}
+.o-combo{background:linear-gradient(90deg,#ffe07a,#ffb627);color:#5a3200;border-radius:999px;padding:1px 8px;font-weight:1000;animation:bump .5s}
+.o-name{font-size:19px;font-weight:1000;color:#3a1a10;line-height:1.15;margin:1px 0 5px}
+.o-name .art-tag{font-size:12px;font-weight:800;color:#b0507a;background:#ffe3ec;border-radius:999px;padding:2px 7px;vertical-align:3px;margin-left:4px}
+.chips{display:flex;gap:5px;margin:0;padding:0;list-style:none;flex-wrap:wrap}
+.chips li{display:flex;align-items:center;gap:3px;padding:3px 8px 3px 5px;border-radius:999px;background:#f3e4d2;font-size:13px;font-weight:800;color:#6b4a32;border:2px solid transparent;transition:background .2s}
+.chips li .n{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#d9bfa2;color:#fff;font-size:11px}
+.chips li.now{background:#fff;border-color:var(--caramel);color:#3a1a10;animation:pulse 1s ease-in-out infinite}
+.chips li.done{background:#d9f3dc;color:#2d6a3a}
+.chips li.done .n{background:#4caf63}
+.chips li.done .n::before{content:"\2713 "}.chips li.done .n span{display:none}
+.chips li.art{background:#ffe3ec;color:#a0406a}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(242,166,90,.35)}}
+.patience{position:relative;height:9px;margin-top:7px;border-radius:999px;background:rgba(90,50,20,.18);overflow:hidden}
+.patience i{position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:999px;background:linear-gradient(90deg,#4caf63,#ffd23f);transition:width .15s linear}
+.patience.low i{background:linear-gradient(90deg,#e8443a,#ff9f1c);animation:blink .5s steps(2) infinite}
+@keyframes blink{50%{opacity:.55}}
+.bubble{position:absolute;z-index:2;max-width:min(230px,58vw);background:#fff;color:#3a1a10;font-weight:900;font-size:14px;line-height:1.25;padding:8px 12px;border-radius:16px;box-shadow:0 5px 0 rgba(40,18,8,.35);animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+.bubble::after{content:"";position:absolute;left:22px;bottom:-9px;border:9px solid transparent;border-top-color:#fff;border-bottom:0}
+.bubble.sad{background:#ffe6e1;color:#a0201c}.bubble.sad::after{border-top-color:#ffe6e1}
+.bubble.happy{background:#eaffe8;color:#1f6a2a}.bubble.happy::after{border-top-color:#eaffe8}
+.coach{position:absolute;left:50%;bottom:calc(var(--panel,170px) + 10px);transform:translateX(-50%);width:min(360px,calc(100% - 20px));display:flex;flex-direction:column;gap:3px;background:rgba(255,246,232,.98);border:3px solid var(--gold);border-radius:18px;padding:10px 12px;box-shadow:0 6px 0 rgba(40,18,8,.4);text-align:center;animation:pop .35s cubic-bezier(.2,1.6,.4,1);z-index:3}
+.coach b{font-size:15px;line-height:1.3}
+.coach-btns{display:flex;gap:8px;justify-content:center;margin-top:4px}
+.coach.noOk .cbtn.ok{display:none}
+.cbtn{border:0;border-radius:12px;min-height:38px;padding:4px 14px;font-weight:900;font-size:14px;background:#efe1d2;color:#5a3a24}
+.cbtn.ok{background:linear-gradient(180deg,#ffb36b,#d9622a);color:#fff;box-shadow:0 3px 0 #8a3510}
+.banner{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-weight:1000;font-size:clamp(22px,7vw,34px);color:#fff;-webkit-text-stroke:2px #2a0f14;paint-order:stroke fill;text-shadow:0 4px 0 #2a0f14,0 0 22px rgba(242,133,58,.9);white-space:nowrap;animation:banner 2.4s ease forwards;z-index:4}
+@keyframes banner{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}12%{transform:translate(-50%,-50%) scale(1.1);opacity:1}20%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-70%)}}
+.receipt{position:absolute;left:50%;top:var(--rtop,36%);transform:translate(-50%,-50%);min-width:200px;background:#fffdf7;border-radius:12px 12px 4px 4px;padding:10px 16px 14px;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.4);animation:rcpt 1.9s ease forwards;z-index:4;font-variant-numeric:tabular-nums}
+.receipt::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;background:linear-gradient(-45deg,transparent 5px,#fffdf7 5px) 0 0/10px 8px,linear-gradient(45deg,transparent 5px,#fffdf7 5px) 0 0/10px 8px}
+.receipt.bad{background:#fff1ee}
+.r-stars{font-size:30px;letter-spacing:2px;line-height:1}
+.r-stars i{font-style:normal;color:#e3d3c3;display:inline-block}
+.r-stars i.on{color:var(--gold);-webkit-text-stroke:1px #8a5a00;animation:star-in .4s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes star-in{from{transform:scale(0) rotate(-90deg)}}
+.r-line{font-weight:900;font-size:15px;color:#3a1a10;margin-top:4px}
+.r-tip{font-weight:800;font-size:13px;color:#2d8a4c}
+@keyframes rcpt{0%{transform:translate(-50%,-30%) scale(.6);opacity:0}12%{transform:translate(-50%,-50%) scale(1.05);opacity:1}20%{transform:translate(-50%,-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-62%)}}
+.toasts{position:absolute;left:0;right:0;bottom:calc(var(--panel,170px) + 12px);display:flex;flex-direction:column-reverse;align-items:center;gap:6px;z-index:4}
+.toast{background:rgba(30,14,10,.88);color:#fff;font-weight:900;font-size:15px;padding:7px 14px;border-radius:999px;animation:toast 1.5s ease forwards}
+.toast.bad{background:#c0392b}.toast.good{background:#2d8a4c}.toast.gold{background:linear-gradient(90deg,#ffb627,#f2853a);color:#3a1a00}
+@keyframes toast{0%{transform:translateY(10px) scale(.8);opacity:0}15%{transform:none;opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+.demo-tag{position:absolute;right:12px;bottom:calc(var(--panel,170px) + 8px);background:#e8607a;color:#fff;font-weight:1000;font-size:12px;letter-spacing:.1em;border-radius:6px;padding:3px 8px}
+/* ingredient bar */
+.bar-panel{position:absolute;left:0;right:0;bottom:0;padding:10px 10px max(10px,env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(40,20,12,.0),rgba(40,20,12,.55) 16px,rgba(30,14,8,.85))}
+.ings{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;max-width:640px;margin:0 auto}
+.ing{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:66px;border:0;border-radius:16px;padding:5px 2px 4px;background:linear-gradient(180deg,#fff9ef,#f3dfc4);box-shadow:0 4px 0 #8a5530,0 7px 12px rgba(0,0,0,.3),inset 0 -3px 0 rgba(122,63,18,.12);transition:transform .07s,box-shadow .07s}
+.ing:active,.ing.press{transform:translateY(3px);box-shadow:0 1px 0 #8a5530}
+.ing .e{font-size:27px;line-height:1;filter:drop-shadow(0 2px 0 rgba(0,0,0,.15))}
+.ing .nm{font-size:11px;font-weight:900;color:#5a3a24;line-height:1.05;text-align:center}
+.ing .key{position:absolute;left:5px;top:3px;font-size:9px;font-weight:900;color:#b08a6a}
+.ing.hint{background:linear-gradient(180deg,#fff,#ffe1a8);animation:hint 0.9s ease-in-out infinite;box-shadow:0 4px 0 #8a5530,0 0 0 4px var(--gold),0 0 20px rgba(255,210,63,.8)}
+@keyframes hint{50%{transform:translateY(-3px) scale(1.04)}}
+.ing.wrong{animation:shake .35s;background:linear-gradient(180deg,#ffe1dc,#ffb8ad)}
+.ing.right{background:linear-gradient(180deg,#eaffe8,#bff0c4)}
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.bar-panel.locked .ing{opacity:.55;pointer-events:none}
+/* latte art */
+.art-hud{position:absolute;inset:0;pointer-events:none;z-index:2}
+.art-top{position:absolute;left:50%;top:calc(max(8px,env(safe-area-inset-top)) + 58px);transform:translateX(-50%);width:min(340px,calc(100% - 20px));display:flex;flex-direction:column;align-items:center;gap:3px;color:#fff4e4;text-align:center;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.art-top b{font-size:20px;font-weight:1000}
+.art-top small{font-size:13px;font-weight:700;opacity:.9}
+.art-time{width:100%;height:9px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:4px}
+.art-time i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ffd6e2,#f2a65a);border-radius:999px}
+.art-btns{position:absolute;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(360px,calc(100% - 20px));display:flex;gap:10px;pointer-events:auto}
+.art-btns .btn{min-height:54px}
+html.art-on #panel{visibility:hidden}
+html.art-on #orderCard,html.art-on #bubble{opacity:0;pointer-events:none}
+@media (min-width:700px){.ing{min-height:74px}.ing .e{font-size:30px}.ing .nm{font-size:12px}.order{top:calc(max(8px,env(safe-area-inset-top)) + 58px)}}
+@media (max-height:660px){.ing{min-height:56px}.ing .e{font-size:23px}.o-name{font-size:17px;margin-bottom:3px}.chips li{font-size:12px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+#artHud,#artHud .art-top,#artHud .art-btns{pointer-events:none!important}
+#artHud .btn{pointer-events:auto!important}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="tr" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"slug":"kopisenja","title":"Kopi Senja","icon":"\u2615","accent":"#f2a65a","ink":"#2a1006","bg":"#1f1014","bg2":"#6a2f3e","inputs":["#nameIn"],"max":16};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<canvas id="cv" aria-label="Kedai kopi senja: pelanggan, meja bar dan gelas yang sedang diracik"></canvas>
+
+<!-- home -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo-cup" aria-hidden="true"><span class="steam s1"></span><span class="steam s2"></span><span class="steam s3"></span><i class="cup"></i></div>
+    <div class="logo" aria-hidden="true"><span class="l1">KOPI</span><span class="l2">SENJA</span></div>
+    <h1 class="sr-only" data-c="site.name"></h1>
+    <p class="tagline" data-c="site.tagline"></p>
+    <label class="name-field"><span data-t="nameLabel"></span>
+      <input id="nameIn" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring">
+    </label>
+    <div class="modes">
+      <button type="button" class="btn big primary mode" id="playBiasa" data-mode="biasa"><span class="ic" aria-hidden="true">&#x2615;</span><span class="mt"><b data-t="modeBiasa"></b><small data-t="modeBiasaSub"></small></span></button>
+      <button type="button" class="btn big mode rush" id="playRush" data-mode="rush"><span class="ic" aria-hidden="true">&#x1F6A6;</span><span class="mt"><b data-t="modeRush"></b><small data-t="modeRushSub"></small></span></button>
+      <button type="button" class="btn big mode daily" id="playHarian" data-mode="harian"><span class="ic" aria-hidden="true">&#x1F4C5;</span><span class="mt"><b data-t="modeHarian"></b><small id="harianSub"></small></span></button>
+    </div>
+    <div class="row2">
+      <button type="button" class="btn" id="tutBtn"><span aria-hidden="true">&#x1F393;</span> <span data-t="how"></span></button>
+      <button type="button" class="btn" id="recBtn"><span aria-hidden="true">&#x1F3C6;</span> <span data-t="records"></span></button>
+      <button type="button" class="btn sq" id="homeMute" data-t-aria="mute">&#x1F50A;</button>
+    </div>
+    <div class="stat-strip" id="statStrip"></div>
+  </div>
+  <footer class="site-footer">
+    <p><strong data-c="site.name"></strong> &#xB7; <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </footer>
+</main>
+
+<!-- records -->
+<div class="overlay" id="recDlg" role="dialog" aria-modal="true" aria-labelledby="recTitle" hidden>
+  <div class="dlg">
+    <h2 id="recTitle" data-t="recTitle"></h2>
+    <div class="stat-grid" id="recGrid"></div>
+    <ul class="how-list small"><li data-t="tips1"></li><li data-t="tips2"></li><li data-t="tips3"></li></ul>
+    <button type="button" class="btn big primary" id="recClose" data-t="close"></button>
+  </div>
+</div>
+
+<!-- play HUD -->
+<div id="hud" hidden>
+  <div class="hud-top">
+    <button type="button" class="ic-btn" id="pauseBtn" data-t-aria="pause">&#x275A;&#x275A;</button>
+    <div class="plate">
+      <span class="clock" id="clock">16:30</span>
+      <span class="prog" id="progNum">0/6</span>
+      <span class="money" id="money">Rp 0</span>
+    </div>
+    <button type="button" class="ic-btn" id="muteBtn" data-t-aria="mute">&#x1F50A;</button>
+  </div>
+  <section class="order" id="orderCard" aria-live="polite">
+    <div class="o-head"><span class="o-who" id="oWho"></span><span class="o-combo" id="oCombo" hidden></span></div>
+    <div class="o-name" id="oName"></div>
+    <ol class="chips" id="chips"></ol>
+    <div class="patience" id="patience"><i id="patBar"></i></div>
+  </section>
+  <div class="bubble" id="bubble" hidden></div>
+  <div class="coach" id="coach" hidden><b id="coachTxt"></b><div class="coach-btns"><button type="button" class="cbtn ok" id="coachOk" data-t="ok"></button><button type="button" class="cbtn" id="skipTut" data-t="skip"></button></div></div>
+  <div class="banner" id="banner" hidden></div>
+  <div class="receipt" id="receipt" hidden><div class="r-stars" id="rStars"></div><div class="r-line" id="rLine"></div><div class="r-tip" id="rTip"></div></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <span class="demo-tag" id="demoTag" data-t="demo" hidden></span>
+  <div class="bar-panel" id="panel"><div class="ings" id="ings"></div></div>
+  <div class="art-hud" id="artHud" hidden>
+    <div class="art-top"><b id="artTitle"></b><small data-t="artHint"></small><div class="art-time"><i id="artBar"></i></div></div>
+    <div class="art-btns"><button type="button" class="btn" id="artSkip" data-t="skipArt"></button><button type="button" class="btn primary" id="artDone">&#x2713; Sajikan</button></div>
+  </div>
+</div>
+
+<!-- pause -->
+<div class="overlay" id="pauseDlg" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden>
+  <div class="dlg">
+    <h2 id="pauseTitle" data-t="pausedTitle"></h2>
+    <p class="muted" data-t="pausedSub"></p>
+    <button type="button" class="btn big primary" id="resumeBtn" data-t="resume"></button>
+    <button type="button" class="btn" id="quitBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<!-- tutorial done -->
+<div class="overlay" id="tutDlg" role="dialog" aria-modal="true" aria-labelledby="tutTitle" hidden>
+  <div class="dlg">
+    <div class="big-ic" aria-hidden="true">&#x2615;&#x1F90D;</div>
+    <h2 id="tutTitle" data-t="tutDone"></h2>
+    <p class="muted" data-t="tutDoneSub"></p>
+    <ul class="how-list small"><li data-t="tips1"></li><li data-t="tips2"></li><li data-t="tips3"></li></ul>
+    <button type="button" class="btn big primary" id="tutStart" data-t="tutStart"></button>
+  </div>
+</div>
+
+<!-- end of shift -->
+<div class="overlay over" id="endDlg" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+  <div class="dlg">
+    <h2 id="endTitle" class="over-title" data-t="endTitle"></h2>
+    <p class="muted" id="endSub"></p>
+    <p class="best-badge" id="bestBadge" data-t="endBest" hidden></p>
+    <div class="big-score"><small data-t="score"></small><b id="eScore">0</b></div>
+    <div class="cup-list" id="cupList"></div>
+    <div class="stat-grid three">
+      <div><small data-t="endOmzet"></small><b id="eMoney"></b></div>
+      <div><small data-t="endTips"></small><b id="eTips"></b></div>
+      <div><small data-t="endCombo"></small><b id="eCombo"></b></div>
+    </div>
+    <button type="button" class="btn big primary" id="againBtn" data-t="again"></button>
+    <button type="button" class="btn" id="menuBtn" data-t="menu"></button>
+  </div>
+</div>
+
+<script id="ks-sim">
+// Kopi Senja - pure rules (no DOM): seeded orders, recipe steps, mistakes, patience, latte-art scoring, stars/tips/combo, shift summary, records, bot.
+(function (G) {
+  'use strict';
+  function hash(s) { s = String(s); var h = 1779033703 ^ s.length; for (var i = 0; i < s.length; i++) { h = Math.imul(h ^ s.charCodeAt(i), 3432918353); h = h << 13 | h >>> 19; } return h >>> 0; }
+  function rng(seed) { var a = hash(seed) || 1; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function waDay(d) { var x = new Date((d ? +d : Date.now()) + 8 * 3600e3); return x.toISOString().slice(0, 10); }
+  function drinkById(cfg, id) { for (var i = 0; i < cfg.drinks.length; i++) if (cfg.drinks[i].id === id) return cfg.drinks[i]; return null; }
+  function ingById(cfg, id) { for (var i = 0; i < cfg.ingredients.length; i++) if (cfg.ingredients[i].id === id) return cfg.ingredients[i]; return null; }
+  function wpick(r, list, avoid) {
+    var tot = 0, i, c = list.filter(function (d) { return avoid.indexOf(d.id) < 0; }); if (!c.length) c = list;
+    for (i = 0; i < c.length; i++) tot += c[i].w || 1; var x = r() * tot;
+    for (i = 0; i < c.length; i++) { x -= c[i].w || 1; if (x < 0) return c[i]; } return c[c.length - 1];
+  }
+  // ---------- shift ----------
+  function shift(o) {
+    var cfg = o.cfg, mode = o.mode || 'biasa', M = cfg.game.modes[mode], r = rng(o.seed || (mode + Date.now())), orders = [], lastC = -1;
+    var fixed = o.drinks || null, n = fixed ? fixed.length : M.orders;
+    for (var i = 0; i < n; i++) {
+      var d;
+      if (fixed) d = drinkById(cfg, fixed[i]);
+      else if (i === 0 && mode !== 'harian') d = drinkById(cfg, 'aren');
+      else { var avoid = []; if (orders.length >= 1) avoid.push(orders[orders.length - 1].drink); if (orders.length >= 2 && orders[orders.length - 2].drink === orders[orders.length - 1].drink) avoid.push(orders[orders.length - 1].drink); d = wpick(r, cfg.drinks, orders.length ? [orders[orders.length - 1].drink] : []); }
+      var c; do { c = Math.floor(r() * cfg.customers.length); } while (c === lastC && cfg.customers.length > 1); lastC = c;
+      orders.push({ drink: d.id, cust: c, line: Math.floor(r() * 1000) });
+    }
+    return { cfg: cfg, mode: mode, M: M, orders: orders, i: 0, res: [], streak: 0, bestCombo: 0, money: 0, tips: 0, score: 0, done: false };
+  }
+  function cup(S, patienceMul) {
+    var o = S.orders[S.i], d = drinkById(S.cfg, o.drink);
+    return { o: o, d: d, step: 0, added: [], mistakes: 0, time: 0, pat: S.M.patience * (patienceMul || 1) * (1 + 0.12 * (d.steps.length - 3)), phase: 'mix', art: null, artScore: null, wrong: [] };
+  }
+  function expect(C) { return C.phase === 'mix' ? C.d.steps[C.step] : null; }
+  function add(C, ing) {
+    if (C.phase !== 'mix') return { ok: false, ignored: true };
+    var want = C.d.steps[C.step];
+    if (ing !== want) { C.mistakes++; C.wrong.push(ing); return { ok: false, expect: want }; }
+    C.added.push(ing); C.step++;
+    if (C.step >= C.d.steps.length) C.phase = C.d.art ? 'art' : 'done';
+    return { ok: true, done: C.phase !== 'mix', art: C.phase === 'art' };
+  }
+  function tick(C, dt) { if (C.phase === 'mix' || C.phase === 'art') C.time += dt; return C.phase !== 'done' && C.phase !== 'gone' && C.time >= C.pat ? 'leave' : null; }
+  function patFrac(C) { return Math.max(0, 1 - C.time / C.pat); }
+  // ---------- latte art ----------
+  var ARTN = 32, artCache = {};
+  function artPaths(kind) {
+    var P = [], i, t, a;
+    if (kind === 'heart') { a = []; for (i = 0; i <= 60; i++) { t = i / 60 * Math.PI * 2; var x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); a.push([x / 17 * 0.62, -y / 17 * 0.62 - 0.04]); } P.push(a); }
+    else if (kind === 'leaf') {
+      P.push([[0, -0.66], [0, 0.66]]);
+      for (var k = 0; k < 5; k++) { var y0 = -0.42 + k * 0.22, w = 0.24 + k * 0.08; a = []; for (i = 0; i <= 12; i++) { t = i / 12 * 2 - 1; a.push([t * w, y0 + 0.16 * (1 - t * t) - 0.02]); } P.push(a); }
+    } else { a = []; for (i = 0; i <= 90; i++) { t = i / 90; var ang = t * Math.PI * 2 * 2.6, rr = 0.06 + 0.58 * t; a.push([Math.cos(ang) * rr, Math.sin(ang) * rr]); } P.push(a); }
+    return P;
+  }
+  function rasterize(paths, N, rad) {
+    var g = new Uint8Array(N * N), cell = 2 / N;
+    function stamp(x, y) { var cx = (x + 1) / cell, cy = (y + 1) / cell, r = rad; for (var j = Math.floor(cy - r); j <= Math.ceil(cy + r); j++) for (var i = Math.floor(cx - r); i <= Math.ceil(cx + r); i++) { if (i < 0 || j < 0 || i >= N || j >= N) continue; var dx = i + 0.5 - cx, dy = j + 0.5 - cy; if (dx * dx + dy * dy <= r * r) g[j * N + i] = 1; } }
+    paths.forEach(function (p) {
+      for (var k = 0; k < p.length; k++) {
+        if (k === 0) { stamp(p[0][0], p[0][1]); continue; }
+        var ax = p[k - 1][0], ay = p[k - 1][1], bx = p[k][0], by = p[k][1], L = Math.hypot(bx - ax, by - ay), n = Math.max(1, Math.ceil(L / (cell * 0.5)));
+        for (var s = 1; s <= n; s++) stamp(ax + (bx - ax) * s / n, ay + (by - ay) * s / n);
+      }
+    });
+    return g;
+  }
+  function artTarget(kind) { if (!artCache[kind]) artCache[kind] = rasterize(artPaths(kind), ARTN, 1.2); return artCache[kind]; }
+  // strokes: array of arrays of [x,y] in cup units (-1..1, y down). Score 0..1 = F1 of user cells vs target cells (target dilated for precision).
+  function artScore(kind, strokes) {
+    var T = artTarget(kind), Tw = artCache[kind + ':w'] || (artCache[kind + ':w'] = rasterize(artPaths(kind), ARTN, 1.9));
+    var U = rasterize((strokes || []).filter(function (s) { return s && s.length; }), ARTN, 1.2), u = 0, uin = 0, t = 0, tc = 0;
+    for (var i = 0; i < T.length; i++) { if (U[i]) { u++; if (Tw[i]) uin++; } if (T[i]) { t++; if (U[i]) tc++; } }
+    if (!u) return 0;
+    var P = uin / u, R = tc / t; if (P + R === 0) return 0;
+    return Math.round(Math.min(1, Math.pow(2 * P * R / (P + R), 1.9) * 1.3) * 100) / 100;
+  }
+  function setArt(C, strokes) { if (C.phase !== 'art') return null; C.art = strokes; C.artScore = artScore(C.d.art, strokes); C.phase = 'done'; return C.artScore; }
+  function skipArt(C) { if (C.phase !== 'art') return; C.art = []; C.artScore = 0; C.phase = 'done'; }
+  // ---------- scoring ----------
+  function rate(S, C) {
+    var g = S.cfg.game, pf = patFrac(C), stars = 5 - Math.min(3, C.mistakes) - (pf < g.lowPatience ? 1 : 0);
+    if (C.d.art) { if (C.artScore == null || C.artScore < g.artBad) stars--; }
+    stars = Math.max(1, Math.min(5, stars));
+    var combo = 1 + g.comboStep * Math.min(S.streak + (stars >= 4 ? 1 : 0), g.comboMax) * (stars >= 4 ? 1 : 0);
+    var tip = stars >= 3 ? stars * g.tipPerStar + (stars >= 4 ? Math.round(pf * g.speedTip / 500) * 500 : 0) : 0;
+    tip = Math.round(tip * S.M.tipMul * combo / 500) * 500;
+    var artBonus = C.d.art && C.artScore >= g.artGood ? 30 : 0;
+    return { stars: stars, tip: tip, price: C.d.price, pf: Math.round(pf * 100) / 100, mistakes: C.mistakes, art: C.artScore, combo: combo, score: Math.round((C.d.price + tip) / 100) + stars * 20 + artBonus };
+  }
+  function serve(S, C) {
+    if (S.done) return null; var r = rate(S, C);
+    S.streak = r.stars >= 4 ? S.streak + 1 : 0; r.streak = S.streak; S.bestCombo = Math.max(S.bestCombo, S.streak);
+    S.money += r.price + r.tip; S.tips += r.tip; S.score += r.score; S.res.push({ drink: C.d.id, cust: C.o.cust, r: r });
+    C.phase = 'served'; S.i++; if (S.i >= S.orders.length) S.done = true; return r;
+  }
+  function leave(S, C) {
+    if (S.done) return null; var r = { stars: 0, tip: 0, price: 0, pf: 0, mistakes: C.mistakes, art: null, combo: 1, score: 0, left: true, streak: 0 };
+    S.streak = 0; S.res.push({ drink: C.d.id, cust: C.o.cust, r: r }); C.phase = 'gone'; S.i++; if (S.i >= S.orders.length) S.done = true; return r;
+  }
+  function summary(S) {
+    var st = 0, perf = 0, served = 0; S.res.forEach(function (x) { st += x.r.stars; if (x.r.stars === 5) perf++; if (!x.r.left) served++; });
+    return { served: served, total: S.orders.length, stars: st, avg: S.res.length ? Math.round(st / S.res.length * 10) / 10 : 0, money: S.money, tips: S.tips, perfect: perf, bestCombo: S.bestCombo, score: S.score, mode: S.mode };
+  }
+  function record(rec, sum, day) {
+    rec = rec && typeof rec === 'object' ? JSON.parse(JSON.stringify(rec)) : {};
+    rec.best = rec.best || {}; rec.daily = rec.daily || {};
+    var isBest = !(rec.best[sum.mode] >= sum.score); if (isBest) rec.best[sum.mode] = sum.score;
+    rec.shifts = (rec.shifts || 0) + 1; rec.cups = (rec.cups || 0) + sum.served; rec.perfect = (rec.perfect || 0) + sum.perfect;
+    if (sum.mode === 'harian' && day) { if (!(rec.daily[day] >= sum.score)) rec.daily[day] = sum.score; var ks = Object.keys(rec.daily).sort(); while (ks.length > 14) delete rec.daily[ks.shift()]; }
+    return { rec: rec, isBest: isBest };
+  }
+  function clock(S, cfg) { var g = (cfg || S.cfg).game, f = S.orders.length ? S.i / S.orders.length : 0; return Math.round(g.clockStart + (g.clockEnd - g.clockStart) * Math.min(1, f)); }
+  function fmtClock(m) { var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; }
+  // bot: next ingredient; skill 0..1 (chance of picking right)
+  function bot(C, r, skill) { var w = expect(C); if (!w) return null; if (r && r() > (skill == null ? 1 : skill)) { var o = C.d.steps.filter(function (x) { return x !== w; }); return o[0] || 'air'; } return w; }
+  function botArt(kind, r, noise) { r = r || Math.random; noise = noise == null ? 0.02 : noise; return artPaths(kind).map(function (p) { return p.map(function (q) { return [q[0] + (r() - 0.5) * noise, q[1] + (r() - 0.5) * noise]; }); }); }
+  G.KS = { hash: hash, rng: rng, waDay: waDay, drinkById: drinkById, ingById: ingById, shift: shift, cup: cup, expect: expect, add: add, tick: tick, patFrac: patFrac,
+    ARTN: ARTN, artPaths: artPaths, artTarget: artTarget, artScore: artScore, setArt: setArt, skipArt: skipArt, rate: rate, serve: serve, leave: leave, summary: summary, record: record, clock: clock, fmtClock: fmtClock, bot: bot, botArt: botArt };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script id="ks-render">
+// Kopi Senja - canvas renderer: dusk cafe (window sky + jam pulang kantor traffic), pendant lamps, customers in queue, wooden counter,
+// espresso machine, layered glass / ceramic cup, steam, latte-art top view, particles (coins, stars, splash), confetti, shake.
+(function (G) {
+  'use strict';
+  var R = { L: {} }, cv, cx, CFG, parts = [], conf = [], shakeT = 0, T = 0, cars = [], stars = [];
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function hex(h) { h = h.replace('#', ''); if (h.length === 3) h = h.split('').map(function (c) { return c + c; }).join(''); var n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+  function mix(a, b, t) { var x = hex(a), y = hex(b); return 'rgb(' + Math.round(lerp(x[0], y[0], t)) + ',' + Math.round(lerp(x[1], y[1], t)) + ',' + Math.round(lerp(x[2], y[2], t)) + ')'; }
+  function rr(x, y, w, h, r) { cx.beginPath(); cx.moveTo(x + r, y); cx.arcTo(x + w, y, x + w, y + h, r); cx.arcTo(x + w, y + h, x, y + h, r); cx.arcTo(x, y + h, x, y, r); cx.arcTo(x, y, x + w, y, r); cx.closePath(); }
+  R.init = function (canvas, cfg) {
+    cv = canvas; cx = cv.getContext('2d'); CFG = cfg;
+    for (var i = 0; i < 14; i++) cars.push({ x: Math.random(), lane: i % 2, sp: 0.01 + Math.random() * 0.02, c: Math.random() < 0.5 ? 0 : 1 });
+    for (i = 0; i < 26; i++) stars.push({ x: Math.random(), y: Math.random() * 0.5, s: Math.random() });
+  };
+  R.layout = function (w, h, dpr, ins) {
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    var L = R.L; L.w = w; L.h = h; L.dpr = dpr; L.top = ins.top; L.bottom = ins.bottom;
+    var avail = h - ins.top - ins.bottom; L.k = Math.max(0.7, Math.min(1.8, Math.min(w / 390, avail / 340)));
+    L.counterY = h - ins.bottom - Math.max(46 * L.k, avail * 0.13); L.cx = w / 2;
+    L.winTop = Math.max(0, ins.top - 70); L.winBot = L.counterY - Math.min(avail * 0.2, 90 * L.k);
+    var cw = Math.min(w, 760); L.colL = (w - cw) / 2; L.colW = cw;
+    L.cupX = w / 2 + Math.min(cw * 0.22, 120 * L.k); L.cupY = L.counterY + 6 * L.k;
+    L.custX = w / 2 - Math.min(cw * (cw < 500 ? 0.1 : 0.16), 90 * L.k);
+    var ar = Math.min(w * 0.4, (h - ins.top - 150) * 0.36, 230); L.art = { x: w / 2, y: ins.top + (h - ins.top - 150) / 2 + 20, r: ar };
+  };
+  // ---------- background ----------
+  function sky(prog) {
+    var L = R.L, y0 = L.winTop, y1 = L.winBot, g = cx.createLinearGradient(0, y0, 0, y1);
+    g.addColorStop(0, mix('#3a6fb0', '#2a1b4d', prog)); g.addColorStop(0.45, mix('#f7a76a', '#b34d6d', prog)); g.addColorStop(0.8, mix('#ffd38a', '#f08a4b', prog)); g.addColorStop(1, mix('#ffe2a8', '#ffb36b', prog));
+    cx.fillStyle = g; cx.fillRect(0, y0, L.w, y1 - y0);
+    // stars come out later
+    if (prog > 0.45) { cx.fillStyle = 'rgba(255,255,255,' + ((prog - 0.45) * 1.4).toFixed(2) + ')'; stars.forEach(function (s) { var tw = 0.6 + 0.4 * Math.sin(T * 2 + s.s * 9); cx.globalAlpha = Math.min(1, (prog - 0.45) * 1.6) * tw; cx.fillRect(s.x * L.w, y0 + s.y * (y1 - y0) * 0.6, 1.6, 1.6); }); cx.globalAlpha = 1; }
+    // sun sinking
+    var sy = lerp(y0 + (y1 - y0) * 0.45, y1 + 10, prog), sr = 30 * L.k;
+    var sg = cx.createRadialGradient(L.w * 0.7, sy, 2, L.w * 0.7, sy, sr * 3); sg.addColorStop(0, 'rgba(255,240,190,.95)'); sg.addColorStop(0.3, 'rgba(255,190,110,.55)'); sg.addColorStop(1, 'rgba(255,150,90,0)');
+    cx.fillStyle = sg; cx.beginPath(); cx.arc(L.w * 0.7, sy, sr * 3, 0, 7); cx.fill(); cx.fillStyle = '#fff1c4'; cx.beginPath(); cx.arc(L.w * 0.7, sy, sr, 0, 7); cx.fill();
+    // skyline
+    var base = y1 - 26 * L.k, bw = 34 * L.k, x = -10, i = 0;
+    cx.fillStyle = mix('#5b3d5e', '#22183a', prog);
+    while (x < L.w + 40) { var hh = (40 + ((i * 37) % 70)) * L.k * (i % 5 === 2 ? 1.8 : 1); cx.fillRect(x, base - hh, bw - 4, hh + 30); if (i % 5 === 2) { cx.fillRect(x + bw / 2 - 3, base - hh - 14 * L.k, 2, 14 * L.k); }
+      // lit windows
+      if (prog > 0.25) { cx.fillStyle = 'rgba(255,214,120,' + Math.min(0.9, (prog - 0.2) * 1.5).toFixed(2) + ')'; for (var wy = base - hh + 6; wy < base - 4; wy += 9 * L.k) for (var wx = x + 4; wx < x + bw - 8; wx += 8 * L.k) if (((wx * 7 + wy * 3 + i) | 0) % 3 === 0) cx.fillRect(wx, wy, 3 * L.k, 4 * L.k); cx.fillStyle = mix('#5b3d5e', '#22183a', prog); }
+      x += bw + ((i * 13) % 9); i++; }
+    // road with jam pulang kantor traffic
+    cx.fillStyle = '#2b2430'; cx.fillRect(0, base, L.w, y1 - base); cx.fillStyle = 'rgba(255,255,255,.25)'; for (var d = (T * 20) % 30; d < L.w; d += 30) cx.fillRect(d, base + (y1 - base) / 2 - 1, 12, 2);
+    var rush = R.rush ? 0.4 : 1;
+    cars.forEach(function (c) { c.x += c.sp * 0.016 * rush * (c.lane ? -1 : 1); if (c.x > 1.1) c.x = -0.1; if (c.x < -0.1) c.x = 1.1;
+      var yy = base + (c.lane ? (y1 - base) * 0.72 : (y1 - base) * 0.28), xx = c.x * L.w, w = 18 * L.k;
+      cx.fillStyle = c.c ? '#e8c547' : '#d9dce3'; rr(xx - w / 2, yy - 4 * L.k, w, 7 * L.k, 2); cx.fill();
+      cx.fillStyle = c.lane ? 'rgba(255,240,180,.9)' : 'rgba(255,60,60,.95)'; cx.beginPath(); cx.arc(c.lane ? xx - w / 2 : xx + w / 2, yy, 2 * L.k, 0, 7); cx.fill();
+      cx.fillStyle = c.lane ? 'rgba(255,240,180,.12)' : 'rgba(255,60,60,.18)'; cx.beginPath(); cx.arc(c.lane ? xx - w / 2 : xx + w / 2, yy, 7 * L.k, 0, 7); cx.fill(); });
+  }
+  function wall(prog) {
+    var L = R.L, g = cx.createLinearGradient(0, 0, 0, L.h);
+    g.addColorStop(0, '#5a3427'); g.addColorStop(1, '#2c1912'); cx.fillStyle = g; cx.fillRect(0, 0, L.w, L.h);
+    // brick pattern
+    cx.fillStyle = 'rgba(0,0,0,.12)'; var bh = 14 * L.k, bw = 34 * L.k;
+    for (var y = 0, r = 0; y < L.counterY; y += bh, r++) for (var x = (r % 2) * bw / 2 - bw; x < L.w; x += bw) { cx.fillRect(x, y, bw - 2, 1.5); cx.fillRect(x, y, 1.5, bh); }
+    // window
+    sky(prog);
+    var fy0 = L.winTop, fy1 = L.winBot; cx.fillStyle = '#6b3f22'; cx.fillRect(0, fy1, L.w, 10 * L.k); cx.fillStyle = '#8a5530'; cx.fillRect(0, fy1, L.w, 3 * L.k);
+    cx.fillStyle = '#4a2a17'; for (var m = 0; m <= 4; m++) { var mx = L.colL + L.colW * m / 4; cx.fillRect(mx - 4 * L.k, fy0, 8 * L.k, fy1 - fy0); }
+    cx.fillRect(0, fy0 + (fy1 - fy0) * 0.38, L.w, 5 * L.k);
+    // glass reflection
+    cx.fillStyle = 'rgba(255,255,255,.06)'; cx.beginPath(); cx.moveTo(L.w * 0.1, fy0); cx.lineTo(L.w * 0.22, fy0); cx.lineTo(L.w * 0.08, fy1); cx.lineTo(L.w * -0.04, fy1); cx.fill();
+    // neon sign
+    var nx = L.colL + 16 * L.k, ny = fy0 + (fy1 - fy0) * 0.6, fl = Math.sin(T * 13) > 0.97 ? 0.5 : 1;
+    cx.save(); cx.font = '900 ' + Math.round(17 * L.k) + 'px system-ui,sans-serif'; cx.textBaseline = 'middle'; cx.shadowColor = '#ff9a5a'; cx.shadowBlur = 16 * fl; cx.fillStyle = 'rgba(255,214,170,' + fl + ')'; cx.fillText('KOPI', nx, ny); cx.shadowColor = '#ff5aa0'; cx.fillStyle = 'rgba(255,190,220,' + fl + ')'; cx.fillText('SENJA', nx, ny + 19 * L.k); cx.restore();
+    // pendant lamps
+    for (var p = 0; p < 3; p++) {
+      var lx = L.colL + L.colW * (0.2 + p * 0.3), ly = Math.max(26, fy0 + 18 * L.k) + Math.sin(T * 0.8 + p) * 2, sw = Math.sin(T * 0.8 + p) * 3;
+      var lg = cx.createRadialGradient(lx, ly + 16 * L.k, 4, lx, ly + 16 * L.k, 120 * L.k); lg.addColorStop(0, 'rgba(255,200,120,.35)'); lg.addColorStop(1, 'rgba(255,200,120,0)'); cx.fillStyle = lg; cx.beginPath(); cx.arc(lx, ly + 16 * L.k, 120 * L.k, 0, 7); cx.fill();
+      cx.strokeStyle = '#1b0f0a'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(lx, 0); cx.lineTo(lx + sw, ly); cx.stroke();
+      cx.fillStyle = '#c8783a'; cx.beginPath(); cx.moveTo(lx + sw - 6 * L.k, ly); cx.lineTo(lx + sw + 6 * L.k, ly); cx.lineTo(lx + sw + 15 * L.k, ly + 14 * L.k); cx.lineTo(lx + sw - 15 * L.k, ly + 14 * L.k); cx.fill();
+      cx.fillStyle = '#ffe7b0'; cx.beginPath(); cx.ellipse(lx + sw, ly + 15 * L.k, 9 * L.k, 3.5 * L.k, 0, 0, 7); cx.fill();
+    }
+    // plants on the sill
+    plant(L.colL + L.colW - 26 * L.k, fy1 + 2);
+  }
+  function plant(x, y) {
+    var k = R.L.k; cx.fillStyle = '#b5532f'; rr(x - 10 * k, y - 16 * k, 20 * k, 16 * k, 3 * k); cx.fill();
+    cx.fillStyle = '#4c8a3c'; for (var i = 0; i < 5; i++) { var a = -Math.PI / 2 + (i - 2) * 0.45 + Math.sin(T * 1.3 + i) * 0.05; cx.beginPath(); cx.ellipse(x + Math.cos(a) * 12 * k, y - 16 * k + Math.sin(a) * 12 * k, 4 * k, 10 * k, a + Math.PI / 2, 0, 7); cx.fill(); }
+  }
+  // ---------- characters ----------
+  function person(c, x, y, s, mood, bob, alpha, talk) {
+    var k = R.L.k * s; cx.save(); cx.globalAlpha = alpha == null ? 1 : alpha; cx.translate(x, y + Math.sin(bob) * 2 * k);
+    // shadow on wall
+    cx.fillStyle = 'rgba(0,0,0,.18)'; cx.beginPath(); cx.ellipse(6 * k, 4 * k, 46 * k, 10 * k, 0, 0, 7); cx.fill();
+    // torso
+    cx.fillStyle = c.shirt; rr(-38 * k, -60 * k, 76 * k, 80 * k, 26 * k); cx.fill();
+    cx.fillStyle = 'rgba(255,255,255,.12)'; rr(-30 * k, -54 * k, 22 * k, 50 * k, 11 * k); cx.fill();
+    if (c.hat === 'helm') { cx.fillStyle = 'rgba(0,0,0,.25)'; cx.fillRect(-38 * k, -22 * k, 76 * k, 6 * k); }
+    // neck + head
+    cx.fillStyle = c.skin; cx.fillRect(-8 * k, -70 * k, 16 * k, 14 * k);
+    if (c.hat === 'hijab') { cx.fillStyle = c.hijab; cx.beginPath(); cx.ellipse(0, -92 * k, 33 * k, 38 * k, 0, 0, 7); cx.fill(); cx.beginPath(); cx.moveTo(-34 * k, -86 * k); cx.lineTo(34 * k, -86 * k); cx.lineTo(28 * k, -54 * k); cx.lineTo(-28 * k, -54 * k); cx.fill(); }
+    cx.fillStyle = c.skin; cx.beginPath(); cx.arc(0, -94 * k, 26 * k, 0, 7); cx.fill();
+    if (c.hat !== 'hijab') { cx.fillStyle = c.hair; cx.beginPath(); cx.arc(0, -98 * k, 27 * k, Math.PI * 1.02, Math.PI * 1.98); cx.fill(); cx.fillRect(-27 * k, -100 * k, 7 * k, 12 * k); cx.fillRect(20 * k, -100 * k, 7 * k, 12 * k); }
+    if (c.hat === 'peci') { cx.fillStyle = '#141414'; rr(-22 * k, -126 * k, 44 * k, 18 * k, 4 * k); cx.fill(); cx.fillStyle = 'rgba(255,255,255,.15)'; cx.fillRect(-20 * k, -124 * k, 40 * k, 2 * k); }
+    if (c.hat === 'cap') { cx.fillStyle = '#c0392b'; cx.beginPath(); cx.arc(0, -104 * k, 26 * k, Math.PI, 0); cx.fill(); rr(-4 * k, -108 * k, 40 * k, 7 * k, 3 * k); cx.fill(); }
+    if (c.hat === 'helm') { cx.fillStyle = '#2fae4f'; cx.beginPath(); cx.arc(0, -100 * k, 31 * k, Math.PI * 0.95, Math.PI * 2.05); cx.fill(); cx.fillStyle = '#e9f5ec'; cx.fillRect(-31 * k, -102 * k, 62 * k, 5 * k); cx.fillStyle = 'rgba(30,40,60,.35)'; rr(-24 * k, -112 * k, 48 * k, 8 * k, 4 * k); cx.fill(); }
+    // face
+    var blink = (Math.sin(T * 1.7 + x) > 0.985) ? 0.15 : 1;
+    cx.fillStyle = '#20140e'; cx.beginPath(); cx.ellipse(-9 * k, -95 * k, 3 * k, 3.4 * k * blink, 0, 0, 7); cx.ellipse(9 * k, -95 * k, 3 * k, 3.4 * k * blink, 0, 0, 7); cx.fill();
+    if (mood < -0.4) { cx.strokeStyle = '#20140e'; cx.lineWidth = 2.2 * k; cx.beginPath(); cx.moveTo(-14 * k, -104 * k); cx.lineTo(-5 * k, -101 * k); cx.moveTo(14 * k, -104 * k); cx.lineTo(5 * k, -101 * k); cx.stroke(); }
+    cx.fillStyle = 'rgba(230,110,110,.35)'; cx.beginPath(); cx.arc(-15 * k, -86 * k, 4.5 * k, 0, 7); cx.arc(15 * k, -86 * k, 4.5 * k, 0, 7); cx.fill();
+    cx.strokeStyle = '#5a2a1a'; cx.lineWidth = 2.4 * k; cx.lineCap = 'round'; cx.beginPath();
+    if (talk) { cx.fillStyle = '#5a2a1a'; cx.ellipse(0, -82 * k, 5 * k, (2 + Math.abs(Math.sin(T * 14)) * 3) * k, 0, 0, 7); cx.fill(); }
+    else if (mood > 0.3) cx.arc(0, -86 * k, 8 * k, 0.2, Math.PI - 0.2);
+    else if (mood < -0.2) cx.arc(0, -76 * k, 7 * k, Math.PI + 0.35, -0.35);
+    else { cx.moveTo(-6 * k, -82 * k); cx.lineTo(6 * k, -82 * k); }
+    cx.stroke();
+    if (mood < -0.5) { cx.fillStyle = '#7cc7ff'; cx.beginPath(); cx.moveTo(24 * k, -112 * k); cx.quadraticCurveTo(30 * k, -100 * k, 24 * k, -98 * k); cx.quadraticCurveTo(18 * k, -100 * k, 24 * k, -112 * k); cx.fill(); }
+    cx.restore();
+  }
+  // ---------- counter + machine ----------
+  function counter() {
+    var L = R.L, k = L.k, y = L.counterY;
+    // espresso machine (left)
+    var mx = L.colL + Math.max(8, L.colW * 0.04), mw = (L.colW < 500 ? 78 : 96) * k, mh = (L.colW < 500 ? 72 : 84) * k;
+    cx.fillStyle = '#9aa3ad'; rr(mx, y - mh, mw, mh, 10 * k); cx.fill();
+    var mg = cx.createLinearGradient(mx, 0, mx + mw, 0); mg.addColorStop(0, 'rgba(255,255,255,.0)'); mg.addColorStop(0.3, 'rgba(255,255,255,.45)'); mg.addColorStop(0.5, 'rgba(255,255,255,.0)'); cx.fillStyle = mg; rr(mx, y - mh, mw, mh, 10 * k); cx.fill();
+    cx.fillStyle = '#b8402e'; rr(mx + 6 * k, y - mh + 6 * k, mw - 12 * k, 18 * k, 5 * k); cx.fill(); cx.fillStyle = '#ffe1c4'; cx.font = '800 ' + Math.round(9 * k) + 'px system-ui'; cx.textAlign = 'center'; cx.fillText('ESPRESSO', mx + mw / 2, y - mh + 18 * k); cx.textAlign = 'left';
+    cx.fillStyle = '#f4f4f4'; cx.beginPath(); cx.arc(mx + mw * 0.3, y - mh * 0.5, 9 * k, 0, 7); cx.fill(); cx.strokeStyle = '#c0392b'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(mx + mw * 0.3, y - mh * 0.5); cx.lineTo(mx + mw * 0.3 + Math.cos(-1 + Math.sin(T) * 0.3) * 7 * k, y - mh * 0.5 + Math.sin(-1 + Math.sin(T) * 0.3) * 7 * k); cx.stroke();
+    cx.fillStyle = '#2a2a2a'; rr(mx + mw * 0.55, y - mh * 0.55, 30 * k, 8 * k, 3 * k); cx.fill(); cx.fillRect(mx + mw * 0.55 + 12 * k, y - mh * 0.48, 6 * k, 10 * k);
+    if (R.steam > 0) { for (var s = 0; s < 3; s++) { var sy = (T * 40 + s * 12) % 36; cx.fillStyle = 'rgba(255,255,255,' + (0.35 * (1 - sy / 36) * Math.min(1, R.steam)).toFixed(2) + ')'; cx.beginPath(); cx.arc(mx + mw * 0.85 + Math.sin(T * 3 + s) * 4, y - mh - sy * k, (5 + sy * 0.2) * k, 0, 7); cx.fill(); } }
+    // jars (right)
+    var jx = L.colL + L.colW - Math.max(14, L.colW * 0.04) - 70 * k;
+    [['#7a3f12', 'AREN'], ['#3b1d0e', 'BIJI'], ['#f4ead8', 'GULA']].forEach(function (j, i) {
+      var x = jx + i * 24 * k, h = (40 + (i % 2) * 8) * k; cx.fillStyle = 'rgba(255,255,255,.25)'; rr(x, y - h, 20 * k, h, 5 * k); cx.fill(); cx.fillStyle = j[0]; rr(x + 2 * k, y - h * 0.7, 16 * k, h * 0.7 - 2 * k, 4 * k); cx.fill(); cx.fillStyle = '#8a5530'; rr(x - 1 * k, y - h - 5 * k, 22 * k, 6 * k, 2 * k); cx.fill();
+    });
+    // counter top + front
+    var top = cx.createLinearGradient(0, y, 0, y + 16 * k); top.addColorStop(0, '#c98a52'); top.addColorStop(1, '#8e5530'); cx.fillStyle = top; cx.fillRect(0, y, L.w, 16 * k);
+    cx.fillStyle = 'rgba(255,230,190,.35)'; cx.fillRect(0, y, L.w, 2);
+    var fr = cx.createLinearGradient(0, y + 16 * k, 0, L.h); fr.addColorStop(0, '#6e3d22'); fr.addColorStop(1, '#3b2014'); cx.fillStyle = fr; cx.fillRect(0, y + 16 * k, L.w, L.h - y);
+    cx.fillStyle = 'rgba(0,0,0,.18)'; for (var px = 0; px < L.w; px += 46 * k) cx.fillRect(px, y + 16 * k, 2, L.h);
+    cx.fillStyle = 'rgba(0,0,0,.35)'; cx.fillRect(0, y + 16 * k, L.w, 5 * k);
+  }
+  // ---------- cups ----------
+  function glassCup(x, y, s, C, fill) {
+    var k = R.L.k * s, w = 58 * k, h = 96 * k, bx = x - w / 2, by = y - h;
+    cx.fillStyle = 'rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(x, y + 2, w * 0.62, 6 * k, 0, 0, 7); cx.fill();
+    cx.save(); cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(bx + w, by); cx.lineTo(bx + w * 0.9, y); cx.lineTo(bx + w * 0.1, y); cx.closePath(); cx.clip();
+    cx.fillStyle = 'rgba(220,240,255,.14)'; cx.fillRect(bx, by, w, h);
+    var layers = (C && C.added) || [], n = layers.length, total = C ? C.d.steps.length : 1, lvl = 0, iceOn = false;
+    for (var i = 0; i < n; i++) {
+      var ing = layers[i], frac = (i === n - 1 ? fill : 1), lh = (h * 0.86 / total) * frac, col = colorOf(ing);
+      if (ing === 'es') { iceOn = true; lh *= 0.35; }
+      var ly = y - lvl - lh; cx.fillStyle = col; cx.fillRect(bx, ly, w, lh + 1);
+      if (ing === 'shot' && i > 0) { var gg = cx.createLinearGradient(0, ly, 0, ly + lh * 2.2); gg.addColorStop(0, 'rgba(59,29,14,1)'); gg.addColorStop(1, 'rgba(120,70,40,0)'); cx.fillStyle = gg; cx.fillRect(bx, ly, w, lh * 2.2); }
+      lvl += lh;
+    }
+    if (iceOn) { for (var c = 0; c < 5; c++) { var ix = bx + 8 * k + (c % 3) * 16 * k + Math.sin(T * 1.5 + c) * 1.5, iy = y - lvl + 4 * k + Math.floor(c / 3) * 16 * k; cx.fillStyle = 'rgba(235,250,255,.55)'; cx.save(); cx.translate(ix + 7 * k, iy + 7 * k); cx.rotate(c * 0.5); rr(-7 * k, -7 * k, 14 * k, 14 * k, 3 * k); cx.fill(); cx.strokeStyle = 'rgba(255,255,255,.8)'; cx.lineWidth = 1; cx.stroke(); cx.restore(); } }
+    cx.restore();
+    cx.strokeStyle = 'rgba(255,255,255,.7)'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(bx + w * 0.1, y); cx.lineTo(bx + w * 0.9, y); cx.lineTo(bx + w, by); cx.stroke();
+    cx.fillStyle = 'rgba(255,255,255,.28)'; cx.fillRect(bx + 6 * k, by + 8 * k, 4 * k, h * 0.7);
+    cx.strokeStyle = 'rgba(255,255,255,.55)'; cx.beginPath(); cx.ellipse(x, by, w / 2, 4 * k, 0, 0, 7); cx.stroke();
+    // straw when complete
+    if (C && C.phase !== 'mix') { cx.strokeStyle = '#2d8a5c'; cx.lineWidth = 5 * k; cx.beginPath(); cx.moveTo(x + 8 * k, y - 20 * k); cx.lineTo(x + 18 * k, by - 22 * k); cx.stroke(); }
+    // brand sticker
+    cx.fillStyle = '#f2a65a'; cx.beginPath(); cx.arc(x, y - h * 0.45, 9 * k, 0, 7); cx.fill(); cx.fillStyle = '#4a2214'; cx.font = '900 ' + Math.round(9 * k) + 'px system-ui'; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('KS', x, y - h * 0.45 + 0.5); cx.textAlign = 'left'; cx.textBaseline = 'alphabetic';
+  }
+  function hotCup(x, y, s, C, fill) {
+    var k = R.L.k * s, w = 70 * k, h = 54 * k, top = y - h - 6 * k;
+    cx.fillStyle = 'rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(x, y + 3, w * 0.8, 7 * k, 0, 0, 7); cx.fill();
+    cx.fillStyle = '#f3ece2'; cx.beginPath(); cx.ellipse(x, y, w * 0.75, 8 * k, 0, 0, 7); cx.fill(); cx.fillStyle = '#d9cfc2'; cx.beginPath(); cx.ellipse(x, y - 1, w * 0.5, 4 * k, 0, 0, 7); cx.fill();
+    cx.strokeStyle = '#f3ece2'; cx.lineWidth = 7 * k; cx.beginPath(); cx.arc(x + w / 2 + 2 * k, top + h * 0.45, 13 * k, -1.2, 1.2); cx.stroke();
+    var g = cx.createLinearGradient(x - w / 2, 0, x + w / 2, 0); g.addColorStop(0, '#e9e0d3'); g.addColorStop(0.35, '#ffffff'); g.addColorStop(1, '#d6cab9');
+    cx.fillStyle = g; cx.beginPath(); cx.moveTo(x - w / 2, top); cx.lineTo(x + w / 2, top); cx.quadraticCurveTo(x + w / 2, y - 4 * k, x, y - 4 * k); cx.quadraticCurveTo(x - w / 2, y - 4 * k, x - w / 2, top); cx.fill();
+    cx.fillStyle = '#c75f3a'; cx.fillRect(x - w / 2 + 3 * k, top + h * 0.35, w - 6 * k, 5 * k);
+    // liquid surface seen from above
+    var n = C ? C.added.length : 0, tot = C ? C.d.steps.length : 1, lv = n ? Math.min(1, (n - 1 + fill) / tot) : 0, last = n ? C.added[n - 1] : null;
+    cx.fillStyle = '#efe6d8'; cx.beginPath(); cx.ellipse(x, top, w / 2, 9 * k, 0, 0, 7); cx.fill();
+    if (n) { var col = last === 'foam' ? '#f6e9d4' : last === 'air' && C.d.id === 'matcha' ? '#8bbf4a' : last === 'air' && C.d.id === 'tubruk' ? '#2a160b' : colorOf(last); if (C.d.id === 'matcha' && last !== 'foam') col = '#86b748'; cx.fillStyle = col; cx.beginPath(); cx.ellipse(x, top + (1 - lv) * 3 * k, w / 2 - 4 * k * (1 - lv * 0.6), 7 * k * (0.4 + lv * 0.6), 0, 0, 7); cx.fill(); if (last === 'foam') { cx.fillStyle = C.d.id === 'matcha' ? 'rgba(134,183,72,.6)' : 'rgba(150,90,50,.55)'; cx.beginPath(); cx.ellipse(x, top + 1, w / 2 - 6 * k, 5 * k, 0, 0, 7); cx.lineWidth = 3 * k; cx.strokeStyle = cx.fillStyle; cx.stroke(); } }
+    if (C && C.artDone && C.art && C.art.length) miniArt(x, top, w / 2 - 8 * k, 6 * k, C.art);
+    cx.strokeStyle = 'rgba(255,255,255,.9)'; cx.lineWidth = 2; cx.beginPath(); cx.ellipse(x, top, w / 2, 9 * k, 0, 0, 7); cx.stroke();
+    if (n) steam(x, top - 4 * k, k);
+  }
+  function miniArt(x, y, rx, ry, art) { cx.save(); cx.strokeStyle = 'rgba(255,255,255,.95)'; cx.lineWidth = 1.6; cx.lineCap = 'round'; art.forEach(function (p) { cx.beginPath(); p.forEach(function (q, i) { var px = x + q[0] * rx, py = y + q[1] * ry; if (i) cx.lineTo(px, py); else cx.moveTo(px, py); }); cx.stroke(); }); cx.restore(); }
+  function steam(x, y, k) { cx.save(); cx.strokeStyle = 'rgba(255,255,255,.35)'; cx.lineWidth = 3 * k; cx.lineCap = 'round'; for (var i = -1; i <= 1; i++) { cx.beginPath(); for (var j = 0; j < 10; j++) { var py = y - j * 4 * k, px = x + i * 14 * k + Math.sin(T * 3 + j * 0.6 + i) * 4 * k; if (j) cx.lineTo(px, py); else cx.moveTo(px, py); } cx.globalAlpha = 0.5 + 0.3 * Math.sin(T * 2 + i); cx.stroke(); } cx.restore(); }
+  function colorOf(id) { for (var i = 0; i < CFG.ingredients.length; i++) if (CFG.ingredients[i].id === id) return CFG.ingredients[i].color; return '#888'; }
+  R.drawCup = function (x, y, s, C, fill) { if (C && C.d.iced) glassCup(x, y, s, C, fill); else hotCup(x, y, s, C, fill); };
+  // ---------- latte art top view ----------
+  function artView(st) {
+    var L = R.L, A = L.art, a = st.art;
+    cx.fillStyle = 'rgba(20,10,8,.62)'; cx.fillRect(0, 0, L.w, L.h);
+    var x = A.x, y = A.y, r = A.r;
+    cx.fillStyle = 'rgba(0,0,0,.35)'; cx.beginPath(); cx.arc(x + 6, y + 10, r * 1.38, 0, 7); cx.fill();
+    cx.fillStyle = '#f3ece2'; cx.beginPath(); cx.arc(x, y, r * 1.38, 0, 7); cx.fill(); cx.fillStyle = '#e4d9ca'; cx.beginPath(); cx.arc(x, y, r * 1.24, 0, 7); cx.fill();
+    cx.fillStyle = '#fbf7f1'; cx.beginPath(); cx.arc(x, y, r * 1.12, 0, 7); cx.fill();
+    var cg = cx.createRadialGradient(x, y, r * 0.2, x, y, r); var matcha = a.drink === 'matcha';
+    cg.addColorStop(0, matcha ? '#a8cf6a' : '#b77a45'); cg.addColorStop(0.75, matcha ? '#7fae3e' : '#8a4b23'); cg.addColorStop(1, matcha ? '#5d8a2a' : '#5a2d17');
+    cx.fillStyle = cg; cx.beginPath(); cx.arc(x, y, r, 0, 7); cx.fill();
+    // crema speckles
+    cx.fillStyle = 'rgba(255,230,190,.12)'; for (var i = 0; i < 40; i++) { var ang = i * 2.4, d = (i * 37 % 100) / 100 * r * 0.95; cx.beginPath(); cx.arc(x + Math.cos(ang) * d, y + Math.sin(ang) * d, 2, 0, 7); cx.fill(); }
+    // ghost target
+    cx.save(); cx.setLineDash([r * 0.06, r * 0.05]); cx.lineDashOffset = -T * 20; cx.strokeStyle = 'rgba(255,248,235,.55)'; cx.lineWidth = r * 0.08; cx.lineCap = 'round'; cx.lineJoin = 'round';
+    KS.artPaths(a.kind).forEach(function (p) { cx.beginPath(); p.forEach(function (q, i) { if (i) cx.lineTo(x + q[0] * r, y + q[1] * r); else cx.moveTo(x + q[0] * r, y + q[1] * r); }); cx.stroke(); }); cx.restore();
+    // milk strokes
+    cx.save(); cx.lineCap = 'round'; cx.lineJoin = 'round'; cx.shadowColor = 'rgba(80,40,20,.45)'; cx.shadowBlur = r * 0.05;
+    cx.strokeStyle = '#fffaf2'; cx.lineWidth = r * 0.11;
+    a.strokes.forEach(function (p) { if (!p.length) return; cx.beginPath(); p.forEach(function (q, i) { if (i) cx.lineTo(x + q[0] * r, y + q[1] * r); else cx.moveTo(x + q[0] * r, y + q[1] * r); }); if (p.length === 1) cx.lineTo(x + p[0][0] * r + 0.1, y + p[0][1] * r); cx.stroke(); });
+    cx.restore();
+    // pitcher following the finger
+    if (a.pen) { var px = x + a.pen[0] * r, py = y + a.pen[1] * r; cx.save(); cx.translate(px + r * 0.12, py - r * 0.22); cx.rotate(-0.5); cx.fillStyle = '#d8dde3'; rr(-r * 0.09, -r * 0.2, r * 0.18, r * 0.26, r * 0.04); cx.fill(); cx.fillStyle = 'rgba(255,255,255,.6)'; cx.fillRect(-r * 0.06, -r * 0.18, r * 0.03, r * 0.2); cx.restore(); }
+    cx.strokeStyle = 'rgba(255,255,255,.85)'; cx.lineWidth = 3; cx.beginPath(); cx.arc(x, y, r * 1.12, 0, 7); cx.stroke();
+  }
+  // ---------- particles ----------
+  R.burst = function (x, y, kind, n) {
+    n = n || 12; for (var i = 0; i < n; i++) { var a = Math.random() * Math.PI * 2, s = 80 + Math.random() * 180;
+      parts.push({ x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 120, t: 0, life: 0.8 + Math.random() * 0.5, kind: kind, r: 3 + Math.random() * 4, rot: Math.random() * 6 }); }
+  };
+  R.confetti = function () { var L = R.L, cols = ['#f2a65a', '#ff6b8b', '#ffd23f', '#7fd18b', '#7cc7ff', '#fff']; for (var i = 0; i < 120; i++) conf.push({ x: Math.random() * L.w, y: -20 - Math.random() * L.h * 0.5, vy: 120 + Math.random() * 160, vx: (Math.random() - 0.5) * 60, r: Math.random() * 6, c: cols[i % cols.length], s: 4 + Math.random() * 5 }); };
+  R.shake = function (s) { shakeT = s || 0.3; };
+  function drawParts(dt) {
+    parts = parts.filter(function (p) { p.t += dt; return p.t < p.life; });
+    parts.forEach(function (p) { p.vy += 420 * dt; p.x += p.vx * dt; p.y += p.vy * dt; var a = 1 - p.t / p.life; cx.globalAlpha = a;
+      if (p.kind === 'coin') { cx.fillStyle = '#ffd23f'; cx.beginPath(); cx.ellipse(p.x, p.y, p.r + 2, (p.r + 2) * Math.abs(Math.cos(p.t * 10 + p.rot)), 0, 0, 7); cx.fill(); cx.strokeStyle = '#c98a1a'; cx.lineWidth = 1; cx.stroke(); }
+      else if (p.kind === 'star') { cx.fillStyle = '#ffe066'; star(p.x, p.y, p.r + 3, p.t * 5); }
+      else if (p.kind === 'drop') { cx.fillStyle = p.c || '#9fd3ff'; cx.beginPath(); cx.arc(p.x, p.y, p.r * 0.7, 0, 7); cx.fill(); }
+      else { cx.fillStyle = 'rgba(255,255,255,.8)'; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill(); } });
+    cx.globalAlpha = 1;
+    conf = conf.filter(function (c) { return c.y < R.L.h + 20; }); conf.forEach(function (c) { c.y += c.vy * dt; c.x += c.vx * dt + Math.sin(T * 3 + c.r) * 0.6; c.r += dt * 4; cx.save(); cx.translate(c.x, c.y); cx.rotate(c.r); cx.fillStyle = c.c; cx.fillRect(-c.s / 2, -c.s / 4, c.s, c.s / 2); cx.restore(); });
+  }
+  function star(x, y, r, rot) { cx.beginPath(); for (var i = 0; i < 10; i++) { var a = rot + i * Math.PI / 5, rr2 = i % 2 ? r * 0.45 : r; cx.lineTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2); } cx.closePath(); cx.fill(); }
+  R.dropColor = colorOf;
+  // ---------- frame ----------
+  R.frame = function (st, dt) {
+    T += dt; var L = R.L; cx.setTransform(L.dpr, 0, 0, L.dpr, 0, 0);
+    var sx = 0, sy = 0; if (shakeT > 0) { shakeT -= dt; sx = (Math.random() - 0.5) * 10 * shakeT * 3; sy = (Math.random() - 0.5) * 6 * shakeT * 3; }
+    cx.save(); cx.translate(sx, sy);
+    wall(st.prog || 0);
+    // queue (behind), then active customer
+    var q = st.queue || [];
+    for (var i = q.length - 1; i >= 0; i--) { var qx = L.custX + (118 + i * 66) * L.k * (L.colW < 500 ? 0.95 : 1.2); if (qx > L.colL + L.colW + 30) continue; person(CFG.customers[q[i]], qx, L.counterY - 8 * L.k, 0.85, st.queueMood || 0, T * 2 + i, 0.92); }
+    if (st.cust) person(CFG.customers[st.cust.c], L.custX + st.cust.dx * L.w, L.counterY + 6 * L.k, 1.22, st.cust.mood, T * 2.2, 1, st.cust.talk > 0);
+    counter();
+    if (st.C && st.showCup) R.drawCup(L.cupX + (st.cupDx || 0) * L.w, L.cupY, 1.2, st.C, st.fill == null ? 1 : st.fill);
+    if (st.pour) { var px = L.cupX, top = L.cupY - (st.C && st.C.d.iced ? 125 : 80) * L.k; cx.strokeStyle = st.pour; cx.lineWidth = 5 * L.k; cx.globalAlpha = 0.9; cx.beginPath(); cx.moveTo(px - 4 * L.k, top - 70 * L.k); cx.quadraticCurveTo(px - 2 * L.k, top - 30 * L.k, px, top + 8 * L.k); cx.stroke(); cx.globalAlpha = 1; }
+    drawParts(dt);
+    cx.restore();
+    if (st.art) artView(st);
+  };
+  G.KSR = R;
+})(window);
+</script>
+<script id="ks-app">
+// Kopi Senja - screens, ingredient taps, latte-art swipe, Web Audio synth, guided first shift, modes (Biasa / Rush Senja / Harian), records, #demo / #tutorial.
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); }, root = document.documentElement;
+  var CFG = JSON.parse($('website-config').textContent), TX = CFG.text, LN = CFG.lines, R = window.KSR, GM = CFG.game;
+  function t(k, v) { var s = TX[k] == null ? k : TX[k]; if (v) for (var n in v) s = s.split('{' + n + '}').join(v[n]); return s; }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem('kopisenja.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem('kopisenja.' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+  document.querySelectorAll('[data-t-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-t-aria'))); });
+  document.querySelectorAll('[data-c]').forEach(function (el) { var k = el.getAttribute('data-c').split('.'), v = CFG; k.forEach(function (x) { v = v && v[x]; }); el.textContent = v || ''; });
+  var DAY = KS.waDay(); $('harianSub').textContent = t('modeHarianSub', { date: DAY.split('-').reverse().join('/') });
+  // ---------- sound (synth only) ----------
+  var Snd = {
+    ctx: null, muted: store.get('mute', 0) === 1,
+    ensure: function () { if (!this.ctx) { var A = window.AudioContext || window.webkitAudioContext; if (A) try { this.ctx = new A(); } catch (e) {} } if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); },
+    nbuf: function (sec) { var c = this.ctx, n = Math.max(1, Math.floor(c.sampleRate * sec)), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; },
+    tone: function (f, dur, type, vol, when, to) {
+      if (this.muted || !this.ctx) return; var c = this.ctx, t0 = c.currentTime + (when || 0), o = c.createOscillator(), g = c.createGain();
+      o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); if (to) o.frequency.exponentialRampToValueAtTime(to, t0 + dur);
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol || 0.2, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.02);
+    },
+    noise: function (dur, vol, freq, type, when, to) {
+      if (this.muted || !this.ctx) return; var c = this.ctx, t0 = c.currentTime + (when || 0), s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+      s.buffer = this.nbuf(dur); f.type = type || 'bandpass'; f.frequency.setValueAtTime(freq || 1500, t0); if (to) f.frequency.exponentialRampToValueAtTime(to, t0 + dur); g.gain.setValueAtTime(vol || 0.3, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      s.connect(f); f.connect(g); g.connect(c.destination); s.start(t0);
+    },
+    pour: function () { this.noise(0.45, 0.16, 500, 'bandpass', 0, 1400); this.tone(320, 0.3, 'sine', 0.04, 0.05, 520); },
+    clink: function () { var s = this; [2400, 3100, 2700].forEach(function (f, i) { s.tone(f, 0.12, 'triangle', 0.07, i * 0.07); }); },
+    hiss: function () { this.noise(0.6, 0.12, 4500, 'highpass'); },
+    shot: function () { this.noise(0.25, 0.2, 180, 'lowpass'); this.pour(); },
+    spoon: function () { this.noise(0.08, 0.12, 3000, 'highpass'); this.tone(1800, 0.06, 'triangle', 0.05); },
+    wrong: function () { this.tone(180, 0.22, 'square', 0.08, 0, 120); this.tone(150, 0.22, 'square', 0.06, 0.08, 100); },
+    bell: function () { this.tone(1568, 0.5, 'sine', 0.13); this.tone(2093, 0.7, 'sine', 0.08, 0.12); },
+    kaching: function () { this.noise(0.05, 0.25, 6000, 'highpass'); this.tone(2637, 0.25, 'triangle', 0.12, 0.04); this.tone(3520, 0.4, 'triangle', 0.1, 0.12); },
+    star: function (i) { this.tone(660 * Math.pow(1.122, i * 2), 0.22, 'triangle', 0.13); },
+    fanfare: function () { var s = this; [523, 659, 784, 1047, 784, 1047].forEach(function (f, i) { s.tone(f, i > 3 ? 0.5 : 0.18, 'triangle', 0.13, i * 0.11); s.tone(f / 2, 0.2, 'square', 0.025, i * 0.11); }); },
+    trombone: function () { var s = this; [392, 370, 349, 294].forEach(function (f, i) { s.tone(f, i === 3 ? 0.9 : 0.35, 'sawtooth', 0.06, i * 0.38, i === 3 ? 240 : f * 0.97); }); },
+    blip: function () { this.tone(660, 0.06, 'triangle', 0.1); },
+    draw: function () { this.noise(0.05, 0.05, 2200, 'bandpass'); }
+  };
+  var ingSnd = { es: 'clink', foam: 'hiss', shot: 'shot', gula: 'spoon', bubuk: 'spoon', matcha: 'spoon', coklat: 'pour', aren: 'pour', susu: 'pour', air: 'pour' };
+  function syncMute() { ['muteBtn', 'homeMute'].forEach(function (id) { $(id).textContent = Snd.muted ? '\ud83d\udd07' : '\ud83d\udd0a'; $(id).setAttribute('aria-label', t(Snd.muted ? 'unmute' : 'mute')); }); }
+  function toggleMute() { Snd.muted = !Snd.muted; store.set('mute', Snd.muted ? 1 : 0); syncMute(); Snd.ensure(); Snd.blip(); }
+  $('muteBtn').addEventListener('click', toggleMute); $('homeMute').addEventListener('click', toggleMute); syncMute();
+  // ---------- name (placeholder only, never prefilled with the brand) ----------
+  var nameIn = $('nameIn'), saved = store.get('name', '');
+  if (saved && typeof saved === 'string') nameIn.value = saved;
+  nameIn.addEventListener('input', function () { store.set('name', nameIn.value.trim().slice(0, 16)); });
+  if (window.JDNG) window.JDNG.on(function (n) { if (n && !nameIn.value) { nameIn.value = n; store.set('name', n); } });
+  function barista() { return nameIn.value.trim() || t('baristaDefault'); }
+  // ---------- helpers ----------
+  var lastToast = {};
+  function toast(msg, cls) { var now = performance.now(); if (lastToast[msg] && now - lastToast[msg] < 900) return; lastToast[msg] = now; var box = $('toasts'), el = document.createElement('div'); el.className = 'toast ' + (cls || ''); el.textContent = msg; box.appendChild(el); while (box.children.length > 3) box.removeChild(box.firstChild); setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1550); }
+  function banner(msg) { var b = $('banner'); b.textContent = msg; b.hidden = false; b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; clearTimeout(banner.tm); banner.tm = setTimeout(function () { b.hidden = true; }, 2400); }
+  var bubbleT = 0;
+  function say(msg, cls, sec) { var b = $('bubble'); b.textContent = msg; b.className = 'bubble ' + (cls || ''); b.hidden = false; b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; bubbleT = sec || 2.6; placeBubble(); cust.talk = Math.min(1.2, msg.length * 0.04); }
+  function placeBubble() { var b = $('bubble'), L = R.L, x = L.custX + 20 * L.k, y = L.counterY - 175 * L.k; var oc = $('orderCard').getBoundingClientRect(); b.style.left = Math.max(8, Math.min(window.innerWidth - b.offsetWidth - 8, x)) + 'px'; b.style.top = Math.max(oc.bottom + 6, y - b.offsetHeight) + 'px'; }
+  function rp(n) { return t('rp') + '\u00a0' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function ing(id) { return KS.ingById(CFG, id); }
+  function show(id, on) { $(id).hidden = !on; }
+  // ---------- state ----------
+  var cv = $('cv'); R.init(cv, CFG);
+  var mode = 'home', S = null, C = null, paused = false, tutStep = -1, fill = 1, cust = { c: 0, dx: 0.8, mood: 0, talk: 0 }, queue = [], phaseT = 0, flow = 'idle', flowT = 0, botT = 0, botR = Math.random, pourT = 0, pourCol = null, steamT = 0;
+  var art = null, artT = 0, artMax = 6, shiftMode = 'biasa', prog = 0;
+  function panelH() { var p = $('panel'); return p && !$('hud').hidden ? p.offsetHeight : 180; }
+  function insets() { var oc = $('orderCard'), top = 150; if (!$('hud').hidden && oc) top = oc.getBoundingClientRect().bottom + 8; return { top: Math.max(120, top), bottom: Math.max(150, panelH()) }; }
+  function resize() { R.layout(window.innerWidth, window.innerHeight, Math.min(2, window.devicePixelRatio || 1), insets()); root.style.setProperty('--panel', panelH() + 'px'); var oc = $('orderCard'); if (oc && !$('hud').hidden) { var ob = oc.getBoundingClientRect().bottom; if (ob > 0) root.style.setProperty('--rtop', Math.round(ob + 58) + 'px'); } }
+  window.addEventListener('resize', resize);
+  // ingredient buttons
+  var ingBox = $('ings'), KEYS = '1234567890';
+  CFG.ingredients.forEach(function (g, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ing'; b.id = 'ing-' + g.id; b.setAttribute('data-ing', g.id); b.setAttribute('aria-label', g.name);
+    b.innerHTML = '<span class="key" aria-hidden="true"></span><span class="e" aria-hidden="true"></span><span class="nm"></span>';
+    b.querySelector('.key').textContent = KEYS[i] || ''; b.querySelector('.e').textContent = g.emoji; b.querySelector('.nm').textContent = g.name;
+    b.addEventListener('click', function () { tap(g.id, b); }); ingBox.appendChild(b);
+  });
+  function flash(b, cls) { b.classList.remove('wrong', 'right'); void b.offsetWidth; b.classList.add(cls); clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove(cls); }, 380); }
+  // ---------- order card ----------
+  function renderOrder() {
+    if (!C) return; var d = C.d, c = CFG.customers[C.o.cust];
+    $('oWho').textContent = c.name + ' \u00b7 ' + t('order');
+    var nm = $('oName'); nm.textContent = d.name; if (d.art) { var s = document.createElement('span'); s.className = 'art-tag'; s.textContent = CFG.art[d.art].emoji + ' ' + CFG.art[d.art].name; nm.appendChild(s); }
+    var ol = $('chips'); ol.innerHTML = '';
+    d.steps.forEach(function (id, i) { var li = document.createElement('li'), g = ing(id); li.className = i < C.step ? 'done' : i === C.step && C.phase === 'mix' ? 'now' : ''; li.innerHTML = '<span class="n"><span></span></span><b></b>'; li.querySelector('.n span').textContent = i + 1; li.querySelector('b').textContent = g.emoji + ' ' + g.name; ol.appendChild(li); });
+    if (d.art) { var li = document.createElement('li'); li.className = 'art' + (C.phase === 'art' ? ' now' : C.phase === 'done' || C.phase === 'served' ? ' done' : ''); li.innerHTML = '<span class="n"><span>\u270e</span></span><b></b>'; li.querySelector('b').textContent = CFG.art[d.art].emoji + ' Latte art'; ol.appendChild(li); }
+    var cb = $('oCombo'); if (S && S.streak >= 2) { cb.hidden = false; cb.textContent = '\ud83d\udd25 ' + t('combo', { n: S.streak }); } else cb.hidden = true;
+    hint();
+  }
+  function hint() { var want = C && C.phase === 'mix' ? KS.expect(C) : null; document.querySelectorAll('.ing').forEach(function (b) { b.classList.toggle('hint', mode === 'tut' && tutStep >= 1 && b.getAttribute('data-ing') === want); }); }
+  function hud() {
+    if (!S) return; $('clock').textContent = KS.fmtClock(KS.clock(S)); $('progNum').textContent = t('served', { n: Math.min(S.i + (C && flow !== 'leaving' ? 1 : 0), S.orders.length), m: S.orders.length }); $('money').textContent = rp(S.money);
+  }
+  // ---------- flow ----------
+  function startShift(m, opts) {
+    opts = opts || {}; shiftMode = m; Snd.ensure();
+    var seed = m === 'harian' ? 'harian-' + DAY : opts.seed || (m + '-' + Date.now());
+    S = KS.shift({ cfg: CFG, mode: m === 'tut' ? 'biasa' : m, seed: seed, drinks: m === 'tut' ? GM.tutorialDrinks : opts.drinks });
+    mode = m === 'tut' ? 'tut' : opts.demo ? 'demo' : 'play'; R.rush = m === 'rush';
+    DLGS.forEach(function (d) { show(d, false); }); show('home', false); show('hud', true); show('demoTag', mode === 'demo'); show('coach', false); show('artHud', false); root.classList.remove('art-on');
+    root.classList.add('jr-hub-off'); paused = false; C = null; flow = 'idle'; flowT = 0.3; cust.dx = 0.8; prog = 0;
+    $('receipt').hidden = true; $('bubble').hidden = true; resize(); hud();
+    if (m === 'rush' && mode === 'play') setTimeout(function () { if (mode === 'play') banner(t('rushBanner')); }, 300);
+    if (mode === 'tut') tutStep = 0;
+    if (mode !== 'demo') location.hash = m === 'tut' ? '#tutorial' : '#main';
+  }
+  function nextCustomer() {
+    C = KS.cup(S, mode === 'tut' ? 1e6 : 1); fill = 1; cust.c = C.o.cust; cust.dx = 0.8; cust.mood = 0.4; flow = 'enter'; flowT = 0;
+    queue = []; for (var i = S.i + 1; i < Math.min(S.orders.length, S.i + 1 + S.M.queue); i++) queue.push(S.orders[i].cust);
+    renderOrder(); var oc = $('orderCard'); oc.classList.remove('pop'); void oc.offsetWidth; oc.classList.add('pop'); hud(); Snd.bell();
+    $('panel').classList.remove('locked');
+    if (S.i === S.orders.length - 1 && S.orders.length > 2 && mode !== 'tut') toast(t('lastOrder'), 'gold');
+    if (mode === 'tut') { if (C.d.id === 'latte') coach(3); else coach(0); }
+    setTimeout(resize, 30);
+  }
+  function tap(id, btn) {
+    if (paused || !C || C.phase !== 'mix' || flow !== 'play' || (mode === 'tut' && $('coach').classList.contains('needOk'))) return;
+    Snd.ensure(); var res = KS.add(C, id); btn = btn || $('ing-' + id);
+    if (res.ok) {
+      flash(btn, 'right'); fill = 0; pourCol = R.dropColor(id); pourT = 0.4; (Snd[ingSnd[id]] || Snd.pour).call(Snd);
+      if (id === 'foam' || id === 'air') steamT = 1.2;
+      R.burst(R.L.cupX, R.L.cupY - 90 * R.L.k, 'drop', 5);
+      if (mode === 'tut' && tutStep === 1) coach(2);
+      renderOrder();
+      if (res.done) { $('panel').classList.add('locked'); if (res.art) setTimeout(function () { if (C && C.phase === 'art') startArt(); }, 450); else setTimeout(function () { if (C && C.phase === 'done') serveCup(); }, 420); }
+    } else if (!res.ignored) {
+      flash(btn, 'wrong'); Snd.wrong(); R.shake(0.25); toast(t('wrong', { i: ing(res.expect).name }), 'bad'); cust.mood = -0.3; renderOrder();
+    }
+  }
+  // ---------- latte art ----------
+  var pen = { down: false, id: null };
+  function startArt() {
+    art = { kind: C.d.art, drink: C.d.id, strokes: [], pen: null }; artMax = mode === 'tut' ? 30 : S.M.artTime; artT = 0;
+    show('artHud', true); root.classList.add('art-on'); $('artTitle').textContent = t('artTitle', { a: CFG.art[C.d.art].emoji + ' ' + CFG.art[C.d.art].name }); Snd.hiss();
+    var hintEl = document.querySelector('#artHud small'); hintEl.textContent = mode === 'tut' ? t(CFG.tutorial[4].text) : t('artHint'); if (mode === 'tut') { tutStep = 4; show('coach', false); }
+  }
+  function artUnits(e) { var A = R.L.art; return [Math.max(-1.3, Math.min(1.3, (e.clientX - A.x) / A.r)), Math.max(-1.3, Math.min(1.3, (e.clientY - A.y) / A.r))]; }
+  cv.addEventListener('pointerdown', function (e) { if (!art || paused || mode === 'demo') return; e.preventDefault(); pen.down = true; pen.id = e.pointerId; try { cv.setPointerCapture(e.pointerId); } catch (er) {} var u = artUnits(e); art.strokes.push([u]); art.pen = u; Snd.ensure(); });
+  cv.addEventListener('pointermove', function (e) { if (!art || !pen.down || e.pointerId !== pen.id) return; var u = artUnits(e), s = art.strokes[art.strokes.length - 1], l = s[s.length - 1]; if (Math.hypot(u[0] - l[0], u[1] - l[1]) > 0.02) { s.push(u); if (s.length % 6 === 0) Snd.draw(); } art.pen = u; });
+  function penUp(e) { if (!pen.down || (e && e.pointerId !== pen.id)) return; pen.down = false; if (art) art.pen = null; }
+  cv.addEventListener('pointerup', penUp); cv.addEventListener('pointercancel', penUp);
+  function finishArt(skip) {
+    if (!art || !C) return; var sc;
+    if (skip) { KS.skipArt(C); sc = 0; } else sc = KS.setArt(C, art.strokes);
+    C.art = art.strokes; C.artDone = true; art = null; show('artHud', false); root.classList.remove('art-on'); pen.down = false;
+    if (!skip) toast(sc >= GM.artGood ? CFG.art[C.d.art].emoji + ' ' + t('artGreat') : sc >= GM.artBad ? t('artOk') : t('artBad'), sc >= GM.artGood ? 'gold' : sc >= GM.artBad ? 'good' : 'bad');
+    if (sc >= GM.artGood) { R.burst(R.L.cupX, R.L.cupY - 70 * R.L.k, 'star', 10); Snd.fanfare(); }
+    if (mode === 'tut') show('coach', false);
+    setTimeout(function () { if (C && C.phase === 'done') serveCup(); }, 350);
+  }
+  $('artDone').addEventListener('click', function () { finishArt(false); }); $('artSkip').addEventListener('click', function () { finishArt(true); });
+  // ---------- serve / leave ----------
+  function serveCup() {
+    var r = KS.serve(S, C); if (!r) return; flow = 'served'; flowT = 0; C.artDone = true;
+    cust.mood = r.stars >= 4 ? 1 : r.stars >= 3 ? 0.2 : -0.6;
+    if (window.innerHeight >= 760) say(pick(r.stars >= 4 ? LN.happy.filter(function (l) { return !/latte art/i.test(l) || (C.d.art && C.artScore >= GM.artGood); }) : r.stars >= 3 ? LN.ok : LN.sad), r.stars >= 4 ? 'happy' : r.stars >= 3 ? '' : 'sad', 1.8);
+    receipt(r); Snd.kaching(); for (var i = 0; i < r.stars; i++) (function (k) { setTimeout(function () { Snd.star(k); }, 160 + k * 110); })(i);
+    R.burst(R.L.cupX, R.L.cupY - 60 * R.L.k, 'coin', 6 + r.stars * 2); if (r.stars === 5) R.burst(R.L.custX, R.L.counterY - 120 * R.L.k, 'star', 10);
+    if (r.streak >= 2) toast('\ud83d\udd25 ' + t('combo', { n: r.streak }), 'gold');
+    var m = $('money'); m.classList.remove('bump'); void m.offsetWidth; m.classList.add('bump'); hud(); renderOrder();
+  }
+  function receipt(r) {
+    var el = $('receipt'); el.className = 'receipt' + (r.left ? ' bad' : ''); el.hidden = false; el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+    var st = $('rStars'); st.innerHTML = ''; for (var i = 0; i < 5; i++) { var s = document.createElement('i'); s.textContent = '\u2605'; if (i < r.stars) { s.className = 'on'; s.style.animationDelay = (0.12 + i * 0.1) + 's'; } st.appendChild(s); }
+    $('rLine').textContent = r.left ? t('leave') : C.d.short + ' \u00b7 ' + rp(r.price); $('rTip').textContent = r.left ? '' : r.tip ? '+ ' + t('tipLbl') + ' ' + rp(r.tip) + (r.combo > 1 ? '  (\u00d7' + r.combo.toFixed(1).replace('.', ',') + ')' : '') : '';
+    clearTimeout(receipt.tm); receipt.tm = setTimeout(function () { el.hidden = true; }, 1900);
+  }
+  function leaveCup() {
+    var r = KS.leave(S, C); if (!r) return; flow = 'served'; flowT = 0; cust.mood = -1; say(pick(LN.leave), 'sad', 1.6); receipt(r); Snd.trombone(); R.shake(0.3);
+    $('panel').classList.add('locked'); if (art) { art = null; show('artHud', false); root.classList.remove('art-on'); } hud(); renderOrder();
+  }
+  // ---------- tutorial ----------
+  function coach(i) {
+    tutStep = i; var step = CFG.tutorial[i], el = $('coach'); if (!step) { show('coach', false); return; }
+    $('coachTxt').textContent = t(step.text); var needOk = step.id === 'order' || step.id === 'latte'; el.classList.toggle('noOk', !needOk); el.classList.toggle('needOk', needOk); el.hidden = false; el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; hint();
+  }
+  $('coachOk').addEventListener('click', function () { Snd.ensure(); Snd.blip(); if (tutStep === 0) coach(1); else if (tutStep === 3) { $('coach').classList.remove('needOk'); show('coach', false); tutStep = 3.5; } });
+  $('skipTut').addEventListener('click', function () { store.set('tut', 1); show('coach', false); startShift('biasa'); });
+  function tutDone() { store.set('tut', 1); show('hud', false); show('tutDlg', true); R.confetti(); Snd.fanfare(); }
+  $('tutStart').addEventListener('click', function () { startShift('biasa'); });
+  // ---------- end ----------
+  var DLGS = ['pauseDlg', 'tutDlg', 'endDlg', 'recDlg'];
+  function endShift() {
+    var sum = KS.summary(S); if (mode === 'demo') { startShift('rush', { demo: true, seed: 'demo' + Date.now() }); return; }
+    if (mode === 'tut') { tutDone(); return; }
+    var out = KS.record(store.get('rec', {}), sum, DAY); store.set('rec', out.rec);
+    mode = 'end'; show('hud', false); show('endDlg', true); root.classList.remove('jr-hub-off');
+    $('endSub').textContent = t('endSub', { who: barista(), n: sum.served, s: String(sum.avg).replace('.', ',') }) + ' \u00b7 ' + t(shiftMode === 'rush' ? 'modeRush' : shiftMode === 'harian' ? 'modeHarian' : 'modeBiasa');
+    $('bestBadge').hidden = !out.isBest; $('eScore').textContent = sum.score; $('eMoney').textContent = rp(sum.money); $('eTips').textContent = rp(sum.tips); $('eCombo').textContent = '\u00d7' + sum.bestCombo;
+    var list = $('cupList'); list.innerHTML = '';
+    S.res.forEach(function (x, i) { var d = document.createElement('div'), a = document.createElement('span'), b = document.createElement('span'), dr = KS.drinkById(CFG, x.drink); d.style.animationDelay = (i * 0.06) + 's'; if (x.r.left) d.className = 'gone'; a.textContent = CFG.customers[x.cust].name + ' \u00b7 ' + dr.short; b.textContent = x.r.left ? '\ud83d\ude24 pergi' : '\u2605'.repeat(x.r.stars) + (x.r.tip ? ' +' + rp(x.r.tip) : ''); d.appendChild(a); d.appendChild(b); list.appendChild(d); });
+    if (sum.avg >= 4) { R.confetti(); Snd.fanfare(); } else if (sum.avg < 2.5) Snd.trombone(); else Snd.bell();
+    location.hash = '#main'; stats();
+  }
+  $('againBtn').addEventListener('click', function () { startShift(shiftMode); });
+  $('menuBtn').addEventListener('click', goHome);
+  // ---------- pause / home / records ----------
+  function setPause(on) { if (mode !== 'play' && mode !== 'tut') return; paused = on; show('pauseDlg', on); }
+  $('pauseBtn').addEventListener('click', function () { setPause(true); }); $('resumeBtn').addEventListener('click', function () { setPause(false); });
+  $('quitBtn').addEventListener('click', goHome);
+  function goHome() { mode = 'home'; paused = false; art = null; DLGS.forEach(function (d) { show(d, false); }); show('hud', false); show('home', true); root.classList.remove('jr-hub-off', 'art-on'); show('artHud', false); idleScene(); location.hash = ''; stats(); resize(); }
+  function stats() {
+    var r = store.get('rec', {}), el = $('statStrip'); el.innerHTML = ''; if (!r.shifts) return; var b = r.best || {};
+    [[t('best'), Math.max(b.biasa || 0, b.rush || 0, b.harian || 0)], [t('cups'), r.cups || 0]].concat(r.daily && r.daily[DAY] ? [[t('today'), r.daily[DAY]]] : []).forEach(function (p) { var s = document.createElement('span'); s.textContent = p[0] + ': ' + p[1]; el.appendChild(s); });
+  }
+  $('recBtn').addEventListener('click', function () {
+    var r = store.get('rec', {}), b = r.best || {}, g = $('recGrid'); g.innerHTML = '';
+    [[t('modeBiasa'), b.biasa || '\u2013'], [t('modeRush'), b.rush || '\u2013'], [t('today'), (r.daily || {})[DAY] || '\u2013'], [t('shifts'), r.shifts || 0], [t('cups'), r.cups || 0], [t('endPerfect'), r.perfect || 0]].forEach(function (p) { var d = document.createElement('div'), s = document.createElement('small'), v = document.createElement('b'); s.textContent = p[0]; v.textContent = p[1]; d.appendChild(s); d.appendChild(v); g.appendChild(d); });
+    show('recDlg', true);
+  });
+  $('recClose').addEventListener('click', function () { show('recDlg', false); });
+  $('tutBtn').addEventListener('click', function () { startShift('tut'); });
+  document.querySelectorAll('.mode').forEach(function (b) { b.addEventListener('click', function () { var m = b.getAttribute('data-mode'); if (!store.get('tut', 0)) startShift('tut'); else startShift(m); }); });
+  // keyboard
+  window.addEventListener('keydown', function (e) {
+    if (e.target && e.target.tagName === 'INPUT') return;
+    if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') { if (mode === 'play' || mode === 'tut') setPause(!paused); return; }
+    if (e.key === 'm' || e.key === 'M') { toggleMute(); return; }
+    if (art && (e.key === 'Enter')) { finishArt(false); return; }
+    if (art && (e.key === ' ')) { e.preventDefault(); finishArt(true); return; }
+    var i = KEYS.indexOf(e.key); if (i >= 0 && CFG.ingredients[i] && (mode === 'play' || mode === 'tut')) { var b = $('ing-' + CFG.ingredients[i].id); b.classList.add('press'); setTimeout(function () { b.classList.remove('press'); }, 90); tap(CFG.ingredients[i].id, b); }
+  });
+  document.addEventListener('visibilitychange', function () { if (document.hidden && (mode === 'play' || mode === 'tut') && !paused) setPause(true); });
+  // ---------- idle home scene + demo bot ----------
+  function idleScene() { S = KS.shift({ cfg: CFG, mode: 'biasa', seed: 'home' + Date.now() }); C = null; flow = 'idle'; flowT = 0.2; cust.dx = 0.8; }
+  function botStep(dt) {
+    if (!C) return; botT -= dt; if (botT > 0) return;
+    if (C.phase === 'mix' && flow === 'play') { var w = KS.bot(C, botR, mode === 'home' ? 1 : 0.93); var res = KS.add(C, w); if (res.ok) { fill = 0; pourCol = R.dropColor(w); pourT = 0.4; if (w === 'foam' || w === 'air') steamT = 1; if (mode === 'demo') { renderOrder(); flash($('ing-' + w), 'right'); } } else if (mode === 'demo') { flash($('ing-' + w), 'wrong'); renderOrder(); } botT = 0.75; if (res.done && !res.art) botT = 0.4; }
+    else if (C.phase === 'art') { C.art = KS.botArt(C.d.art, botR, 0.03); KS.setArt(C, C.art); C.artDone = true; botT = 0.5; }
+    else if (C.phase === 'done' && flow === 'play') { if (mode === 'demo') serveCup(); else { KS.serve(S, C); flow = 'served'; flowT = 0; cust.mood = 1; } botT = 0.6; }
+  }
+  // ---------- loop ----------
+  var last = performance.now();
+  function loop(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now; requestAnimationFrame(loop);
+    if (!paused) step(dt);
+    var st = { prog: prog, queue: queue, cust: C || flow === 'served' || flow === 'leaving' ? cust : null, C: C, showCup: !!C && flow !== 'leaving', fill: fill, pour: pourT > 0 ? pourCol : null, art: art };
+    if (art) art.drink = C ? C.d.id : art.drink;
+    R.steam = steamT; R.frame(st, paused ? 0 : dt);
+  }
+  function step(dt) {
+    if (bubbleT > 0) { bubbleT -= dt; placeBubble(); if (bubbleT <= 0) $('bubble').hidden = true; }
+    if (cust.talk > 0) cust.talk -= dt; if (pourT > 0) pourT -= dt; if (steamT > 0) steamT -= dt; if (fill < 1) fill = Math.min(1, fill + dt * 3);
+    if (!S) return; var tgt = (S.i + (C && flow === 'play' ? KS.patFrac(C) * 0 + Math.min(1, C.time / C.pat) * 0.5 : 0)) / S.orders.length; prog += (tgt - prog) * Math.min(1, dt * 2);
+    flowT += dt;
+    if (flow === 'idle') { if (flowT > 0.3 && !S.done) { if (mode === 'home') { C = KS.cup(S, 1e6); cust.c = C.o.cust; cust.dx = 0.8; flow = 'enter'; flowT = 0; queue = [S.orders[(S.i + 1) % S.orders.length].cust, S.orders[(S.i + 2) % S.orders.length].cust]; } else nextCustomer(); } }
+    else if (flow === 'enter') { cust.dx = Math.max(0, cust.dx - dt * 1.9); if (cust.dx <= 0) { flow = 'play'; flowT = 0; if (mode !== 'home') say(pick(LN.order).split('{d}').join(C.d.name), '', 2.4); } }
+    else if (flow === 'play') {
+      if (mode === 'home' || mode === 'demo') botStep(dt);
+      if (mode === 'play' || mode === 'demo' || mode === 'tut') {
+        if (art) { artT += dt; $('artBar').style.width = Math.max(0, 100 * (1 - artT / artMax)) + '%'; if (artT >= artMax) finishArt(art.strokes.length === 0); }
+        var ev = KS.tick(C, dt), pf = KS.patFrac(C); $('patBar').style.width = (pf * 100) + '%'; $('patience').classList.toggle('low', pf < GM.lowPatience);
+        if (C.phase === 'mix' && flowT > 0.5) cust.mood = pf > 0.6 ? 0.4 : pf > GM.lowPatience ? 0 : -0.7;
+        if (ev === 'leave') leaveCup();
+      }
+    }
+    else if (flow === 'served') { if (flowT > (mode === 'home' ? 1.2 : 1.6)) { flow = 'leaving'; flowT = 0; } }
+    else if (flow === 'leaving') { cust.dx -= dt * 2.2; if (cust.dx < -0.9) { C = null; if (mode === 'home') { if (S.i >= S.orders.length || S.done) S = KS.shift({ cfg: CFG, mode: 'biasa', seed: 'home' + Date.now() }); flow = 'idle'; flowT = 0; } else if (S.done) { flow = 'end'; if (mode === 'tut') tutDone(); else endShift(); } else { flow = 'idle'; flowT = 0; } } }
+  }
+  // ---------- routes ----------
+  function route() {
+    var h = location.hash;
+    if (h === '#demo') startShift('rush', { demo: true, seed: GM.demoSeed });
+    else if (h === '#tutorial') startShift('tut');
+    else if (mode !== 'home' && mode !== 'end' && h !== '#main') goHome();
+  }
+  window.addEventListener('hashchange', function () { var h = location.hash; if ((h === '#tutorial' && mode === 'tut') || (h === '#demo' && mode === 'demo') || h === '#main') return; route(); });
+  resize(); idleScene(); stats();
+  if (location.hash === '#demo' || location.hash === '#tutorial') route(); else if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  requestAnimationFrame(loop);
+  window.__ks = { get S() { return S; }, get C() { return C; }, get mode() { return mode; }, get flow() { return flow; }, get tutStep() { return tutStep; }, get art() { return art; }, get paused() { return paused; }, R: R, tap: tap, finishArt: finishArt, store: store, cust: cust };
+})();
+</script>
+</body>
+</html>
