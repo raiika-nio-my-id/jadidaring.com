@@ -251,8 +251,14 @@ html { -webkit-tap-highlight-color: transparent; }
   position: sticky;
   top: 0;
   z-index: 90;
-  background: var(--clay-bg);
+  /* Wrapper stays fully transparent: only the rounded pill covers content. */
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: none;
 }
+.clay-header .clay-shell { pointer-events: none; }
 
 .clay-header__bar {
   display: flex;
@@ -263,6 +269,8 @@ html { -webkit-tap-highlight-color: transparent; }
   background: var(--clay-surface);
   border-radius: var(--radius-pill);
   box-shadow: var(--clay-out), var(--clay-in);
+  pointer-events: auto;
+  overflow: hidden;
 }
 
 .clay-brand {
@@ -984,14 +992,6 @@ html { -webkit-tap-highlight-color: transparent; }
 /* News cards: title only */
 .news-card p { display: none; }
 .news-card h2, .news-grid--home .news-card h2, .news-card--featured h2 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
-
-/* Member profile pages: transparent main nav so the member's background shows through */
-.is-profile .clay-header { background: transparent; }
-.is-profile .clay-header__bar {
-  background: color-mix(in srgb, var(--clay-surface) 58%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-}
 
 /* Profile header stats row: Pengikut · Mengikuti · Pengunjung + follow button */
 .pf-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin-top: 10px; }
