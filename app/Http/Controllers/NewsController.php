@@ -86,12 +86,33 @@ class NewsController extends Controller
         abort_unless(array_key_exists($topik, ClayController::TOPICS), 404);
         $name = ClayController::TOPICS[$topik];
         $base = '/berita/'.$topik;
-        $pg = self::pageData($request, $topik);
+        $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
+        $popular = $q === '' && $request->query('urut') === 'populer';
+        $plain = $q === '' && ! $popular;
+        $pg = $plain ? self::pageData($request, $topik) : ['page' => 1, 'pages' => 1];
+        $articles = $plain ? NewsCache::page($topik, $pg['page']) : [];
+
+        if ($popular) {
+            $articles = array_slice(array_values(array_filter(NewsCache::popular(100)['items'], fn (array $a): bool => $a['topic'] === $topik)), 0, 12);
+        }
+
+        if ($q !== '') {
+            $like = '%'.addcslashes($q, '%_\\').'%';
+            $articles = Article::query()->visible()->where('topic', $topik)
+                ->where(fn ($w) => $w->where('title', 'like', $like)->orWhere('summary', 'like', $like))
+                ->orderByDesc('published_at')->limit(24)
+                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'published_at', 'updated_at'])
+                ->map(fn (Article $a): array => ['id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
+                    'img' => NewsImage::meta($a), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url()])->all();
+        }
 
         return view('clay.berita-topik', [
-            'pagination' => $pg + ['base' => $base],
-            'relPrev' => self::pageUrl($base, $pg['page'] - 1, $pg['page'] > 1),
-            'relNext' => self::pageUrl($base, $pg['page'] + 1, $pg['page'] < $pg['pages']),
+            'q' => $q,
+            'popular' => $popular,
+            'noindex' => ! $plain,
+            'pagination' => $plain ? $pg + ['base' => $base] : null,
+            'relPrev' => $plain ? self::pageUrl($base, $pg['page'] - 1, $pg['page'] > 1) : null,
+            'relNext' => $plain ? self::pageUrl($base, $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
             'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => $topik === 'sosmed'
                 ? 'Tren sosial media hari ini: apa yang sedang ramai dan viral di media sosial Indonesia dan dunia, dirangkum ringkas dengan minimal dua sumber yang bisa diperiksa.'
@@ -100,7 +121,7 @@ class NewsController extends Controller
             'currentTopic' => $topik,
             'topicName' => $name,
             'topics' => ClayController::TOPICS,
-            'articles' => NewsCache::page($topik, $pg['page']),
+            'articles' => $articles,
         ]);
     }
 

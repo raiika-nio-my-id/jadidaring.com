@@ -2,28 +2,11 @@
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 
-  .clay-header { view-transition-name: jd-header; }
-  .clay-main { view-transition-name: jd-main; }
-  .clay-bottom-nav { view-transition-name: jd-bottom; }
-  .clay-nav__link[aria-current="page"] { view-transition-name: jd-nav-active; }
-  .clay-bottom-nav__item[aria-current="page"] { view-transition-name: jd-bnav-active; }
+  /* Soft, subtle crossfade only: no slide, scale or morph. Nav active colour fades with the page. */
+  ::view-transition-group(root) { animation-duration: .18s; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; animation-timing-function: ease-in-out; }
 
-  ::view-transition-group(root) { animation-duration: 0s; }
-  /* header and bottom bar stay put: show only the new snapshot */
-  ::view-transition-group(jd-header), ::view-transition-group(jd-bottom) { animation: none; }
-  ::view-transition-old(jd-header), ::view-transition-old(jd-bottom) { display: none; }
-  ::view-transition-new(jd-header), ::view-transition-new(jd-bottom) { animation: none; }
-
-  /* active nav indicator morphs to the new item */
-  ::view-transition-group(jd-nav-active), ::view-transition-group(jd-bnav-active) { animation-duration: .32s; animation-timing-function: cubic-bezier(.3,.8,.3,1); }
-
-  /* content: gentle fade + slight slide/scale */
-  ::view-transition-old(jd-main) { animation: jd-vt-out .14s ease-in both; }
-  ::view-transition-new(jd-main) { animation: jd-vt-in .26s cubic-bezier(.2,.7,.3,1) .06s both; }
-  @keyframes jd-vt-out { to { opacity: 0; transform: translateY(-4px) scale(.995); } }
-  @keyframes jd-vt-in { from { opacity: 0; transform: translateY(10px) scale(.992); } }
-
-  .clay-nav__link, .clay-bottom-nav__item { transition: background .15s ease, transform .12s ease, color .15s ease; }
+  .clay-nav__link, .clay-bottom-nav__item { transition: background .18s ease, transform .12s ease, color .18s ease; }
   .clay-nav__link:active, .clay-bottom-nav__item:active { transform: scale(.93); }
 }
 .jd-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200; background: var(--clay-lavender-ink, #6b4fb3); border-radius: 0 3px 3px 0; opacity: 0; pointer-events: none; transition: width 8s cubic-bezier(.1,.6,.2,1), opacity .2s ease; }
