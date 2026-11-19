@@ -46,8 +46,8 @@ exported first (no admin GET endpoint exists yet).
 | 2 | `drawquarium` | in git (50a0ece) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 3 | `coratcoret` | in git (fab7dfb) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 4 | `anomaliminimarket` | in git (6846a4d) | local build, verified = live (`index.deploy.html`) | yes | no |
-| 5 | `bajajdrift` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 6 | `rebutbendera` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 5 | `bajajdrift` | in git (9d9ed7c) | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 6 | `rebutbendera` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 7 | `ogohogoharak` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 8 | `monyetuluwatu` | database | local build, verified = live (`index.deploy.html`) | yes | no |
 | 9 | `penaltitimnas` | database | local build, verified = live (`index.deploy.html`) | yes | yes |

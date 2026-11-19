@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Rebut Bendera Kampung · Game Tim Online 2v2 / 3v3 di HP (Capture the Flag)</title>
+<meta name="description" content="Rebut Bendera Kampung: game capture the flag tim 2 lawan 2 atau 3 lawan 3 di browser HP tanpa download. Ketuk tanah untuk lari, curi bendera lawan, bawa pulang lewat gang jemuran atau pos ronda, tangkap penyusup di wilayahmu dan bebaskan teman dari penjara. Main bareng teman online atau lawan bot.">
+<meta name="theme-color" content="#2a3a1c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rebut Bendera Kampung · capture the flag 2v2 / 3v3">
+<meta property="og:description" content="Curi bendera lawan, ngumpet di jemuran, lompat lewat pos ronda, bebaskan teman dari penjara. Main bareng teman online!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="rebutbendera">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">LOMBA SORE DI LAPANGAN KAMPUNG · MAIN TIM</p><h1>REBUT <span>BENDERA</span></h1><p class="slogan">Curi bendera lawan, bawa pulang ke wilayahmu!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pemain</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="row size-row"><span>Ukuran tim</span><div class="seg" id="soloSize"><button data-v="2" class="on">2 lawan 2</button><button data-v="3">3 lawan 3</button></div></div>
+      <div class="modes">
+        <button class="mode big" id="soloBtn"><i>🚩</i><span><b>Main lawan bot</b><small>Kamu + teman bot vs tim bot · offline</small></span></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Latihan</b><small>1 lawan 1, dipandu</small></button>
+        <button class="mode" id="statBtn" disabled><i>🏆</i><b id="statTitle">Rekor</b><small id="statSub">Belum main</small></button>
+      </div>
+      <div class="online card">
+        <h2>Main bareng online <small>2v2 / 3v3, kursi kosong diisi bot</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">🔎 Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false" aria-label="Kode room"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh" aria-label="Muat ulang">↻</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Ketuk tanah</b> untuk lari ke sana (atau tahan dan geser). Keyboard: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / panah.</li>
+          <li>Seberangi <b>garis kapur</b> ke wilayah lawan, ambil <b>bendera</b> mereka, lalu bawa pulang ke wilayahmu = <b>1 poin</b>. Tiga poin menang.</li>
+          <li>Di <b>wilayah lawan</b> kamu bisa <b class="r">ditangkap</b> dan masuk <b>penjara</b>. Teman yang menyentuh penjara membebaskan semua tahanan.</li>
+          <li>Di <b>wilayahmu</b> kamu aman dan bisa menangkap penyusup. Habis menangkap, kamu ngos-ngosan sebentar.</li>
+          <li><b>Gang jemuran:</b> ngumpet di balik cucian, lawan susah lihat, lari sedikit lebih cepat. <b>Pos ronda:</b> jalan pintas, masuk satu, keluar di pos ronda seberang.</li>
+          <li>Tombol <b>⚔️ 🛡️ 🆘</b> memasang tanda untuk timmu.</li>
+        </ol>
+      </div>
+      <p class="foot muted">Rebut Bendera Kampung adalah game penggemar permainan tradisional, tidak berafiliasi dengan lembaga atau panitia lomba mana pun. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">← Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">🔗 Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><canvas id="lobbyCv" class="lobby-cv" width="600" height="300"></canvas>
+      <div class="row team-pick"><span>Timku</span><div class="seg" id="teamPick"><button data-v="0" class="t0">🔴 Merah</button><button data-v="1" class="t1">🔵 Biru</button></div></div>
+      <h3>Pemain <small id="pCount">1/6</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Ukuran tim</span><div class="seg" id="onSize"></div></div><div class="row"><span>Waktu</span><div class="seg" id="onDur"></div></div>
+        <button class="btn green big-btn" id="startBtn">🚩 Mulai rebut bendera</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik pesan…" autocomplete="off" aria-label="Pesan chat"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="score" id="score"><b class="t0" id="sc0">0</b><span><em id="clock">3:00</em><small id="capTo">rebut 3</small></span><b class="t1" id="sc1">0</b></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>💬</button></div></div>
+    <canvas id="mini" class="mini" width="84" height="144" aria-label="Peta mini"></canvas>
+    <div class="status" id="status"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="bubbles" id="bubbles" aria-live="polite"></div>
+    <div id="chatSlot" class="chat-pop" hidden></div>
+    <div class="pings" id="pings"><button data-k="serang" aria-label="Tanda serang">⚔️<small>Serang</small></button><button data-k="jaga" aria-label="Tanda jaga">🛡️<small>Jaga</small></button><button data-k="tolong" aria-label="Minta tolong">🆘<small>Tolong</small></button></div>
+    <div class="pr-cd" id="prCd" hidden></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">HASIL PERTANDINGAN</p><h2 id="resTitle">Menang!</h2><p class="big-score" id="resScore"></p><p class="sub" id="resSub"></p>
+      <table class="res-table" id="resTable"></table>
+      <p class="reward" id="resNote"></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Lagi</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="shareBtn">📤 Bagikan</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>
