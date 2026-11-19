@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman,explodingkitten', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -137,6 +137,7 @@ class GitGamesTest extends TestCase
             'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
             'coratcoret' => ['coratcoret', 'JDNG_CFG'],
             'anomaliminimarket' => ['anomaliminimarket', 'data-jd-account-name-lock'],
+            'explodingkitten' => ['explodingkitten', 'data-jd-account-name-lock'],
             'ulartangga' => ['ulartangga', 'data-jd-account-name-lock'],
             'skalateman' => ['skalateman', 'data-jd-account-name-lock'],
             'sambungcoret' => ['sambungcoret', 'data-jd-account-name-lock'],
