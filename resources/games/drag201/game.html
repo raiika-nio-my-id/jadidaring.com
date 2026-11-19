@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Drag 201 &#xB7; Game Drag Bike 201 Meter Online di HP Gratis (Mabar 2&#x2013;4 Pemain)</title>
+<meta name="description" content="Drag 201: game drag motor 201 meter di sirkuit resmi, langsung main di browser HP tanpa download. Tahan gas, lepas kopling saat lampu hijau, oper gigi di zona hijau. Karir 10 lawan, garasi modif bebek 2 tak & 4 tak, papan rekor, dan mabar online 2&#x2013;4 pemain.">
+<meta name="theme-color" content="#0b0f2a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Drag 201 &#xB7; drag bike 201 m di sirkuit">
+<meta property="og:description" content="Lampu hijau, lepas kopling, oper pas di zona hijau. Modif motor, kalahkan Raja Sirkuit, mabar sama teman. Gratis di HP.">
+<style>
+:root{--bg:#0b0f2a;--bg2:#141a3d;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--txt:#f3f4fb;--mut:#a9aed0;--y:#ffd23f;--r:#ff4d4d;--g:#3ddc84;--b:#2f7de1;--sa-b:env(safe-area-inset-bottom,0px);--sa-t:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overscroll-behavior:none}
+button,input{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.screen{position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:radial-gradient(120% 80% at 50% 0,#23195a 0,var(--bg) 60%)}
+.muted{color:var(--mut)}small{font-size:.8em}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:11px 16px;background:#2a3170;font-weight:800;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.35);transition:transform .08s,filter .15s;touch-action:manipulation}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.35)}.btn:disabled{opacity:.45;cursor:default}
+.btn.green{background:linear-gradient(#ffe066,#ffb703);color:#1d1400}.btn.ghost{background:rgba(255,255,255,.08);box-shadow:none}.btn.small{padding:7px 11px;font-size:13px;border-radius:10px}
+.icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:rgba(10,12,30,.6);font-size:17px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0}
+.card h2,.card h3{margin:0 0 10px;font-size:17px}.card h2 small,.card h3 small{color:var(--mut);font-weight:600;margin-left:6px}
+.coins{font-weight:900;background:rgba(0,0,0,.45);border:1px solid rgba(255,210,63,.5);color:var(--y);padding:6px 11px;border-radius:999px;font-size:14px}
+/* home */
+.hero{position:relative;height:min(50vh,380px);min-height:260px;overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-top{position:absolute;top:calc(10px + var(--sa-t));left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;align-items:center;z-index:2}
+.hero-title{position:absolute;left:0;right:0;top:calc(56px + var(--sa-t));text-align:center;pointer-events:none;text-shadow:0 3px 14px rgba(0,0,0,.6)}
+.hero-title h1{margin:0;font:italic 900 clamp(44px,13vw,78px)/.9 system-ui,sans-serif;letter-spacing:-1px;color:#fff;-webkit-text-stroke:1px rgba(0,0,0,.3)}
+.hero-title h1 span{color:var(--y);text-shadow:0 0 22px rgba(255,210,63,.55)}
+.kicker{margin:0 0 4px;font-weight:900;letter-spacing:3px;font-size:11px;color:var(--y)}
+.slogan{margin:6px 0 0;font-weight:700;color:#e9e3ff}
+.panel{max-width:620px;margin:-26px auto 0;padding:0 14px calc(70px + var(--sa-b));position:relative;z-index:3}
+.name-row{display:flex;align-items:center;gap:10px;background:#141a3d;border:1px solid var(--line);border-radius:14px;padding:8px 12px;font-weight:700}
+.name-row span{white-space:nowrap;color:var(--mut);font-size:13px}
+.name-row input{flex:1;min-width:0;background:transparent;border:0;outline:0;font-size:17px;font-weight:800;color:#fff}
+.name-row input::placeholder,#codeInput::placeholder,#chatInput::placeholder{color:#7d82a6;opacity:1;font-weight:600}
+.garage-strip{display:flex;align-items:center;gap:10px;margin-top:10px;background:linear-gradient(90deg,rgba(255,210,63,.12),rgba(255,255,255,.03));border:1px solid rgba(255,210,63,.25);border-radius:14px;padding:6px 10px}
+.garage-strip canvas{width:120px;height:64px}.garage-strip div{flex:1;min-width:0;display:flex;flex-direction:column}.garage-strip small{color:var(--mut)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mode{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,#1c2356,#11163a);border-radius:16px;padding:12px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.35)}
+.mode:active{transform:translateY(2px)}
+.mode i{grid-row:span 2;font-style:normal;font-size:26px}.mode b{font-size:16px}.mode small{color:var(--mut);font-size:12px}
+.mode.big{grid-column:span 2;background:linear-gradient(120deg,#ffcf3f,#ff8a1f);color:#1d1100;border:0}.mode.big small{color:#4a2a00;font-weight:700}.mode.big b{font-size:20px}
+.online .row{margin-top:8px}.online .row .btn{flex:1 1 auto}
+#codeInput{flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0f1433;text-transform:uppercase;letter-spacing:4px;font-weight:900;outline:0}
+.how-list{margin:0;padding-left:20px}.how-list li{margin:6px 0}.g{color:var(--g);font-style:normal;font-weight:800}.r{color:var(--r)}
+kbd{background:#232a62;border-radius:6px;padding:1px 6px;font-size:12px;border:1px solid var(--line)}
+.keys{font-size:12px;margin:8px 0 0}
+.lb-list{margin:0;padding-left:24px}.lb-list li{padding:4px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:8px}.lb-list li b{font-variant-numeric:tabular-nums;color:var(--y)}.lb-list li.me{color:var(--y)}
+.foot{font-size:12px;text-align:center}.foot a{color:var(--y)}
+/* bars */
+.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:calc(10px + var(--sa-t)) 14px 10px;background:rgba(11,15,42,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.bar h2{flex:1;margin:0;font-size:17px}
+#career,#garage,#lobby{padding-bottom:calc(40px + var(--sa-b))}
+#career>*:not(.bar),#garage>*:not(.bar),#lobby>*:not(.bar){max-width:620px;margin-left:auto;margin-right:auto}
+#lobby>.card,#lobby>p{margin-left:14px;margin-right:14px}
+@media(min-width:648px){#lobby>.card,#lobby>p{margin-left:auto;margin-right:auto}}
+/* ladder */
+.ladder{list-style:none;padding:10px 14px;margin:0 auto}
+.ladder li{display:flex;align-items:center;gap:12px;padding:12px;margin:8px 0;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.ladder li .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:#262d66;flex:none}
+.ladder li .who{flex:1;min-width:0}.ladder li .who b{display:block}.ladder li .who small{color:var(--mut)}
+.ladder li.done .n{background:var(--g);color:#002a12}.ladder li.next{border-color:var(--y);background:rgba(255,210,63,.1)}.ladder li.next .n{background:var(--y);color:#201500}
+.ladder li.lock{opacity:.5}
+/* garage */
+.g-stage{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px 0}
+.g-stage canvas{width:min(78vw,420px);height:min(40vw,210px)}
+.arrow{width:42px;height:64px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-size:30px;cursor:pointer}
+.g-info{padding:0 16px}.g-info h3{margin:6px 0 0;font-size:22px;font-style:italic;font-weight:900}.g-info p{margin:2px 0 8px}
+.stats{display:grid;gap:6px;margin-bottom:10px}.stat{display:grid;grid-template-columns:90px 1fr 46px;gap:8px;align-items:center;font-size:13px}
+.stat .bar2{height:9px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden}.stat .bar2 i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ffb703,#ffd23f)}
+.stat .bar2 i.up{background:linear-gradient(90deg,#3ddc84,#9ff5c4)}
+.sec{padding:0 16px;margin:16px 0 4px}
+.parts{list-style:none;padding:0 14px;margin:0}
+.parts li{display:flex;align-items:center;gap:10px;padding:10px 12px;margin:8px 0;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.parts li i{font-style:normal;font-size:22px}.parts li .pn{flex:1;min-width:0}.parts li .pn small{display:block;color:var(--mut)}
+.pips{display:flex;gap:3px;margin-top:4px}.pips span{width:16px;height:6px;border-radius:3px;background:rgba(255,255,255,.14)}.pips span.on{background:var(--y)}
+/* lobby */
+.code{letter-spacing:3px;color:var(--y)}
+.plist{list-style:none;margin:0 0 10px;padding:0}.plist li{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.plist .dot{width:12px;height:12px;border-radius:50%;flex:none}.plist .tag{font-size:11px;background:#262d66;padding:2px 7px;border-radius:8px;color:var(--mut)}.plist .bk{margin-left:auto;font-size:12px;color:var(--mut)}
+.gm-tag{color:#ff5a5a;font-style:normal;font-weight:800}
+.seg{display:inline-flex;background:#0f1433;border-radius:10px;padding:3px;gap:3px}.seg button{border:0;background:transparent;padding:6px 12px;border-radius:8px;font-weight:800;cursor:pointer}.seg button.on{background:var(--y);color:#1d1400}.seg.ro{pointer-events:none;opacity:.6}
+#hostBox .row{justify-content:space-between;margin-bottom:10px}
+.big-btn{width:100%;font-size:18px;padding:14px}
+.chat-log{height:150px;overflow-y:auto;background:#0d1231;border-radius:12px;padding:8px 10px;font-size:14px}.chat-log p{margin:3px 0;word-wrap:break-word}.chat-log p.sys{color:var(--mut);font-size:12px;font-style:italic}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.quick button{border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:5px 10px;font-size:13px;cursor:pointer}
+#chatInput{flex:1;min-width:0;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:#0f1433;outline:0}
+.gm-rooms{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}.gm-rooms ul{list-style:none;padding:0;margin:6px 0 0}.gm-rooms li{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}.gm-meta{flex:1}.badge{font-size:11px;background:#262d66;border-radius:6px;padding:1px 6px}.badge.priv{background:#5a2350}
+/* race */
+#race{overflow:hidden;background:#000;touch-action:none;user-select:none;-webkit-user-select:none}
+#raceCv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud-top{position:absolute;left:0;right:0;top:0;padding:calc(8px + var(--sa-t)) 10px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;z-index:4}
+.hud-r{display:flex;gap:6px;align-items:center}#hudInfo{font-weight:800;font-size:12px;background:rgba(0,0,0,.45);padding:5px 9px;border-radius:10px;max-width:38vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree{display:flex;gap:7px;padding:8px 10px;background:rgba(6,8,18,.82);border-radius:16px;border:1px solid var(--line)}
+.tree i{width:22px;height:22px;border-radius:50%;background:#3a2a10;box-shadow:inset 0 2px 4px rgba(0,0,0,.6);transition:background .05s}
+.tree i.on{background:#ffb703;box-shadow:0 0 14px #ffb703,inset 0 -2px 3px rgba(0,0,0,.3)}
+.tree i.go{background:#0f3a20}.tree i.go.on{background:#3ddc84;box-shadow:0 0 18px #3ddc84}
+.tree i.red{background:#3a1010;display:none}.tree i.red.on{display:block;background:#ff3030;box-shadow:0 0 18px #ff3030}
+.callout{position:absolute;left:0;right:0;top:28%;text-align:center;pointer-events:none;z-index:4;font:italic 900 clamp(28px,8vw,56px)/1 system-ui,sans-serif;text-shadow:0 4px 18px rgba(0,0,0,.7);opacity:0}
+.callout.show{animation:pop .9s ease-out}.callout small{display:block;font-size:.38em;font-style:normal;margin-top:6px;color:#fff}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}15%{opacity:1;transform:scale(1.12)}30%{transform:scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+.coach{position:absolute;left:50%;top:calc(70px + var(--sa-t));transform:translateX(-50%);z-index:5;max-width:min(92vw,440px);background:rgba(10,12,34,.92);border:1px solid var(--y);border-radius:14px;padding:10px 14px;text-align:center;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.coach b{color:var(--y)}
+.dist{position:absolute;left:12px;right:12px;top:calc(56px + var(--sa-t));display:flex;align-items:center;gap:8px;z-index:3;font-size:12px;font-weight:800}
+.dist-bar{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.18);position:relative;overflow:hidden}.dist-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--y);border-radius:6px}
+.tach{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + var(--sa-b));width:min(36vw,168px);height:min(36vw,168px);z-index:4;pointer-events:none}
+.controls{position:absolute;left:0;right:0;bottom:0;padding:0 12px calc(12px + var(--sa-b));display:flex;justify-content:space-between;align-items:flex-end;z-index:5;pointer-events:none}
+.pad{pointer-events:auto;width:min(30vw,150px);height:min(30vw,150px);border-radius:50%;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 6px 0 rgba(0,0,0,.45),0 0 0 4px rgba(255,255,255,.12) inset;transition:transform .05s,filter .1s}
+.pad b{font-size:clamp(18px,5.4vw,26px);letter-spacing:1px}.pad small{font-size:11px;opacity:.85;font-weight:700}
+.pad.gas{background:radial-gradient(circle at 40% 35%,#ff7a6b,#d62828);color:#fff}
+.pad.oper{background:radial-gradient(circle at 40% 35%,#fff08a,#f7b500);color:#2a1a00}
+.pad.down{transform:translateY(4px) scale(.96);box-shadow:0 2px 0 rgba(0,0,0,.45),0 0 0 4px rgba(255,255,255,.25) inset;filter:brightness(1.12)}
+.pad.nos{background:radial-gradient(circle at 40% 35%,#7fd8ff,#1f6fd6);color:#fff}.pad.used{filter:grayscale(1) brightness(.6)}
+.pad.hint{animation:hint 1s infinite}@keyframes hint{50%{box-shadow:0 6px 0 rgba(0,0,0,.45),0 0 0 4px rgba(255,255,255,.12) inset,0 0 0 10px rgba(255,210,63,.35)}}
+.race-chat{position:absolute;left:10px;right:10px;top:calc(86px + var(--sa-t));z-index:6;max-width:420px;background:rgba(10,12,34,.94);border-radius:14px;padding:8px}
+/* result */
+.overlay{background:rgba(5,7,20,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
+.res-card{width:100%;max-width:520px;background:linear-gradient(170deg,#1d2459,#10143a);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px rgba(0,0,0,.5);max-height:100%;overflow-y:auto}
+.res-card h2{margin:0;font:italic 900 34px/1.05 system-ui,sans-serif}.res-card.win h2{color:var(--y)}.res-card.lose h2{color:#ff8b8b}
+.res-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;font-variant-numeric:tabular-nums}
+.res-table th{color:var(--mut);font-weight:700;text-align:left;padding:4px 3px;font-size:11px}.res-table td{padding:7px 3px;border-top:1px solid var(--line)}
+.res-table tr.me td{color:var(--y);font-weight:800}.res-table td.foul{color:var(--r);font-weight:800}
+.marks{display:flex;gap:5px;flex-wrap:wrap}.marks span{font-size:12px;font-weight:800;padding:3px 8px;border-radius:8px;background:#262d66}
+.marks .perfect{background:#1f6b3e;color:#c9ffe0}.marks .good{background:#5a4b12;color:#ffe9a3}.marks .early,.marks .late,.marks .spin,.marks .bog{background:#5a1f1f;color:#ffc9c9}
+.reward{font-weight:900;color:var(--y);font-size:18px;margin:12px 0 6px}
+.end-btns{margin-top:12px}.end-btns .btn{flex:1 1 auto}
+.toasts{position:fixed;left:50%;top:calc(12px + var(--sa-t));transform:translateX(-50%);z-index:9000;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none;width:max-content;max-width:92vw}
+.toast{background:rgba(16,20,52,.96);border:1px solid var(--line);padding:9px 14px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.4);animation:tin .2s}.toast.warn{border-color:#ff8b8b}.toast.good{border-color:var(--g)}
+@keyframes tin{from{opacity:0;transform:translateY(-8px)}}
+@media (orientation:landscape) and (max-height:520px){.tach{width:120px;height:120px;left:auto;right:calc(140px + env(safe-area-inset-right,0px));transform:none;bottom:8px}.pad{width:118px;height:118px}.hero{height:200px;min-height:0}}
+@media (prefers-reduced-motion:reduce){.pad.hint,.callout.show{animation:none}.callout.show{opacity:1}}
+
+/* win confetti + checkered strip */
+#result .cf{position:absolute;top:-14px;width:7px;height:13px;border-radius:2px;pointer-events:none;z-index:3;animation:cfall 2s cubic-bezier(.3,.6,.5,1) forwards}
+#result .cf.sq{width:9px;height:9px}
+@keyframes cfall{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--dx),105vh) rotate(var(--r));opacity:.9}}
+.res-card.win{position:relative;overflow:hidden}
+.res-card.win::before{content:'';position:absolute;left:0;right:0;top:0;height:8px;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/16px 16px;opacity:.9}
+#result{overflow:hidden}
+#ladder li{border-left:5px solid var(--bc,#444)}
+#ladder li.lock{border-left-color:#333}
+@media (min-width:700px) and (min-height:600px){.hero{height:min(58vh,460px)}}
+.pad.auto,#operBtn.auto{filter:saturate(.35) brightness(.8)}
+.livery{padding:0 14px 18px}.swl{display:flex;align-items:center;gap:10px;margin:6px 0}.swl>span{width:64px;font-weight:800;font-size:13px;color:#c9d1e6}.sws{display:flex;flex-wrap:wrap;gap:8px}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.18);cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}.sw.on{border-color:#ffd23f;box-shadow:0 0 0 3px rgba(255,210,63,.35),inset 0 -4px 0 rgba(0,0,0,.25)}.sw:disabled{opacity:.35;cursor:not-allowed}
+.mode.sun{background:linear-gradient(135deg,#2a6fd6,#5fb4ff 60%,#ffd9a0);border-color:rgba(255,255,255,.25)}.mode.sun small{color:#fff;opacity:.9}
+
+/* pass 3: Duel 1 HP (two players, one screen) */
+.mode.duel{background:linear-gradient(135deg,#3a1d6e,#8f3bd6);border-color:rgba(255,255,255,.2)}.mode.duel small{color:#eadcff}
+#race.duel .tach{display:none}
+#race.duel .controls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end}
+#race.duel .p2grp{display:contents}
+#race.duel .pad{width:100%;height:auto;aspect-ratio:1;max-width:132px;justify-self:center}
+#race.duel .pad b{font-size:clamp(15px,4.4vw,22px)}#race.duel .pad small{font-size:10px}
+#race.duel #gas2,#race.duel #oper2{box-shadow:0 6px 0 rgba(0,0,0,.45),0 0 0 4px rgba(143,59,214,.75) inset}
+#race.duel #gas2.down,#race.duel #oper2.down{box-shadow:0 2px 0 rgba(0,0,0,.45),0 0 0 4px rgba(190,140,255,.9) inset}
+.duel-rpm{position:absolute;left:12px;right:12px;bottom:calc(var(--pad-h,min(25vw,132px)) + 26px + var(--sa-b));display:grid;grid-template-columns:1fr 1fr;gap:12px;z-index:5;pointer-events:none}
+.drpm{position:relative;height:22px;border-radius:11px;background:rgba(8,10,28,.78);border:1px solid rgba(255,255,255,.18);overflow:hidden}
+.drpm s{position:absolute;top:0;bottom:0;background:rgba(61,220,132,.38);border-left:2px solid #3ddc84;border-right:2px solid #3ddc84}
+.drpm i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#ffd23f,#ff8a1f);opacity:.85}
+.drpm.in i{background:linear-gradient(90deg,#3ddc84,#b8ffcf)}
+.drpm em,.drpm b{position:absolute;top:2px;font:900 11px/18px system-ui,sans-serif;color:#fff;text-shadow:0 1px 2px #000;font-style:normal}
+.drpm em{left:8px}.drpm b{right:8px}
+.drpm.p2{border-color:rgba(190,140,255,.7)}.drpm.p1{border-color:rgba(255,210,63,.7)}
+@media (orientation:landscape) and (max-height:520px){#race.duel .controls{padding-bottom:calc(6px + var(--sa-b))}#race.duel .pad{max-width:78px}#race.duel .pad small{display:none}.duel-rpm{bottom:calc(92px + var(--sa-b))}.drpm{height:18px}.drpm em,.drpm b{line-height:14px}}
+
+/* t365u: keycaps on pads + key legend (desktop / keyboard only) + false-start DQ overlay */
+.kc{display:none;font:800 11px/1 ui-monospace,Menlo,Consolas,monospace;padding:3px 6px;border-radius:6px;background:#fff;color:#1a1a2e;border:1px solid #c9c9d6;box-shadow:0 2px 0 #8a8aa0;margin-bottom:4px;letter-spacing:0;min-width:14px;text-align:center}
+.pad .kc{position:relative}
+.keybar{display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:calc(min(36vw,168px) + 24px + var(--sa-b));z-index:4;gap:10px;flex-wrap:wrap;justify-content:center;padding:6px 12px;border-radius:12px;background:rgba(6,8,18,.78);border:1px solid var(--line);font-weight:700;font-size:13px;color:#fff;pointer-events:none;white-space:nowrap}
+.keybar span{display:inline-flex;align-items:center;gap:6px}.keybar span.now{color:var(--y)}.keybar span.off{opacity:.4}
+.keybar .kc{display:inline-block;margin:0}
+@media (hover:hover) and (pointer:fine){.kc{display:inline-block}.keybar{display:flex}}
+html.kb .kc{display:inline-block}html.kb .keybar{display:flex}
+.coach .kc{display:inline-block;margin:0 2px;vertical-align:1px}
+.dq{position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;background:rgba(40,0,0,.55);animation:dqin .25s ease-out}
+.dq[hidden]{display:none}
+.dq-card{background:#1a0d12;border:2px solid #ff4d4d;border-radius:18px;padding:18px 22px;text-align:center;max-width:min(90vw,360px);box-shadow:0 0 40px rgba(255,48,48,.45)}
+.dq-card h3{margin:2px 0 6px;color:#ff4d4d;font:italic 900 clamp(26px,7vw,38px)/1 system-ui,sans-serif;letter-spacing:1px}
+.dq-flag{font-size:40px;margin:0;animation:dqwave .6s ease-in-out infinite alternate}.dq-cnt{font-weight:800;color:var(--y);min-height:1.2em}
+.dq-card .row{justify-content:center;gap:10px;margin-top:8px}.dq-card .btn .kc{margin:0 0 0 6px;vertical-align:1px}
+@keyframes dqin{from{opacity:0}}@keyframes dqwave{to{transform:rotate(-14deg)}}
+@media (prefers-reduced-motion:reduce){.dq,.dq-flag{animation:none}}
+#race.duel .keybar{display:none!important}
+@media (orientation:landscape) and (max-height:520px){.keybar{bottom:calc(8px + var(--sa-b));font-size:11px;padding:4px 8px}}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="bl" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"inputs": ["#nameInput"], "keys": ["drag201.name"], "max": 16, "icon": "\ud83c\udfcd\ufe0f", "title": "Drag 201", "invite": "room", "accent": "#ffd23f", "slug": "drag201"};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<!-- JaRing invite gate v1 (jr-invite): opening an invite link (?room=CODE) shows only a name prompt when the room exists and joins it directly; a missing/expired room falls back to the main menu with a short notice. Game code calls JRInvite.run({...}); see /workspace/fixes-2026-10-23/README.md -->
+<style id="jr-invite-css">
+.jr-inv{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));background:rgba(14,16,24,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#1c1f2b;text-align:center;overflow:auto}
+.jr-inv[hidden],.jr-note[hidden]{display:none!important}
+.jr-inv *{box-sizing:border-box;letter-spacing:normal;text-transform:none}
+.jr-inv-card{width:100%;max-width:360px;margin:auto;background:#fffdf8;border-radius:18px;padding:22px 20px 18px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.jr-inv-kicker{margin:0;font-size:13px;font-weight:700;color:#6a6f82}
+.jr-inv-title{margin:2px 0 0;font-size:21px;line-height:1.2;font-weight:800;color:#1c1f2b}
+.jr-inv-code{display:inline-block;margin:10px 0 14px;padding:6px 12px 6px 16px;border:2px dashed #c9c2ad;border-radius:10px;background:#fff6d6;font:800 22px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:4px!important;color:#1c1f2b}
+.jr-inv-form{margin:0}
+.jr-inv-label{display:block;margin:0 0 6px;text-align:left;font-size:14px;font-weight:700;color:#3a3f52}
+.jr-inv-input{display:block;width:100%;min-height:48px;margin:0;padding:10px 14px;border:2px solid #c9ccd8;border-radius:12px;background:#fff;color:#1c1f2b;font-weight:600;font-size:16px;line-height:1.2;font-family:inherit;outline:none}
+.jr-inv-input:focus{border-color:var(--jr-inv-accent,#e8553b);box-shadow:0 0 0 3px rgba(232,85,59,.18)}
+.jr-inv-go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin:12px 0 0;padding:10px 16px;border:0;border-radius:12px;background:var(--jr-inv-accent,#e8553b);color:var(--jr-inv-accent-ink,#fff);font-weight:800;font-size:16px;line-height:1;font-family:inherit;cursor:pointer}
+.jr-inv-go:disabled{opacity:.65;cursor:progress}
+.jr-inv-alt{margin:10px 0 0;padding:6px 8px;border:0;background:none;color:#555b70;font-weight:600;font-size:14px;line-height:1.2;font-family:inherit;text-decoration:underline;cursor:pointer}
+.jr-inv-err{min-height:1.3em;margin:8px 0 0;font-size:14px;font-weight:600;color:#c0262d}
+.jr-inv-wait{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0 6px;font-weight:600;color:#3a3f52}
+.jr-inv-spin{width:28px;height:28px;border:3px solid #e4e1d6;border-top-color:var(--jr-inv-accent,#e8553b);border-radius:50%;animation:jr-inv-spin .8s linear infinite}
+.jr-inv-go .jr-inv-spin{width:18px;height:18px;border-width:2px;border-color:rgba(255,255,255,.45);border-top-color:#fff}
+@keyframes jr-inv-spin{to{transform:rotate(360deg)}}
+.jr-note{position:fixed;z-index:2147482500;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:flex-start;gap:10px;box-sizing:border-box;width:max-content;max-width:min(94vw,520px);margin:0;padding:11px 12px 11px 16px;border-radius:14px;background:#2b2433;color:#fff;font:600 14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.jr-note-x{flex:none;margin:-4px -4px -4px 0;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-weight:700;font-size:18px;line-height:1;font-family:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.jr-inv-spin{animation-duration:2s}}
+</style>
+<script id="jr-invite-js">
+window.JRInvite = (function () {
+  'use strict';
+  var TXT = {
+    id: { checking: 'Memeriksa room\u2026', kicker: 'Kamu diundang main', title: 'Gabung ke room', nameLabel: 'Nama kamu', namePh: 'JadiDaring', join: 'Gabung', joining: 'Masuk\u2026', menu: 'Ke menu utama', nameErr: 'Isi nama dulu ya.', missing: 'Room {code} tidak ditemukan atau sudah berakhir. Buat room baru atau cari room lain di menu ini.', failed: 'Tidak bisa masuk ke room {code}: {msg}', offline: 'Tautan undangan hanya bisa dipakai di situs jadidaring.com. Kamu tetap bisa main mode latihan.', close: 'Tutup' },
+    en: { checking: 'Checking the room\u2026', kicker: 'You are invited', title: 'Join the room', nameLabel: 'Your name', namePh: 'JadiDaring', join: 'Join', joining: 'Joining\u2026', menu: 'Go to main menu', nameErr: 'Please enter your name.', missing: 'Room {code} was not found or has ended. Create a new room or pick another one from this menu.', failed: 'Could not join room {code}: {msg}', offline: 'Invite links only work on jadidaring.com. You can still play practice mode.', close: 'Close' }
+  };
+  function fmt(s, v) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return v && v[k] !== undefined ? v[k] : m; }); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function getLS(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function setLS(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  /** '' = no invite in the URL, '!' = a malformed code, otherwise the 6-character room code */
+  function code(param) {
+    var v = ''; try { v = new URLSearchParams(location.search).get(param || 'room') || ''; } catch (e) { v = ''; }
+    v = v.trim().toUpperCase(); return /^[A-Z2-9]{6}$/.test(v) ? v : (v ? '!' : '');
+  }
+  function strip(param) {
+    try { var u = new URL(location.href); if (!u.searchParams.has(param || 'room')) return; u.searchParams.delete(param || 'room'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); } catch (e) { /* ignore */ }
+  }
+  /** Read-only existence check on /api/game: GET rooms/{code} with a placeholder token answers 404 when the room
+      does not exist and 403 ("not a member") when it does (GameRoomService::show looks the room up before the player). */
+  function probe(c) {
+    if (!/^[A-Z2-9]{6}$/.test(c || '')) return Promise.resolve('missing');
+    return fetch('/api/game/rooms/' + encodeURIComponent(c), { headers: { Accept: 'application/json', Authorization: 'Bearer jr-invite-check' }, credentials: 'same-origin', cache: 'no-store' })
+      .then(function (r) { return r.status === 403 || r.ok ? 'exists' : (r.status === 404 || r.status === 422) ? 'missing' : 'unknown'; }, function () { return 'unknown'; });
+  }
+  var noteTimer = 0;
+  function notice(msg, o) {
+    o = o || {}; var T = TXT[o.lang] || TXT.id, el = document.getElementById('jr-note');
+    if (!el) { el = document.createElement('div'); el.id = 'jr-note'; el.className = 'jr-note'; el.setAttribute('role', 'alert'); document.body.appendChild(el); }
+    el.innerHTML = '<span>' + esc(msg) + '</span><button type="button" class="jr-note-x" aria-label="' + esc(T.close) + '">\u00d7</button>';
+    el.hidden = false; el.querySelector('button').onclick = function () { el.hidden = true; };
+    clearTimeout(noteTimer); noteTimer = setTimeout(function () { el.hidden = true; }, o.ms || 12000);
+  }
+  /**
+   * o.code       room code from code()
+   * o.check(c)   -> Promise<'exists'|'missing'|'unknown'|'offline'|'session'|{fallback:msg}> (default: probe)
+   * o.join(name) -> Promise<{ok:true} | {ok:false, missing?:true, retry?:true, message?:string}>
+   * o.fallback(msg) shows the main menu (msg = notice text, '' when the user chose "main menu")
+   * o.nameKey, o.nameMax (24), o.lang ('id'|'en'), o.accent, o.param ('room')
+   */
+  function run(o) {
+    var T = TXT[o.lang] || TXT.id, param = o.param || 'room', c = o.code, prevOverflow = document.documentElement.style.overflow, done = false;
+    var root = document.createElement('div'); root.className = 'jr-inv'; root.id = 'jr-invite'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'jr-inv-title');
+    if (o.accent) root.style.setProperty('--jr-inv-accent', o.accent);
+    if (o.accentInk) root.style.setProperty('--jr-inv-accent-ink', o.accentInk);
+    root.innerHTML = '<div class="jr-inv-card"><p class="jr-inv-kicker">' + esc(o.gameName || T.kicker) + '</p><h2 class="jr-inv-title" id="jr-inv-title">' + esc(T.title) + '</h2><div class="jr-inv-code">' + esc(c === '!' ? '------' : c) + '</div>' +
+      '<div class="jr-inv-wait" aria-live="polite"><span class="jr-inv-spin" aria-hidden="true"></span><span>' + esc(T.checking) + '</span></div>' +
+      '<form class="jr-inv-form" hidden novalidate><label class="jr-inv-label" for="jr-inv-name">' + esc(T.nameLabel) + '</label><input class="jr-inv-input" id="jr-inv-name" type="text" maxlength="' + (o.nameMax || 24) + '" autocomplete="off" enterkeyhint="go" placeholder="JadiDaring">' +
+      '<p class="jr-inv-err" role="alert"></p><button class="jr-inv-go" type="submit">' + esc(T.join) + '</button></form>' +
+      '<button class="jr-inv-alt" type="button">' + esc(T.menu) + '</button></div>';
+    document.body.appendChild(root); document.documentElement.style.overflow = 'hidden';
+    var form = root.querySelector('form'), input = root.querySelector('input'), err = root.querySelector('.jr-inv-err'), go = root.querySelector('.jr-inv-go'), wait = root.querySelector('.jr-inv-wait');
+    var resolve; var result = new Promise(function (r) { resolve = r; });
+    function close(how, msg) {
+      if (done) return; done = true; root.remove(); document.documentElement.style.overflow = prevOverflow; strip(param);
+      if (how === 'fallback') { if (msg) notice(msg, o); try { o.fallback && o.fallback(msg || ''); } catch (e) { /* ignore */ } }
+      resolve(how);
+    }
+    root.querySelector('.jr-inv-alt').onclick = function () { close('fallback', ''); };
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') close('fallback', ''); });
+    form.onsubmit = function (e) {
+      e.preventDefault(); if (go.disabled) return;
+      var name = input.value.replace(/\s+/g, ' ').trim().slice(0, o.nameMax || 24);
+      if (!name || name.length < (o.nameMin || 1)) { err.textContent = T.nameErr; input.focus(); return; }
+      err.textContent = ''; go.disabled = true; input.disabled = true; go.innerHTML = '<span class="jr-inv-spin" aria-hidden="true"></span>' + esc(T.joining);
+      if (o.nameKey) setLS(o.nameKey, name);
+      Promise.resolve().then(function () { return o.join(name); }).then(function (r) { return r || { ok: false, retry: true }; }, function (e) { return { ok: false, retry: true, message: e && e.message }; }).then(function (r) {
+        if (done) return;
+        if (r.ok) { close('joined'); return; }
+        if (r.retry) { go.disabled = false; input.disabled = false; go.textContent = T.join; err.textContent = r.message || ''; return; }
+        close('fallback', r.missing ? fmt(T.missing, { code: c }) : fmt(T.failed, { code: c, msg: r.message || '' }));
+      });
+    };
+    Promise.resolve().then(function () { return c === '!' ? 'missing' : (o.check ? o.check(c) : probe(c)); }).then(null, function () { return 'unknown'; }).then(function (st) {
+      if (done) return;
+      if (st && typeof st === 'object' && st.fallback) { close('fallback', st.fallback); return; }
+      if (st === 'session') { close('session'); return; }
+      if (st === 'offline') { close('fallback', T.offline); return; }
+      if (st === 'missing') { close('fallback', fmt(T.missing, { code: c === '!' ? '' : c }).replace('  ', ' ')); return; }
+      wait.hidden = true; form.hidden = false; input.value = ''; /* t367u: never prefill (placeholder JadiDaring) */
+      try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+    });
+    return result;
+  }
+  return { code: code, strip: strip, probe: probe, notice: notice, run: run, text: TXT };
+})();
+</script>
+<!-- /jr-invite -->
+<main id="main" data-game="drag201">
+  <!-- ============ HOME ============ -->
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="coins" id="coinHome">&#x1FA99; 0</span><button class="icon-btn" id="muteBtn" aria-label="Suara">&#x1F50A;</button></div>
+      <div class="hero-title"><p class="kicker">DRAG BIKE &#xB7; 201 METER</p><h1>DRAG <span>201</span></h1><p class="slogan">Gas di sirkuit, tertib di jalan.</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pembalap</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="garage-strip" id="garageStrip"><canvas id="stripCv" width="120" height="64"></canvas><div><b id="stripBike">Bebek 4T 130</b><small id="stripStat">Ideal 9.64 s</small></div><button class="btn small ghost" id="garageBtn">&#x1F527; Garasi</button></div>
+      <div class="modes">
+        <button class="mode big" id="careerBtn"><i>&#x1F3C6;</i><b>Karir</b><small id="careerSub">Lawan 1/10 &#xB7; Ucup Karbu</small></button>
+        <button class="mode" id="quickBtn"><i>&#x26A1;</i><b>Adu Cepat</b><small>Lawan bot 1v1 sampai 1v3</small></button>
+        <button class="mode" id="taBtn"><i>&#x23F1;&#xFE0F;</i><b>Time Attack</b><small id="taSub">Kejar rekor nasional</small></button>
+        <button class="mode" id="tutBtn"><i>&#x1F393;</i><b>Latihan</b><small>Belajar start &amp; oper gigi</small></button>
+        <button class="mode duel" id="duelBtn"><i>&#x1F465;</i><b>Duel 1 HP</b><small>2 pemain satu layar, offline</small></button>
+        <button class="mode sun" id="sunBtn"><i>&#x2600;&#xFE0F;</i><b>Sunmori Cup</b><small id="sunSub">Sirkuit pagi &#xB7; koin 2&#xD7; tiap Minggu</small></button>
+      </div>
+      <div class="online card">
+        <h2>Mabar online <small>2&#x2013;4 pemain</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">&#x1F50E; Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh">&#x21BB;</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Tahan GAS</b> saat lampu kuning. Jaga jarum di <em class="g">zona hijau</em>.</li>
+          <li><b>Lampu HIJAU &#x2192; tap OPER</b> (lepas kopling). Kecepatan reaksi = RT.</li>
+          <li>Jarum masuk <em class="g">hijau</em> &#x2192; <b>tap OPER</b> lagi untuk naik gigi. Pas = <b>PERFECT</b>.</li>
+          <li><b>NOS &#x1F525;</b> sekali per balapan. Start sebelum hijau = <b class="r">diskualifikasi</b>.</li>
+          <li><b>Garasi</b>: modif mesin, knalpot, gir, ban + <b>cat &amp; striping</b>. Pemula? Beli <b>Matic CVT</b>, tanpa oper gigi.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>Spasi</kbd> tahan = GAS (sebelum start) &#xB7; <kbd>K</kbd>/<kbd>Enter</kbd> = START &amp; oper gigi &#xB7; <kbd>N</kbd> = NOS &#xB7; start sebelum hijau = diskualifikasi, ulang &#xB7; Duel P2: <kbd>A</kbd> gas &#xB7; <kbd>S</kbd> oper &#xB7; <kbd>D</kbd> NOS</p>
+      </div>
+      <div class="card lb"><h2>Papan rekor <small>Time Attack &#xB7; 201 m</small></h2><ol id="lbList" class="lb-list"><li class="muted">Memuat&#x2026;</li></ol><p class="muted" id="bestLine"></p></div>
+      <p class="foot muted">Drag 201 adalah game. Balapan cuma di sirkuit resmi, pakai helm, jangan balap liar. &#xB7; <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <!-- ============ CAREER LADDER ============ -->
+  <section id="career" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" data-back>&#x2190; Menu</button><h2>Karir &#xB7; Sirkuit Resmi</h2><span class="coins" id="coinCareer">&#x1FA99; 0</span></header>
+    <ol id="ladder" class="ladder"></ol>
+  </section>
+
+  <!-- ============ GARAGE ============ -->
+  <section id="garage" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" data-back>&#x2190; Menu</button><h2>Garasi</h2><span class="coins" id="coinGarage">&#x1FA99; 0</span></header>
+    <div class="g-stage"><button class="arrow" id="bikePrev" aria-label="Motor sebelumnya">&#x2039;</button><canvas id="garageCv"></canvas><button class="arrow" id="bikeNext" aria-label="Motor berikutnya">&#x203A;</button></div>
+    <div class="g-info"><h3 id="gName"></h3><p class="muted" id="gCls"></p>
+      <div class="stats" id="gStats"></div>
+      <div class="row"><button class="btn green" id="gUse">Pakai</button><span class="muted" id="gIdeal"></span></div>
+    </div>
+    <h3 class="sec">Modif</h3><ul id="parts" class="parts"></ul>
+    <div id="livery" class="livery" hidden><h3 class="sec">Cat &amp; Striping <small class="muted">&#x1FA99; 40 / ganti</small></h3><div class="swl"><span>Body</span><div class="sws" id="swBody"></div></div><div class="swl"><span>Striping</span><div class="sws" id="swStripe"></div></div></div>
+  </section>
+
+  <!-- ============ LOBBY ============ -->
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">&#x2190; Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">&#x1F517; Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><h3>Pembalap <small id="pCount">1/4</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Bot pengisi</span><div class="seg" id="onBots"><button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div></div>
+      <button class="btn green big-btn" id="startBtn">&#x1F6A6; Mulai balapan</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik pesan&#x2026;" autocomplete="off"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <!-- ============ RACE ============ -->
+  <section id="race" class="screen" hidden>
+    <canvas id="raceCv"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">&#x2715;</button><div class="tree" id="tree"><i></i><i></i><i></i><i class="go"></i><i class="red"></i></div><div class="hud-r"><span id="hudInfo"></span><button class="icon-btn" id="muteBtn2" aria-label="Suara">&#x1F50A;</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>&#x1F4AC;</button></div></div>
+    <div id="raceChatSlot" class="race-chat" hidden></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="keybar" id="keybar" aria-label="Tombol keyboard"></div>
+    <div class="dq" id="dqBox" hidden><div class="dq-card"><p class="dq-flag">&#x1F6A9;</p><h3>DISKUALIFIKASI</h3><p id="dqWhy">Start sebelum lampu hijau.</p><p class="dq-cnt" id="dqCnt"></p><div class="row"><button class="btn green" id="dqAgain">Start ulang <kbd class="kc">K</kbd></button><button class="btn ghost" id="dqMenu">Menu</button></div></div></div>
+    <div class="dist"><div class="dist-bar"><i id="distMe"></i></div><span id="distTxt">0 / 201 m</span></div>
+    <canvas id="tachCv" class="tach"></canvas>
+    <div class="duel-rpm" id="duelRpm" hidden><div class="drpm p2" id="rpm2"><s></s><i></i><em>P2</em><b>START</b></div><div class="drpm p1" id="rpm1"><s></s><i></i><em>P1</em><b>START</b></div></div>
+    <div class="controls">
+      <div class="p2grp" id="p2grp" hidden><button class="pad gas" id="gas2"><kbd class="kc" id="gas2Key">A</kbd><b id="gas2Lbl">GAS</b><small id="gas2Sub">tahan</small></button><button class="pad oper" id="oper2"><kbd class="kc">S</kbd><b>OPER</b><small id="oper2Sub">lepas kopling</small></button></div>
+      <button class="pad gas" id="gasBtn"><kbd class="kc" id="gasKey">Spasi</kbd><b id="gasLbl">GAS</b><small id="gasSub">tahan</small></button>
+      <button class="pad oper" id="operBtn"><kbd class="kc" id="operKey">K</kbd><b>OPER</b><small id="operSub">lepas kopling</small></button>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="result" class="screen overlay" hidden>
+    <div class="res-card">
+      <p class="kicker" id="resKick">HASIL</p><h2 id="resTitle">Menang!</h2><p id="resSub" class="muted"></p>
+      <table class="res-table"><thead><tr><th>#</th><th>Pembalap</th><th>RT</th><th>ET</th><th>Total</th><th>km/j</th></tr></thead><tbody id="resRows"></tbody></table>
+      <div class="marks" id="resMarks"></div>
+      <p class="reward" id="resReward"></p>
+      <form id="taForm" class="row" hidden><span class="muted" id="taNote"></span><button class="btn small green" id="taSubmit">Kirim ke papan rekor</button></form>
+      <div class="row end-btns"><button class="btn green" id="againBtn">&#x21BB; Lagi</button><button class="btn" id="nextBtn" hidden>Lawan berikutnya &#x2192;</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="resGarage">&#x1F527; Garasi</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/* Drag 201: pure race sim (no DOM). One Run = one bike on a 201 m strip.
+   Time t is ms since the GREEN light (negative while staging). Same code drives the player, bots and replays. */
+(function (root) {
+'use strict';
+const DIST = 201, DT = 10;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+/* Bikes: vg = gear top speeds (m/s at redline), k = thrust constant, red = redline rpm. Generic classes, no brands. */
+const BIKES = [
+  { id: 'bebek4', name: 'Bebek 4T 130', cls: 'Bebek 4 Tak', price: 0, red: 11000, vg: [13, 20, 26.5, 32], k: 118, cd: 0.0021, col: '#e8463a', col2: '#f7f1e3' },
+  { id: 'matic', name: 'Matic 125 CVT', cls: 'Matic', price: 350, red: 9500, vg: [12, 16.5, 21, 25.5, 30], k: 112, cd: 0.0022, col: '#ff5fa2', col2: '#f7f1e3', cvt: 1 },
+  { id: 'bebek2', name: 'Bebek 2T 125', cls: 'Bebek 2 Tak', price: 900, red: 12500, vg: [14, 21.5, 28, 34.5], k: 132, cd: 0.002, col: '#2f7de1', col2: '#ffd23f' },
+  { id: 'sport', name: 'Sport 150 2T', cls: 'Sport 150', price: 2600, red: 13000, vg: [13.5, 19.5, 25, 30.5, 35.5, 40], k: 150, cd: 0.0019, col: '#1fa35b', col2: '#111' },
+  { id: 'camp', name: 'Campuran 250 2T', cls: 'Campuran 250', price: 6000, red: 12000, vg: [15, 22, 28.5, 34, 39.5, 44.5], k: 176, cd: 0.0018, col: '#8f3bd6', col2: '#ff8a1f' }
+];
+/* Tuning parts, level 0..5 each (per bike) */
+const PARTS = [
+  { id: 'mesin', icon: '\u2699\ufe0f', cost: [120, 220, 350, 500, 700] },   // +3.2% thrust / lvl
+  { id: 'knalpot', icon: '\ud83d\udca8', cost: [100, 190, 300, 430, 600] }, // +1.8% thrust, +1.5% top / lvl
+  { id: 'gir', icon: '\ud83d\udd29', cost: [90, 170, 260, 380, 520] },     // shorter low gears: +2.5% thrust in 1-2
+  { id: 'ban', icon: '\ud83d\udede', cost: [80, 150, 240, 350, 480] }       // launch grip: wider sweet band, less spin
+];
+function spec(bikeId, tune) {
+  const b = BIKES.find(x => x.id === bikeId) || BIKES[0], t = Object.assign({ mesin: 0, knalpot: 0, gir: 0, ban: 0 }, tune || {});
+  const top = 1 + 0.015 * t.knalpot, k = b.k * (1 + 0.032 * t.mesin + 0.018 * t.knalpot);
+  return { id: b.id, name: b.name, red: b.red, vg: b.vg.map(v => v * top), k, cd: b.cd, low: 1 + 0.025 * t.gir, grip: t.ban | 0, col: b.col, col2: b.col2, cvt: b.cvt ? 1 : 0 };
+}
+/* torque curve, x = rpm / redline */
+function torque(x) { if (x < 0.25) return 0.3 + x * 1.4; if (x < 0.78) return 0.65 + (x - 0.25) / 0.53 * 0.35; return 1 - (x - 0.78) * 1.25; }
+/* shift windows (rpm ratio at the moment of shifting) */
+const SHIFT = { perfect: [0.9, 0.975], good: [0.8, 0.9] };
+const LAUNCH = { sweet: [0.55, 0.72] };
+function launchBand(grip) { return [LAUNCH.sweet[0] - grip * 0.012, LAUNCH.sweet[1] + grip * 0.016]; }
+
+class Run {
+  constructor(sp) {
+    this.sp = sp; this.t = -4000; this.d = 0; this.v = 0; this.g = 0; this.rpm = 0.12; this.gas = false; this.launched = false; this.rt = null;
+    this.foul = false; this.fin = null; this.shiftT = 0; this.slip = 0; this.spin = 0; this.wheelie = 0; this.lim = 0; this.boost = 0;
+    this.ev = []; this.marks = []; this.topV = 0; this.nos = 1; this.nosT = 0; this.perf = 0; this.shifts = 0;
+  }
+  ratio() { return this.sp.vg[this.g]; }
+  /** hold/release gas during staging */
+  setGas(on) { this.gas = !!on; }
+  /** tap: launch (staging) or shift up */
+  tap() {
+    if (this.fin !== null) return null;
+    if (!this.launched) return this.launch();
+    return this.shift();
+  }
+  launch() {
+    this.launched = true; this.rt = this.t; if (this.t < 0) this.foul = true;
+    const band = launchBand(this.sp.grip), r = this.rpm; let q;
+    if (r >= band[0] && r <= band[1]) { q = 'perfect'; this.slip = 0.45; this.perf++; }
+    else if (r > band[1]) { q = r > 0.86 ? 'spin' : 'good'; this.spin = q === 'spin' ? 0.75 - this.sp.grip * 0.06 : 0.25; this.wheelie = q === 'spin' ? 1 : 0.4; }
+    else { q = r < 0.38 ? 'bog' : 'good'; }
+    this.lq = q; this.launchRpm = r; this.ev.push(['launch', this.t, q]); return q;
+  }
+  /** engine speed the road allows (ignores wheelspin flare) */
+  road() { return clamp(this.v / this.ratio(), 0, 1); }
+  shift() {
+    if (this.shiftT > 0 || this.sp.cvt) return null;
+    const x = Math.min(this.rpm, this.slip > 0 || this.spin > 0 ? this.road() + 0.04 : 1), last = this.g >= this.sp.vg.length - 1; if (last) return null;
+    let q = x >= SHIFT.perfect[0] && x <= SHIFT.perfect[1] ? 'perfect' : x > SHIFT.perfect[1] ? 'late' : x >= SHIFT.good[0] ? 'good' : 'early';
+    if (q === 'late' && this.lim < 120) q = 'good';
+    this.g++; this.shifts++; this.shiftT = q === 'perfect' ? 90 : q === 'good' ? 140 : 190;
+    if (q === 'perfect') { this.boost = 380; this.perf++; }
+    this.lim = 0; this.ev.push(['shift', this.t, q, this.g]); this.marks.push(q); return q;
+  }
+  useNos() { if (!this.launched || this.fin !== null || this.nos <= 0 || this.nosT > 0) return false; this.nos--; this.nosT = 1400; this.ev.push(['nos', this.t]); return true; }
+  step(ms) {
+    for (let left = ms; left > 0; left -= DT) this.tick(Math.min(DT, left) / 1000);
+  }
+  tick(dt) {
+    const sp = this.sp; this.t += dt * 1000;
+    if (this.foul) { this.v = Math.max(0, this.v - 30 * dt); this.d = Math.min(this.d + this.v * dt, 1.5); this.rpm = Math.max(0.12, this.rpm - dt * 1.2); this.wheelie = 0; return; } // t365u: jump start = DQ, bike stays on the line
+    if (this.fin !== null) { this.v = Math.max(0, this.v - 9 * dt); this.d += this.v * dt; this.rpm = Math.max(0.15, this.rpm - dt * 0.8); return; }
+    if (!this.launched) {
+      const target = this.gas ? 1.02 : 0.12; this.rpm += (target - this.rpm) * dt * (this.gas ? 1.6 : 3.2);
+      if (this.rpm > 1) this.rpm = 0.96 + Math.random() * 0.04;
+      return;
+    }
+    const vg = this.ratio();
+    let rpm = clamp(this.v / vg, 0, 1.0);
+    if (this.slip > 0) { this.slip -= dt; rpm = Math.max(rpm, this.launchRpm * 0.95); }
+    if (this.shiftT > 0) { this.shiftT -= dt * 1000; this.rpm += (Math.max(rpm, 0.2) - this.rpm) * dt * 14; }
+    else this.rpm = Math.max(rpm, this.rpm > rpm && this.spin > 0 ? this.rpm : rpm);
+    if (this.rpm < 0.18 && this.g === 0) this.rpm = Math.max(this.rpm, (this.launchRpm || 0.3) * 0.7);
+    // CVT (matic): the belt changes ratio by itself, no shift skill (and no PERFECT bonus)
+    if (sp.cvt && this.shiftT <= 0 && this.slip <= 0 && this.g < sp.vg.length - 1 && this.rpm >= 0.93) { this.g++; this.shiftT = 45; }
+    let thrust = 0;
+    if (this.shiftT <= 0) {
+      const x = clamp(this.rpm, 0, 1); thrust = sp.k * torque(x) / vg;
+      if (this.g < 2) thrust *= sp.low;
+      if (this.rpm >= 0.995) { thrust = 0; this.lim += dt * 1000; }
+      if (this.spin > 0) { this.spin -= dt; thrust *= 0.6; }
+      if (this.boost > 0) { this.boost -= dt * 1000; thrust *= 1.06; }
+      if (this.nosT > 0) { this.nosT -= dt * 1000; thrust *= 1.22; }
+      if (this.lq === 'bog' && this.t - this.rt < 600) thrust *= 0.7;
+    }
+    const a = thrust - sp.cd * this.v * this.v - 0.25;
+    this.v = Math.max(0, this.v + a * dt); this.d += this.v * dt; this.topV = Math.max(this.topV, this.v);
+    this.wheelie = Math.max(0, this.wheelie - dt * (this.spin > 0 ? 0.6 : 2.2)); if (this.g === 0 && this.t - this.rt < 500 && this.lq === 'perfect') this.wheelie = Math.max(this.wheelie, 0.25);
+    if (this.d >= DIST) { this.fin = this.t; this.et = this.t - this.rt; this.ev.push(['fin', this.t]); }
+  }
+  /** total time from green to the line (what decides the race); fouls lose */
+  total() { return this.fin === null ? null : this.fin; }
+  summary() { return { rt: Math.round(this.rt), et: this.fin === null ? null : Math.round(this.fin - this.rt), tot: this.fin === null ? null : Math.round(this.fin), top: Math.round(this.topV * 3.6), foul: this.foul ? 1 : 0, perf: this.perf, lq: this.lq || '', marks: this.marks.slice() }; }
+}
+
+/* Deterministic bot driver (same on every device for a given seed) */
+function botBrain(skill, seed) {
+  const r = rng(seed); skill = clamp(skill, 0, 1);
+  const rt = 90 + (1 - skill) * 300 + r() * 120 * (1.2 - skill);
+  const launch = 0.6 + (r() - 0.5) * (0.4 - skill * 0.3);
+  const shifts = Array.from({ length: 6 }, () => 0.935 + (r() - 0.55) * (0.22 - skill * 0.17));
+  const nosAt = skill > 0.45 ? 1 + Math.floor(r() * 3) : -1;
+  return { rt, launch, shifts, nosAt };
+}
+function driveBot(run, brain) {
+  if (!run.launched) { run.setGas(run.rpm < brain.launch); if (run.t >= brain.rt) run.launch(); return; }
+  if (run.fin !== null) return;
+  if (run.shiftT <= 0 && run.g < run.sp.vg.length - 1 && run.rpm >= Math.min(0.985, brain.shifts[run.g])) run.shift();
+  if (brain.nosAt >= 0 && run.g === brain.nosAt && run.nos > 0) run.useNos();
+}
+/** simulate a bot to the line (used for previews / tests) */
+function simBot(sp, skill, seed) { const r = new Run(sp), b = botBrain(skill, seed); while (r.fin === null && r.t < 30000) { driveBot(r, b); r.step(DT); } return r; }
+/** perfect-ish reference run for a spec (launch in band, all shifts at 0.94) */
+function simIdeal(sp) { const r = new Run(sp); const b = { rt: 150, launch: (launchBand(sp.grip)[0] + launchBand(sp.grip)[1]) / 2, shifts: [0.94, 0.94, 0.94, 0.94, 0.94, 0.94], nosAt: 2 }; while (r.fin === null && r.t < 30000) { driveBot(r, b); r.step(DT); } return r; }
+
+/* Career: 10 rivals on the official circuit */
+const RIVALS = [
+  { n: 'Ucup Karbu', bike: 'bebek4', tune: {}, skill: 0.15, pay: 120 },
+  { n: 'Mbak Rara', bike: 'bebek4', tune: { mesin: 1, ban: 1 }, skill: 0.35, pay: 150 },
+  { n: 'Bang Jali', bike: 'bebek2', tune: { mesin: 1 }, skill: 0.3, pay: 180 },
+  { n: 'Koh Ahong', bike: 'bebek2', tune: { mesin: 2, knalpot: 2, ban: 1 }, skill: 0.5, pay: 220 },
+  { n: 'Teh Euis', bike: 'bebek2', tune: { mesin: 3, knalpot: 3, gir: 2, ban: 2 }, skill: 0.6, pay: 260 },
+  { n: 'Mas Bowo', bike: 'sport', tune: { mesin: 1, knalpot: 1 }, skill: 0.5, pay: 320 },
+  { n: 'Daeng Rudi', bike: 'sport', tune: { mesin: 3, knalpot: 2, gir: 2, ban: 2 }, skill: 0.65, pay: 380 },
+  { n: 'Uda Fikri', bike: 'sport', tune: { mesin: 5, knalpot: 4, gir: 3, ban: 3 }, skill: 0.75, pay: 450 },
+  { n: 'Bli Komang', bike: 'camp', tune: { mesin: 3, knalpot: 3, gir: 3, ban: 3 }, skill: 0.8, pay: 600 },
+  { n: 'Raja Sirkuit', bike: 'camp', tune: { mesin: 5, knalpot: 5, gir: 5, ban: 5 }, skill: 0.86, pay: 1000 }
+];
+const BOT_NAMES = ['Ucup', 'Rara', 'Jali', 'Euis', 'Bowo', 'Komang'];
+root.D201 = { DIST, DT, BIKES, PARTS, RIVALS, BOT_NAMES, SHIFT, LAUNCH, launchBand, spec, torque, Run, botBrain, driveBot, simBot, simIdeal, rng, clamp };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* Drag 201: canvas renderer (night circuit, side view). R.scene(ctx, opts) draws one frame. */
+(function (root) {
+'use strict';
+const D = root.D201;
+const TAU = Math.PI * 2;
+function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function hash(n) { n = Math.sin(n * 127.1 + 311.7) * 43758.5453; return n - Math.floor(n); }
+/* ---------- particles ---------- */
+function makeFx() {
+  const P = [];
+  return {
+    P,
+    add(p) { if (P.length < 260) P.push(p); },
+    smoke(x, y, n, s) { for (let i = 0; i < n; i++) this.add({ k: 's', x: x + (Math.random() - 0.5) * 6, y: y - Math.random() * 4, vx: -20 - Math.random() * 50, vy: -8 - Math.random() * 18, r: (4 + Math.random() * 6) * (s || 1), a: 0.55, life: 0.9 + Math.random() * 0.6, t: 0 }); },
+    flame(x, y, big) { for (let i = 0; i < (big ? 10 : 5); i++) this.add({ k: 'f', x, y, vx: -60 - Math.random() * 90, vy: (Math.random() - 0.5) * 24, r: 3 + Math.random() * (big ? 6 : 3), a: 1, life: 0.18 + Math.random() * 0.16, t: 0 }); },
+    spark(x, y, cols, n) { for (let i = 0; i < n; i++) { const a = Math.random() * TAU, v = 60 + Math.random() * 160; this.add({ k: 'p', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 60, r: 2 + Math.random() * 3, a: 1, life: 0.7 + Math.random() * 0.6, t: 0, c: cols[i % cols.length] }); } },
+    step(dt) { for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; p.t += dt; if (p.t >= p.life) { P.splice(i, 1); continue; } p.x += p.vx * dt; p.y += p.vy * dt; if (p.k === 'p') p.vy += 260 * dt; if (p.k === 's') { p.r += 18 * dt; p.vx *= 0.97; } } },
+    draw(g, ox) {
+      for (const p of P) {
+        const k = 1 - p.t / p.life, x = p.x - (p.world ? ox : 0);
+        if (p.k === 's') { g.fillStyle = 'rgba(210,214,226,' + (p.a * k * 0.6) + ')'; g.beginPath(); g.arc(x, p.y, p.r, 0, TAU); g.fill(); }
+        else if (p.k === 'f') { g.fillStyle = k > 0.5 ? 'rgba(255,236,140,' + k + ')' : 'rgba(255,120,40,' + k + ')'; g.beginPath(); g.arc(x, p.y, p.r * (0.5 + k), 0, TAU); g.fill(); }
+        else { g.fillStyle = p.c; g.globalAlpha = k; g.fillRect(x - p.r / 2, p.y - p.r / 2, p.r, p.r * 1.6); g.globalAlpha = 1; }
+      }
+    }
+  };
+}
+/* ---------- the bike (side view, facing right). (x,y) = rear wheel contact point, s = scale (1 = 64px wheelbase) ---------- */
+function bike(g, x, y, s, o) {
+  const col = o.col || '#e8463a', col2 = o.col2 || '#fff', ang = -(o.wheelie || 0) * 0.42, spin = o.spin || 0, lean = o.lean || 0;
+  g.save(); g.translate(x, y); g.scale(s, s); g.rotate(ang);
+  const R = o.matic ? 11 : 13, wb = 64;
+  // shadow
+  g.save(); g.rotate(-ang); g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.ellipse(wb / 2, 2, 46, 5, 0, 0, TAU); g.fill(); g.restore();
+  const wheel = (cx) => {
+    g.save(); g.translate(cx, -R);
+    g.fillStyle = '#111'; g.beginPath(); g.arc(0, 0, R, 0, TAU); g.fill();
+    g.strokeStyle = '#2a2a2a'; g.lineWidth = 2; g.beginPath(); g.arc(0, 0, R - 1.5, 0, TAU); g.stroke();
+    g.fillStyle = '#9aa3b5'; g.beginPath(); g.arc(0, 0, R - 4.5, 0, TAU); g.fill();
+    g.fillStyle = '#1b1e26'; g.beginPath(); g.arc(0, 0, R - 6.5, 0, TAU); g.fill();
+    g.rotate(spin); g.strokeStyle = '#cfd6e4'; g.lineWidth = 1.4;
+    for (let i = 0; i < 6; i++) { g.rotate(TAU / 6); g.beginPath(); g.moveTo(0, 0); g.lineTo(R - 5, 0); g.stroke(); }
+    g.fillStyle = '#e9edf5'; g.beginPath(); g.arc(0, 0, 2.2, 0, TAU); g.fill(); g.restore();
+  };
+  wheel(0); wheel(wb);
+  // swingarm + fork
+  g.strokeStyle = '#3b3f4b'; g.lineWidth = 4; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(0, -R); g.lineTo(24, -R - 7); g.stroke();
+  g.strokeStyle = '#c9ced8'; g.lineWidth = 3.2; g.beginPath(); g.moveTo(wb, -R); g.lineTo(wb - 9, -R - 25); g.stroke();
+  if (o.matic) {
+    // scooter (matic): CVT case + small muffler, curved body cowl, floorboard, front apron
+    g.fillStyle = '#3a3e49'; rr(g, -2, -R - 9, 26, 8, 4); g.fill(); g.fillStyle = '#6b707c'; rr(g, -12, -R - 12, 12, 6, 3); g.fill();
+    g.fillStyle = col; g.beginPath(); g.moveTo(-8, -R - 14); g.quadraticCurveTo(-6, -R - 27, 10, -R - 27); g.lineTo(30, -R - 25); g.quadraticCurveTo(34, -R - 14, 28, -R - 9); g.lineTo(4, -R - 8); g.closePath(); g.fill();
+    g.fillStyle = col2; g.beginPath(); g.moveTo(0, -R - 19); g.quadraticCurveTo(10, -R - 24, 26, -R - 21); g.lineTo(25, -R - 18); g.quadraticCurveTo(10, -R - 20, 1, -R - 16); g.closePath(); g.fill();
+    g.fillStyle = '#20232b'; rr(g, 26, -R - 9, 22, 4, 2); g.fill();
+    g.fillStyle = col; g.beginPath(); g.moveTo(44, -R - 6); g.quadraticCurveTo(52, -R - 22, 52, -R - 40); g.lineTo(60, -R - 40); g.quadraticCurveTo(62, -R - 22, 56, -R - 5); g.closePath(); g.fill();
+    g.fillStyle = col; g.beginPath(); g.arc(wb, -R, R + 3, Math.PI * 1.05, Math.PI * 1.75); g.lineTo(wb, -R); g.fill();
+  } else {
+  // exhaust (expansion chamber for 2T look)
+    g.fillStyle = '#5b5f6b'; g.beginPath(); g.moveTo(-6, -R - 4); g.quadraticCurveTo(8, -R + 4, 28, -R - 2); g.lineTo(28, -R - 7); g.quadraticCurveTo(10, -R - 4, -6, -R - 10); g.closePath(); g.fill();
+    g.fillStyle = '#8d929e'; g.fillRect(-10, -R - 9.5, 6, 5);
+    // engine block
+    g.fillStyle = '#2b2e37'; rr(g, 20, -R - 15, 18, 13, 3); g.fill(); g.fillStyle = '#4a4e5a'; for (let i = 0; i < 3; i++) g.fillRect(22 + i * 5, -R - 14, 3, 11);
+    // body
+    g.fillStyle = col; g.beginPath(); g.moveTo(10, -R - 16); g.lineTo(22, -R - 26); g.lineTo(46, -R - 30); g.lineTo(wb - 6, -R - 34); g.lineTo(wb - 2, -R - 26); g.lineTo(40, -R - 16); g.closePath(); g.fill();
+    g.fillStyle = col2; g.beginPath(); g.moveTo(26, -R - 25); g.lineTo(46, -R - 28.5); g.lineTo(44, -R - 24); g.lineTo(28, -R - 21.5); g.closePath(); g.fill();
+  }
+  // seat + tail
+  g.fillStyle = '#16181e'; rr(g, 4, -R - 23, 22, 6, 3); g.fill(); g.fillStyle = col; g.beginPath(); g.moveTo(-4, -R - 20); g.lineTo(8, -R - 24); g.lineTo(10, -R - 17); g.closePath(); g.fill();
+  // headlight + number plate
+  g.fillStyle = '#fff7d1'; g.beginPath(); g.arc(wb - 3, -R - 30, 3, 0, TAU); g.fill();
+  g.fillStyle = '#f4f4f4'; rr(g, wb - 14, -R - 41, 12, 9, 2); g.fill(); g.fillStyle = '#111'; g.font = 'bold 7px system-ui'; g.textAlign = 'center'; g.fillText(o.num || '1', wb - 8, -R - 34);
+  // rider (crouched)
+  g.save(); g.translate(18, -R - 24); g.rotate(-0.12 - lean * 0.25);
+  g.fillStyle = o.suit || '#1d2233'; g.beginPath(); g.moveTo(-6, 0); g.quadraticCurveTo(4, -20, 26, -18); g.lineTo(30, -10); g.quadraticCurveTo(12, -8, 6, 4); g.closePath(); g.fill();
+  g.strokeStyle = o.suit || '#1d2233'; g.lineWidth = 6; g.beginPath(); g.moveTo(2, 2); g.lineTo(12, 10); g.lineTo(18, 6); g.stroke();
+  g.lineWidth = 4.5; g.beginPath(); g.moveTo(22, -14); g.lineTo(34, -6); g.stroke();
+  g.fillStyle = col2 === '#111' ? '#f2f2f2' : col2; g.beginPath(); g.arc(31, -22, 7.5, 0, TAU); g.fill();
+  g.fillStyle = col; g.beginPath(); g.arc(31, -22, 7.5, Math.PI * 1.05, Math.PI * 1.75); g.lineTo(31, -22); g.fill();
+  g.fillStyle = 'rgba(20,24,40,.85)'; g.beginPath(); g.ellipse(35, -21, 3.6, 2.6, 0.2, 0, TAU); g.fill();
+  g.restore();
+  g.restore();
+}
+/* ---------- the circuit ---------- */
+function backdrop(g, W, H, cam, now, horizon, day) {
+  const T = day ? { s0: '#5fb4ff', s1: '#9fd6ff', s2: '#ffd9a0', city: '#7d93b8', win: 'rgba(255,255,255,.35)', pole: '#56607a', box: '#6b7591', stand: '#5a6a8f', rail: '#6d7fa6', head: '#3b2a20' } : { s0: '#0b0f2a', s1: '#26184a', s2: '#5a2a58', city: '#1b1636', win: 'rgba(255,214,120,.35)', pole: '#2a2547', box: '#3a3460', stand: '#2d2350', rail: '#3a2d66', head: '#120f22' };
+  const sky = g.createLinearGradient(0, 0, 0, horizon); sky.addColorStop(0, T.s0); sky.addColorStop(0.6, T.s1); sky.addColorStop(1, T.s2); g.fillStyle = sky; g.fillRect(0, 0, W, horizon + 2);
+  if (day) { // morning sun + soft clouds (Sunmori pagi)
+    const sx = W * 0.78 - cam * 0.01 % W, sy = horizon * 0.32, sg = g.createRadialGradient(sx, sy, 4, sx, sy, 70); sg.addColorStop(0, 'rgba(255,248,214,1)'); sg.addColorStop(0.35, 'rgba(255,226,150,.55)'); sg.addColorStop(1, 'rgba(255,226,150,0)'); g.fillStyle = sg; g.beginPath(); g.arc(sx, sy, 70, 0, TAU); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.75)'; for (let i = 0; i < 6; i++) { const cx = ((hash(i + 40) * W * 1.4 - cam * 0.05) % (W + 160) + W + 160) % (W + 160) - 80, cy = horizon * (0.12 + hash(i + 50) * 0.3); g.beginPath(); g.ellipse(cx, cy, 34, 9, 0, 0, TAU); g.ellipse(cx + 18, cy - 6, 20, 9, 0, 0, TAU); g.fill(); }
+  } else for (let i = 0; i < 40; i++) { const x = (hash(i) * W * 1.3 - cam * 0.02) % (W + 20), y = hash(i + 9) * horizon * 0.55; g.fillStyle = 'rgba(255,255,255,' + (0.25 + 0.5 * hash(i + 3) * (0.6 + 0.4 * Math.sin(now / 700 + i))) + ')'; g.fillRect((x + W + 20) % (W + 20) - 10, y, 1.6, 1.6); }
+  // far city
+  const p1 = cam * 0.12; g.fillStyle = T.city;
+  for (let i = -1; i < W / 38 + 2; i++) { const k = Math.floor(p1 / 38) + i, h = 30 + hash(k) * 60, x = k * 38 - p1; g.fillRect(x, horizon - h - 26, 34, h + 26); g.fillStyle = T.win; for (let j = 0; j < 5; j++) if (hash(k * 7 + j) > 0.55) g.fillRect(x + 5 + (j % 3) * 9, horizon - h - 16 + Math.floor(j / 3) * 12, 4, 5); g.fillStyle = T.city; }
+  // floodlight towers
+  const p2 = cam * 0.35, step = 260;
+  for (let i = -1; i < W / step + 2; i++) {
+    const k = Math.floor(p2 / step) + i, x = k * step - p2 + 60;
+    g.fillStyle = T.pole; g.fillRect(x - 2, horizon - 150, 4, 150);
+    g.fillStyle = T.box; rr(g, x - 20, horizon - 165, 40, 16, 3); g.fill(); if (day) { g.fillStyle = '#dfe6f2'; for (let j = 0; j < 4; j++) g.fillRect(x - 16 + j * 9, horizon - 161, 6, 8); continue; }
+    const gl = g.createRadialGradient(x, horizon - 157, 2, x, horizon - 157, 90); gl.addColorStop(0, 'rgba(255,250,220,.75)'); gl.addColorStop(0.2, 'rgba(255,240,190,.22)'); gl.addColorStop(1, 'rgba(255,240,190,0)'); g.fillStyle = gl; g.beginPath(); g.arc(x, horizon - 157, 90, 0, TAU); g.fill();
+    for (let j = 0; j < 4; j++) { g.fillStyle = '#fffbe6'; g.fillRect(x - 16 + j * 9, horizon - 161, 6, 8); }
+  }
+  // grandstand + crowd
+  const p3 = cam * 0.6, gy = horizon - 46; g.fillStyle = T.stand; g.fillRect(0, gy, W, 46);
+  g.fillStyle = T.rail; for (let r = 0; r < 4; r++) g.fillRect(0, gy + 4 + r * 11, W, 2);
+  for (let i = -1; i < W / 9 + 2; i++) {
+    const k = Math.floor(p3 / 9) + i, x = k * 9 - p3, row = Math.floor(hash(k) * 4), y = gy + 10 + row * 11, bob = Math.sin(now / 180 + k) * (hash(k + 2) > 0.7 ? 2.2 : 0.6);
+    const c = ['#ff6b6b', '#ffd23f', '#4ecdc4', '#f7f1e3', '#a29bfe', '#ff9f43'][Math.floor(hash(k + 5) * 6)];
+    g.fillStyle = T.head; g.beginPath(); g.arc(x, y - 5 + bob, 3, 0, TAU); g.fill(); g.fillStyle = c; g.fillRect(x - 3, y - 2 + bob, 6, 6);
+    if (hash(k + 11) > 0.93) { g.fillStyle = c; g.fillRect(x + 2, y - 14 + bob, 1.5, 10); g.fillRect(x + 3, y - 14 + bob, 8, 5); }
+  }
+  // sponsor wall (generic)
+  const p4 = cam * 0.85, wy = horizon - 20, bw = 220, texts = ['GAS DI SIRKUIT', 'TERTIB DI JALAN', 'DRAG 201 M', 'JADIDARING', 'BALAP RESMI', 'PAKAI HELM'];
+  for (let i = -1; i < W / bw + 2; i++) { const k = Math.floor(p4 / bw) + i, x = k * bw - p4, cols = [['#ffd23f', '#1a1a1a'], ['#e8463a', '#fff'], ['#2f7de1', '#fff'], ['#1fa35b', '#fff']][((k % 4) + 4) % 4];
+    g.fillStyle = cols[0]; g.fillRect(x, wy, bw - 4, 20); g.fillStyle = cols[1]; g.font = '900 12px system-ui,sans-serif'; g.textAlign = 'center'; g.fillText(texts[((k % texts.length) + texts.length) % texts.length], x + bw / 2 - 2, wy + 14.5); }
+}
+/** draw a full race frame. o: { W, H, lanes:[{run, name, col, col2, me, num, bot}], camD (meters at screen anchor), now, fx, shake, tut } */
+function scene(g, o) {
+  const W = o.W, H = o.H, bot = o.bottom || 0, ppm = Math.max(10, Math.min(22, W / 34)), horizon = Math.round(o.hz ? H * o.hz : Math.min(H * 0.42, (H - bot) * 0.5)), camPx = o.camD * ppm, ax = W * (o.ax || 0.3);
+  g.save(); if (o.shake) g.translate((Math.random() - 0.5) * o.shake, (Math.random() - 0.5) * o.shake);
+  backdrop(g, W, H, camPx, o.now, horizon, o.day);
+  // track
+  const ty = horizon + 18, th = H - ty; const tg = g.createLinearGradient(0, ty, 0, H); tg.addColorStop(0, o.day ? '#55565f' : '#34343e'); tg.addColorStop(1, o.day ? '#3a3b44' : '#22222a'); g.fillStyle = tg; g.fillRect(0, ty, W, th);
+  g.fillStyle = '#c9c9c9'; g.fillRect(0, ty, W, 3); g.fillStyle = '#7a1f1f'; for (let x = -((camPx) % 40); x < W; x += 40) g.fillRect(x, ty + 3, 20, 4);
+  g.fillStyle = '#1d6b3a'; g.fillRect(0, horizon + 2, W, 16);
+  const n = Math.max(1, o.lanes.length), laneH = Math.min(120, (H - bot - ty - 10) / n);
+  // asphalt grain
+  g.fillStyle = 'rgba(255,255,255,.035)'; for (let i = 0; i < 70; i++) { const x = ((hash(i) * 2000 - camPx) % 2000 + 2000) % 2000 * (W / 2000), y = ty + 10 + hash(i + 50) * (th - 10); g.fillRect(x, y, 2, 1); }
+  // lane lines + marks
+  for (let i = 1; i < n; i++) { const y = ty + 8 + i * laneH; g.fillStyle = 'rgba(255,255,255,.75)'; for (let x = -((camPx) % 34); x < W; x += 34) g.fillRect(x, y - 1.5, 18, 3); }
+  const mk = m => ax + (m - o.camD) * ppm;
+  // start line + staging gantry
+  const sx = mk(0); if (sx > -60 && sx < W + 60) { g.fillStyle = '#fff'; g.fillRect(sx - 2, ty + 6, 4, th - 6); g.fillStyle = '#ddd'; g.font = '800 11px system-ui'; g.textAlign = 'center'; g.fillText('START', sx, ty + 20); }
+  // distance boards
+  for (const m of [50, 100, 150]) { const x = mk(m); if (x < -40 || x > W + 40) continue; g.fillStyle = '#f2f2f2'; g.fillRect(x - 1, ty - 34, 2, 34); rr(g, x - 18, ty - 50, 36, 18, 3); g.fill(); g.fillStyle = '#111'; g.font = '900 12px system-ui'; g.fillText(m + ' m', x, ty - 37); }
+  // finish
+  const fx = mk(D.DIST); if (fx > -80 && fx < W + 80) {
+    for (let r = 0; r < Math.ceil((th - 6) / 10); r++) for (let c = 0; c < 2; c++) { g.fillStyle = (r + c) % 2 ? '#111' : '#fff'; g.fillRect(fx - 10 + c * 10, ty + 6 + r * 10, 10, 10); }
+    g.fillStyle = '#2b2b33'; g.fillRect(fx - 40, ty - 96, 6, 96 + 8); g.fillRect(fx + 34, ty - 96, 6, 96 + 8);
+    g.fillStyle = '#e8463a'; rr(g, fx - 46, ty - 120, 92, 28, 5); g.fill(); g.fillStyle = '#fff'; g.font = '900 16px system-ui'; g.fillText('FINISH 201', fx, ty - 100);
+  }
+  // bikes (far lane first)
+  o.lanes.forEach((L, i) => {
+    const r = L.run, y = ty + 8 + (i + 1) * laneH - laneH * 0.2, s = Math.max(0.5, Math.min(1.25, laneH / 56)), x = mk(r.d) - 64 * s;
+    if (x < -120 || x > W + 60) return;
+    if (L.me) { g.fillStyle = 'rgba(255,210,63,.09)'; g.fillRect(0, y - laneH * 0.8, W, laneH * 0.95); }
+    bike(g, x, y, s, { matic: !!((L.spec && L.spec.cvt) || (L.run.sp && L.run.sp.cvt)), col: L.col, col2: L.col2, wheelie: r.wheelie, spin: (r.d / 0.0817) % TAU, num: L.num, lean: r.launched && r.fin === null ? 1 : 0 });
+    if (r.nosT > 0) { o.fx.add({ k: 'f', x: x - 8 * s, y: y - 20 * s, vx: -140, vy: (Math.random() - 0.5) * 20, r: 5 * s, a: 1, life: 0.16, t: 0 }); }
+    g.font = '800 ' + Math.round(11 + s * 2) + 'px system-ui'; g.textAlign = 'center'; const label = L.name + (L.bot ? ' \ud83e\udd16' : '');
+    const tw = g.measureText(label).width + 12; g.fillStyle = L.me ? 'rgba(255,210,63,.95)' : 'rgba(10,12,24,.72)'; rr(g, x + 32 * s - tw / 2, y - 70 * s - 18, tw, 18, 9); g.fill();
+    g.fillStyle = L.me ? '#1a1300' : '#fff'; g.fillText(label, x + 32 * s, y - 70 * s - 5);
+    L.sx = x; L.sy = y; L.s = s;
+  });
+  o.fx.draw(g, 0);
+  // speed lines
+  const me = o.lanes.find(L => L.me); if (me && me.run.v > 22) { const k = (me.run.v - 22) / 25; g.strokeStyle = 'rgba(255,255,255,' + Math.min(0.35, k * 0.35) + ')'; g.lineWidth = 1.5; for (let i = 0; i < 14; i++) { const y = hash(i + Math.floor(o.now / 60)) * H, x = hash(i * 3 + Math.floor(o.now / 60)) * W; g.beginPath(); g.moveTo(x, y); g.lineTo(x - 60 - k * 80, y); g.stroke(); } }
+  // vignette
+  const vg = g.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, o.day ? 'rgba(0,0,0,.22)' : 'rgba(0,0,0,.45)'); g.fillStyle = vg; g.fillRect(0, 0, W, H);
+  g.restore();
+  return { ppm, ax, ty, laneH };
+}
+/* ---------- tachometer (own canvas) ---------- */
+function tach(g, S, run, o) {
+  const cx = S / 2, cy = S / 2 + S * 0.06, R = S * 0.44, a0 = Math.PI * 0.8, a1 = Math.PI * 2.2, A = x => a0 + (a1 - a0) * x;
+  g.clearRect(0, 0, S, S);
+  g.fillStyle = 'rgba(8,10,22,.82)'; g.beginPath(); g.arc(cx, cy, R + S * 0.05, 0, TAU); g.fill();
+  g.lineWidth = S * 0.07; g.lineCap = 'butt';
+  const band = (x0, x1, c) => { g.strokeStyle = c; g.beginPath(); g.arc(cx, cy, R - S * 0.04, A(x0), A(x1)); g.stroke(); };
+  band(0, 1, 'rgba(255,255,255,.12)');
+  if (!run.launched) { const b = D.launchBand(o.grip || 0); band(b[0], b[1], '#3ddc84'); }
+  else if (run.sp.cvt) band(0.86, 0.97, 'rgba(255,95,162,.75)');
+  else { band(D.SHIFT.good[0], D.SHIFT.perfect[0], 'rgba(255,210,63,.7)'); band(D.SHIFT.perfect[0], D.SHIFT.perfect[1], '#3ddc84'); band(0.975, 1, '#ff4d4d'); }
+  g.strokeStyle = 'rgba(255,255,255,.6)'; g.lineWidth = 2;
+  for (let i = 0; i <= 13; i++) { const a = A(i / 13); g.beginPath(); g.moveTo(cx + Math.cos(a) * (R - S * 0.09), cy + Math.sin(a) * (R - S * 0.09)); g.lineTo(cx + Math.cos(a) * (R - S * 0.13), cy + Math.sin(a) * (R - S * 0.13)); g.stroke(); }
+  const x = Math.max(0, Math.min(1.02, run.rpm)), a = A(x), hot = run.launched && !run.sp.cvt ? x >= D.SHIFT.perfect[0] : false;
+  g.strokeStyle = hot ? '#3ddc84' : '#ff7a3d'; g.lineWidth = S * 0.025; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * (R - S * 0.06), cy + Math.sin(a) * (R - S * 0.06)); g.stroke();
+  g.fillStyle = '#e9edf5'; g.beginPath(); g.arc(cx, cy, S * 0.04, 0, TAU); g.fill();
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.font = '900 ' + Math.round(S * 0.2) + 'px system-ui'; g.fillText(run.launched ? (run.sp.cvt ? 'D' : String(run.g + 1)) : 'N', cx, cy + S * 0.27);
+  g.font = '800 ' + Math.round(S * 0.085) + 'px system-ui'; g.fillStyle = 'rgba(255,255,255,.75)'; g.fillText(Math.round(run.v * 3.6) + ' km/j', cx, cy + S * 0.4);
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.font = '700 ' + Math.round(S * 0.06) + 'px system-ui'; g.fillText('x1000 rpm', cx, cy - S * 0.16);
+  // shift light
+  if (run.launched && hot && run.fin === null) { g.fillStyle = 'rgba(61,220,132,' + (0.55 + 0.45 * Math.sin(o.now / 40)) + ')'; g.beginPath(); g.arc(cx, cy - R * 0.55, S * 0.045, 0, TAU); g.fill(); }
+}
+root.D201R = { scene, tach, bike, backdrop, makeFx, rr };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* Drag 201: platform transport (copied from malampendakian) (/api/game + raw Reverb websocket wake-ups; Connection is the shared JaRing pattern),
+   an offline LocalLink, and a small Room coordinator with read throttling. */
+(function (root) {
+'use strict';
+const LIMITS = { stateMax: 200000, nameMax: 24 };
+const GM_KEY = 'gamemaster'; // #gamemaster -> GET rooms?gm=gamemaster (all lobbies, incl. private)
+const copy = v => JSON.parse(JSON.stringify(v));
+const bytes = v => new TextEncoder().encode(JSON.stringify(v)).length;
+function rnd(n) { return Math.floor(Math.random() * n); }
+const err = (code) => { const e = Error(code); e.code = code; return e; };
+const obj = v => (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+const arr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : []);
+/** PHP turns {} into [] - every state read goes through this */
+function normState(s) { s = obj(s); s.v = 1; if (!['lobby', 'play', 'end'].includes(s.ph)) s.ph = 'lobby'; s.set = obj(s.set); if (s.res && typeof s.res !== 'object') s.res = null; s.cm = arr(s.cm).filter(m => m && typeof m === 'object').slice(-30); if (s.s && typeof s.s !== 'object') s.s = null; return s; }
+function normalizeRoom(d) { if (d && !d.unchanged && d.code) { d.state = normState(d.state); d.private = obj(d.private); d.players = arr(d.players); d.events = arr(d.events).map(e => { const x = obj(e); x.payload = obj(x.payload); return x; }); } return d; }
+function seated(players) { return (players || []).filter(p => !p.spectator).sort((a, b) => (a.seat ?? 0) - (b.seat ?? 0)); }
+
+/* ---------- Platform transport (from gelembung net.js) ---------- */
+function gameSubdomain(hostname) { const m = /^([a-z0-9-]+)\.jadidaring\.(?:com|test)$/i.exec(String(hostname || '')); return m ? m[1].toLowerCase() : null; }
+const SESSION_KEY = 'drag201.session';
+class Connection {
+  constructor({ location = root.location, fetch = root.fetch, Socket = root.WebSocket, storage = null, now = () => Date.now(), onWake = () => {}, onSocket = () => {}, lobbyWake = () => {}, timers = null, random = Math.random, reconnectMaxMs = 15000 } = {}) {
+    this.location = location; this.fetchFn = typeof fetch === 'function' ? fetch.bind(root) : null; this.Socket = Socket; this.storage = storage; this.now = now; this.onWake = onWake; this.onSocket = onSocket; this.lobbyWake = lobbyWake;
+    this.timers = timers || { setTimeout: (f, ms) => root.setTimeout(f, ms), clearTimeout: id => root.clearTimeout(id), setInterval: (f, ms) => root.setInterval(f, ms), clearInterval: id => root.clearInterval(id) };
+    this.random = random; this.reconnectMaxMs = reconnectMaxMs; this.attempts = 0; this.state = 'idle'; this.lastError = null; this.stats = { sockets: 0, catchUps: 0, wakeups: 0, errors: 0 };
+    this.allowed = !!location && /^https?:$/.test(location.protocol) && !!gameSubdomain(location.hostname);
+    this.config = null; this.code = null; this.token = null; this.version = null; this.latest = null; this.socket = null; this.channel = null; this.ready = false; this.subscribed = false; this.stopped = false; this.backoffUntil = 0;
+    this.lo = -Infinity; this.hi = Infinity; this.offset = 0;
+    try { const s = JSON.parse((storage && storage.getItem(SESSION_KEY)) || 'null'); if (s && s.origin === location.origin && /^[A-Z2-9]{6}$/.test(s.code) && typeof s.token === 'string') { this.code = s.code; this.token = s.token; } } catch (e) { /* ignore */ }
+  }
+  serverNow() { return this.now() + this.offset; }
+  clock(dateHeader, sent, received) {
+    const d = Date.parse(dateHeader || ''); if (!Number.isFinite(d)) return;
+    const lo = d - received, hi = d + 1000 - sent;
+    if (Math.max(lo, this.lo) > Math.min(hi, this.hi)) { this.lo = lo; this.hi = hi; } else { this.lo = Math.max(lo, this.lo); this.hi = Math.min(hi, this.hi); }
+    this.offset = Math.round((this.lo + this.hi) / 2);
+  }
+  save() { try { if (!this.storage) return; if (this.code && this.token) this.storage.setItem(SESSION_KEY, JSON.stringify({ origin: this.location.origin, code: this.code, token: this.token })); else this.storage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ } }
+  async request(path, { body, auth = true, bearer = null } = {}) {
+    if (!this.allowed) throw err('offline');
+    if (this.now() < this.backoffUntil) { const e = err('busy'); e.status = 429; e.wait = Math.ceil((this.backoffUntil - this.now()) / 1000); throw e; }
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    if (bearer) headers.Authorization = 'Bearer ' + bearer; else if (auth && this.token) headers.Authorization = 'Bearer ' + this.token;
+    const sent = this.now(); let res;
+    try {
+      const opts = { method: body === undefined ? 'GET' : 'POST', headers, credentials: 'same-origin', cache: 'no-store' };
+      if (body !== undefined) opts.body = JSON.stringify(body);
+      if (root.AbortSignal && AbortSignal.timeout) opts.signal = AbortSignal.timeout(20000);
+      res = await this.fetchFn('/api/game/' + path, opts);
+    } catch (e) { throw err('network'); }
+    this.clock(res.headers && res.headers.get && res.headers.get('Date'), sent, this.now());
+    let data = {}; try { data = await res.json(); } catch (e) { data = {}; }
+    if (!res.ok) {
+      const e = Error(data.error || data.message || ('HTTP ' + res.status)); e.status = res.status; e.server = data.error || data.message || '';
+      if (res.status === 429) { this.backoffUntil = this.now() + Math.max(1, Number(res.headers && res.headers.get && res.headers.get('Retry-After')) || 10) * 1000 + rnd(1000); e.code = 'busy'; }
+      throw e;
+    }
+    return data;
+  }
+  async start() {
+    if (this.config) { if (this.stopped) { this.stopped = false; this.openSocket(); } return this.config; }
+    if (this.starting) return this.starting;
+    this.starting = (async () => {
+      const c = await this.request('config', { auth: false }), w = c.websocket, sub = gameSubdomain(this.location.hostname), prefix = 'game.' + sub;
+      if (c.game !== sub || !c.database || c.database.shared !== true || c.database.isolatedBy !== 'subdomain' || !w || w.channelPrefix !== prefix || w.lobbyChannel !== prefix || w.roomChannel !== prefix + '.{code}') throw err('mismatch');
+      if (!w.enabled || !w.url) throw err('disabled');
+      const url = new URL(w.url); if (!['ws:', 'wss:'].includes(url.protocol) || (this.location.protocol === 'https:' && url.protocol !== 'wss:')) throw err('mismatch');
+      this.config = c; this.stopped = false; this.openSocket(); return c;
+    })();
+    try { return await this.starting; } finally { this.starting = null; }
+  }
+  desiredChannel() { const w = this.config.websocket; return this.code ? w.channelPrefix + '.' + this.code : w.lobbyChannel; }
+  /* Realtime is socket-only: there is no HTTP polling loop. Reads happen on join, on room.updated wakeups,
+     once after every (re)subscribe (catch-up), when the tab becomes visible, and after a 409. */
+  setState(st) { if (this.state !== st) { this.state = st; try { this.onSocket(st === 'online', st); } catch (e) { /* a UI error must never break the socket */ } } }
+  subscribe() {
+    if (!this.ready || !this.socket || this.socket.readyState !== 1) return; const next = this.desiredChannel(); if (next === this.channel) return;
+    if (this.channel) this.socket.send(JSON.stringify({ event: 'pusher:unsubscribe', data: { channel: this.channel } }));
+    this.channel = next; this.subscribed = false; this.setState('subscribing'); this.socket.send(JSON.stringify({ event: 'pusher:subscribe', data: { channel: next } }));
+  }
+  /** exponential backoff 1s\u21922s\u21924s\u21928s\u2026 capped (15 s), \u00b125% jitter */
+  backoffDelay(hint) {
+    const base = hint === 'now' ? 1000 : hint === 'max' ? this.reconnectMaxMs : Math.min(this.reconnectMaxMs, 1000 * Math.pow(2, this.attempts));
+    return Math.round(base * (0.75 + this.random() * 0.5));
+  }
+  scheduleReconnect(hint) {
+    if (this.stopped || this.reconnectTimer) return;
+    const delay = this.backoffDelay(hint); this.attempts++; this.nextRetryAt = this.now() + delay; this.setState('reconnecting');
+    this.reconnectTimer = this.timers.setTimeout(() => { this.reconnectTimer = null; this.openSocket(); }, delay);
+  }
+  openSocket() {
+    if (this.stopped || !this.config || !this.Socket) return;
+    if (this.reconnectTimer) { this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; }
+    let ws; try { ws = this.socket = new this.Socket(this.config.websocket.url); } catch (e) { this.socket = null; this.scheduleReconnect(); return; }
+    this.stats.sockets++; this.ready = false; this.channel = null; this.subscribed = false; this.setState(this.attempts ? 'reconnecting' : 'connecting'); this.errorHint = null;
+    ws.onmessage = ev => {
+      if (ws !== this.socket) return; this.lastMessage = this.now(); let frame, data;
+      try { frame = JSON.parse(ev.data); data = typeof frame.data === 'string' ? JSON.parse(frame.data) : frame.data; } catch (e) { return; }
+      if (frame.event === 'pusher:connection_established') {
+        this.ready = true; this.subscribe();
+        this.timers.clearInterval(this.heartbeat);
+        const activity = Math.max(10, Math.min(120, Number(data && data.activity_timeout) || 30)) * 1000;
+        this.heartbeat = this.timers.setInterval(() => { if (this.now() - this.lastMessage > activity * 2) { ws.close(); return; } if (ws.readyState === 1) ws.send(JSON.stringify({ event: 'pusher:ping', data: {} })); }, activity);
+      }
+      else if (frame.event === 'pusher:ping') { if (ws.readyState === 1) ws.send(JSON.stringify({ event: 'pusher:pong', data: {} })); }
+      else if (frame.event === 'pusher:error') {
+        // Pusher protocol: 4000\u20134099 do not retry unchanged (back off to max), 4100\u20134199 retry with backoff, 4200\u20134299 retry soon.
+        const code = Number(data && data.code); this.stats.errors++; this.lastError = { code: code || null, message: String((data && data.message) || '') };
+        this.errorHint = code >= 4000 && code < 4100 ? 'max' : code >= 4200 && code < 4300 ? 'now' : null;
+        if (code >= 4000 && code < 4300 && ws.readyState < 2) ws.close();
+      }
+      else if (frame.event === 'pusher_internal:subscription_succeeded' && frame.channel === this.channel) {
+        this.subscribed = true; this.attempts = 0; this.onlineSince = this.now(); this.setState('online'); this.stats.catchUps++;
+        if (this.code) this.onWake({ catchUp: true }); else this.lobbyWake({ catchUp: true });
+      }
+      else if (frame.event === this.config.websocket.event && frame.channel === this.channel) {
+        if (this.code) { if (data && data.code === this.code && Number(data.version) > (this.version ?? -1)) { this.hint = Math.max(this.hint || 0, Number(data.version) || 0); if (this.acting) this.deferWake = Math.max(this.deferWake || 0, Number(data.version) || 0); else { this.stats.wakeups++; this.onWake(data); } } }
+        else this.lobbyWake(data);
+      }
+    };
+    ws.onerror = () => { if (ws.readyState < 2) ws.close(); };
+    ws.onclose = () => {
+      if (ws !== this.socket) return; this.socket = null; this.ready = false; this.subscribed = false; this.channel = null; this.timers.clearInterval(this.heartbeat);
+      if (!this.stopped) this.scheduleReconnect(this.errorHint); else this.setState('idle');
+    };
+  }
+  /** one catch-up read when the tab becomes visible again (no-op without a room) */
+  visible() { if (!this.config || this.stopped) return; if (!this.socket && !this.reconnectTimer) this.openSocket(); else if (this.reconnectTimer && this.state === 'reconnecting') { this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; this.openSocket(); } if (this.code) this.onWake({ visible: true }); else this.lobbyWake({ visible: true }); }
+  adopt(data) { normalizeRoom(data); if (data && !data.unchanged && data.code && (!this.latest || this.latest.code !== data.code || data.version >= this.latest.version)) { this.latest = data; this.version = data.version; } return data; }
+  async enter(mode, { displayName, code, maxPlayers, state } = {}) {
+    await this.start();
+    if (this.code && this.token) { try { await this.leave(); } catch (e) { this.forget(); } }
+    const common = { displayName: String(displayName || 'Tamu').slice(0, 24) }, create = Object.assign({}, common, { maxPlayers, state, private: {} });
+    let data;
+    if (mode === 'private' || mode === 'public') data = await this.request('rooms', { body: Object.assign({}, create, { visibility: mode }), auth: false });
+    else if (mode === 'match') data = await this.request('rooms/match', { body: create, auth: false });
+    else if (mode === 'watch') data = await this.request('rooms/' + encodeURIComponent(code) + '/watch', { body: common, auth: false });
+    else data = await this.request('rooms/join', { body: Object.assign({}, common, { code, private: {} }), auth: false });
+    if (typeof data.playerToken !== 'string' || !/^[A-Z2-9]{6}$/.test(data.code)) throw Error('no-session');
+    this.code = data.code; this.token = data.playerToken; this.latest = null; this.version = null; this.hint = 0; this.adopt(data); this.save(); this.subscribe(); return data;
+  }
+  /** Lobby list. Public only by default; `{ gm: true }` (the #gamemaster hash) asks the platform for every lobby incl. private ones. */
+  async rooms({ gm = false } = {}) { return this.request('rooms' + (gm ? '?gm=' + GM_KEY : ''), { auth: false }); }
+  /** typed GM claim: POST rooms/{code}/gamemaster {code} (seated or spectator). 200 = room payload with gamemaster: true; wrong code = 403 */
+  async gamemaster(code) { if (!this.code || !this.token) throw err('noroom'); return this.adopt(await this.request('rooms/' + this.code + '/gamemaster', { body: { code: String(code || '') } })); }
+  /** Does an invite code exist? Asks GET rooms/{code} with a throw-away bearer: 403 = the room exists (we are just not a member), 404/422 = no such room. */
+  async probe(code) {
+    if (!/^[A-Z2-9]{6}$/.test(code || '')) return 'missing';
+    try { await this.request('rooms/' + code, { auth: false, bearer: 'invite-check' }); return 'exists'; }
+    catch (e) { if (e.status === 403 || e.status === 401) return 'exists'; if (e.status === 404 || e.status === 422) return 'missing'; return 'unknown'; }
+  }
+  /** POST rooms/{code}/actions. The response already carries the full room (state + last 50 events) at the new version, so a
+      wake-up that arrives while our own write is in flight (usually the echo of that write) is held and only turned into a read
+      if the room moved past what the response gave us. Before: every own write cost one extra read and used up the read gap,
+      delaying the read of the NEXT real update (host snapshot / guest input) by up to ~330 ms. */
+  async act(req) {
+    this.acting = (this.acting || 0) + 1;
+    try { return this.adopt(await this.request('rooms/' + this.code + '/actions', { body: req })); }
+    finally {
+      this.acting--;
+      if (!this.acting && this.deferWake) { const v = this.deferWake; this.deferWake = 0; if (this.code && v > (this.version ?? -1)) { this.stats.wakeups++; try { this.onWake({ code: this.code, version: v }); } catch (e) { /* ignore */ } } else this.stats.echoSkips = (this.stats.echoSkips || 0) + 1; }
+    }
+  }
+  async read({ full = false } = {}) { const code = this.code; if (!code) return null; const data = await this.request('rooms/' + code + (full || this.version === null ? '' : '?since=' + this.version)); if (code === this.code) this.adopt(data); return data; }
+  /** build(latest) returns {state?, private?, status?, payload?} or null. A 409 refetches and retries once. */
+  async write(type, build) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const latest = this.latest || await this.read({ full: true });
+      const body = await build(latest); if (!body) return null;
+      const req = Object.assign({ payload: {} }, body, { type, expectedVersion: latest.version });
+      if (req.state && bytes(req.state) > LIMITS.stateMax) throw err('toolarge');
+      try { return await this.act(req); }
+      catch (e) { if (e.status !== 409 || attempt) throw e; this.latest = null; await this.read({ full: true }); }
+    }
+    return null;
+  }
+  /** one write attempt (no hidden retry, so write budgets stay exact). Uses the newest version we know of: the last read OR the
+      version announced by a websocket wake-up (GameRoomUpdated carries it), so a busy room does not need a read before every write.
+      409 -> e.status 409, e.used = the version we tried */
+  async push(type, body) {
+    if (this.version === null) await this.read({ full: true });
+    const used = Math.max(this.version, this.hint || 0), req = Object.assign({ payload: {} }, body, { type, expectedVersion: used });
+    if (req.state && bytes(req.state) > LIMITS.stateMax) throw err('toolarge');
+    try { return await this.act(req); }
+    catch (e) { e.used = used; throw e; }
+  }
+  /** a newer version than `used` was announced since -> a retry without a read has a fair chance */
+  fresher(used) { return Math.max(this.version ?? 0, this.hint || 0) > used; }
+  async leave() { if (this.code && this.token) await this.request('rooms/' + this.code + '/leave', { body: {} }); this.forget(); }
+  /** best-effort leave while the page is going away (pagehide): keepalive POST, no await, then forget the session */
+  leaveBeacon() {
+    if (!this.allowed || !this.code || !this.token || !this.fetchFn) return false;
+    try { const p = this.fetchFn('/api/game/rooms/' + this.code + '/leave', { method: 'POST', keepalive: true, credentials: 'same-origin', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token }, body: '{}' }); if (p && p.catch) p.catch(() => {}); } catch (e) { /* page is going away */ }
+    this.forget(); return true;
+  }
+  forget() { this.latest = null; this.code = null; this.token = null; this.version = null; this.hint = 0; this.save(); this.subscribe(); }
+  stop() { this.stopped = true; if (this.reconnectTimer) this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; this.timers.clearInterval(this.heartbeat); if (this.socket) this.socket.close(); this.setState('idle'); }
+}
+
+/* ---------- Room coordinator ----------
+   Lobby edits (settings, start, end, rematch) are read-modify-write with expectedVersion (edit() retries 409 with jitter).
+   During play the host pushes snapshots and clients push turns via Connection.push (one attempt, budgeted by the app).
+   Reads are throttled to one per READ_GAP_MS so a busy room never exceeds the 240 reads/min per player limit. */
+const POLL_MS = 900, READ_GAP_MS = 300;
+class Room {
+  constructor(link, { onChange = () => {} } = {}) { this.net = link; this.onChange = onChange; this.data = null; this.tail = Promise.resolve(); this.reading = false; this.again = false; this.lastRead = 0; this.readTimer = null; }
+  get local() { return !!this.net.local; }
+  get me() { return this.data ? this.data.playerId : null; }
+  get s() { return (this.data && this.data.state) || normState({}); }
+  get spectator() { return !!(this.data && this.data.spectator); }
+  get code() { return this.data ? this.data.code : ''; }
+  get version() { return this.data ? this.data.version : 0; }
+  players() { return (this.data && this.data.players) || []; }
+  /** server-owned GM flag (game_players.is_gamemaster) */
+  isGamemaster(id) { const d = this.data; if (!d || this.local) return false; if (id == null) id = d.playerId; const p = (d.players || []).find(q => q.id === id); return !!(p ? p.gamemaster : (id === d.playerId && d.gamemaster)); }
+  claimGamemaster(code) { if (this.local || !this.net.gamemaster) return Promise.reject(err('offline')); return this.serial(async () => { const d = await this.net.gamemaster(code); this.receive(d); return d; }); }
+  seated() { return seated(this.players()); }
+  isHost() { const d = this.data; if (!d || d.spectator) return false; if (this.local) return true; const p = d.players.find(q => q.id === d.playerId); return !!(p ? p.host : d.host); }
+  receive(data) {
+    if (!data || data.unchanged || !data.code) return; normalizeRoom(data);
+    if (this.data && this.data.code === data.code && data.version < this.data.version) return;
+    this.data = data; this.rxAt = Date.now(); this.onChange(this, data);
+  }
+  serial(work) { const next = this.tail.then(work); this.tail = next.catch(() => {}); return next; }
+  /** fn(s, d) mutates a normalized copy of state; return false/null to cancel, or {status} to also set the room status */
+  edit(type, fn) {
+    return this.serial(async () => {
+      for (let i = 0; i < 6; i++) {
+        try {
+          const res = await this.net.write(type, d => {
+            if (d) this.receive(d); if (!d) return null;
+            const s = normState(copy(d.state)), out = fn(s, d); if (out === null || out === false) return null;
+            return Object.assign({ state: s }, typeof out === 'object' ? out : {});
+          });
+          if (res) this.receive(res); return res;
+        } catch (e) { if (e.status !== 409 || i === 5) throw e; this.net.latest = null; await new Promise(r => setTimeout(r, 60 + Math.random() * 240 * (i + 1))); }
+      }
+      return null;
+    });
+  }
+  /** single-attempt write used for snapshots / turns */
+  async push(type, body) { const res = await this.net.push(type, body); this.receive(res); return res; }
+  /** after a 409: wait briefly for the wake-up that announces the winning write; read only if none arrives */
+  async settle(used) { for (let i = 0; i < 4 && !this.net.fresher(used); i++) await new Promise(r => setTimeout(r, 25)); if (!this.net.fresher(used)) await this.readNow(); }
+  async enter(mode, opts) {
+    const data = await this.net.enter(mode, Object.assign({}, opts, { state: normState({ ph: 'lobby', set: opts.set || {} }), maxPlayers: opts.maxPlayers || 4 }));
+    this.data = null; this.receive(data); return this.data;
+  }
+  /** throttled read: at most one request per READ_GAP_MS, extra wake-ups coalesce into one trailing read */
+  refresh(full) {
+    if (this.local) return;
+    if (this.reading) { this.again = true; return; }
+    const wait = this.lastRead + READ_GAP_MS - Date.now();
+    if (wait > 0) { if (!this.readTimer) this.readTimer = setTimeout(() => { this.readTimer = null; this.refresh(full); }, wait); return; }
+    this.reading = true; this.lastRead = Date.now();
+    this.net.read({ full }).then(d => this.receive(d), e => { if (e.status === 403 || e.status === 404) { this.gone = true; this.onChange(this, null); } })
+      .finally(() => { this.reading = false; if (this.again) { this.again = false; this.refresh(); } });
+  }
+  /** immediate read (after a 409) that still respects the read gap */
+  async readNow() { const wait = this.lastRead + READ_GAP_MS - Date.now(); if (wait > 0) await new Promise(r => setTimeout(r, wait)); this.lastRead = Date.now(); this.receive(await this.net.read()); }
+  /** poll only while the websocket is down */
+  tick() { if (this.local || this.net.state === 'online') return; const t = Date.now(); if (t - (this.lastPoll || 0) >= POLL_MS) { this.lastPoll = t; this.refresh(); } }
+  async leave() { if (this.readTimer) clearTimeout(this.readTimer); try { await this.net.leave(); } catch (e) { if (this.net.forget) this.net.forget(); } }
+}
+
+root.MPNet = { Connection, Room, normalizeRoom, normState, seated, gameSubdomain, LIMITS, GM_KEY };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* Drag 201: app (screens, input, race loop, career/garage, online, audio) */
+(function (root) {
+'use strict';
+const D = root.D201, R = root.D201R, N = root.MPNet, doc = document, $ = id => doc.getElementById(id);
+const NAME_KEY = 'drag201.name', SAVE_KEY = 'drag201.save', MUTE_KEY = 'drag201.mute';
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const getLS = k => { try { return root.localStorage.getItem(k); } catch (e) { return null; } }, setLS = (k, v) => { try { root.localStorage.setItem(k, v); } catch (e) { /* private mode */ } };
+const fmt = ms => ms == null ? '\u2013' : (ms / 1000).toFixed(3), fmt2 = ms => ms == null ? '\u2013' : (ms / 1000).toFixed(2);
+const BODY = ['#e8463a', '#2f7de1', '#1fa35b', '#8f3bd6', '#ff8a1f', '#14b8c4', '#ff5fa2', '#f2f2f2', '#22252e', '#ffd23f'];
+const STRIPE = ['#f7f1e3', '#ffd23f', '#111', '#ff8a1f', '#7fd8ff', '#e8463a', '#3ddc84'];
+const PAINT_COST = 40;
+/** livery of a bike: saved paint or the factory colors */
+function paintOf(id) { const b = bikeOf(id), p = save.paint && save.paint[id]; return p ? { col: BODY[p[0]] || b.col, col2: STRIPE[p[1]] || b.col2, pi: p } : { col: b.col, col2: b.col2, pi: null }; }
+const PAL = ['#e8463a', '#2f7de1', '#1fa35b', '#8f3bd6', '#ff8a1f', '#14b8c4'];
+function toast(msg, kind, ms) { const t = doc.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg; $('toasts').appendChild(t); setTimeout(() => t.remove(), ms || 2600); }
+function myName() { return ($('nameInput').value || '').replace(/[^\p{L}\p{N} ._'-]/gu, '').trim().slice(0, 16); }
+
+/* ---------- save ---------- */
+function blankSave() { return { coins: 150, cur: 'bebek4', own: { bebek4: { mesin: 0, knalpot: 0, gir: 0, ban: 0 } }, car: 0, best: null, tut: 0, runs: 0 }; }
+let save = (() => { try { const s = JSON.parse(getLS(SAVE_KEY) || 'null'); if (s && s.own && s.own.bebek4) return Object.assign(blankSave(), s); } catch (e) { /* fresh */ } return blankSave(); })();
+function persist() { setLS(SAVE_KEY, JSON.stringify(save)); paintCoins(); }
+function paintCoins() { for (const id of ['coinHome', 'coinCareer', 'coinGarage']) $(id).textContent = '\ud83e\ude99 ' + save.coins; }
+const mySpec = () => D.spec(save.cur, save.own[save.cur]);
+const bikeOf = id => D.BIKES.find(b => b.id === id) || D.BIKES[0];
+
+/* ---------- audio ---------- */
+let AC = null, muted = getLS(MUTE_KEY) === '1', eng = null;
+function ac() { if (AC || muted) { if (AC && AC.state === 'suspended') AC.resume(); return AC; } try { AC = new (root.AudioContext || root.webkitAudioContext)(); } catch (e) { AC = null; } return AC; }
+function tone(f, d, type, vol, slide) { const a = ac(); if (!a || muted) return; const o = a.createOscillator(), g = a.createGain(), t = a.currentTime; o.type = type || 'square'; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + d); g.gain.setValueAtTime(vol || 0.08, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + 0.02); }
+function noise(d, vol, fq) { const a = ac(); if (!a || muted) return; const n = a.sampleRate * d, b = a.createBuffer(1, n, a.sampleRate), ch = b.getChannelData(0); for (let i = 0; i < n; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / n); const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); f.type = 'bandpass'; f.frequency.value = fq || 900; g.gain.value = vol || 0.2; s.buffer = b; s.connect(f); f.connect(g); g.connect(a.destination); s.start(); }
+const SFX = { amber: () => tone(620, 0.16, 'square', 0.06), green: () => tone(1240, 0.32, 'square', 0.08), foul: () => tone(180, 0.5, 'sawtooth', 0.1, 90), pop: () => noise(0.09, 0.35, 1600), perfect: () => { tone(880, 0.08, 'triangle', 0.08); setTimeout(() => tone(1320, 0.12, 'triangle', 0.08), 70); }, nos: () => noise(0.7, 0.3, 500), click: () => tone(700, 0.04, 'triangle', 0.05), win: () => { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => tone(f, 0.18, 'triangle', 0.09), i * 110)); noise(1.2, 0.12, 700); }, lose: () => tone(330, 0.4, 'triangle', 0.08, 160), chat: () => tone(990, 0.05, 'sine', 0.04), coin: () => tone(1400, 0.08, 'triangle', 0.06, 1900) };
+function engine(on) {
+  const a = ac(); if (!a || muted) { if (eng) { eng.g.gain.value = 0; } return; }
+  if (!eng) { const o1 = a.createOscillator(), o2 = a.createOscillator(), f = a.createBiquadFilter(), g = a.createGain(); o1.type = 'sawtooth'; o2.type = 'square'; f.type = 'lowpass'; f.frequency.value = 900; f.Q.value = 6; g.gain.value = 0; o1.connect(f); o2.connect(f); f.connect(g); g.connect(a.destination); o1.start(); o2.start(); eng = { o1, o2, f, g }; }
+  if (!on) eng.g.gain.setTargetAtTime(0, a.currentTime, 0.08);
+}
+function engineSet(rpm, load) { if (!eng || muted || !AC) return; const t = AC.currentTime, f = 34 + rpm * 190; eng.o1.frequency.setTargetAtTime(f, t, 0.03); eng.o2.frequency.setTargetAtTime(f * 0.502, t, 0.03); eng.f.frequency.setTargetAtTime(500 + rpm * 2600, t, 0.05); eng.g.gain.setTargetAtTime(0.025 + load * 0.06, t, 0.05); }
+function paintMute() { for (const id of ['muteBtn', 'muteBtn2']) $(id).textContent = muted ? '\ud83d\udd07' : '\ud83d\udd0a'; }
+
+/* ---------- screens ---------- */
+const SCREENS = ['home', 'career', 'garage', 'lobby', 'race', 'result'];
+function show(id, keepRace) { for (const s of SCREENS) { if (s === 'race' && keepRace) continue; $(s).hidden = s !== id; } if (keepRace) $('race').hidden = false; doc.documentElement.classList.toggle('jr-hub-off', id === 'race' || keepRace); if (id === 'home') paintHome(); }
+
+/* ---------- home ---------- */
+function paintHome() {
+  paintCoins(); const sp = mySpec(), b = bikeOf(save.cur), ideal = D.simIdeal(sp).summary();
+  $('stripBike').textContent = b.name; $('stripStat').textContent = 'Waktu ideal ' + fmt2(ideal.tot) + ' s \u00b7 ' + ideal.top + ' km/j';
+  drawBikeCv($('stripCv'), save.cur, 0.86);
+  const ci = Math.min(save.car, D.RIVALS.length - 1), rv = D.RIVALS[ci];
+  $('careerSub').textContent = save.car >= D.RIVALS.length ? 'Juara! Raja Sirkuit sudah tumbang \ud83d\udc51' : 'Lawan ' + (ci + 1) + '/10 \u00b7 ' + rv.n + ' \u00b7 \ud83e\ude99 ' + rv.pay;
+  $('sunSub').textContent = isSunday() ? 'Hari Minggu: koin 2\u00d7 \u2600\ufe0f' : 'Sirkuit pagi \u00b7 koin 2\u00d7 tiap Minggu';
+  $('taSub').textContent = save.best ? 'Rekormu ' + fmt(save.best) + ' s' : 'Kejar rekor nasional';
+  $('bestLine').textContent = save.best ? 'Rekor pribadi: ' + fmt(save.best) + ' s' : '';
+}
+function drawBikeCv(c, id, k, tuneCol) {
+  const r = Math.min(2, root.devicePixelRatio || 1), w = c.clientWidth || c.width, h = c.clientHeight || c.height; c.width = w * r; c.height = h * r; const g = c.getContext('2d'); g.setTransform(r, 0, 0, r, 0, 0); g.clearRect(0, 0, w, h);
+  const b = bikeOf(id), p = save.own[id] ? paintOf(id) : b, s = Math.min(w / 110, h / 64) * (k || 1); R.bike(g, w / 2 - 32 * s, h - 6 * s, s, { matic: !!b.cvt, col: p.col, col2: p.col2, num: '201' });
+}
+let lbCache = null;
+async function loadLb() {
+  try { const r = await fetch('/api/game/scores?limit=20', { headers: { Accept: 'application/json' } }); if (!r.ok) throw Error(r.status); const d = await r.json(); lbCache = Array.isArray(d.scores) ? d.scores : []; }
+  catch (e) { lbCache = lbCache || null; }
+  paintLb();
+}
+function paintLb() {
+  const el = $('lbList'); if (lbCache === null) { el.innerHTML = '<li class="muted">Papan rekor offline. Main dulu, nanti dicoba lagi.</li>'; return; }
+  if (!lbCache.length) { el.innerHTML = '<li class="muted">Belum ada rekor. Jadi yang pertama!</li>'; return; }
+  const me = myName(); el.innerHTML = lbCache.slice(0, 10).map(s => '<li' + (s.name === me ? ' class="me"' : '') + '><span>' + esc(s.name) + '</span><b>' + fmt(30000 - s.score) + ' s</b></li>').join('');
+}
+
+/* ---------- career ---------- */
+function paintCareer() {
+  paintCoins();
+  $('ladder').innerHTML = D.RIVALS.map((rv, i) => {
+    const done = i < save.car, next = i === save.car, lock = i > save.car, b = bikeOf(rv.bike), lv = Object.values(rv.tune).reduce((a, x) => a + x, 0);
+    return '<li style="--bc:' + b.col + '" class="' + (done ? 'done' : next ? 'next' : 'lock') + '"><span class="n">' + (done ? '\u2713' : i + 1) + '</span><span class="who"><b>' + esc(rv.n) + (i === 9 ? ' \ud83d\udc51' : '') + '</b><small>' + esc(b.name) + (lv ? ' \u00b7 modif +' + lv : ' \u00b7 standar') + ' \u00b7 \ud83e\ude99 ' + rv.pay + '</small></span>'
+      + (lock ? '<span>\ud83d\udd12</span>' : '<button class="btn small ' + (next ? 'green' : 'ghost') + '" data-rv="' + i + '">' + (done ? 'Ulang' : 'Tantang') + '</button>') + '</li>';
+  }).join('');
+}
+
+/* ---------- garage ---------- */
+let gIdx = 0;
+const PART_TXT = { mesin: ['Mesin', 'Bore up & porting: tenaga semua gigi'], knalpot: ['Knalpot', 'Knalpot racing (sirkuit): tenaga + top speed'], gir: ['Gir rasio', 'Gigi 1\u20132 lebih galak: start makin ngacir'], ban: ['Ban', 'Ban drag: zona start lebih lebar, jarang spin'] };
+function paintGarage() {
+  paintCoins(); const b = D.BIKES[gIdx], own = !!save.own[b.id], tune = save.own[b.id] || {}, sp = D.spec(b.id, tune), base = D.spec(b.id, {});
+  $('gName').textContent = b.name; $('gCls').textContent = b.cls + (save.cur === b.id ? ' \u00b7 dipakai' : '');
+  drawBikeCv($('garageCv'), b.id, 1);
+  const pw = x => x.k / 250, top = x => x.vg[x.vg.length - 1] / 50, grip = x => (0.3 + x.grip * 0.14);
+  $('gStats').innerHTML = [['Tenaga', pw(sp), pw(base)], ['Top speed', top(sp), top(base)], ['Grip start', grip(sp), grip(base)]].map(([n, v, v0]) => '<div class="stat"><span>' + n + '</span><span class="bar2"><i class="' + (v > v0 + 0.001 ? 'up' : '') + '" style="width:' + Math.round(Math.min(1, v) * 100) + '%"></i></span><b>' + Math.round(v * 100) + '</b></div>').join('');
+  const ideal = D.simIdeal(sp).summary(); $('gIdeal').textContent = 'Ideal ' + fmt2(ideal.tot) + ' s \u00b7 ' + ideal.top + ' km/j';
+  const use = $('gUse'); if (own) { use.textContent = save.cur === b.id ? '\u2713 Dipakai' : 'Pakai motor ini'; use.disabled = save.cur === b.id; }
+  else { use.textContent = 'Beli \ud83e\ude99 ' + b.price; use.disabled = save.coins < b.price; }
+  $('parts').innerHTML = D.PARTS.map(p => {
+    const lv = tune[p.id] | 0, max = lv >= 5, cost = max ? 0 : p.cost[lv];
+    return '<li><i>' + p.icon + '</i><span class="pn"><b>' + PART_TXT[p.id][0] + ' \u00b7 Lv ' + lv + '</b><small>' + PART_TXT[p.id][1] + '</small><span class="pips">' + [0, 1, 2, 3, 4].map(i => '<span class="' + (i < lv ? 'on' : '') + '"></span>').join('') + '</span></span>'
+      + (own ? (max ? '<b class="muted">MAX</b>' : '<button class="btn small green" data-part="' + p.id + '"' + (save.coins < cost ? ' disabled' : '') + '>\ud83e\ude99 ' + cost + '</button>') : '<small class="muted">beli dulu</small>') + '</li>';
+  }).join('');
+  // livery (cat & striping): the #1 "modif motor" search intent is visual modif
+  const lv = $('livery'); lv.hidden = !own;
+  if (own) { const p = paintOf(b.id), cur = p.pi || [BODY.indexOf(b.col), STRIPE.indexOf(b.col2)];
+    const sw = (arr, k) => arr.map((c, i) => '<button class="sw' + (cur[k] === i ? ' on' : '') + '" style="background:' + c + '" data-paint="' + k + ',' + i + '" aria-label="Warna ' + (i + 1) + '"' + (cur[k] !== i && save.coins < PAINT_COST ? ' disabled' : '') + '></button>').join('');
+    $('swBody').innerHTML = sw(BODY, 0); $('swStripe').innerHTML = sw(STRIPE, 1); }
+}
+function buyPaint(k, i) {
+  const b = D.BIKES[gIdx]; if (!save.own[b.id]) return; const p = paintOf(b.id), cur = (p.pi || [BODY.indexOf(b.col), STRIPE.indexOf(b.col2)]).slice();
+  if (cur[k] === i || save.coins < PAINT_COST) return; save.coins -= PAINT_COST; cur[k] = i; save.paint = save.paint || {}; save.paint[b.id] = cur;
+  SFX.coin(); toast(k ? 'Striping baru! \ud83c\udfa8' : 'Cat baru! \ud83c\udfa8', 'good', 1200); persist(); paintGarage(); paintHome(); bikeToRoom();
+}
+function garageUse() {
+  const b = D.BIKES[gIdx];
+  if (!save.own[b.id]) { if (save.coins < b.price) return; save.coins -= b.price; save.own[b.id] = { mesin: 0, knalpot: 0, gir: 0, ban: 0 }; SFX.coin(); toast('Motor baru: ' + b.name + '!', 'good'); }
+  save.cur = b.id; persist(); paintGarage(); bikeToRoom();
+}
+function buyPart(id) { const b = D.BIKES[gIdx], t = save.own[b.id]; if (!t) return; const p = D.PARTS.find(x => x.id === id), lv = t[id] | 0; if (lv >= 5 || save.coins < p.cost[lv]) return; save.coins -= p.cost[lv]; t[id] = lv + 1; SFX.coin(); persist(); paintGarage(); bikeToRoom(); }
+
+/* =====================================================================
+   RACE
+   ===================================================================== */
+let race = null, mode = null, room = null, me = null;
+const cv = $('raceCv'), g = cv.getContext('2d'), tc = $('tachCv'), tg = tc.getContext('2d'); let W = 0, H = 0, DPR = 1, TS = 0, BOT = 0;
+function fit() { DPR = Math.min(2, root.devicePixelRatio || 1); W = cv.clientWidth || root.innerWidth; H = cv.clientHeight || root.innerHeight; cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); TS = tc.clientWidth || 150; const duel = race && race.duel, pr = (duel ? $('rpm1') : $('operBtn')).getBoundingClientRect(); BOT = pr.height ? Math.max(0, H - pr.top + 6) : 0; if (W > H && H < 560 && !duel) BOT = Math.min(BOT, H * 0.08); tc.width = Math.round(TS * DPR); tc.height = Math.round(TS * DPR); }
+function lane(o) { return Object.assign({ run: new D.Run(o.spec), seenEv: 0 }, o); }
+/** start a race. opts: { kind, rivals:[{name,spec,skill,seed}], t0 (clock ms of green), clock() } */
+function startRace(opts) {
+  const sp = mySpec(), b = paintOf(save.cur), lanes = [];
+  lanes.push(lane({ id: me != null ? me : 1, name: myName() || 'Kamu', spec: sp, col: b.col, col2: b.col2, num: '1', me: true }));
+  (opts.rivals || []).forEach((r, i) => { const rb = bikeOf(r.spec.id); lanes.push(lane({ id: r.id != null ? r.id : -1 - i, name: r.name, spec: r.spec, col: r.col || rb.col, col2: r.col2 || rb.col2, num: String(i + 2), bot: !r.remote, remote: !!r.remote, brain: r.remote ? null : D.botBrain(r.skill, r.seed) })); });
+  if (opts.duel) { const c2 = PAL.find(c => c !== b.col) || PAL[1]; lanes[0].name = myName() || 'Pemain 1'; lanes.push(lane({ id: 2, name: 'Pemain 2', spec: sp, col: c2, col2: '#ffffff', num: '2', p2: true })); }
+  if (opts.kind === 'demo') { lanes[0].bot = true; lanes[0].me = false; lanes[0].brain = D.botBrain(0.8, 77); lanes[0].name = 'Raja'; }
+  const clock = opts.clock || (() => performance.now());
+  race = { kind: opts.kind, rv: opts.rv, lanes, clock, t0: opts.t0 != null ? opts.t0 : clock() + 4600, fx: R.makeFx(), lit: -1, done: false, endAt: 0, shake: 0, camD: 0, coachK: '', g: opts.g, sent: 0, finSent: false, tut: opts.kind === 'tut', sun: !!opts.sun, day: !!opts.day, duel: !!opts.duel };
+  race.lanes.sort((a, c) => (a.me ? 2 : a.p2 ? 1 : 0) - (c.me ? 2 : c.p2 ? 1 : 0)); // me nearest (drawn last, bottom)
+  gasHeld = false; nosUsed = false; gas2 = false; $('gasBtn').classList.remove('nos', 'used'); $('gasLbl').textContent = 'GAS'; $('gasSub').textContent = 'tahan';
+  $('gas2').classList.remove('nos', 'used', 'down'); $('gas2Lbl').textContent = 'GAS'; $('gas2Sub').textContent = 'tahan'; $('oper2Sub').textContent = 'lepas kopling'; $('oper2').classList.remove('auto'); $('race').classList.toggle('duel', race.duel); $('p2grp').hidden = !race.duel; $('duelRpm').hidden = !race.duel;
+  $('gasKey').textContent = 'Spasi'; $('operKey').textContent = 'K'; $('gas2Key').textContent = 'A'; dqHide(); race.keyK = '';
+  $('operSub').textContent = 'lepas kopling'; $('operBtn').classList.remove('auto'); $('tree').querySelectorAll('i').forEach(i => i.classList.remove('on'));
+  $('chatBtn').hidden = mode !== 'online'; $('raceChatSlot').hidden = true; $('coach').hidden = true;
+  $('hudInfo').textContent = opts.sun ? 'Sunmori Cup \u2600\ufe0f' : opts.kind === 'career' ? 'Karir ' + (opts.rv + 1) + '/10' : opts.kind === 'ta' ? 'Time Attack' : opts.kind === 'tut' ? 'Latihan' : opts.kind === 'online' ? 'Online \u00b7 ' + (room ? room.code : '') : opts.kind === 'demo' ? 'Demo' : opts.duel ? 'Duel 1 HP \ud83d\udc65' : 'Adu Cepat';
+  show('race'); fit(); engine(true);
+}
+const myLane = () => race && race.lanes.find(L => L.me);
+/** step every locally simulated lane up to the race clock */
+function advance() {
+  const tt = race.clock() - race.t0;
+  for (const L of race.lanes) {
+    if (L.remote) continue; const r = L.run;
+    if (L.me && !L.bot) r.setGas(gasHeld || (r.launched));
+    if (L.p2) r.setGas(gas2 || r.launched);
+    while (r.t + D.DT <= tt && r.t < 30000) { if (L.brain) D.driveBot(r, L.brain); r.step(D.DT); }
+  }
+  return tt;
+}
+let gasHeld = false, nosUsed = false, gas2 = false;
+const p2Lane = () => race && race.lanes.find(L => L.p2);
+function oper2Tap() { const L = p2Lane(); if (!L || race.done) return; advance(); const r = L.run; if (r.fin !== null || r.t < -4000 + 50) return; const q = r.tap(); if (q) feedback(L, q); }
+function nos2Tap() { const L = p2Lane(); if (!L) return; advance(); if (L.run.useNos()) { $('gas2').classList.add('used'); SFX.nos(); callout('Pemain 2 \u00b7 NOS! \ud83d\udd25', '#7fd8ff'); race.shake = 6; } }
+function operTap() {
+  const L = myLane(); if (!L || L.bot || race.done) return; advance(); const r = L.run; if (r.fin !== null) return;
+  if (r.t < -4000 + 50) return;
+  const q = r.tap(); if (!q) return; feedback(L, q);
+}
+function nosTap() { const L = myLane(); if (!L || L.bot) return; advance(); if (L.run.useNos()) { nosUsed = true; $('gasBtn').classList.add('used'); SFX.nos(); callout('NOS! \ud83d\udd25', '#7fd8ff'); race.shake = 6; } }
+const kc = x => '<kbd class="kc">' + x + '</kbd>';
+/* t365u false start = DISQUALIFIED: the bike stays on the line (game.js freezes a fouled run). Solo: red overlay + auto restart of the same race; online: out of this heat, wait for the result; duel: the other rider still runs (bye run). */
+const SOLO_RESTART = { career: 1, quick: 1, ta: 1, tut: 1 };
+let dqT = 0, dqLeft = 0;
+function dqHide() { clearInterval(dqT); dqT = 0; $('dqBox').hidden = true; }
+function onFoul(L) {
+  if (!race || L.bot) return; race.shake = 10;
+  if (race.kind === 'online' && L.me) { L.run.t = 30000; $('dqWhy').textContent = 'Start sebelum lampu hijau. Kamu keluar dari heat ini, tunggu hasil.'; $('dqCnt').textContent = ''; $('dqAgain').hidden = true; $('dqMenu').hidden = true; $('dqBox').hidden = false; setTimeout(() => { if (race && race.kind === 'online') $('dqBox').hidden = true; }, 2600); return; }
+  if (!L.me || !SOLO_RESTART[race.kind]) return;
+  race.dq = true; race.done = true; engineSet(0.15, 0.1);
+  save.runs++; persist();
+  $('dqWhy').textContent = 'Start sebelum lampu hijau. Tunggu lampu HIJAU, baru tekan OPER' + (kbMode() ? ' (K).' : '.');
+  $('dqAgain').hidden = false; $('dqMenu').hidden = false; $('dqBox').hidden = false;
+  dqLeft = 3; const paint = () => { $('dqCnt').textContent = 'Start ulang dalam ' + dqLeft + '\u2026'; }; paint();
+  clearInterval(dqT); dqT = setInterval(() => { dqLeft--; if (dqLeft <= 0) { dqHide(); if (race && race.dq) again(); } else paint(); }, 1000);
+}
+const kbMode = () => doc.documentElement.classList.contains('kb') || matchMedia('(hover:hover) and (pointer:fine)').matches;
+function paintKeys(r, tt) {
+  if (race.dq) { if (race.keyK !== 'dq') { race.keyK = 'dq'; $('keybar').innerHTML = ''; } return; }
+  const k = !r ? '' : r.fin !== null ? 'f' : r.launched ? (r.sp.cvt ? 'c' : 'l') : tt >= 0 ? 'g' : 'w'; if (race.keyK === k + (gasHeld ? 1 : 0)) return; race.keyK = k + (gasHeld ? 1 : 0);
+  const it = (cls, keys, txt) => '<span class="' + cls + '">' + keys.map(kc).join('') + ' ' + txt + '</span>';
+  $('keybar').innerHTML = !r || k === 'f' ? '' : !r.launched
+    ? it(gasHeld ? 'now' : '', ['Spasi'], 'tahan = GAS') + it(k === 'g' ? 'now' : 'off', ['K'], k === 'g' ? 'START sekarang!' : 'START (tunggu hijau)') + it('off', ['N'], 'NOS')
+    : it(k === 'c' ? 'off' : 'now', ['K', 'Spasi'], k === 'c' ? 'otomatis (CVT)' : 'oper gigi') + it(r.nos > 0 ? '' : 'off', ['N'], 'NOS \ud83d\udd25');
+}
+const Q_TXT = { perfect: ['PERFECT!', '#3ddc84'], good: ['Bagus', '#ffd23f'], early: ['Kecepetan', '#ff8b8b'], late: ['Telat!', '#ff8b8b'], spin: ['Ban spin!', '#ff8b8b'], bog: ['Mesin ngempos', '#ff8b8b'] };
+function feedback(L, q) {
+  const r = L.run, E = L.p2 ? { gl: 'gas2Lbl', gs: 'gas2Sub', gb: 'gas2', os: 'oper2Sub', ob: 'oper2' } : { gl: 'gasLbl', gs: 'gasSub', gb: 'gasBtn', os: 'operSub', ob: 'operBtn' }, who = race.duel ? (L.p2 ? 'P2 \u00b7 ' : 'P1 \u00b7 ') : '';
+  if (!r.ev.length) return; const e = r.ev[r.ev.length - 1];
+  if (e[0] === 'launch') {
+    if (r.foul) { callout(who + 'DISKUALIFIKASI', '#ff4d4d', 'Start sebelum lampu hijau'); SFX.foul(); $('tree').querySelector('.red').classList.add('on'); onFoul(L); }
+    else { const t = Q_TXT[q]; callout(who + (q === 'perfect' ? 'START PERFECT!' : t[0]), t[1], 'RT ' + fmt(r.rt) + ' s'); if (q === 'perfect') SFX.perfect(); }
+    SFX.pop(); race.fx.smoke(L.sx || 100, (L.sy || H * 0.8) - 4, q === 'spin' ? 26 : 12, 1.2); race.shake = q === 'spin' ? 8 : 4;
+    $(E.gl).textContent = 'NOS'; $(E.gs).textContent = '1\u00d7 dorongan'; $(E.gb).classList.add('nos'); if (L.p2) $('gas2Key').textContent = 'D'; else { $('gasKey').textContent = 'N'; $('operKey').textContent = 'K/Spasi'; } $(E.os).textContent = r.sp.cvt ? 'CVT otomatis' : 'naik gigi'; $(E.ob).classList.toggle('auto', !!r.sp.cvt);
+  } else if (e[0] === 'shift') { const t = Q_TXT[q]; callout(who + t[0], t[1], 'Gigi ' + (e[3] + 1)); SFX.pop(); if (q === 'perfect') SFX.perfect(); race.fx.flame((L.sx || 100) - 6, (L.sy || H * 0.8) - 22, q === 'perfect'); race.shake = q === 'perfect' ? 5 : 2; }
+}
+let calloutT = 0;
+function callout(txt, col, sub) { const c = $('callout'); c.classList.remove('show'); void c.offsetWidth; c.innerHTML = esc(txt) + (sub ? '<small>' + esc(sub) + '</small>' : ''); c.style.color = col || '#fff'; c.classList.add('show'); clearTimeout(calloutT); calloutT = setTimeout(() => c.classList.remove('show'), 950); }
+function coach(k, html) { if (race.coachK === k) return; race.coachK = k; const c = $('coach'); if (!html) { c.hidden = true; return; } c.innerHTML = html; c.hidden = false; }
+function treeLights(t, r) {
+  const n = t >= 0 ? 4 : t >= -1000 ? 3 : t >= -2000 ? 2 : t >= -3000 ? 1 : 0;
+  if (n !== race.lit) { const is = $('tree').querySelectorAll('i'); is.forEach((el, i) => { if (i < 4) el.classList.toggle('on', i < 3 ? n > i : n >= 4); }); if (n > race.lit && n > 0) (n === 4 ? SFX.green : SFX.amber)(); race.lit = n; if (n === 4 && race.kind !== 'demo') callout('HIJAU!', '#3ddc84'); }
+  if (r && r.foul) $('tree').querySelector('.red').classList.add('on');
+}
+function frameRace(now) {
+  const tt = advance(), L = myLane() || race.lanes[race.lanes.length - 1], r = L.run;
+  if (race.kind === 'online') onlineRace(tt);
+  // events -> fx for bots/remote too
+  for (const ln of race.lanes) { const ev = ln.run.ev; while (ln.seenEv < ev.length) { const e = ev[ln.seenEv++]; if ((ln.me && !ln.bot) || ln.p2) continue; if (e[0] === 'launch') race.fx.smoke(ln.sx || 0, (ln.sy || 0) - 4, 8); if (e[0] === 'shift') race.fx.flame((ln.sx || 0) - 6, (ln.sy || 0) - 22 * (ln.s || 1), e[2] === 'perfect'); } }
+  treeLights(tt, r);
+  // camera: follow me (or leader in demo), smoothed
+  const lead = race.kind === 'demo' || race.duel ? race.lanes.reduce((a, c) => (c.run.d > a.run.d ? c : a)) : L;
+  const want = Math.max(0, Math.min(D.DIST + 25, dispD(lead, tt) - 4)); race.camD += (want - race.camD) * 0.18;
+  race.fx.step(1 / 60); if (race.shake > 0) race.shake *= 0.86;
+  if (L.run.launched && L.run.fin === null && Math.random() < 0.5) race.fx.smoke((L.sx || 0) - 8, (L.sy || 0) - 10 * (L.s || 1), 1, 0.5);
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const view = race.lanes.map(ln => ({ run: ln.remote ? ghost(ln, tt) : ln.run, name: ln.name, col: ln.col, col2: ln.col2, me: (ln.me && !ln.bot) || !!ln.p2, num: ln.num, spec: ln.spec, bot: ln.bot && !ln.me, src: ln }));
+  R.scene(g, { W, H, day: !!race.day, bottom: BOT, lanes: view, camD: race.camD, now, fx: race.fx, shake: race.shake });
+  view.forEach(v => { v.src.sx = v.sx; v.src.sy = v.sy; v.src.s = v.s; });
+  tg.setTransform(DPR, 0, 0, DPR, 0, 0); R.tach(tg, TS, r, { grip: r.sp.grip, now });
+  $('distMe').style.width = Math.min(100, r.d / D.DIST * 100) + '%'; $('distTxt').textContent = Math.min(201, Math.floor(r.d)) + ' / 201 m';
+  const L2 = race.duel && p2Lane(); if (L2) { const r2 = L2.run; $('distTxt').textContent = 'P1 ' + Math.min(201, Math.floor(r.d)) + ' \u00b7 P2 ' + Math.min(201, Math.floor(r2.d)) + ' m'; rpmBar('rpm1', r); rpmBar('rpm2', r2);
+    const ib2 = !r2.launched ? (() => { const b = D.launchBand(r2.sp.grip); return r2.rpm >= b[0] && r2.rpm <= b[1]; })() : Math.min(r2.rpm, r2.slip > 0 || r2.spin > 0 ? r2.road() + 0.04 : 1) >= D.SHIFT.perfect[0];
+    $('oper2').classList.toggle('hint', r2.fin === null && (r2.launched ? !r2.sp.cvt && ib2 && r2.g < r2.sp.vg.length - 1 && r2.shiftT <= 0 : tt >= 0)); $('gas2').classList.toggle('hint', !r2.launched && tt > -3200 && !gas2); }
+  // pad hints (ease of use: pulse the button you should press now)
+  const inBand = !r.launched ? (() => { const b = D.launchBand(r.sp.grip); return r.rpm >= b[0] && r.rpm <= b[1]; })() : Math.min(r.rpm, r.slip > 0 || r.spin > 0 ? r.road() + 0.04 : 1) >= D.SHIFT.perfect[0];
+  const operHint = r.fin === null && (r.launched ? !r.sp.cvt && inBand && r.g < r.sp.vg.length - 1 && r.shiftT <= 0 : tt >= 0);
+  $('operBtn').classList.toggle('hint', !!operHint && !L.bot); $('gasBtn').classList.toggle('hint', !r.launched && tt > -3200 && !gasHeld && !L.bot);
+  engineSet(r.rpm, r.launched ? (r.fin === null ? 1 : 0.2) : (gasHeld ? 0.8 : 0.15));
+  if (!race.duel && !L.bot) paintKeys(r, tt);
+  if (race.duel) coach(tt < -600 ? 'd0' : '', tt < -600 ? '\ud83d\udc65 <b>P2 kiri</b> \u00b7 <b>P1 kanan</b>. Tahan GAS di zona hijau, tap OPER saat HIJAU!' + (kbMode() ? '<br>P2: ' + kc('A') + ' gas ' + kc('S') + ' oper ' + kc('D') + ' NOS \u00b7 P1: ' + kc('Spasi') + ' gas ' + kc('K') + ' oper ' + kc('N') + ' NOS' : '') : '');
+  else if (race.tut || (save.runs < 2 && race.kind !== 'online' && race.kind !== 'demo')) tutCoach(tt, r, inBand);
+  else if (!r.launched && tt > 1500 && !L.bot) coach('late', '<b>Lampu sudah HIJAU!</b> Tap <b>OPER</b>' + (kbMode() ? ' ' + kc('K') : '') + ' sekarang.'); else coach('', '');
+  // finish logic (solo)
+  if (race.kind !== 'online' && !race.done) {
+    const all = race.lanes.every(ln => ln.run.fin !== null || ln.run.t >= 25000 || ln.run.foul), meDone = race.lanes.filter(ln => (ln.me && !ln.bot) || ln.p2).every(ln => ln.run.fin !== null || ln.run.t >= 25000 || ln.run.foul) && (r.fin !== null || r.t >= 25000 || race.duel);
+    if (meDone && !race.endAt) { race.endAt = now + (race.kind === 'demo' ? 1800 : 1400); if (!race.duel && r.fin !== null && !r.foul) callout('FINISH ' + fmt(r.fin) + ' s', '#ffd23f', 'ET ' + fmt(r.fin - r.rt)); }
+    if (race.endAt && now >= race.endAt) { for (const ln of race.lanes) while (ln.run.fin === null && ln.run.t < 25000) { if (ln.brain) D.driveBot(ln.run, ln.brain); ln.run.step(D.DT); } race.done = true; soloEnd(); }
+    else if (!race.endAt && all) race.endAt = now + 600;
+  }
+}
+function rpmBar(id, r) { const el = $(id); if (!el) return; const z = !r.launched ? D.launchBand(r.sp.grip) : D.SHIFT.perfect, x = r.launched && (r.slip > 0 || r.spin > 0) ? Math.min(r.rpm, r.road() + 0.04) : r.rpm; el.querySelector('i').style.width = Math.round(Math.min(1, x) * 100) + '%'; const s = el.querySelector('s'); s.style.left = (z[0] * 100).toFixed(1) + '%'; s.style.width = ((z[1] - z[0]) * 100).toFixed(1) + '%'; el.classList.toggle('in', x >= z[0] && x <= z[1]); el.querySelector('b').textContent = r.fin !== null ? 'FINISH' : r.launched ? (r.sp.cvt ? 'CVT' : 'Gigi ' + (r.g + 1)) : 'START'; }
+function dispD(ln, tt) { return ln.remote ? ghost(ln, tt).d : ln.run.d; }
+function tutCoach(tt, r, inBand) {
+  const K = kbMode(), G = K ? ' ' + kc('Spasi') : ' (tombol merah)', O = K ? ' ' + kc('K') : '', O2 = K ? ' ' + kc('K') + '/' + kc('Spasi') : '', NS = K ? ' ' + kc('N') : ' (tombol biru)';
+  if (r.foul) return coach('foul', '<b>Kecepatan!</b> Tap OPER hanya setelah lampu <b style="color:#3ddc84">HIJAU</b>.');
+  if (!r.launched) {
+    if (tt < 0 && !gasHeld) return coach('g0', '\u2460 <b>Tahan GAS</b>' + G + '. Lampu kuning menyala satu per satu\u2026');
+    if (tt < 0 && !inBand) return coach('g1', '\u2461 Jaga jarum di <b style="color:#3ddc84">zona hijau</b>: lepas-tahan GAS' + G + ' sedikit.');
+    if (tt < 0) return coach('g2', '\u2462 Mantap! Tahan di hijau, <b>tunggu lampu HIJAU</b>\u2026 jangan tekan OPER dulu!');
+    return coach('g3', '\u2463 <b>HIJAU! Tap OPER</b>' + O + ' sekarang!');
+  }
+  if (r.fin !== null) return coach('', '');
+  if (r.sp.cvt && r.nos > 0) return coach('c1', 'Matic = <b>CVT otomatis</b>, tidak perlu oper gigi. Pakai <b style="color:#7fd8ff">NOS \ud83d\udd25</b>' + NS + ' di tengah lintasan!');
+  if (r.g < 2) return coach('s1', 'Jarum masuk <b style="color:#3ddc84">hijau</b> + lampu kedip \u2192 <b>tap OPER</b>' + O2 + ' naik gigi.');
+  if (r.nos > 0) return coach('n1', 'Gas terus! Tekan <b style="color:#7fd8ff">NOS \ud83d\udd25</b>' + NS + ' untuk dorongan sekali.');
+  return coach('s2', 'Terus oper di zona hijau sampai garis 201 m!');
+}
+/* remote lane: dead-reckoned from progress pushes */
+function ghost(ln, tt) {
+  const p = ln.prog || { d: 0, v: 0, t: -4000, g: 0, w: 0, l: 0 }, dt = Math.max(0, Math.min(1500, tt - p.t)) / 1000, v = p.v;
+  let d = p.d + v * dt; if (ln.finRow) d = Math.max(d, D.DIST + Math.max(0, (tt - ln.finRow.tot) / 1000) * 12); else d = Math.min(d, D.DIST - 0.3);
+  const o = ln.gh || (ln.gh = { d: 0 }); o.d = o.d ? o.d + (d - o.d) * 0.35 : d;
+  return { d: o.d, v, rpm: Math.min(1, v / (ln.spec.vg[Math.min(p.g, ln.spec.vg.length - 1)] || 30)), g: p.g, wheelie: p.w || 0, launched: !!p.l, fin: ln.finRow ? 1 : null, nosT: 0 };
+}
+
+/* ---------- solo modes ---------- */
+function rivalOf(i) { const rv = D.RIVALS[i]; return { name: rv.n, spec: D.spec(rv.bike, rv.tune), skill: rv.skill, seed: (Math.random() * 1e9) | 0 }; }
+function startCareer(i) { mode = 'solo'; me = null; const n = Math.min(i, save.car, D.RIVALS.length - 1); startRace({ kind: 'career', rv: n, rivals: [rivalOf(n)] }); }
+const isSunday = () => new Date().getDay() === 0;
+function startQuick(sun) {
+  mode = 'solo'; me = null; const sp = mySpec(), names = D.BOT_NAMES.slice().sort(() => Math.random() - 0.5);
+  startRace({ kind: 'quick', sun: !!sun, day: !!sun, rivals: [0.3, 0.5, 0.68].map((sk, i) => ({ name: names[i], spec: sp, skill: sk + Math.random() * 0.08, seed: (Math.random() * 1e9) | 0, col: PAL[(i + 1) % PAL.length] })) });
+}
+function startDuel() { mode = 'solo'; me = null; startRace({ kind: 'duel', duel: true, rivals: [] }); }
+function startTA() { mode = 'solo'; me = null; startRace({ kind: 'ta', rivals: [] }); }
+function startTut() { mode = 'solo'; me = null; startRace({ kind: 'tut', rivals: [] }); }
+function startDemo() { mode = 'demo'; me = null; startRace({ kind: 'demo', t0: performance.now() + 900, rivals: [0.55, 0.7, 0.9].map((sk, i) => ({ name: D.BOT_NAMES[i], spec: D.spec(['bebek2', 'sport', 'camp'][i], { mesin: 2 }), skill: sk, seed: 11 + i, col: PAL[i + 1] })) }); }
+function rows() {
+  return race.lanes.map(ln => { const s = ln.remote ? (ln.finRow || { rt: null, et: null, tot: null, top: 0, foul: 0 }) : ln.run.summary(); return { id: ln.id, name: ln.name, me: ln.me && !ln.bot, bot: ln.bot, rt: s.rt, et: s.et, tot: s.tot, top: s.top, foul: s.foul }; })
+    .sort(rank);
+}
+function rank(a, b) { const k = x => (x.foul ? 2e9 : 0) + (x.tot == null ? 1e9 : x.tot); return k(a) - k(b); }
+function soloEnd() {
+  engine(false); if (race.kind === 'demo') { setTimeout(() => { if (mode === 'demo') startDemo(); }, 600); return; }
+  if (race.kind === 'duel') return duelEnd();
+  const rs = rows(), mine = rs.find(x => x.me), r = myLane().run, pos = rs.indexOf(mine) + 1, win = pos === 1 && !mine.foul && mine.tot != null;
+  save.runs++; let coins = 0, title, sub = '';
+  if (race.kind === 'career') { const rv = D.RIVALS[race.rv]; if (win) { coins = rv.pay + r.perf * 10; if (race.rv === save.car) { save.car++; sub = race.rv === 9 ? '\ud83d\udc51 Kamu RAJA SIRKUIT! Karir tamat.' : 'Lawan berikutnya terbuka: ' + D.RIVALS[race.rv + 1].n; } else sub = 'Balapan ulang: bayaran penuh tetap.'; } else { coins = Math.round(rv.pay * 0.3); sub = mine.foul ? 'Start sebelum hijau = diskualifikasi.' : tip(r); } title = win ? 'Menang lawan ' + rv.n + '!' : 'Kalah dari ' + rv.n; }
+  else if (race.kind === 'quick') { coins = [140, 70, 40, 25][pos - 1] + r.perf * 5; if (mine.foul) coins = 10; if (race.sun && isSunday()) coins *= 2; title = mine.foul ? 'Diskualifikasi' : win ? 'Juara 1!' : 'Posisi ' + pos; sub = win ? 'Ngacir! Coba Karir buat bayaran lebih besar.' : mine.foul ? 'Tunggu lampu hijau dulu.' : tip(r);  if (race.sun) { title = '\u2600\ufe0f ' + title; sub = (isSunday() ? 'Bonus Minggu: koin 2\u00d7! ' : 'Main lagi hari Minggu: koin 2\u00d7. ') + sub; }}
+  else if (race.kind === 'tut') { coins = save.tut ? 0 : 100; save.tut = 1; title = mine.foul ? 'Hampir! Ulangi latihan' : 'Latihan selesai \ud83c\udf93'; sub = mine.foul ? 'Tap OPER setelah lampu HIJAU.' : 'Siap. Sekarang tantang Ucup Karbu di Karir!'; }
+  else { coins = mine.foul ? 0 : 30 + r.perf * 5; title = mine.foul ? 'Diskualifikasi' : fmt(mine.tot) + ' s'; const isBest = !mine.foul && mine.tot != null && (!save.best || mine.tot < save.best); if (isBest) { save.best = mine.tot; title += ' \u00b7 Rekor baru!'; } sub = mine.foul ? 'Start sebelum hijau tidak dihitung.' : 'Total = reaksi + ET. ' + tip(r); }
+  save.coins += coins; persist();
+  showResult({ title, sub, rows: rs, win: win || (race.kind !== 'career' && race.kind !== 'quick' && !mine.foul), coins, marks: [r.lq].concat(r.summary().marks), ta: race.kind === 'ta' && !mine.foul && mine.tot != null ? mine.tot : null });
+  if (win) SFX.win(); else SFX.lose(); if (coins) setTimeout(SFX.coin, 600);
+}
+function duelEnd() {
+  const rs = race.lanes.map(ln => { const s = ln.run.summary(); return { id: ln.id, name: (ln.p2 ? 'P2 \u00b7 ' : 'P1 \u00b7 ') + ln.name, me: true, rt: s.rt, et: s.et, tot: s.tot, top: s.top, foul: s.foul, p2: !!ln.p2 }; }).sort(rank);
+  const a = rs[0], b = rs[1], ok = x => !x.foul && x.tot != null; let title, sub;
+  if (!ok(a)) { title = 'Dua-duanya diskualifikasi'; sub = 'Tunggu lampu HIJAU dulu, baru tap OPER.'; }
+  else { title = a.name.slice(5) + ' menang! \ud83c\udfc1'; sub = ok(b) ? 'Selisih ' + fmt(b.tot - a.tot) + ' s \u00b7 ' + (a.rt != null && b.rt != null && a.rt < b.rt ? 'menang di start (RT ' + fmt(a.rt) + ')' : 'menang di oper gigi (ET ' + fmt(a.et) + ')') : b.name.slice(5) + ' diskualifikasi (start sebelum hijau).'; }
+  duelScore[a.p2 ? 1 : 0] += ok(a) ? 1 : 0; sub += ' \u00b7 Skor P1 ' + duelScore[0] + ' \u2013 ' + duelScore[1] + ' P2';
+  showResult({ title, sub, rows: rs, win: ok(a), coins: 0, marks: [] }); SFX.win();
+}
+let duelScore = [0, 0];
+function tip(r) {
+  const m = r.summary().marks, bad = m.filter(x => x === 'early' || x === 'late').length;
+  if (r.lq === 'bog') return 'Tips: gas kurang saat start, jaga jarum di zona hijau.'; if (r.lq === 'spin') return 'Tips: rpm terlalu tinggi saat start, ban spin. Modif Ban membantu.';
+  if (r.rt > 450) return 'Tips: reaksi lambat (RT ' + fmt(r.rt) + '). Tap OPER tepat saat lampu hijau.'; if (bad) return 'Tips: ' + bad + ' oper meleset. Oper saat lampu kecil di takometer berkedip.';
+  return 'Tips: upgrade motor di Garasi biar makin kencang.';
+}
+function confetti(on) {
+  const box = $('result'); box.querySelectorAll('.cf').forEach(e => e.remove()); if (!on || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cols = ['#ffd23f', '#e8463a', '#2f7de1', '#1fa35b', '#fff', '#ff8a1f'];
+  for (let i = 0; i < 42; i++) { const e = document.createElement('i'); e.className = 'cf' + (i % 5 === 0 ? ' sq' : ''); e.style.cssText = 'left:' + (Math.random() * 100).toFixed(1) + '%;background:' + cols[i % cols.length] + ';animation-delay:' + (Math.random() * 0.6).toFixed(2) + 's;animation-duration:' + (1.6 + Math.random() * 1.4).toFixed(2) + 's;--dx:' + Math.round(Math.random() * 160 - 80) + 'px;--r:' + Math.round(Math.random() * 900 - 450) + 'deg'; box.appendChild(e); }
+  setTimeout(() => box.querySelectorAll('.cf').forEach(e => e.remove()), 3400);
+}
+function showResult(o) {
+  $('resTitle').textContent = o.title; $('resSub').textContent = o.sub || ''; $('resKick').textContent = race && race.kind === 'online' ? 'HASIL \u00b7 ONLINE' : 'HASIL \u00b7 201 M';
+  $('result').querySelector('.res-card').className = 'res-card ' + (o.win ? 'win' : 'lose');
+  $('resRows').innerHTML = o.rows.map((x, i) => '<tr class="' + (x.me ? 'me' : '') + '"><td>' + (i + 1) + '</td><td>' + esc(x.name) + (x.bot ? ' \ud83e\udd16' : '') + (isGm(x.id) ? ' <em class="gm-tag">(GM)</em>' : '') + '</td><td>' + fmt(x.rt) + '</td><td>' + fmt(x.et) + '</td><td' + (x.foul ? ' class="foul">DQ' : '>' + fmt(x.tot)) + '</td><td>' + (x.top || '\u2013') + '</td></tr>').join('');
+  $('resMarks').innerHTML = (o.marks || []).filter(Boolean).map(q => '<span class="' + q + '">' + esc((Q_TXT[q] || [q])[0]) + '</span>').join('');
+  $('resReward').textContent = o.coins ? '+\ud83e\ude99 ' + o.coins : '';
+  confetti(o.win && o.rows[0] && o.rows[0].me);
+  const online = mode === 'online', host = online && room && room.isHost();
+  $('againBtn').hidden = online && !host; $('toLobbyBtn').hidden = !host; $('endWait').textContent = online && !host ? 'Menunggu host memulai lagi\u2026' : '';
+  $('nextBtn').hidden = !(race && race.kind === 'career' && save.car < D.RIVALS.length && race.rv < save.car);
+  $('resGarage').hidden = online;
+  taPending = o.ta; $('taForm').hidden = o.ta == null; if (o.ta != null) { $('taNote').textContent = 'Kirim ' + fmt(o.ta) + ' s sebagai ' + (myName() || '(isi nama dulu)'); $('taSubmit').disabled = false; }
+  show('result', true);
+}
+let taPending = null;
+async function submitTA() {
+  const name = myName(); if (!name) { toast('Isi nama pembalap di menu dulu', 'warn'); return; } if (taPending == null) return; $('taSubmit').disabled = true;
+  try { const r = await fetch('/api/game/scores', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ name, score: Math.max(0, 30000 - Math.round(taPending)) }) }); if (!r.ok) throw Error(r.status); toast('Terkirim ke papan rekor!', 'good'); taPending = null; $('taForm').hidden = true; loadLb(); }
+  catch (e) { $('taSubmit').disabled = false; toast('Gagal mengirim, coba lagi', 'warn'); }
+}
+function again() {
+  ac(); if (!race) return;
+  if (mode === 'online') return startOnline();
+  const k = race.kind; if (k === 'career') startCareer(race.rv); else if (k === 'quick') startQuick(race.sun); else if (k === 'ta') startTA(); else if (k === 'duel') startDuel(); else startTut();
+}
+async function exitToMenu(silent) {
+  dqHide();
+  const r = room; room = null; mode = null; race = null; engine(false); show('home'); resetChat(); gmMeSync();
+  if (location.hash && /^#(latihan|demo)$/i.test(location.hash) && root.history.replaceState) root.history.replaceState(null, '', location.pathname + location.search);
+  if (r && !silent) await r.leave(); else if (r && conn.forget) conn.forget();
+}
+function confirmExit() { if (race && !race.done && race.kind !== 'demo' && myLane() && myLane().run.launched && !root.confirm('Keluar dari balapan?')) return; exitToMenu(false); }
+
+/* ---------- input ---------- */
+function bindPad(el, down, up) {
+  el.addEventListener('pointerdown', e => { e.preventDefault(); ac(); el.classList.add('down'); try { el.setPointerCapture(e.pointerId); } catch (x) { /* ok */ } down(); });
+  const end = e => { if (!el.classList.contains('down')) return; el.classList.remove('down'); if (up) up(); };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end); el.addEventListener('lostpointercapture', end);
+  el.addEventListener('contextmenu', e => e.preventDefault());
+}
+bindPad($('gasBtn'), () => { const L = myLane(); if (!L) return; if (L.run.launched) nosTap(); else gasHeld = true; }, () => { gasHeld = false; });
+bindPad($('operBtn'), operTap);
+bindPad($('gas2'), () => { const L = p2Lane(); if (!L) return; if (L.run.launched) nos2Tap(); else gas2 = true; }, () => { gas2 = false; });
+bindPad($('oper2'), oper2Tap);
+const keys = {};
+doc.addEventListener('keydown', e => {
+  if (e.target.tagName !== 'INPUT' && /^( |k|K|n|N|Enter|ArrowUp|a|A|s|S|d|D)$/.test(e.key)) doc.documentElement.classList.add('kb');
+  if ($('race').hidden || e.target.tagName === 'INPUT') return; const k = e.key; if (keys[k]) return; keys[k] = 1;
+  if (race && race.dq) { if (k === 'k' || k === 'K' || k === 'Enter' || k === ' ') { e.preventDefault(); dqHide(); again(); } return; }
+  if (k === ' ') { e.preventDefault(); const L = myLane(); if (L && L.run.launched) operTap(); else { gasHeld = true; $('gasBtn').classList.add('down'); } }
+  else if (k === 'Enter' || k === 'ArrowUp' || k === 'k' || k === 'K') { e.preventDefault(); operTap(); }
+  else if (k === 'n' || k === 'N' || k === 'Shift') nosTap();
+  else if ((k === 'a' || k === 'A') && race && race.duel) { const L = p2Lane(); if (L && L.run.launched) oper2Tap(); else { gas2 = true; $('gas2').classList.add('down'); } }
+  else if ((k === 's' || k === 'S') && race && race.duel) oper2Tap();
+  else if ((k === 'd' || k === 'D') && race && race.duel) nos2Tap();
+});
+doc.addEventListener('keyup', e => { delete keys[e.key]; if (e.key === 'a' || e.key === 'A') { gas2 = false; $('gas2').classList.remove('down'); } if (e.key === ' ') { gasHeld = false; $('gasBtn').classList.remove('down'); } });
+
+/* ---------- main loop ---------- */
+function frame(now) { root.requestAnimationFrame(frame); if (race && !$('race').hidden) { try { frameRace(now); } catch (e) { console.error(e); } } if (room) room.tick(); }
+
+/* ---------- home hero: a looping 2-bike drag ---------- */
+function hero() {
+  const c = $('heroCv'), hg = c.getContext('2d'); let hr = null, w = 0, h = 0, r = 1, t0 = 0;
+  const mk = now => { const s1 = D.spec('camp', { mesin: 3 }), s2 = D.spec('bebek2', { mesin: 5, gir: 5 }); hr = { a: new D.Run(s1), b: new D.Run(s2), ba: D.botBrain(0.85, (Math.random() * 1e9) | 0), bb: D.botBrain(0.9, (Math.random() * 1e9) | 0), fx: R.makeFx(), cam: 0 }; t0 = now + 2600; };
+  const size = () => { w = c.clientWidth || 360; h = c.clientHeight || 260; r = Math.min(2, root.devicePixelRatio || 1); c.width = w * r; c.height = h * r; };
+  root.addEventListener('resize', size);
+  const loop = now => {
+    root.requestAnimationFrame(loop); if ($('home').hidden || doc.visibilityState !== 'visible') return; if (!w) size(); if (!hr) mk(now);
+    const tt = now - t0; for (const [run, br] of [[hr.a, hr.ba], [hr.b, hr.bb]]) while (run.t + D.DT <= tt && run.t < 30000) { D.driveBot(run, br); run.step(D.DT); }
+    if (hr.a.t > 12000 && hr.b.t > 12000) mk(now);
+    hr.cam += (Math.max(0, Math.min(D.DIST + 20, Math.max(hr.a.d, hr.b.d) - 6)) - hr.cam) * 0.1; hr.fx.step(1 / 60);
+    hg.setTransform(r, 0, 0, r, 0, 0); R.scene(hg, { W: w, H: h, hz: w > 700 ? 0.47 : 0.56, bottom: w > 700 ? 36 : 0, ax: w > 700 ? 0.44 : 0.3, lanes: [{ run: hr.b, name: 'Bli Komang', col: '#2f7de1', col2: '#ffd23f', num: '9' }, { run: hr.a, name: 'Raja Sirkuit', col: '#8f3bd6', col2: '#ff8a1f', num: '1' }], camD: hr.cam, now, fx: hr.fx });
+  };
+  root.requestAnimationFrame(loop);
+}
+
+/* =====================================================================
+   ONLINE (2\u20134 riders). Host writes {t0 (server ms of green), seed, riders, bots}; every client simulates itself,
+   pushes progress events ('p'), and records its own finish row in state.f via edit(). Host ends when all rows are in.
+   ===================================================================== */
+const conn = new N.Connection({ storage: root.sessionStorage, onWake: () => room && room.refresh(), lobbyWake: () => gmWake() });
+let onlineOk = false, starting = false, endSending = false;
+const sNow = () => conn.serverNow();
+function makeRoom() { return new N.Room(conn, { onChange: onRoom }); }
+function errMsg(e) { if (!e) return 'Koneksi bermasalah'; if (e.code === 'busy') return 'Server sibuk, coba ' + (e.wait || 10) + ' dtk lagi'; if (e.code === 'network') return 'Koneksi bermasalah'; if (e.status === 404 || e.status === 422) return 'Room tidak ditemukan'; return 'Gagal: ' + (e.server || e.message || ''); }
+function bikeRow() { const t = save.own[save.cur] || {}, p = paintOf(save.cur), pi = p.pi || [BODY.indexOf(p.col), STRIPE.indexOf(p.col2)]; return [me, save.cur, (t.mesin | 0), (t.knalpot | 0), (t.gir | 0), (t.ban | 0), pi[0], pi[1]]; }
+async function bikeToRoom() { const r = room; if (!r || r.spectator || r.s.ph !== 'lobby') return; const row = bikeRow(); try { await r.edit('bike', s => { const bk = Array.isArray(s.bk) ? s.bk.filter(x => Array.isArray(x) && x[0] !== me) : []; bk.push(row); s.bk = bk.slice(-16); }); } catch (e) { /* lobby only cosmetic */ } }
+async function enterOnline(kind, opts) {
+  if (room) { const old = room; room = null; old.leave(); }
+  const r = makeRoom(); mode = 'online'; room = r; race = null; resetChat();
+  try { await r.enter(kind, Object.assign({ set: { bots: 1 }, maxPlayers: 4 }, opts)); } catch (e) { if (room === r) { room = null; mode = null; } throw e; }
+  me = r.me; if (r.s.ph === 'lobby') { renderRoom(); show('lobby'); } addChatLine({ k: 'sys-in' + Date.now(), t: 'sys', x: (myName() || 'Kamu') + ' masuk room' }); gmMeSync(); bikeToRoom(); return r;
+}
+async function onlineAction(kind) {
+  const name = myName(); if (!name) { toast('Isi nama pembalap dulu', 'warn'); $('nameInput').focus(); return; }
+  setLS(NAME_KEY, name); const code = $('codeInput').value.trim().toUpperCase();
+  if (kind === 'join' && !/^[A-Z2-9]{6}$/.test(code)) { toast('Kode room 6 huruf/angka', 'warn'); return; }
+  doc.querySelectorAll('.online-btn').forEach(b => { b.disabled = true; });
+  try { await enterOnline(kind, { displayName: name, code }); }
+  catch (e) { if (kind === 'join' && e.status === 409) { try { await enterOnline('watch', { displayName: name, code }); toast('Room penuh, kamu menonton', 'warn', 4000); } catch (e2) { toast(errMsg(e2), 'warn', 4000); } } else toast(errMsg(e), 'warn', 4000); }
+  finally { doc.querySelectorAll('.online-btn').forEach(b => { b.disabled = !onlineOk; }); }
+}
+let seatSeen = null;
+function onRoom(r, data) {
+  if (r !== room) return;
+  if (!data) { toast('Room ditutup', 'warn'); exitToMenu(true); return; }
+  me = r.me; const s = r.s; gmMeSync(); joinLeave(r.seated()); syncChat(s.cm);
+  if (s.ph === 'play' && s.s && s.g) {
+    if (!race || race.g !== s.g) beginOnlineRace(s);
+    else readProgress(data.events, s);
+  } else if (s.ph === 'end' && s.res) { if (race && race.g === s.g && !race.done) finishOnline(s); else if (!race || race.g !== s.g) { beginOnlineRace(Object.assign({}, s, { s: s.s || { t0: 0, L: [], B: [] } }), true); finishOnline(s); } }
+  else { if (!$('result').hidden && race) { /* host pressed "Ke lobby" */ } race = null; engine(false); renderRoom(); if ($('lobby').hidden) show('lobby'); }
+}
+function joinLeave(ps) { const ids = new Map(ps.map(p => [p.id, p.displayName])); if (seatSeen) { for (const [id, n] of ids) if (!seatSeen.has(id) && id !== me) { addChatLine({ k: 'sj' + id + Date.now(), t: 'sys', x: n + ' masuk room' }); SFX.chat(); } for (const [id, n] of seatSeen) if (!ids.has(id)) addChatLine({ k: 'sl' + id + Date.now(), t: 'sys', x: n + ' keluar' }); } seatSeen = ids; }
+function specFromRow(row) { return D.spec(row[1], { mesin: row[2] | 0, knalpot: row[3] | 0, gir: row[4] | 0, ban: row[5] | 0 }); }
+function beginOnlineRace(s, silent) {
+  const S = s.s, mine = (S.L || []).find(x => x[0] === me), spect = !mine || (room && room.spectator);
+  const rivals = [];
+  (S.L || []).forEach((x, i) => { if (x[0] === me && !spect) return; rivals.push({ id: x[0], name: x[6] || ('P' + (i + 1)), spec: specFromRow(x), remote: true, col: PAL[i % PAL.length] }); });
+  (S.B || []).forEach((b, i) => rivals.push({ id: -1 - i, name: b[0], spec: D.spec(b[1], { mesin: b[2], knalpot: b[2], gir: b[2], ban: b[2] }), skill: b[3], seed: b[4], col: PAL[(4 + i) % PAL.length] }));
+  if (mine && !spect) { const t = { mesin: mine[2], knalpot: mine[3], gir: mine[4], ban: mine[5] }; if (mine[1] !== save.cur || JSON.stringify(t) !== JSON.stringify(save.own[save.cur])) { /* ride what you registered */ } }
+  startRace({ kind: 'online', rivals, t0: Number(S.t0) || sNow() + 4000, clock: sNow, g: s.g });
+  if (spect) { const L = myLane(); L.bot = true; L.me = false; L.remote = true; L.run.d = -999; race.lanes = race.lanes.filter(x => x !== L); race.spect = true; toast('Kamu menonton balapan ini', '', 2400); }
+  if (silent) $('race').hidden = true;
+  // every rider gets a distinct livery color by seat: same colors on every phone, never two red bikes
+  // each rider shows their own livery; if an earlier seat already uses that body color, a free team color is used instead (same result on every phone)
+  const used = new Set(), seatCol = new Map();
+  (S.L || []).forEach(x => { const bb = bikeOf(String(x[1])); let c = BODY[x[7]] || bb.col; if (used.has(c)) c = PAL.find(q => !used.has(q)) || c; used.add(c); seatCol.set(x[0], [c, STRIPE[x[8]] || bb.col2]); });
+  race.lanes.forEach(ln => { const sc = ln.id >= 0 && seatCol.get(ln.id); if (sc) { ln.col = sc[0]; ln.col2 = sc[1]; } });
+  race.lanes.forEach(ln => { if (ln.remote) ln.prog = null; });
+  readProgress(room.data.events, s);
+}
+function readProgress(events, s) {
+  if (!race) return; const byId = new Map(race.lanes.filter(l => l.remote).map(l => [l.id, l]));
+  for (const e of events || []) { if (e.type !== 'p' || !e.payload || e.payload.g !== s.g) continue; const ln = byId.get(e.playerId); if (!ln) continue; const p = e.payload; if (!ln.prog || p.t >= ln.prog.t) ln.prog = { d: +p.d || 0, v: +p.v || 0, t: +p.t || 0, g: p.gr | 0, w: +p.w || 0, l: p.l ? 1 : 0 }; }
+  for (const f of Array.isArray(s.f) ? s.f : []) { if (!Array.isArray(f)) continue; const ln = byId.get(f[0]); if (ln && !ln.finRow) { ln.finRow = { tot: f[1], et: f[2], rt: f[3], foul: f[4], top: f[5] }; } }
+}
+let pushBusy = false, lastPush = 0;
+function onlineRace(tt) {
+  const r = room; if (!r || !race || race.spect) { hostCheck(tt); return; } const L = myLane(); if (!L) return; const run = L.run;
+  // force a no-show after 12 s so a frozen phone cannot hold the room
+  if (!run.launched && tt > 12000) { run.launched = true; run.foul = true; run.rt = tt; run.lq = 'bog'; run.fin = null; run.t = 30000; }
+  const done = run.fin !== null || run.t >= 25000;
+  // staggered write slots on the shared server clock: each rider owns its own phase of the 700 ms cycle, so pushes from 2-4 phones interleave instead of colliding (409)
+  if (race.hIdx == null) { const LL = (r.s.s && r.s.s.L) || []; race.hN = Math.max(1, LL.length); race.hIdx = Math.max(0, LL.findIndex(x => x[0] === me)); }
+  const slot = Math.floor((tt + 100000 - race.hIdx * 700 / race.hN) / 700);
+  if (!done && !pushBusy && slot !== lastPush && tt > -1500) {
+    pushBusy = true; lastPush = slot;
+    r.push('p', { payload: { g: race.g, d: Math.round(run.d * 10) / 10, v: Math.round(run.v * 10) / 10, t: Math.round(run.t), gr: run.g, w: Math.round(run.wheelie * 100) / 100, l: run.launched ? 1 : 0 } }).catch(e => { if (e && e.status === 409) return r.settle(e.used).catch(() => {}); }).finally(() => { pushBusy = false; });
+  }
+  if (done && !race.finSent) { race.finSent = true; sendFin(run); }
+  hostCheck(tt);
+}
+async function sendFin(run) {
+  const r = room, g = race.g, s = run.summary(), row = [me, s.foul ? null : s.tot, s.et, s.rt, s.foul, s.top];
+  if (s.tot == null) row[1] = null;
+  try { await r.edit('fin', st => { if (st.ph !== 'play' || st.g !== g) return null; const f = Array.isArray(st.f) ? st.f.filter(x => Array.isArray(x) && x[0] !== me) : []; f.push(row); st.f = f; }); }
+  catch (e) { if (race && race.g === g) { race.finSent = false; } }
+}
+function hostCheck(tt) {
+  const r = room; if (!r || !r.isHost() || endSending || r.s.ph !== 'play' || r.s.g !== race.g) return;
+  // results always list every registered rider; a rider that looks absent (left, or a presence blip) only stops blocking the end after 14 s
+  const ids = new Set(r.seated().map(p => p.id)), riders = (r.s.s.L || []).map(x => x[0]), f = Array.isArray(r.s.f) ? r.s.f : [];
+  const has = id => f.some(x => Array.isArray(x) && x[0] === id);
+  const all = riders.every(id => has(id) || (!ids.has(id) && tt > 14000));
+  if (!(all && tt > 0) && tt < 26000) return;
+  endSending = true; const g = race.g;
+  const bots = (r.s.s.B || []).map((b, i) => { const run = D.simBot(D.spec(b[1], { mesin: b[2], knalpot: b[2], gir: b[2], ban: b[2] }), b[3], b[4]), sm = run.summary(); return { id: -1 - i, name: b[0], bot: 1, rt: sm.rt, et: sm.et, tot: sm.tot, top: sm.top, foul: sm.foul }; });
+  const names = new Map((r.s.s.L || []).map(x => [x[0], x[6]]));
+  const hum = riders.map(id => { const x = f.find(y => y[0] === id); return x ? { id, name: names.get(id) || '?', rt: x[3], et: x[2], tot: x[1], top: x[5], foul: x[4] } : { id, name: names.get(id) || '?', rt: null, et: null, tot: null, top: 0, foul: 0 }; });
+  const res = hum.concat(bots).sort(rank);
+  r.edit('end', s => { if (s.ph !== 'play' || s.g !== g) return null; s.ph = 'end'; s.res = { rows: res }; return { status: 'waiting' }; }).catch(() => {}).finally(() => { endSending = false; });
+}
+function finishOnline(s) {
+  if (!race) return; race.done = true; engine(false);
+  const rs = (s.res.rows || []).map(x => Object.assign({}, x, { me: x.id === me })), mineI = rs.findIndex(x => x.me), mine = rs[mineI];
+  let coins = 0, title = 'Balapan selesai', sub = '';
+  if (mine) { const pos = mineI + 1; coins = mine.foul || mine.tot == null ? 10 : [150, 90, 60, 40][pos - 1] || 40; title = mine.foul ? 'Diskualifikasi' : pos === 1 ? 'Juara 1! \ud83c\udfc6' : 'Posisi ' + pos; sub = pos === 1 && !mine.foul ? 'Kamu tercepat di room ini.' : 'Juara: ' + (rs[0] ? rs[0].name : '\u2013'); if (race.lanes.some(l => l.me && !l.bot)) { const run = myLane().run; mine.marks = [run.lq].concat(run.summary().marks); } }
+  else { title = 'Hasil balapan'; sub = 'Juara: ' + (rs[0] ? rs[0].name : '\u2013'); }
+  const key = s.g + ':' + me; if (race.paid !== key && mine) { race.paid = key; save.coins += coins; save.runs++; persist(); (mineI === 0 && !mine.foul ? SFX.win : SFX.lose)(); }
+  showResult({ title, sub, rows: rs, win: mine && mineI === 0 && !mine.foul, coins: mine ? coins : 0, marks: mine && mine.marks });
+}
+async function startOnline() {
+  const r = room; if (!r || !r.isHost() || starting) return; const ps = r.seated(); if (!ps.length) return; starting = true; $('startBtn').disabled = true; $('againBtn').disabled = true;
+  const nb = Math.max(0, Math.min(3, r.s.set.bots | 0, 4 - ps.length)), bk = Array.isArray(r.s.bk) ? r.s.bk : [];
+  const L = ps.slice(0, 4).map(p => { const b = bk.find(x => Array.isArray(x) && x[0] === p.id) || [p.id, 'bebek4', 0, 0, 0, 0]; return [p.id, String(b[1]), b[2] | 0, b[3] | 0, b[4] | 0, b[5] | 0, p.displayName, b[6] == null ? -1 : b[6] | 0, b[7] == null ? -1 : b[7] | 0]; });
+  const avg = L.reduce((a, x) => a + D.simIdeal(specFromRow(x)).fin, 0) / L.length, pick = D.RIVALS.slice().sort((a, b) => Math.abs(D.simIdeal(D.spec(a.bike, a.tune)).fin - avg) - Math.abs(D.simIdeal(D.spec(b.bike, b.tune)).fin - avg));
+  const B = Array.from({ length: nb }, (_, i) => { const rv = pick[i]; const lv = Math.round(Object.values(rv.tune).reduce((a, x) => a + x, 0) / 4); return [rv.n, rv.bike, lv, Math.min(0.75, rv.skill), (Math.random() * 1e9) | 0]; });
+  const g = Math.random().toString(36).slice(2, 8);
+  try { await r.edit('start', s => { if ('gm' in s) delete s.gm; s.ph = 'play'; s.g = g; s.f = []; s.res = null; s.s = { t0: Math.round(sNow() + 5600), L, B }; return { status: 'playing' }; }); }
+  catch (e) { toast(errMsg(e), 'warn'); }
+  finally { starting = false; $('startBtn').disabled = false; $('againBtn').disabled = false; }
+}
+async function toLobby() { const r = room; if (!r || !r.isHost()) return; try { await r.edit('lobby', s => { s.ph = 'lobby'; s.s = null; s.res = null; s.f = []; return { status: 'waiting' }; }); } catch (e) { toast(errMsg(e), 'warn'); } }
+async function setBots(v) { const r = room; if (!r || !r.isHost()) return; try { await r.edit('set', s => { if (s.ph !== 'lobby') return null; s.set.bots = v; }); } catch (e) { toast(errMsg(e), 'warn'); } }
+function renderRoom() {
+  const r = room; if (!r || !r.data) return; const s = r.s, host = r.isHost(), ps = r.seated(), nb = Math.max(0, Math.min(3, s.set.bots | 0)), bots = Math.max(0, Math.min(nb, 4 - ps.length)), bk = Array.isArray(s.bk) ? s.bk : [];
+  $('roomCode').textContent = r.code; $('lobbyVis').textContent = r.data.visibility === 'public' ? 'Room publik: siapa saja bisa masuk lewat "Cari lawan".' : 'Room privat: masuk pakai kode atau link undangan.';
+  $('pCount').textContent = (ps.length + bots) + '/4';
+  $('pList').innerHTML = ps.map((p, i) => { const b = bk.find(x => Array.isArray(x) && x[0] === p.id), bn = b ? bikeOf(b[1]).name + ' +' + ((b[2] | 0) + (b[3] | 0) + (b[4] | 0) + (b[5] | 0)) : '\u2026'; return '<li><span class="dot" style="background:' + PAL[i % PAL.length] + '"></span><span>' + esc(p.displayName) + (isGm(p.id) ? ' <em class="gm-tag">(GM)</em>' : '') + '</span>' + (p.id === r.me ? '<span class="tag">kamu</span>' : '') + (p.host ? '<span class="tag">host</span>' : '') + '<span class="bk">\ud83c\udfcd\ufe0f ' + esc(bn) + '</span></li>'; }).join('')
+    + Array.from({ length: bots }, (_, i) => '<li><span class="dot" style="background:' + PAL[(ps.length + i) % PAL.length] + '"></span><span>Bot ' + (i + 1) + ' \ud83e\udd16</span><span class="tag">bot</span><span class="bk">setara level kalian</span></li>').join('');
+  $('hostBox').hidden = !host; $('onBots').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.v === nb));
+  $('lobbyWait').textContent = r.spectator ? 'Kamu menonton.' : host ? (ps.length < 2 && !bots ? 'Undang teman atau tambah bot, lalu mulai.' : '') : 'Menunggu host memulai\u2026';
+}
+/* chat */
+const BAD = /\b(anjing|bangsat|babi|kontol|memek|ngentot|goblok|tolol|fuck|shit|bitch)\b/gi;
+function cleanChat(x) { return String(x || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120).replace(BAD, w => w[0] + '*'.repeat(w.length - 1)); }
+const chatKeys = new Set(); let chatSeq = Date.now() % 1e7, chatAt = 0;
+function resetChat() { chatKeys.clear(); $('chatLog').innerHTML = ''; seatSeen = null; }
+function addChatLine(m) {
+  if (!m || !m.k || chatKeys.has(m.k)) return; chatKeys.add(m.k); const log = $('chatLog'), p = doc.createElement('p');
+  if (m.t === 'sys') { p.className = 'sys'; p.textContent = m.x; } else { p.innerHTML = '<b>' + esc(m.n || '?') + (isGm(m.p) ? ' <em class="gm-tag">(GM)</em>' : '') + ':</b> ' + esc(m.x); if (!$('race').hidden && $('raceChatSlot').hidden && m.p !== me) { callout('\ud83d\udcac ' + m.n, '#fff', m.x.slice(0, 40)); } }
+  const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.appendChild(p); while (log.children.length > 80) log.firstChild.remove(); if (stick) log.scrollTop = log.scrollHeight;
+}
+function syncChat(cm) { for (const m of cm || []) { if (!m || typeof m !== 'object') continue; const fresh = !chatKeys.has(m.k); addChatLine({ k: String(m.k || ''), p: m.p, n: String(m.n || ''), x: cleanChat(m.x) }); if (fresh && m.p !== me && chatKeys.size > 1) SFX.chat(); } }
+async function sendChat(raw) {
+  const x = cleanChat(raw); if (!x || !room) return false; const n = Date.now(); if (n - chatAt < 1000) { toast('Pelan-pelan ngetiknya \ud83d\ude42', 'warn', 1500); return false; } chatAt = n;
+  const m = { k: 'c' + me + '.' + (++chatSeq), p: me, n: myName() || '?', x }; addChatLine(m);
+  try { await room.edit('chat', s => { s.cm = (s.cm || []).concat([m]).slice(-30); }); } catch (e) { toast(errMsg(e), 'warn'); } return true;
+}
+const QUICK = ['\ud83d\udd25 Gas!', '\ud83d\ude0e Siap', '\ud83c\udfc1 Rematch?', '\ud83d\udc4f GG', '\ud83d\ude02', '\ud83d\ude4f Tunggu'];
+/* GM */
+let gm = false, gmRooms = null, gmErr = '', gmBusy = false, gmAt = 0, gmWakeT = 0, gmUI = null;
+const gmHash = () => (location.hash || '').toLowerCase().includes(N.GM_KEY);
+function gmSync() { const on = gmHash(); if (on === gm) return; gm = on; gmRooms = null; gmErr = ''; $('gmRooms').hidden = !gm; if (gm) gmLoad(); else renderGm(); }
+function isGm(id) { return mode === 'online' && !!room && id != null && id > 0 && room.isGamemaster(id); }
+function gmMeSync() { doc.documentElement.classList.toggle('gm-on', mode === 'online' && !!room && room.isGamemaster()); if (gmUI) gmUI.sync(); }
+function gmClaimUI({ canClaim, claim, onDone, listKey }) {
+  const d = document, w = window;
+  const m = d.createElement('div'); m.id = 'gmClaim'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Kode gamemaster');
+  m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center';
+  m.innerHTML = '<form id="gmClaimForm" style="background:#fff;color:#222;padding:16px;border-radius:14px;width:260px;max-width:86vw;font:14px system-ui,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.3)">'
+    + '<b style="display:block;margin-bottom:8px">Kode gamemaster</b>'
+    + '<input id="gmClaimInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Masukkan kode" maxlength="128" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;font:inherit;color:#222;background:#fff">'
+    + '<p id="gmClaimErr" role="alert" style="color:#c0392b;min-height:1.2em;margin:6px 0;font-size:13px"></p>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" id="gmClaimCancel" style="padding:6px 12px;border-radius:8px;border:1px solid #bbb;background:#f3f3f3;color:#222;font:inherit">Batal</button>'
+    + '<button type="submit" id="gmClaimOk" style="padding:6px 12px;border-radius:8px;border:0;background:#c0392b;color:#fff;font:600 14px system-ui,sans-serif">Masuk</button></div></form>';
+  d.body.appendChild(m);
+  const inp = m.querySelector('#gmClaimInput'), er = m.querySelector('#gmClaimErr'), ok = m.querySelector('#gmClaimOk');
+  // no visible chip: only a ?gmjd query param (not the secret; value ignored) arms the prompt; intent survives the home/gate screen until a room is entered
+  const trig = () => /[?&]gmjd(=|&|$)/i.test(w.location.search || '');
+  let busy = false, want = trig(), asked = false;
+  const close = () => { m.style.display = 'none'; inp.value = ''; er.textContent = ''; };
+  const open = () => { if (!canClaim()) return; er.textContent = ''; inp.value = ''; m.style.display = 'flex'; setTimeout(() => inp.focus(), 20); };
+  m.addEventListener('click', e => { if (e.target === m) close(); });
+  m.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Escape') close(); });
+  m.addEventListener('keyup', e => e.stopPropagation());
+  m.querySelector('#gmClaimCancel').addEventListener('click', close);
+  m.querySelector('#gmClaimForm').addEventListener('submit', async e => {
+    e.preventDefault(); e.stopPropagation(); const code = inp.value.trim(); if (!code || busy) { inp.focus(); return; }
+    busy = true; ok.disabled = true; er.textContent = '';
+    try {
+      await claim(code); want = false; close();
+      // strip ?gmjd so a refresh doesn't re-prompt (other params like ?room= are kept)
+      if (trig() && w.history && w.history.replaceState) { const u = new URL(w.location.href); for (const k of [...u.searchParams.keys()]) if (k.toLowerCase() === 'gmjd') u.searchParams.delete(k); w.history.replaceState(w.history.state, '', u.pathname + u.search + u.hash); }
+      sync(); if (onDone) onDone();
+    }
+    catch (x) { inp.value = ''; er.textContent = x && x.status === 403 ? 'Kode salah.' : 'Gagal, coba lagi.'; inp.focus(); }
+    finally { busy = false; ok.disabled = false; }
+  });
+  function sync() {
+    const on = !!canClaim();
+    if (!on) { asked = false; if (m.style.display !== 'none' && !busy) close(); return; }
+    if (want && !asked) { asked = true; open(); }
+  }
+  return { sync, open, close };
+}
+async function gmLoad() { if (!gm || gmBusy) return; if (!onlineOk) { renderGm(); return; } gmBusy = true; gmAt = Date.now(); renderGm(); try { const d = await conn.rooms({ gm: true }); gmRooms = Array.isArray(d && d.rooms) ? d.rooms : []; gmErr = ''; } catch (e) { gmErr = errMsg(e); } finally { gmBusy = false; renderGm(); } }
+function gmWake() { if (!gm || room) return; clearTimeout(gmWakeT); gmWakeT = setTimeout(gmLoad, 1200); }
+function renderGm() {
+  const box = $('gmRooms'); box.hidden = !gm; if (!gm) return; const list = gmRooms || [];
+  $('gmNote').textContent = !onlineOk ? 'Online belum siap' : gmErr ? gmErr : gmRooms === null ? 'Memuat\u2026' : list.length ? list.length + ' room' : 'Belum ada room';
+  $('gmList').innerHTML = list.map(r => { const code = esc(r.code), playing = r.status === 'playing'; return '<li><b class="code">' + code + '</b><span class="gm-meta"><span class="badge' + (r.visibility === 'private' ? ' priv">privat' : '">publik') + '</span> <span class="badge">' + (playing ? 'balapan' : 'lobby') + '</span> <small class="muted">' + (Number(r.seated) || 0) + '/' + (Number(r.maxPlayers) || 0) + '</small></span>' + (playing ? '' : '<button class="btn small green online-btn" data-gm="join" data-code="' + code + '">Masuk</button>') + '<button class="btn small ghost online-btn" data-gm="watch" data-code="' + code + '">Tonton</button></li>'; }).join('');
+}
+async function gmEnter(kind, code) { if (!/^[A-Z2-9]{6}$/.test(code || '')) return; $('codeInput').value = code; if (kind === 'join') return onlineAction('join'); const name = myName(); if (!name) { toast('Isi nama pembalap dulu', 'warn'); return; } try { await enterOnline('watch', { displayName: name, code }); } catch (e) { toast(errMsg(e), 'warn'); } }
+function invite() { if (!room) return; const url = location.origin + location.pathname + '?room=' + room.code, done = () => toast('Link undangan disalin', 'good'); if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) navigator.share({ title: 'Drag 201', text: 'Adu drag 201 m sama aku di Drag 201 \u00b7 room ' + room.code, url }).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => toast(url, '', 6000)); else toast(url, '', 6000); }
+
+/* ---------- boot ---------- */
+async function boot() {
+  $('nameInput').value = getLS(NAME_KEY) || ''; $('nameInput').addEventListener('change', () => { setLS(NAME_KEY, myName()); paintLb(); });
+  paintMute(); paintHome(); hero(); root.addEventListener('resize', () => { if (!$('race').hidden) fit(); });
+  const mute = () => { muted = !muted; setLS(MUTE_KEY, muted ? '1' : '0'); paintMute(); if (muted) engine(false); else { ac(); SFX.click(); if (race && !race.done) engine(true); } };
+  $('muteBtn').addEventListener('click', mute); $('muteBtn2').addEventListener('click', mute);
+  const nm = () => setLS(NAME_KEY, myName());
+  $('careerBtn').addEventListener('click', () => { ac(); nm(); paintCareer(); show('career'); });
+  $('ladder').addEventListener('click', e => { const b = e.target.closest('[data-rv]'); if (b) { ac(); startCareer(+b.dataset.rv); } });
+  $('quickBtn').addEventListener('click', () => { ac(); nm(); startQuick(); });
+  $('sunBtn').addEventListener('click', () => { ac(); nm(); startQuick(true); });
+  $('taBtn').addEventListener('click', () => { ac(); nm(); startTA(); });
+  $('tutBtn').addEventListener('click', () => { ac(); nm(); startTut(); });
+  $('duelBtn').addEventListener('click', () => { ac(); nm(); duelScore = [0, 0]; startDuel(); });
+  $('garageBtn').addEventListener('click', () => { gIdx = Math.max(0, D.BIKES.findIndex(b => b.id === save.cur)); paintGarage(); show('garage'); });
+  $('resGarage').addEventListener('click', () => { race = null; gIdx = Math.max(0, D.BIKES.findIndex(b => b.id === save.cur)); paintGarage(); show('garage'); });
+  $('bikePrev').addEventListener('click', () => { gIdx = (gIdx + D.BIKES.length - 1) % D.BIKES.length; paintGarage(); });
+  $('bikeNext').addEventListener('click', () => { gIdx = (gIdx + 1) % D.BIKES.length; paintGarage(); });
+  $('gUse').addEventListener('click', garageUse); $('parts').addEventListener('click', e => { const b = e.target.closest('[data-part]'); if (b) buyPart(b.dataset.part); });
+  $('livery').addEventListener('click', e => { const b = e.target.closest('[data-paint]'); if (b && !b.disabled) { const [k, i] = b.dataset.paint.split(',').map(Number); buyPaint(k, i); } });
+  doc.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => { if (room) { renderRoom(); show('lobby'); } else show('home'); }));
+  $('againBtn').addEventListener('click', again); $('nextBtn').addEventListener('click', () => { ac(); startCareer(save.car); });
+  $('dqAgain').addEventListener('click', () => { ac(); dqHide(); again(); }); $('dqMenu').addEventListener('click', () => exitToMenu(false));
+  $('resMenu').addEventListener('click', () => exitToMenu(false)); $('toLobbyBtn').addEventListener('click', toLobby);
+  $('taForm').addEventListener('submit', e => { e.preventDefault(); submitTA(); });
+  $('exitBtn').addEventListener('click', confirmExit);
+  $('matchBtn').addEventListener('click', () => { ac(); onlineAction('match'); }); $('createPub').addEventListener('click', () => { ac(); onlineAction('public'); }); $('createPriv').addEventListener('click', () => { ac(); onlineAction('private'); });
+  $('joinForm').addEventListener('submit', e => { e.preventDefault(); ac(); onlineAction('join'); });
+  $('codeInput').addEventListener('input', e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+  $('inviteBtn').addEventListener('click', invite); $('lobbyLeave').addEventListener('click', () => exitToMenu(false)); $('startBtn').addEventListener('click', () => { ac(); startOnline(); });
+  $('onBots').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setBots(+b.dataset.v); });
+  $('quickChat').innerHTML = QUICK.map(q => '<button type="button">' + esc(q) + '</button>').join(''); $('quickChat').addEventListener('click', e => { const b = e.target.closest('button'); if (b) sendChat(b.textContent); });
+  $('chatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('chatInput'); Promise.resolve(sendChat(i.value)).then(ok => { if (ok) i.value = ''; }); if (!$('race').hidden) { i.blur(); $('raceChatSlot').hidden = true; $('chatCard').appendChild($('chat')); } });
+  $('chatBtn').addEventListener('click', () => { const d = $('raceChatSlot'); d.hidden = !d.hidden; if (!d.hidden) d.appendChild($('chat')); else $('chatCard').appendChild($('chat')); });
+  root.addEventListener('pagehide', () => { if (room) conn.leaveBeacon(); });
+  doc.addEventListener('visibilitychange', () => { if (doc.visibilityState === 'visible' && conn.config) conn.visible(); });
+  $('gmRefresh').addEventListener('click', gmLoad); $('gmList').addEventListener('click', e => { const b = e.target.closest('[data-gm]'); if (b) gmEnter(b.dataset.gm, b.dataset.code); });
+  root.addEventListener('hashchange', gmSync); setInterval(() => { if (gm && !room && doc.visibilityState === 'visible' && Date.now() - gmAt > 10000) gmLoad(); }, 2000);
+  gmSync(); gmUI = gmClaimUI({ canClaim: () => mode === 'online' && !!room && !!room.data && !room.local && !room.isGamemaster(), claim: code => room.claimGamemaster(code), onDone: () => { toast('Mode gamemaster aktif', 'good'); gmMeSync(); if (room) renderRoom(); } });
+  root.requestAnimationFrame(frame);
+  const route = () => { const h = (location.hash || '').toLowerCase(); if (room) return; if (h === '#latihan') startTut(); else if (h === '#demo') startDemo(); else if (h === '#duel') startDuel(); };
+  route(); root.addEventListener('hashchange', route);
+  loadLb();
+  doc.querySelectorAll('.online-btn').forEach(b => { b.disabled = true; });
+  if (conn.allowed) { try { await conn.start(); onlineOk = true; } catch (e) { conn.failed = true; onlineOk = false; } }
+  doc.querySelectorAll('.online-btn').forEach(b => { b.disabled = !onlineOk; });
+  const note = $('onlineNote'), msg = !conn.allowed ? 'Mode online hanya di drag201.jadidaring.com.' : conn.failed ? 'Server online sedang tidak bisa dihubungi. Mode solo tetap jalan.' : ''; note.textContent = msg; note.hidden = !msg;
+  if (gm) gmLoad();
+  if (conn.code && conn.token) { try { await conn.leave(); } catch (e) { conn.forget(); } }
+  const JR = root.JRInvite, invCode = JR && JR.code ? JR.code('room') : '';
+  if (invCode && JR.run) {
+    JR.run({ code: invCode, lang: 'id', gameName: 'Drag 201', nameMax: 16, accent: '#ffd23f',
+      check: async code => { if (!conn.allowed) return 'offline'; if (!onlineOk) return { fallback: 'Server online sedang tidak bisa dihubungi.' }; return conn.probe(code); },
+      join: async name => {
+        $('nameInput').value = name; setLS(NAME_KEY, myName()); ac();
+        try { await enterOnline('join', { displayName: myName() || name, code: invCode }); return { ok: true }; }
+        catch (e) { if (e.status === 409) { try { await enterOnline('watch', { displayName: name, code: invCode }); toast('Room penuh, kamu menonton', 'warn', 4000); return { ok: true }; } catch (e2) { /* fall through */ } } if (e.status === 404 || e.status === 422) return { ok: false, missing: true }; return { ok: false, retry: true, message: errMsg(e) }; }
+      }, fallback: () => {} });
+  }
+}
+if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', boot); else boot();
+root.D201App = { get race() { return race; }, get room() { return room; }, get mode() { return mode; }, get me() { return me; }, get save() { return save; }, persist, startCareer, startQuick, startTA, startTut, startDemo, startDuel, startOnline, operTap, nosTap, setGas: v => { gasHeld = !!v; }, sendChat, conn };
+})(window);
+</script>
+</body>
+</html>

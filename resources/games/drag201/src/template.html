@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Drag 201 · Game Drag Bike 201 Meter Online di HP Gratis (Mabar 2–4 Pemain)</title>
+<meta name="description" content="Drag 201: game drag motor 201 meter di sirkuit resmi, langsung main di browser HP tanpa download. Tahan gas, lepas kopling saat lampu hijau, oper gigi di zona hijau. Karir 10 lawan, garasi modif bebek 2 tak & 4 tak, papan rekor, dan mabar online 2–4 pemain.">
+<meta name="theme-color" content="#0b0f2a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Drag 201 · drag bike 201 m di sirkuit">
+<meta property="og:description" content="Lampu hijau, lepas kopling, oper pas di zona hijau. Modif motor, kalahkan Raja Sirkuit, mabar sama teman. Gratis di HP.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="drag201">
+  <!-- ============ HOME ============ -->
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="coins" id="coinHome">🪙 0</span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">DRAG BIKE · 201 METER</p><h1>DRAG <span>201</span></h1><p class="slogan">Gas di sirkuit, tertib di jalan.</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pembalap</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="garage-strip" id="garageStrip"><canvas id="stripCv" width="120" height="64"></canvas><div><b id="stripBike">Bebek 4T 130</b><small id="stripStat">Ideal 9.64 s</small></div><button class="btn small ghost" id="garageBtn">🔧 Garasi</button></div>
+      <div class="modes">
+        <button class="mode big" id="careerBtn"><i>🏆</i><b>Karir</b><small id="careerSub">Lawan 1/10 · Ucup Karbu</small></button>
+        <button class="mode" id="quickBtn"><i>⚡</i><b>Adu Cepat</b><small>Lawan bot 1v1 sampai 1v3</small></button>
+        <button class="mode" id="taBtn"><i>⏱️</i><b>Time Attack</b><small id="taSub">Kejar rekor nasional</small></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Latihan</b><small>Belajar start &amp; oper gigi</small></button>
+        <button class="mode duel" id="duelBtn"><i>👥</i><b>Duel 1 HP</b><small>2 pemain satu layar, offline</small></button>
+        <button class="mode sun" id="sunBtn"><i>☀️</i><b>Sunmori Cup</b><small id="sunSub">Sirkuit pagi · koin 2× tiap Minggu</small></button>
+      </div>
+      <div class="online card">
+        <h2>Mabar online <small>2–4 pemain</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">🔎 Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh">↻</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Tahan GAS</b> saat lampu kuning. Jaga jarum di <em class="g">zona hijau</em>.</li>
+          <li><b>Lampu HIJAU → tap OPER</b> (lepas kopling). Kecepatan reaksi = RT.</li>
+          <li>Jarum masuk <em class="g">hijau</em> → <b>tap OPER</b> lagi untuk naik gigi. Pas = <b>PERFECT</b>.</li>
+          <li><b>NOS 🔥</b> sekali per balapan. Start sebelum hijau = <b class="r">diskualifikasi</b>.</li>
+          <li><b>Garasi</b>: modif mesin, knalpot, gir, ban + <b>cat &amp; striping</b>. Pemula? Beli <b>Matic CVT</b>, tanpa oper gigi.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>Spasi</kbd> tahan = GAS (sebelum start) · <kbd>K</kbd>/<kbd>Enter</kbd> = START &amp; oper gigi · <kbd>N</kbd> = NOS · start sebelum hijau = diskualifikasi, ulang · Duel P2: <kbd>A</kbd> gas · <kbd>S</kbd> oper · <kbd>D</kbd> NOS</p>
+      </div>
+      <div class="card lb"><h2>Papan rekor <small>Time Attack · 201 m</small></h2><ol id="lbList" class="lb-list"><li class="muted">Memuat…</li></ol><p class="muted" id="bestLine"></p></div>
+      <p class="foot muted">Drag 201 adalah game. Balapan cuma di sirkuit resmi, pakai helm, jangan balap liar. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <!-- ============ CAREER LADDER ============ -->
+  <section id="career" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" data-back>← Menu</button><h2>Karir · Sirkuit Resmi</h2><span class="coins" id="coinCareer">🪙 0</span></header>
+    <ol id="ladder" class="ladder"></ol>
+  </section>
+
+  <!-- ============ GARAGE ============ -->
+  <section id="garage" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" data-back>← Menu</button><h2>Garasi</h2><span class="coins" id="coinGarage">🪙 0</span></header>
+    <div class="g-stage"><button class="arrow" id="bikePrev" aria-label="Motor sebelumnya">‹</button><canvas id="garageCv"></canvas><button class="arrow" id="bikeNext" aria-label="Motor berikutnya">›</button></div>
+    <div class="g-info"><h3 id="gName"></h3><p class="muted" id="gCls"></p>
+      <div class="stats" id="gStats"></div>
+      <div class="row"><button class="btn green" id="gUse">Pakai</button><span class="muted" id="gIdeal"></span></div>
+    </div>
+    <h3 class="sec">Modif</h3><ul id="parts" class="parts"></ul>
+    <div id="livery" class="livery" hidden><h3 class="sec">Cat &amp; Striping <small class="muted">🪙 40 / ganti</small></h3><div class="swl"><span>Body</span><div class="sws" id="swBody"></div></div><div class="swl"><span>Striping</span><div class="sws" id="swStripe"></div></div></div>
+  </section>
+
+  <!-- ============ LOBBY ============ -->
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">← Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">🔗 Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><h3>Pembalap <small id="pCount">1/4</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Bot pengisi</span><div class="seg" id="onBots"><button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div></div>
+      <button class="btn green big-btn" id="startBtn">🚦 Mulai balapan</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik pesan…" autocomplete="off"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <!-- ============ RACE ============ -->
+  <section id="race" class="screen" hidden>
+    <canvas id="raceCv"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button><div class="tree" id="tree"><i></i><i></i><i></i><i class="go"></i><i class="red"></i></div><div class="hud-r"><span id="hudInfo"></span><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>💬</button></div></div>
+    <div id="raceChatSlot" class="race-chat" hidden></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="keybar" id="keybar" aria-label="Tombol keyboard"></div>
+    <div class="dq" id="dqBox" hidden><div class="dq-card"><p class="dq-flag">🚩</p><h3>DISKUALIFIKASI</h3><p id="dqWhy">Start sebelum lampu hijau.</p><p class="dq-cnt" id="dqCnt"></p><div class="row"><button class="btn green" id="dqAgain">Start ulang <kbd class="kc">K</kbd></button><button class="btn ghost" id="dqMenu">Menu</button></div></div></div>
+    <div class="dist"><div class="dist-bar"><i id="distMe"></i></div><span id="distTxt">0 / 201 m</span></div>
+    <canvas id="tachCv" class="tach"></canvas>
+    <div class="duel-rpm" id="duelRpm" hidden><div class="drpm p2" id="rpm2"><s></s><i></i><em>P2</em><b>START</b></div><div class="drpm p1" id="rpm1"><s></s><i></i><em>P1</em><b>START</b></div></div>
+    <div class="controls">
+      <div class="p2grp" id="p2grp" hidden><button class="pad gas" id="gas2"><kbd class="kc" id="gas2Key">A</kbd><b id="gas2Lbl">GAS</b><small id="gas2Sub">tahan</small></button><button class="pad oper" id="oper2"><kbd class="kc">S</kbd><b>OPER</b><small id="oper2Sub">lepas kopling</small></button></div>
+      <button class="pad gas" id="gasBtn"><kbd class="kc" id="gasKey">Spasi</kbd><b id="gasLbl">GAS</b><small id="gasSub">tahan</small></button>
+      <button class="pad oper" id="operBtn"><kbd class="kc" id="operKey">K</kbd><b>OPER</b><small id="operSub">lepas kopling</small></button>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="result" class="screen overlay" hidden>
+    <div class="res-card">
+      <p class="kicker" id="resKick">HASIL</p><h2 id="resTitle">Menang!</h2><p id="resSub" class="muted"></p>
+      <table class="res-table"><thead><tr><th>#</th><th>Pembalap</th><th>RT</th><th>ET</th><th>Total</th><th>km/j</th></tr></thead><tbody id="resRows"></tbody></table>
+      <div class="marks" id="resMarks"></div>
+      <p class="reward" id="resReward"></p>
+      <form id="taForm" class="row" hidden><span class="muted" id="taNote"></span><button class="btn small green" id="taSubmit">Kirim ke papan rekor</button></form>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Lagi</button><button class="btn" id="nextBtn" hidden>Lawan berikutnya →</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="resGarage">🔧 Garasi</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*GAME*/
+</script>
+<script>
+/*RENDER*/
+</script>
+<script>
+/*NET*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>
