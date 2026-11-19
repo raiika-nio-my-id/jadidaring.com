@@ -937,3 +937,11 @@ body {
 .news-search { display: flex; gap: 10px; margin: 0 0 16px; max-width: 520px; }
 .news-search .clay-input { flex: 1; min-width: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Profile editor: AI button and alert cards, clearly separated from the form. */
+.pf-ai-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 14px 0 22px; }
+.pf-alert { margin: 0 0 28px; padding: 16px 20px; border-radius: var(--radius-md); font-weight: 600; line-height: 1.6; box-shadow: var(--clay-out); border-left: 6px solid transparent; }
+.pf-alert ul { margin: 6px 0 0; padding-left: 1.2rem; }
+.pf-alert--ok { background: var(--clay-mint); color: var(--clay-mint-ink); border-left-color: #2f9e6b; }
+.pf-alert--err { background: #ffe3dc; color: #7a1f10; border-left-color: #d9482b; }
+@media (max-width: 480px) { .pf-ai-cta .clay-btn { width: 100%; text-align: center; } }

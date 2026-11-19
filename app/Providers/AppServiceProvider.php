@@ -49,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->can('manageSettings', CompanyProfile::class);
         });
 
+        // Named, per-member limiters (separate counters; unnamed throttles share one key per user).
+        RateLimiter::for('profile-save', fn (Request $request) => Limit::perMinute(30)->by('profile-save:'.($request->user()?->id ?? $request->ip())));
+        RateLimiter::for('profile-preview', fn (Request $request) => Limit::perMinute(120)->by('profile-preview:'.($request->user()?->id ?? $request->ip())));
+
         RateLimiter::for('admin-api', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());
         });

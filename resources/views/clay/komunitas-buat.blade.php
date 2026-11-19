@@ -5,9 +5,13 @@
         <a href="/u/{{ auth()->user()->username }}" class="news-back"><span aria-hidden="true">&larr;</span> Profilku</a>
         <h1 class="clay-section__title">Edit Profil</h1>
         <p class="news-lead">Tata letak profil tetap dari Jadidaring. Kamu mengatur latar, tema, musik, dan widget. Perubahan selalu jadi draft dulu; kamu meninjau lalu menerbitkan.</p>
-        @if (session('status'))<p class="clay-status" role="status">{{ session('status') }}</p>@endif
+        <div class="pf-ai-cta">
+            <a class="clay-btn clay-btn--cta" href="/komunitas/buat">&#10024; Buat dengan AI</a>
+            <span class="pf-bar-note">Buka generator prompt; JSON profilmu saat ini ikut terisi di prompt.</span>
+        </div>
+        @if (session('status'))<div class="pf-alert pf-alert--ok" role="status">{{ session('status') }}</div>@endif
         @if ($errors->any())
-            <div class="clay-card clay-card--peach" role="alert"><ul>@foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+            <div class="pf-alert pf-alert--err" role="alert"><strong>Ada yang perlu diperbaiki</strong><ul>@foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
         @endif
 
         @if ($draft)
