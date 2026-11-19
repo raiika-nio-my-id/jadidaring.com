@@ -29,7 +29,10 @@
             <a href="/berita/teknologi" class="clay-pill clay-pill--sky">Teknologi</a>
         </div>
 
-        @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Redaksi Jadidaring sedang menyiapkan sajian berita harian terbaik untuk Anda.'])
+        @include('clay._articles', ['featured' => true, 'articles' => $articles, 'emptyText' => 'Redaksi Jadidaring sedang menyiapkan sajian berita harian terbaik untuk Anda.'])
+        @if (! empty($articles))
+            <div class="news-more"><a href="/berita" class="clay-btn clay-btn--primary">Lihat semua berita &rarr;</a></div>
+        @endif
     </section>
 
     {{-- Game Pilihan Section --}}

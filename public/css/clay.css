@@ -868,3 +868,22 @@ body {
 @media (max-width: 480px) { .pf-social { flex-direction: column; align-items: stretch; } .pf-social .clay-actions { width: 100%; } }
 /* A fixed profile background must never paint over the content that follows it (social card, comment wall). */
 .member-page > :not(.pf) { position: relative; z-index: 1; }
+/* Home "Berita Terkini": 1 featured + 10 cards fill whole rows at 2, 3 and 4 columns (12 slots). */
+.news-grid--home { grid-template-columns: 1fr; align-items: stretch; }
+@media (min-width: 640px) { .news-grid--home { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .news-grid--home { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1280px) { .news-grid--home { grid-template-columns: repeat(4, 1fr); } }
+.news-grid--home .news-card { height: 100%; }
+.news-grid--home .news-card p { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.news-grid--home .news-card h2 { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.news-grid--home .news-meta-row { margin-top: auto; }
+@media (min-width: 640px) {
+  .news-card--featured { grid-column: span 2; background: linear-gradient(135deg, var(--clay-lavender), var(--clay-sky)); color: var(--clay-ink); padding: 56px 28px 24px; }
+  .news-card--featured .topic-badge { top: 24px; left: 28px; }
+  .news-card--featured h2 { font-size: 1.7rem; line-height: 1.25; -webkit-line-clamp: 5; line-clamp: 5; }
+  .news-card--featured p { font-size: 1.05rem; color: var(--clay-ink); -webkit-line-clamp: 6; line-clamp: 6; }
+}
+/* Phones: keep the list short (featured + 5), the rest lives on /berita. */
+@media (max-width: 639px) { .news-grid--home .news-card:nth-child(n+7) { display: none; } }
+.news-more { display: flex; justify-content: center; margin: 22px 0 4px; }
+@media (max-width: 480px) { .news-more .clay-btn { width: 100%; } }

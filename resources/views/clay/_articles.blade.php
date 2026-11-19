@@ -5,11 +5,11 @@
         <p class="clay-empty__text">{{ $emptyText ?? '' }}</p>
     </div>
 @else
-    <div class="news-grid">
+    <div class="news-grid @if (! empty($featured)) news-grid--home @endif">
         @foreach ($articles as $a)
-            <a href="{{ $a['url'] }}" class="news-card @if (empty($a['image_url'])) news-card--noimg @endif">
+            <a href="{{ $a['url'] }}" class="news-card @if (empty($a['image_url'])) news-card--noimg @endif @if (! empty($featured) && $loop->first) news-card--featured @endif">
                 @if (! empty($a['image_url']))
-                    <img src="{{ $a['image_url'] }}" alt="" loading="lazy" referrerpolicy="no-referrer">
+                    <img src="{{ $a['image_url'] }}" alt="" width="640" height="360" loading="lazy" decoding="async" referrerpolicy="no-referrer">
                 @endif
                 <span class="topic-badge topic-badge--{{ $a['topic'] }}">{{ \App\Http\Controllers\ClayController::TOPICS[$a['topic']] ?? $a['topic'] }}</span>
                 <h2>{{ $a['title'] }}</h2>

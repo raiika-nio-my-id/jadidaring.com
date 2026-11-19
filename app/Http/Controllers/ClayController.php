@@ -53,7 +53,7 @@ class ClayController extends Controller
             'metaDescription' => 'Main game gratis online tanpa unduh, baca berita terkini hari ini: politik, saham & harga emas, gempa, teknologi, dan kabar baik Indonesia.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/',
             'games' => $games,
-            'articles' => \App\Services\NewsCache::latest(null, 6),
+            'articles' => \App\Services\NewsCache::latest(null, 11),
         ]);
     }
 
