@@ -86,7 +86,9 @@ class NewsController extends Controller
             'relPrev' => self::pageUrl($base, $pg['page'] - 1, $pg['page'] > 1),
             'relNext' => self::pageUrl($base, $pg['page'] + 1, $pg['page'] < $pg['pages']),
             'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
-            'metaDescription' => 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.',
+            'metaDescription' => $topik === 'sosmed'
+                ? 'Tren sosial media hari ini: apa yang sedang ramai dan viral di media sosial Indonesia dan dunia, dirangkum ringkas dengan minimal dua sumber yang bisa diperiksa.'
+                : 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.',
             'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl($base, $pg['page']),
             'currentTopic' => $topik,
             'topicName' => $name,

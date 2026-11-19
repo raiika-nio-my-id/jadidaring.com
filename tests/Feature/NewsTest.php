@@ -41,6 +41,21 @@ class NewsTest extends TestCase
         return ['X-Admin-Api-Key' => 'testing-admin-api-secret'];
     }
 
+    public function test_sosmed_topic_page_api_nav_and_sitemap(): void
+    {
+        $topic = NewsTopic::query()->where('slug', 'sosmed')->first();
+        $this->assertSame('Tren Sosial Media', $topic->name);
+        $this->assertTrue((bool) $topic->enabled);
+        $this->assertGreaterThanOrEqual(2, $topic->min_sources);
+
+        $this->get(self::SITE.'/berita/sosmed')->assertOk()->assertSee('Tren Sosial Media')
+            ->assertSee('https://jadidaring.test/berita/sosmed', false)->assertSee('media sosial Indonesia dan dunia', false);
+        $this->get(self::SITE.'/berita')->assertSee('/berita/sosmed', false);
+        $this->get(self::SITE.'/sitemap.xml')->assertSee('/berita/sosmed', false);
+        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'sosmed', 'title' => 'Tren sosial media paling ramai hari ini']), $this->key())->assertCreated();
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonFragment(['slug' => 'sosmed']);
+    }
+
     public function test_api_requires_the_secret(): void
     {
         $this->postJson(self::API.'/articles', $this->payload())->assertUnauthorized();
@@ -163,7 +178,7 @@ class NewsTest extends TestCase
         $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming']), $this->key())->assertStatus(422);
 
         $this->patchJson(self::API.'/topics/gaming', ['min_sources' => 1], $this->key())->assertStatus(422);
-        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(6, 'topics');
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(7, 'topics');
     }
 
     public function test_zero_daily_limit_means_unlimited(): void
