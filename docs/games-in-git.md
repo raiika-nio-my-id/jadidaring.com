@@ -73,14 +73,14 @@ exported first (no admin GET endpoint exists yet).
 | 26 | `sambungcoret` | in git (4153a29) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 27 | `lanjutkata` | in git (865855c) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 28 | `nadapiano` | database | no local copy: export the database html first | no | no |
-| 29 | `gambletogether` | database | no local copy: export the database html first | yes | yes |
+| 29 | `gambletogether` | in git | no local copy: export the database html first | yes | yes |
 | 30 | `bumerangsakti` | in git (a520387) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 31 | `gamelanhero` | database | no local copy: export the database html first | no | no |
 | 32 | `pedangsihir` | in git (9f4acef) | local build, verified = live (`index.html`) | yes | yes |
 | 33 | `gelembung` | in git (50d7697) | local build, verified = live (`index.html`) | yes | yes |
 | 34 | `benteng` | in git (f08c3a3) | local build, verified = live (`index.html`) | yes | yes |
 | 35 | `ulartangga` | in git (c192fe7) | local build, verified = live (`index.html`) | yes | yes |
-| 36 | `mahjong-master` | in git | no local copy: export the database html first | yes | yes |
+| 36 | `mahjong-master` | in git (fbabf15) | no local copy: export the database html first | yes | yes |
 | 37 | `explodingkitten` | in git (d3c3811) | no local copy: export the database html first | yes | yes |
 | 38 | `mahjong` | in git (9ef48b5) | no local copy: export the database html first | yes | yes |
 | 39 | `tiltingball` | in git (ace822d) | no local copy: export the database html first | no | no |
