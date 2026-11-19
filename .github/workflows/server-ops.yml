@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user]
+        options: [set-ga4, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user, backfill-email-normalized]
       value:
         description: "set-ga4: measurement id (G-XXXX). delete-test-user: username (tmp + digits only)"
         required: false
@@ -78,6 +78,9 @@ jobs:
               mail-test)
                 echo "server outbound IPv4: $(curl -4 -s --max-time 8 https://api.ipify.org)"
                 docker exec -e TO="$VALUE" singlepage-app php artisan mail:test --no-ansi
+                ;;
+              backfill-email-normalized)
+                docker exec singlepage-app php artisan users:backfill-email-normalized --no-ansi
                 ;;
               delete-test-user)
                 docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi
