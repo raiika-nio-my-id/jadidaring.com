@@ -11,15 +11,19 @@
       if (!card) return;
       try { store.setItem(K, JSON.stringify({ url: location.pathname + location.search, y: window.scrollY })); } catch (x) {}
     });
-    var restore = function () {
+    /* Only a back/forward return restores the saved position. A fresh visit (nav click, link, reload of a new entry) starts at the top. */
+    var navType = function () { try { return performance.getEntriesByType('navigation')[0].type; } catch (x) { return ''; } };
+    var restore = function (force) {
+      if (force !== true && navType() !== 'back_forward') { try { store.removeItem(K); } catch (x) {} return; }
       try {
         var s = JSON.parse(store.getItem(K) || 'null');
         if (s && s.url === location.pathname + location.search && s.y > 0) { window.scrollTo(0, s.y); }
+        store.removeItem(K);
       } catch (x) {}
     };
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    window.addEventListener('load', restore);
-    window.addEventListener('pageshow', function (e) { if (e.persisted) restore(); });
+    window.addEventListener('load', function () { restore(); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) restore(true); });
     return;
   }
 
