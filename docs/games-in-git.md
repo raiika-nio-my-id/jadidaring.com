@@ -79,11 +79,11 @@ exported first (no admin GET endpoint exists yet).
 | 32 | `pedangsihir` | in git (9f4acef) | local build, verified = live (`index.html`) | yes | yes |
 | 33 | `gelembung` | in git (50d7697) | local build, verified = live (`index.html`) | yes | yes |
 | 34 | `benteng` | in git (f08c3a3) | local build, verified = live (`index.html`) | yes | yes |
-| 35 | `ulartangga` | in git | local build, verified = live (`index.html`) | yes | yes |
+| 35 | `ulartangga` | in git (c192fe7) | local build, verified = live (`index.html`) | yes | yes |
 | 36 | `mahjong-master` | database | no local copy: export the database html first | yes | yes |
 | 37 | `explodingkitten` | database | no local copy: export the database html first | yes | yes |
 | 38 | `mahjong` | database | no local copy: export the database html first | yes | yes |
-| 39 | `tiltingball` | database | no local copy: export the database html first | no | no |
+| 39 | `tiltingball` | in git | no local copy: export the database html first | no | no |
 | 40 | `boxing` | database | no local copy: export the database html first | no | no |
 | 41 | `spiderman` | database | no local copy: export the database html first | no | no |
 | 42 | `kehidupankonoha` | database | no local copy: export the database html first | yes | yes |

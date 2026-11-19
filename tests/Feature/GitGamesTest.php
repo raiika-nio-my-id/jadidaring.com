@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -194,6 +194,41 @@ class GitGamesTest extends TestCase
         $this->assertTrue(mb_check_encoding($html, 'UTF-8'), 'game.html is valid UTF-8 (most builds are ASCII-only; a few deploy their UTF-8 index.html as is)');
         $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
         $this->assertTrue(str_contains($html, 'window.__JD_ME') || str_contains($html, 'JDNG_CFG') || str_contains($html, 'data-jd-account-name '), 'the game reads the account name itself, through the shared name gate lock, or marks its name field for the lock');
+    }
+
+    /** Single-file games with no player name at all (no gate, no name field): layout + frame only. */
+    public static function nameFreeGames(): array
+    {
+        return [
+            // name-free:start
+            'tiltingball' => ['tiltingball'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('nameFreeGames')]
+    public function test_name_free_game_runs_in_the_site_layout(string $slug): void
+    {
+        $this->publish($slug);
+
+        $this->get(self::HOST.'/game/'.$slug)
+            ->assertOk()
+            ->assertSee('class="clay-header"', false)
+            ->assertSee('data-src="/game/'.$slug.'/play"', false)
+            ->assertDontSee('DB-ROLLBACK-COPY');
+
+        $this->get(self::HOST.'/game/'.$slug.'/play')
+            ->assertOk()
+            ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
+            ->assertSee('data-jd-gitgame-frame', false)
+            ->assertDontSee('JaRing Game Hub link', false)
+            ->assertDontSee('DB-ROLLBACK-COPY');
+
+        $this->get(self::HOST.'/'.$slug)->assertStatus(301)->assertRedirect(self::HOST.'/game/'.$slug);
+
+        $html = (string) file_get_contents(resource_path('games/'.$slug.'/game.html'));
+        $this->assertTrue(mb_check_encoding($html, 'UTF-8'));
+        $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
+        $this->assertStringNotContainsString('JDNG_CFG', $html, 'a game with a name gate belongs in migratedGames');
     }
 
     public function test_shared_name_gate_games_get_the_account_name_lock_after_the_bridge(): void
