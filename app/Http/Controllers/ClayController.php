@@ -190,8 +190,9 @@ class ClayController extends Controller
     private function formatGames(Collection $profiles): Collection
     {
         return $profiles->map(function (CompanyProfile $profile): array {
-            $meta = GameHubCatalog::pageMetadata((string) $profile->html);
             $subdomain = strtolower($profile->subdomain);
+            // Git games (docs/games-in-git.md) read their card text from the repo file, not the rollback html column.
+            $meta = GameHubCatalog::pageMetadata(\App\Services\GitGames::enabled($subdomain) ? \App\Services\GitGames::html($subdomain) : (string) $profile->html);
 
             $title = $meta['title'] !== ''
                 ? $meta['title']

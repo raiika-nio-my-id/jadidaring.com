@@ -14,7 +14,8 @@ class TenantPathTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.members_only_games' => '']);
+        // These tests cover the database-html path; git games have GitGamesTest.
+        config(['singlepage.members_only_games' => '', 'singlepage.git_games' => '']);
     }
 
     public function test_games_are_served_under_game_slug_and_old_paths_are_gone(): void

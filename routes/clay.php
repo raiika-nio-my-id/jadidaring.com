@@ -61,6 +61,20 @@ Route::post('/kontak', [PageController::class, 'send'])->middleware('throttle:5,
 Route::get('/game/{slug}', [TenantController::class, 'showGame'])->name('clay.game.show');
 Route::get('/game/{slug}/', [TenantController::class, 'showGame']);
 Route::get('/game/{slug}/syarat-ketentuan', [TenantController::class, 'gameTerms'])->name('clay.game.terms');
+Route::get('/game/{slug}/play', [TenantController::class, 'playGame'])->name('clay.game.play');
+
+// Git games (docs/games-in-git.md): the old bare path /{slug}[/...] of the pre-/game era 301s to /game/{slug} (query kept).
+foreach (array_filter(array_map('trim', explode(',', strtolower((string) config('singlepage.git_games'))))) as $gitGame) {
+    if (preg_match('/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/', $gitGame) !== 1) {
+        continue;
+    }
+
+    Route::get('/'.$gitGame.'/{any?}', function (Illuminate\Http\Request $request) use ($gitGame) {
+        $qs = $request->getQueryString();
+
+        return redirect('/game/'.$gitGame.($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);
+    })->where('any', '(?!api(/|$)).*')->withoutMiddleware($guestCache);
+}
 
 // Member auth (username + password, optional email, social login).
 Route::middleware('guest')->group(function (): void {

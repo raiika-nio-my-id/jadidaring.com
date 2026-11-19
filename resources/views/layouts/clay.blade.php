@@ -78,6 +78,7 @@
                 </nav>
 
                 <div class="clay-header__actions">
+                    @yield('headerActions')
                     @include('partials.theme-toggle')
                 </div>
             </div>

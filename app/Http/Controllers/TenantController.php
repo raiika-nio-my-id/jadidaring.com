@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyProfile;
 use App\Services\GameHub;
 use App\Services\GameHubCatalog;
+use App\Services\GitGames;
 use App\Services\JaRingMark;
 use App\Services\LegalNoticeInjector;
 use App\Services\MembersOnlyGames;
@@ -61,7 +62,64 @@ class TenantController extends Controller
         ]);
     }
 
-    public function showGame(Request $request, string $slug, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector, PlayerNameBridge $names, RealtimeBridge $realtime, \App\Services\GameAnalytics $ga): Response
+    public function showGame(Request $request, string $slug): Response
+    {
+        $profile = $this->liveGame($slug);
+
+        if (GitGames::enabled($profile->subdomain)) {
+            return $this->gitGameShell($request, $profile);
+        }
+
+        $html = $this->gameDocument($request, $profile, (string) $profile->html, false);
+        $this->trackVisit($profile, $request);
+
+        return $this->gameResponse($html);
+    }
+
+    /**
+     * The game document of a git game (resources/games/{slug}/game.html), loaded by the shell page in a
+     * same-origin frame. Same injections as the database version; only same-origin framing is allowed.
+     */
+    public function playGame(Request $request, string $slug): Response
+    {
+        $profile = $this->liveGame($slug);
+
+        abort_unless(GitGames::enabled($profile->subdomain), 404);
+
+        $html = $this->gameDocument($request, $profile, GitGames::html($profile->subdomain), true);
+
+        return $this->gameResponse($html, [
+            'X-Frame-Options' => 'SAMEORIGIN',
+            'Content-Security-Policy' => "frame-ancestors 'self'",
+            'X-Robots-Tag' => 'noindex',
+        ]);
+    }
+
+    private function gitGameShell(Request $request, CompanyProfile $profile): Response
+    {
+        $slug = $profile->subdomain;
+        $meta = GitGames::meta(GitGames::html($slug));
+        $canonical = rtrim(TenantPath::gameHomeUrl($request, $slug), '/');
+        $query = $request->getQueryString();
+        $this->trackVisit($profile, $request);
+
+        return response()->view('clay.game-play', [
+            'slug' => $slug,
+            'game' => $meta,
+            'playUrl' => '/game/'.TenantPath::segment($slug).'/play'.($query !== null && $query !== '' ? '?'.$query : ''),
+            'termsUrl' => TenantPath::gameTermsUrl($request, $slug),
+            'metaTitle' => $meta['title'] !== '' ? $meta['title'] : 'Jadidaring',
+            'metaDescription' => $meta['description'],
+            'canonicalUrl' => $canonical,
+        ], 200, [
+            'X-Content-Type-Options' => 'nosniff',
+            'Referrer-Policy' => 'strict-origin-when-cross-origin',
+            'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=()',
+            'Cache-Control' => 'private, no-cache',
+        ]);
+    }
+
+    private function liveGame(string $slug): CompanyProfile
     {
         $slug = strtolower(trim($slug));
 
@@ -77,31 +135,43 @@ class TenantController extends Controller
 
         abort_unless($profile instanceof CompanyProfile, 404);
 
-        $html = TenantPath::rewriteHtml(\App\Services\GameMasterKey::scrub((string) $profile->html), $profile->subdomain);
+        return $profile;
+    }
+
+    /** Server-side injections shared by database and git game documents. $framed = loaded inside the git game shell. */
+    private function gameDocument(Request $request, CompanyProfile $profile, string $source, bool $framed): string
+    {
+        $slug = $profile->subdomain;
+        $html = TenantPath::rewriteHtml(\App\Services\GameMasterKey::scrub($source), $slug);
         $html = $profile->hide_footer
             ? $html
-            : $legalInjector->inject($html, TenantPath::gameTermsUrl($request, $profile->subdomain));
+            : app(LegalNoticeInjector::class)->inject($html, TenantPath::gameTermsUrl($request, $slug));
 
-        $html = $seoInjector->inject($html, rtrim(TenantPath::gameHomeUrl($request, $profile->subdomain), '/'));
-        $html = $seoInjector->normalizeGame($html);
-        $html = $names->inject($html, MembersOnlyGames::user());
-        $html = $realtime->inject($html, $profile->subdomain);
-        $html = $ga->inject($html, $profile->subdomain);
+        $seo = app(SeoInjector::class);
+        $html = $seo->inject($html, rtrim(TenantPath::gameHomeUrl($request, $slug), '/'));
+        $html = $seo->normalizeGame($html);
+        $html = app(PlayerNameBridge::class)->inject($html, MembersOnlyGames::user());
+        $html = app(RealtimeBridge::class)->inject($html, $slug);
+        $html = $framed ? GitGames::frame($html, $slug) : app(\App\Services\GameAnalytics::class)->inject($html, $slug);
 
-        if (MembersOnlyGames::applies($profile->subdomain) && ! MembersOnlyGames::allows($request)) {
+        if (MembersOnlyGames::applies($slug) && ! MembersOnlyGames::allows($request)) {
             $banner = MembersOnlyGames::banner('/masuk');
             $html = str_contains($html, '</body>') ? str_replace('</body>', $banner.'</body>', $html) : $html.$banner;
         }
 
-        $this->trackVisit($profile, $request);
+        return $html;
+    }
 
+    /** @param  array<string, string>  $extra */
+    private function gameResponse(string $html, array $extra = []): Response
+    {
         return response($html, 200, [
             'Content-Type' => 'text/html; charset=UTF-8',
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
             'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=()',
             'Cache-Control' => 'private, no-cache',
-        ]);
+        ] + $extra);
     }
 
     public function gameTerms(Request $request, string $slug): View

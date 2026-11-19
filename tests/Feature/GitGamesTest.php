@@ -1,0 +1,132 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\CompanyProfile;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class GitGamesTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private const HOST = 'http://jadidaring.test';
+
+    private const DB_HTML = '<html><head><title>Versi database</title></head><body>DB-ROLLBACK-COPY</body></html>';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config(['singlepage.git_games' => 'langitbersama', 'singlepage.members_only_games' => '*']);
+    }
+
+    private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
+    {
+        $factory = CompanyProfile::factory()->game();
+
+        return ($status === 'published' ? $factory->published() : $factory)->create(['subdomain' => $slug, 'html' => $html]);
+    }
+
+    public function test_game_page_is_the_site_layout_with_nav_and_the_game_frame(): void
+    {
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/game/langitbersama?room=JSW7GT')
+            ->assertOk()
+            ->assertSee('class="clay-header"', false)
+            ->assertSee('class="clay-brand__name">Jaring', false)
+            ->assertSee('is-game-page', false)
+            ->assertSee('data-src="/game/langitbersama/play?room=JSW7GT"', false)
+            ->assertSee('data-game-fs', false)
+            ->assertSee('<title>Langit Bersama · Gambar Layanganmu, Terbangkan ke Langit Bersama</title>', false)
+            ->assertSee('<link rel="canonical" href="http://jadidaring.test/game/langitbersama">', false)
+            ->assertSee('"@type":"VideoGame"', false)
+            ->assertDontSee('DB-ROLLBACK-COPY')
+            ->assertDontSee('gmjd1212');
+    }
+
+    public function test_play_document_is_the_repo_game_with_the_usual_injections(): void
+    {
+        $this->publish('langitbersama');
+
+        $response = $this->get(self::HOST.'/game/langitbersama/play')
+            ->assertOk()
+            ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
+            ->assertHeader('X-Robots-Tag', 'noindex')
+            ->assertSee('jdng.langitbersama', false)
+            ->assertSee('data-jd-gitgame-frame', false)
+            ->assertSee("'/game/langitbersama/api/game/' + path", false)
+            ->assertSee('data-jdrt-bridge', false)
+            ->assertSee('<link rel="canonical" href="http://jadidaring.test/game/langitbersama">', false)
+            ->assertSee('masuk</a> atau', false)
+            ->assertDontSee('DB-ROLLBACK-COPY')
+            ->assertDontSee('gmjd1212');
+
+        $this->assertStringContainsString("frame-ancestors 'self'", (string) $response->headers->get('Content-Security-Policy'));
+    }
+
+    public function test_framed_game_forwards_analytics_to_the_shell_instead_of_a_second_banner(): void
+    {
+        config(['services.ga4.measurement_id' => 'G-TEST1234']);
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/game/langitbersama/play')
+            ->assertOk()
+            ->assertSee('window.parent.jdTrack', false)
+            ->assertSee("jdTrack('game_start'", false)
+            ->assertDontSee('id="consent-banner"', false)
+            ->assertDontSee('googletagmanager', false);
+
+        $this->get(self::HOST.'/game/langitbersama')->assertOk()->assertSee('id="consent-banner"', false);
+    }
+
+    public function test_rollback_switch_serves_the_database_html_again(): void
+    {
+        config(['singlepage.git_games' => '']);
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/game/langitbersama')->assertOk()->assertSee('DB-ROLLBACK-COPY')->assertDontSee('data-game-frame', false);
+        $this->get(self::HOST.'/game/langitbersama/play')->assertNotFound();
+    }
+
+    public function test_unpublished_profile_hides_the_git_game_too(): void
+    {
+        $this->publish('langitbersama', self::DB_HTML, 'draft');
+
+        $this->get(self::HOST.'/game/langitbersama')->assertNotFound();
+        $this->get(self::HOST.'/game/langitbersama/play')->assertNotFound();
+    }
+
+    public function test_other_games_keep_their_database_html(): void
+    {
+        $this->publish('drawquarium', '<html><head></head><body>AQUARIUM-DB</body></html>');
+
+        $this->get(self::HOST.'/game/drawquarium')->assertOk()->assertSee('AQUARIUM-DB')->assertDontSee('data-game-frame', false);
+        $this->get(self::HOST.'/game/drawquarium/play')->assertNotFound();
+    }
+
+    public function test_old_bare_paths_redirect_to_the_game_page(): void
+    {
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/langitbersama')->assertStatus(301)->assertRedirect(self::HOST.'/game/langitbersama');
+        $this->get(self::HOST.'/langitbersama/apa/saja?wallpaper=1')->assertStatus(301)->assertRedirect(self::HOST.'/game/langitbersama?wallpaper=1');
+        $this->get('http://langitbersama.jadidaring.test/x?y=1')->assertStatus(301)->assertRedirect('https://jadidaring.test/game/langitbersama?y=1');
+    }
+
+    public function test_game_catalogue_reads_the_card_from_the_repo_file(): void
+    {
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/game')->assertOk()->assertSee('Langit Bersama')->assertDontSee('Versi database');
+    }
+
+    public function test_built_game_file_is_ascii_and_has_no_retired_key(): void
+    {
+        $html = (string) file_get_contents(resource_path('games/langitbersama/game.html'));
+
+        $this->assertSame(1, preg_match('/^[\x00-\x7f]*$/', $html));
+        $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
+        $this->assertStringContainsString('</html>', $html);
+    }
+}
