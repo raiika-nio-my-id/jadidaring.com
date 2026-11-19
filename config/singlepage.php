@@ -37,7 +37,7 @@ return [
     'members_only_games' => env('GAME_MEMBERS_ONLY', '*'),
 
     // Games served from resources/games/{slug}/game.html inside the site layout (docs/games-in-git.md). Empty = all games use their database html.
-    'git_games' => env('GIT_GAMES', 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker'),
+    'git_games' => env('GIT_GAMES', 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing'),
 
     'subscription_years' => (int) env('SUBSCRIPTION_YEARS', 1),
 
