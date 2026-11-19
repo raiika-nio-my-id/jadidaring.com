@@ -51,9 +51,9 @@ exported first (no admin GET endpoint exists yet).
 | 7 | `ogohogoharak` | in git (fed96fe) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 8 | `monyetuluwatu` | in git (5d10d86) | local build, verified = live (`index.deploy.html`) | yes | no |
 | 9 | `penaltitimnas` | in git (6aa1693) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 10 | `tamiyalintasan` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 10 | `tamiyalintasan` | in git (ee4f2e8) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 11 | `kopisenja` | database | local build, verified = live (`index.deploy.html`) | yes | no |
-| 12 | `mandarinharian` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 12 | `mandarinharian` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 13 | `whoosh` | database | local build, verified = live (`index.deploy.html`) | yes | no |
 | 14 | `ttskilat` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 15 | `ikanrakus` | database | local build, verified = live (`index.deploy.html`) | yes | yes |

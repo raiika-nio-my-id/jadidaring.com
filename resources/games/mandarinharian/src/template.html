@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mandarin Harian · Belajar Bahasa Mandarin 1 Kata Sehari (Hanzi, Pinyin, Arti &amp; Suara)</title>
+<meta name="description" content="Mandarin Harian: belajar bahasa Mandarin 1 kosakata sehari yang benar-benar dipakai di percakapan, mulai dari 你好 nǐ hǎo (halo), 谢谢 xièxie (terima kasih) sampai 多少钱 (berapa harganya). Lengkap dengan Hanzi, pinyin berwarna nada, arti bahasa Indonesia, suara pengucapan, contoh kalimat dan kuis 1 menit. Gratis di HP atau laptop, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#fff6ea">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mandarin Harian · 1 kata Mandarin sehari">
+<meta property="og:description" content="Satu kosakata Mandarin sehari: Hanzi, pinyin, arti, suara, plus kuis 1 menit. Gratis, tanpa iklan.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<div class="app" id="app">
+<header class="top">
+  <div class="brand"><span class="seal" aria-hidden="true">汉</span><span><b>Mandarin Harian</b><small>每日中文 · 1 kata sehari</small></span></div>
+  <div class="chips"><span class="chip" id="streakChip" title="Streak hari berturut-turut">🔥 0</span><span class="chip" id="learnChip" title="Kata yang sudah dipelajari">📚 0</span><button type="button" class="chip btnchip" id="muteBtn" aria-label="Suara">🔊</button></div>
+</header>
+<h1 class="sr-only">Mandarin Harian: belajar bahasa Mandarin satu kata sehari</h1>
+
+<main id="home">
+  <section class="today" id="todayCard" aria-live="polite">
+    <div class="t-head"><span class="t-day" id="tDay">Hari ke-1</span><span class="t-date" id="tDate"></span></div>
+    <div class="word" id="wordBox"></div>
+    <div class="t-actions">
+      <button type="button" class="btn primary" id="sayBtn"><span aria-hidden="true">🔊</span> Dengar</button>
+      <button type="button" class="btn" id="slowBtn"><span aria-hidden="true">🐢</span> Pelan</button>
+    </div>
+    <div class="tip" id="tipBox"></div>
+    <div class="ex" id="exBox"></div>
+    <div class="tones" aria-label="Warna nada"><span>Warna nada:</span><i class="t1">1 datar</i><i class="t2">2 naik</i><i class="t3">3 turun-naik</i><i class="t4">4 turun</i></div>
+  </section>
+
+  <section class="cta" id="ctaBox">
+    <button type="button" class="btn big gold" id="quizBtn"><span aria-hidden="true">🎯</span> <span id="quizLbl">Kuis 1 menit</span></button>
+    <p class="done-line" id="doneLine" hidden></p>
+    <p class="who-line" id="whoLine" hidden><button type="button" class="linkbtn" id="whoBtn"><span id="whoCnt">👥 Yang sudah belajar hari ini</span> <u>lihat</u></button></p>
+    <p class="next" id="nextLine"></p>
+  </section>
+
+  <section class="panel">
+    <div class="p-head"><h2>📅 7 hari terakhir</h2><small>Ketinggalan? Pelajari lagi kata yang terlewat.</small></div>
+    <div class="week" id="weekRow"></div>
+  </section>
+
+  <section class="panel">
+    <div class="p-head"><h2>📚 Koleksi kataku</h2><small id="colSub">Kata yang sudah kamu kuasai muncul di sini.</small></div>
+    <div class="coll" id="collGrid"></div>
+    <button type="button" class="btn wide" id="pracBtn"><span aria-hidden="true">⚡</span> Latihan cepat · <span id="pracLbl">6 soal dengar</span></button>
+  </section>
+
+  <footer class="foot"><p>Fokus ke kosakata percakapan sehari-hari, tanpa materi tata bahasa. Suara: suara AI Mandarin standar (普通话).</p><p><a href="https://gamehub.jadidaring.com/">JaRing Game Hub</a> · jadidaring.com</p></footer>
+</main>
+
+<section class="quiz" id="quiz" hidden role="dialog" aria-modal="true" aria-labelledby="qTitle">
+  <div class="q-top"><button type="button" class="x" id="qClose" aria-label="Tutup kuis">✕</button><div class="dots" id="qDots"></div><span class="q-pts" id="qPts">0</span></div>
+  <div class="q-body" id="qBody"><h2 id="qTitle" class="q-title"></h2></div>
+</section>
+
+<section class="modal" id="wordModal" hidden role="dialog" aria-modal="true"><div class="m-card" id="wmCard"></div></section>
+<section class="modal" id="who" hidden role="dialog" aria-modal="true" aria-labelledby="whoT"><div class="m-card">
+  <button type="button" class="x m-x" data-close="who" aria-label="Tutup">✕</button>
+  <h2 id="whoT">👥 Sudah belajar hari ini</h2><p class="muted" id="whoDate"></p>
+  <ol class="who-list" id="whoList"></ol><p class="muted" id="whoMine"></p>
+</div></section>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+</div>
+<script>
+/*BANK*/
+/*APP*/
+</script>
+</body>
+</html>
