@@ -36,31 +36,12 @@
   function showDesc() { var s = STYLES.filter(function (x) { return x[0] === sel.value; })[0]; desc.textContent = s ? s[1] : ''; }
   sel.addEventListener('change', showDesc); showDesc();
 
+  var SPEC_URL = 'https://jadidaring.com/komunitas/prompt-spec.txt';
   var TEMPLATE = [
-    'Kamu adalah desainer UI/UX untuk komunitas Jadidaring (jadidaring.com). Profil member memakai TATA LETAK TETAP ala Friendster yang dirender oleh Jadidaring. Tugasmu: menghasilkan PENGATURAN profil dalam JSON (tema, latar, widget) berdasarkan data pengguna di bagian bawah, dan HANYA bila perlu satu widget HTML kustom.',
-    '',
-    'ATURAN OUTPUT (WAJIB)',
-    '- Balas dengan satu blok kode markdown berbahasa json berisi objek persis sesuai skema di bawah. Tanpa komentar di dalam JSON. Teks memakai {LANG}.',
-    '- OPSIONAL: bila pengguna menginginkan sesuatu yang tidak bisa dibuat widget bawaan, tambahkan satu blok kode kedua berbahasa html berisi dokumen kecil lengkap untuk widget "custom_html" (maks. 250 KB; CSS di <style>, JavaScript di <script>). Bila tidak perlu, jangan buat blok html dan jangan masukkan widget custom_html.',
-    '',
-    'SKEMA JSON (kunci lain diabaikan; nilai di luar batas dikoreksi atau dibuang)',
-    '{ "profile": { "tagline": "<=80 huruf", "status": "<=140", "about": "<=1200", "avatar": "https://... (gambar, opsional)" },',
-    '  "theme": { "bg": { "type": "color|gradient|image|pattern", "color": "#rrggbb", "color2": "#rrggbb", "angle": 0-360, "image": "https://... atau kosong", "pattern": "none|dots|grid|stripes", "fixed": true, "overlay": 0-0.8 },',
-    '    "colors": { "text": "#rrggbb", "accent": "#rrggbb", "card": "#rrggbb", "link": "#rrggbb" },',
-    '    "font": "Nunito|Baloo 2|Poppins|Inter|Lora|Playfair Display|Pacifico|Space Grotesk|Comic Neue|Press Start 2P",',
-    '    "card": { "radius": 0-40, "opacity": 0.3-1, "blur": 0-24 }, "cursor": { "url": "https://... gambar kecil atau kosong", "size": 16-48 } },',
-    '  "music": { "url": "https://... .mp3/.ogg/.wav atau kosong", "title": "judul" },',
-    '  "widgets": [ urutan tampil; tipe: about, status, gallery, links, counter, music, friends, quote, youtube, custom_html. Bentuk: {"type":"gallery","items":[{"url":"https://...","caption":"..."}]} (maks 12), {"type":"links","items":[{"label":"...","url":"https://..."}]} (maks 10), {"type":"friends","items":[{"username":"..."}]} (maks 8), {"type":"quote","text":"...","author":"..."}, {"type":"youtube","id":"11 karakter atau tautan youtube"}, lainnya cukup {"type":"about"} ] }',
-    '',
-    'ANGKA: tulis sebagai angka JSON (tanpa tanda kutip), titik sebagai desimal. Rentang: angle 0-360 (bulat), overlay 0-0.8, card.radius 0-40 (bulat), card.opacity 0.3-1, card.blur 0-24 (bulat), cursor.size 16-48 (bulat). Desimal bebas (mis. 0.12 atau 0.83) dan dibulatkan ke 2 desimal oleh platform; nilai di luar rentang dipotong ke batas terdekat, jadi tetap usahakan di dalam rentang.',
-    '- Semua warna wajib #rrggbb. Semua URL wajib https:// dan HANYA dari URL yang diberikan pengguna; jangan mengarang URL gambar, audio, atau tautan. Bila tidak ada gambar, pakai latar gradient/pattern.',
-    '- Musik tidak pernah autoplay (pengunjung menekan putar). Jangan mengarang informasi (alamat, harga, testimoni, kontak, statistik). Bila data kosong, kosongkan atau hapus bagiannya.',
-    '- Menu utama dan kolom komentar ditambahkan Jadidaring dan tidak bisa diubah; jangan membuatnya.',
-    '- Khusus widget HTML kustom: dilarang kolom password/PIN/OTP/kartu, unggah file, form kirim data, pengalihan otomatis, javascript: URL, <iframe>/<embed>/<object>/<base>, fetch/XHR/WebSocket (diblokir), dan akses window.parent/cookie/localStorage. Sumber luar yang DIIZINKAN (hanya https): <link rel="stylesheet"> dan <script src> dari fonts.googleapis.com, fonts.gstatic.com, cdn.jsdelivr.net, cdnjs.cloudflare.com, unpkg.com, dan cdn.tailwindcss.com. Domain lain dihapus oleh platform. Footer widget tidak perlu memuat S&K.',
-    '',
-    'KUALITAS',
-    '- Pilih warna, font, latar, dan urutan widget yang cocok dengan tujuan dan gaya desain di bawah; kontras teks vs kartu minimal AA. Isi tagline, status, dan tentang aku dengan kalimat yang hidup tapi jujur sesuai data pengguna.',
-    '',
+    'Kamu desainer profil untuk Jadidaring (jadidaring.com). Buat PENGATURAN profil dalam JSON dari data pengguna di bawah. Teks memakai {LANG}.',
+    'Spesifikasi lengkap (skema, batas, keamanan): ' + SPEC_URL + ' (baca bila bisa; kalau tidak, ikuti ringkasan ini).',
+    'SKEMA: {"profile":{"tagline":"<=80","status":"<=140","about":"<=1200","avatar":"https://.. atau kosong"},"theme":{"bg":{"type":"color|gradient|image|pattern","color":"#rrggbb","color2":"#rrggbb","angle":0-360,"image":"https://.. atau kosong","pattern":"none|dots|grid|stripes","fixed":true,"overlay":0-0.8},"colors":{"text":"#rrggbb","accent":"#rrggbb","card":"#rrggbb","link":"#rrggbb"},"font":"Nunito|Baloo 2|Poppins|Inter|Lora|Playfair Display|Pacifico|Space Grotesk|Comic Neue|Press Start 2P","card":{"radius":0-40,"opacity":0.3-1,"blur":0-24},"cursor":{"url":"","size":16-48}},"music":{"url":"https://.. .mp3/.ogg/.wav atau kosong","title":""},"widgets":[urutan tampil; tipe: about,status,gallery,links,counter,music,friends,quote,youtube. gallery/links: {"type":"links","items":[{"label":"..","url":"https://.."}]}; quote: {"type":"quote","text":"..","author":".."}; lainnya {"type":"about"}]}',
+    'ATURAN: warna wajib #rrggbb; angka JSON tanpa kutip (desimal boleh, mis. 0.12, dibulatkan 2 desimal; di luar rentang dipotong). URL wajib https dan hanya dari data pengguna, jangan mengarang. Jangan mengarang fakta. Tanpa komentar di JSON. Kontras teks vs kartu min. AA. Tanpa widget custom_html kecuali diminta.',
     'DATA PENGGUNA'
   ].join('\n');
 
@@ -68,21 +49,14 @@
 
   var delivery = '';
 
-  function deliverySection(info) {
+  function deliverySection(info, withCfg) {
     if (!info) {
-      return '\nPENGIRIMAN HASIL\n- Balas dengan blok json. Pengguna menempel JSON itu di jadidaring.com/komunitas/halamanku (kotak "Tempel JSON dari AI"), lalu meninjau dan menerbitkannya.';
+      return '\nHASIL: balas dengan satu blok json. Pengguna menempelnya di jadidaring.com/komunitas/halamanku (kotak "Tempel JSON dari AI").';
     }
-    var cur = info.config ? ['', 'PROFIL SAAT INI (JSON; ubah seperlunya sesuai permintaan, pertahankan yang tidak diminta berubah):', JSON.stringify(info.config)] : [];
+    var cur = (withCfg && info.config) ? ['', 'PROFIL SAAT INI (ubah seperlunya, pertahankan sisanya): ' + JSON.stringify(info.config)] : [];
     return cur.concat([
       '',
-      'PENGIRIMAN HASIL: SATU TAUTAN KLIK',
-      '- Setelah JSON final dan kamu periksa, balas dengan SATU tautan yang bisa diklik pengguna (tanpa kunci, tanpa rahasia). Bentuknya:',
-      '  ' + info.base + '?json=<JSON profil yang diminify (satu baris, tanpa spasi berlebih), di-URL-encode>',
-      '- Cara membuatnya: minify JSON, lalu percent-encode semua karakter selain huruf, angka, - _ . ~ (misal { jadi %7B, " jadi %22, spasi jadi %20, # jadi %23, / jadi %2F). Jangan menaruh JSON mentah di tautan.',
-      '- Jika kamu punya alat kode, boleh lebih pendek: ' + info.base + '?d=<base64url dari zlib-compress JSON minify>. Contoh Python: base64.urlsafe_b64encode(zlib.compress(json.dumps(cfg,separators=(",",":")).encode())).decode().rstrip("=")',
-      '- Jika tidak yakin bisa menyandi dengan benar, JANGAN mengarang: balas saja dengan blok json agar pengguna menempelnya di "Tempel JSON dari AI".',
-      '- Jaga tautan di bawah sekitar 6000 karakter: singkatkan teks, kurangi item galeri/tautan bila perlu. Tulis tautan di baris sendiri sebagai teks biasa (jangan di dalam blok kode) lalu tambahkan blok json yang sama sebagai cadangan.',
-      '- Tautan itu hanya membuka PRATINJAU; pengguna harus masuk, menekan Simpan sebagai draft, lalu memilih Terbitkan. Profil tidak pernah tayang otomatis.'
+      'HASIL: balas dengan SATU tautan klik di baris sendiri (teks biasa, bukan blok kode): ' + info.base + '?json=<JSON profil minify satu baris, di-URL-encode: { jadi %7B, " jadi %22, spasi %20, # %23, / %2F, , %2C, : %3A>. Boleh juga ?d=<base64url zlib-compress JSON> bila kamu punya alat kode. Jaga tautan di bawah 6000 karakter. Sertakan juga blok json yang sama sebagai cadangan. Bila tidak yakin bisa meng-encode, jangan mengarang tautan: beri blok json saja. Tautan hanya membuka pratinjau; pengguna harus masuk, menyimpan draft, lalu Terbitkan.'
     ]).join('\n');
   }
 
@@ -92,6 +66,10 @@
     try { cfg = JSON.parse(form.dataset.config || 'null'); } catch (e) { cfg = null; }
     return Promise.resolve({ base: form.dataset.import, config: cfg });
   }
+
+  var MAX_URL = 6000;
+  var trimmed = false;
+  function enc(t) { return encodeURIComponent(t).replace(/%20/g, '+'); }
 
   function build() {
     var feats = Array.prototype.slice.call(form.querySelectorAll('input[name=feat]:checked')).map(function (c) { return c.value; });
@@ -135,9 +113,11 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     mintKey().then(function (info) {
-      delivery = deliverySection(info);
-      prompt = build(); preview.value = prompt; result.hidden = false;
-      say(info ? 'Prompt siap: AI akan membalas dengan satu tautan klik ke pratinjau profilmu (JSON profilmu saat ini ikut disertakan).' : 'Masuk agar AI bisa membalas dengan tautan klik langsung. Tanpa masuk, tempel JSON hasilnya di editor.');
+      delivery = deliverySection(info, true);
+      prompt = build();
+      if (info && info.config && enc(prompt).length > MAX_URL) { delivery = deliverySection(info, false); prompt = build(); trimmed = true; } else { trimmed = false; }
+      preview.value = prompt; result.hidden = false;
+      say(info ? 'Prompt siap: AI akan membalas dengan satu tautan klik ke pratinjau profilmu ' + (trimmed ? ' JSON profilmu terlalu besar untuk tautan, jadi tidak disertakan; sebutkan perubahan yang kamu mau.' : ' JSON profilmu saat ini ikut disertakan.') : 'Masuk agar AI bisa membalas dengan tautan klik langsung. Tanpa masuk, tempel JSON hasilnya di editor.');
       result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     });
   });
@@ -147,22 +127,21 @@
   });
 
   document.getElementById('pb-gemini').addEventListener('click', function () {
-    // Gemini has no supported prefill URL: copy, then open it.
-    copy().then(function (ok) {
-      say(ok ? 'Prompt disalin, tinggal tempel di Gemini.' : 'Salin prompt dari pratinjau lalu tempel di Gemini.');
-      window.open('https://gemini.google.com/app', '_blank', 'noopener');
-    });
+    // Gemini has no prefill URL (gemini.google.com/app?q= opens empty): open synchronously (no popup block), copy, tell the member.
+    window.open('https://gemini.google.com/app', '_blank', 'noopener');
+    copy().then(function (ok) { say(ok ? 'Prompt disalin, tempel di Gemini (Ctrl/Cmd+V).' : 'Gagal menyalin otomatis. Salin dari kotak pratinjau lalu tempel di Gemini.'); });
   });
 
   function openPrefill(base, name) {
-    var url = base + encodeURIComponent(prompt).replace(/%20/g, '+');
-    if (url.length > 7500) {
-      // Too long for a URL: copy, then open the empty chat.
-      copy().then(function () { say('Prompt terlalu panjang untuk tautan. Prompt disalin, tinggal tempel di ' + name + '.'); window.open(base.split('?')[0], '_blank', 'noopener'); });
+    var url = base + enc(prompt);
+    if (url.length > MAX_URL + 200) {
+      // Still too long for a URL: open the chat, copy the prompt and say so.
+      window.open(base.split('?')[0], '_blank', 'noopener');
+      copy().then(function () { say('Prompt terlalu panjang untuk tautan, jadi disalin. Tempel di ' + name + ' (Ctrl/Cmd+V).'); });
       return;
     }
-    say('Membuka ' + name + ' dengan prompt terisi. Tekan kirim di sana.');
     window.open(url, '_blank', 'noopener');
+    say('Membuka ' + name + ' dengan prompt sudah terisi (' + url.length + ' karakter). Tekan kirim di sana. Jika kotaknya kosong, prompt juga sudah bisa disalin dengan tombol Salin.');
   }
   document.getElementById('pb-chatgpt').addEventListener('click', function () { openPrefill('https://chatgpt.com/?q=', 'ChatGPT'); });
   document.getElementById('pb-claude').addEventListener('click', function () { openPrefill('https://claude.ai/new?q=', 'Claude'); });
