@@ -30,6 +30,17 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Keep the duplicate-detection column in step with email, but only when email itself changes
+        // (users left null by the backfill because of a collision must not crash on unrelated saves).
+        static::saving(function (self $user): void {
+            if ($user->isDirty('email') && ! $user->isDirty('email_normalized')) {
+                $user->email_normalized = \App\Support\EmailNormalizer::normalize($user->email);
+            }
+        });
+    }
+
     public function companyProfile(): HasOne
     {
         return $this->hasOne(CompanyProfile::class);

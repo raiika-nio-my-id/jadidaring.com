@@ -70,7 +70,11 @@ class AuthController extends Controller
         $data = $request->validate([
             'username' => ['required', 'string', 'min:3', 'max:20', 'regex:/^[a-z0-9_]+$/', 'unique:users,username'],
             'password' => ['required', 'string', 'min:8', 'max:100', 'confirmed'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email', function ($attr, $value, $fail) {
+                if (filled($value) && \App\Support\EmailNormalizer::taken((string) $value)) {
+                    $fail('Email sudah terdaftar.');
+                }
+            }],
             'website' => ['nullable', 'max:0'],
         ], [
             'username.regex' => 'Nama pengguna hanya boleh huruf kecil, angka, dan garis bawah.',
@@ -127,15 +131,72 @@ class AuthController extends Controller
     public function updateEmail(Request $request): RedirectResponse
     {
         $user = $request->user();
+        $isPasswordAccount = $user->provider === null;
 
-        $data = $request->validate([
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+        $rules = ['email' => ['required', 'string', 'email', 'max:255']];
+        if ($isPasswordAccount) {
+            $rules['current_password'] = ['required', 'string'];
+        }
+        $data = $request->validate($rules, [
+            'email.required' => 'Isi alamat email baru.',
+            'current_password.required' => 'Masukkan kata sandimu saat ini.',
         ]);
 
-        $user->email = filled($data['email'] ?? null) ? Str::lower($data['email']) : null;
-        $user->save();
+        if ($isPasswordAccount && ! \Illuminate\Support\Facades\Hash::check($data['current_password'], (string) $user->password)) {
+            return back()->withErrors(['current_password' => 'Kata sandi salah.']);
+        }
 
-        return back()->with('status', 'Email disimpan.');
+        $new = Str::lower(trim($data['email']));
+
+        if (\App\Support\EmailNormalizer::normalize($new) === \App\Support\EmailNormalizer::normalize($user->email)) {
+            return back()->withErrors(['email' => 'Itu sudah jadi emailmu.']);
+        }
+
+        if (\App\Support\EmailNormalizer::taken($new, $user->id)) {
+            return back()->withErrors(['email' => 'Email sudah terdaftar.']);
+        }
+
+        $user->forceFill(['pending_email' => $new])->save();
+
+        \App\Support\EmailChange::sendVerification($user, $new);
+
+        return back()->with('status', 'Kami mengirim tautan verifikasi ke '.$new.'. Emailmu baru berubah setelah tautan itu diklik (berlaku 60 menit).');
+    }
+
+    private function emailResult(array $data): \Illuminate\Http\Response
+    {
+        return response()->view('member.email-result', $data)->header('X-No-Public-Cache', '1')->header('Cache-Control', 'no-store, private');
+    }
+
+    public function verifyEmail(Request $request, User $user, string $hash): \Illuminate\Http\Response
+    {
+        abort_unless($request->hasValidSignature() && $user->pending_email !== null && hash_equals(sha1($user->pending_email), $hash), 403);
+
+        $new = $user->pending_email;
+
+        if (\App\Support\EmailNormalizer::taken($new, $user->id)) {
+            $user->forceFill(['pending_email' => null])->save();
+
+            return $this->emailResult(['ok' => false, 'message' => 'Email itu sudah dipakai akun lain, jadi perubahan dibatalkan.']);
+        }
+
+        $user->forceFill(['email' => $new, 'pending_email' => null, 'email_verified_at' => now()])->save();
+
+        return $this->emailResult(['ok' => true, 'message' => 'Email '.$new.' sudah terverifikasi dan jadi emailmu.']);
+    }
+
+    public function reportEmailChange(Request $request, User $user): \Illuminate\Http\Response
+    {
+        abort_unless($request->hasValidSignature(), 403);
+
+        $cancelled = $user->pending_email !== null;
+        if ($cancelled) {
+            $user->forceFill(['pending_email' => null])->save();
+        }
+
+        return $this->emailResult(['ok' => true, 'message' => $cancelled
+            ? 'Permintaan ganti email dibatalkan. Kalau bukan kamu, segera ganti kata sandimu.'
+            : 'Terima kasih. Perubahan ini sudah diterapkan sebelumnya. Hubungi kami lewat halaman Kontak supaya kami bantu mengamankan akunmu.']);
     }
 
     /** Members can delete their own account: confirms username + password, cascades only their own rows. */

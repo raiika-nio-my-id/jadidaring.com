@@ -71,6 +71,10 @@ Route::middleware('guest')->group(function (): void {
     Route::get('/auth/{provider}/callback', [SocialController::class, 'callback'])->whereIn('provider', ['google', 'github'])->name('member.social.callback');
 });
 
+// Signed links from email (no login needed: the signature and pending-address hash are the proof).
+Route::get('/akun/email/verifikasi/{user}/{hash}', [AuthController::class, 'verifyEmail'])->whereNumber('user')->middleware('throttle:20,1')->name('member.email.verify');
+Route::get('/akun/email/lapor/{user}', [AuthController::class, 'reportEmailChange'])->whereNumber('user')->middleware('throttle:20,1')->name('member.email.report');
+
 Route::middleware('auth')->group(function (): void {
     Route::post('/keluar', [AuthController::class, 'logout'])->name('member.logout');
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
@@ -93,5 +97,5 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/komunitas/halamanku/draft/batal', [CommunityController::class, 'cancelDraft'])->name('community.draft.cancel');
     Route::post('/akun/nama', [AuthController::class, 'updateName'])->middleware('throttle:6,60')->name('member.account.name');
     Route::post('/akun/hapus', [AuthController::class, 'deleteAccount'])->middleware('throttle:5,60')->name('member.account.delete');
-    Route::post('/akun/email', [AuthController::class, 'updateEmail'])->name('member.account.email');
+    Route::post('/akun/email', [AuthController::class, 'updateEmail'])->middleware(['throttle:email-change'])->name('member.account.email');
 });

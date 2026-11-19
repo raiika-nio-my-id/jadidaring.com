@@ -79,7 +79,16 @@ class SocialAuth
             return $existing;
         }
 
-        $email = $email !== null && $email !== '' && ! User::query()->where('email', $email)->exists() ? $email : null;
+        $email = $email !== null ? Str::lower(trim($email)) : null;
+
+        // Never link by email (an email at the provider may be unverified, or someone else's). If the address, or its
+        // gmail-dot / +tag twin, already belongs to a member, create the account without an email and say so.
+        if ($email !== null && $email !== '' && \App\Support\EmailNormalizer::taken($email)) {
+            session()->flash('social_notice', 'Email '.$email.' sudah terdaftar di akun lain, jadi akun baru ini dibuat tanpa email. Kalau itu akunmu, masuk dengan cara lama lalu hubungkan dari sana.');
+            $email = null;
+        }
+
+        $email = $email !== '' ? $email : null;
         $username = self::uniqueUsername($nickname ?: $provider);
 
         return User::query()->create([

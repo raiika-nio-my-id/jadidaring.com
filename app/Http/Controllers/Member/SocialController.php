@@ -54,6 +54,6 @@ class SocialController extends Controller
         $request->session()->regenerate();
         \App\Support\Ga4::flash($user->wasRecentlyCreated ? 'sign_up' : 'login', ['method' => $method]);
 
-        return redirect()->intended(route('member.account'));
+        return redirect()->intended(route('member.account'))->with('status', session('social_notice'));
     }
 }
