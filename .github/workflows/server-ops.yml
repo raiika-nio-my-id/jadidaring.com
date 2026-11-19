@@ -70,6 +70,7 @@ jobs:
                 grep -c '^\(GOOGLE_CLIENT_SECRET\|MAIL_PASSWORD\)=.\+' .env || true
                 ;;
               mail-test)
+                echo "server outbound IPv4: $(curl -4 -s --max-time 8 https://api.ipify.org)"
                 docker exec -e TO="$VALUE" singlepage-app php artisan mail:test --no-ansi
                 ;;
               delete-test-user)
