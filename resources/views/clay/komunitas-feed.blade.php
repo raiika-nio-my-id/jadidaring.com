@@ -4,13 +4,13 @@
     <div class="clay-section ch-page">
         @include('clay._komunitas-feed-head')
         @include('clay._komunitas-tabs')
-        <div data-jd-slot="list">
-        @if (session('status'))<p class="news-comments__msg" role="status">{{ session('status') }}</p>@endif
-        @if (isset($errors) && $errors->has('body'))<p class="news-comments__msg" role="alert">{{ $errors->first('body') }}</p>@endif
-
         @auth
             <a class="ch-cta" href="/u/{{ auth()->user()->username }}#curhatan"><span aria-hidden="true">✏️</span> Lagi mikirin apa? Tulis di profilmu</a>
         @endauth
+
+        <div data-jd-slot="list">
+        @if (session('status'))<p class="news-comments__msg" role="status">{{ session('status') }}</p>@endif
+        @if (isset($errors) && $errors->has('body'))<p class="news-comments__msg" role="alert">{{ $errors->first('body') }}</p>@endif
 
         @if ($tab === 'mengikuti' && ! auth()->check())
             <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text"><a href="/masuk">Masuk</a> untuk melihat curhatan dari orang yang kamu ikuti. Belum punya akun? <a href="/daftar">Daftar gratis</a>.</p></div>
