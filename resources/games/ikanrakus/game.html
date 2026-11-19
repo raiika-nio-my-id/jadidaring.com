@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Ikan Rakus &#xB7; Game Ikan Makan Ikan &amp; Hiu Lapar Online Gratis di HP &amp; Laptop</title>
+<meta name="description" content="Ikan Rakus: game ikan besar makan ikan kecil di laut Indonesia. Mulai jadi ikan kecil, makan teri dan kembung, tumbuh besar sampai berani melawan hiu karang. 9 level dari Kepulauan Seribu, Bunaken sampai Raja Ampat, mode Laut Lepas dengan papan rekor, dan mode Hiu Lapar: jadi hiu yang terus kelaparan. Langsung main di browser HP atau laptop, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#0b4f7a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ikan Rakus &#xB7; game ikan makan ikan">
+<meta property="og:description" content="Makan yang kecil, kabur dari yang besar, tumbuh jadi raja laut Raja Ampat. Gratis di browser, tanpa iklan.">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0b4f7a;color:#fff;font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{overflow:hidden}
+body.home-mode{overflow:auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+[hidden]{display:none!important}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.screen{position:relative;z-index:2;min-height:100%}
+#home{display:flex;flex-direction:column;align-items:center;padding:24px 16px 70px;background:linear-gradient(180deg,rgba(11,79,122,.25),rgba(5,25,58,.8) 70%)}
+.home-card{width:min(440px,100%);background:rgba(4,30,60,.55);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:18px 18px 16px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 18px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:10px}
+.logo{position:relative;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;margin-bottom:2px}
+.logo canvas{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:240px;height:120px}
+.logo .l1,.logo .l2{font-weight:900;letter-spacing:.06em;line-height:.9;text-shadow:0 4px 0 #063152,0 8px 18px rgba(0,0,0,.4);position:relative}
+.logo .l1{font-size:26px;color:#c9fbff}
+.logo .l2{font-size:52px;color:#ffcf3a;transform:rotate(-3deg)}
+.tagline{margin:0 0 4px;text-align:center;color:#d8f3ff}
+.btn{appearance:none;border:0;border-radius:14px;padding:11px 14px;min-height:44px;font:700 15px/1.15 inherit;font-family:inherit;color:#06324f;background:#e6f7ff;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.22);touch-action:manipulation}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.btn:focus-visible{outline:3px solid #ffd23f;outline-offset:2px}
+.btn.big{width:100%;font-size:18px;padding:14px;min-height:54px}
+.btn.big small{font-weight:600;font-size:12px;opacity:.75}
+.btn.primary{background:linear-gradient(180deg,#ffd75e,#ffb703);color:#3a2300}
+.btn.sq{width:44px;padding:0;flex:0 0 44px;font-size:18px}
+.btn:disabled{opacity:.55}
+.row2,.row3{display:flex;gap:8px}
+.row2>.btn,.row3>.btn:not(.sq){flex:1}
+.stat-line{margin:2px 0 0;text-align:center;font-size:13px;color:#a9dcf3;min-height:18px}
+.seo{width:min(640px,100%);margin:22px auto 0;padding:16px 18px;background:rgba(4,30,60,.55);border-radius:18px;color:#d8eef8;font-size:14.5px}
+.seo h2{font-size:19px;margin:0 0 6px;color:#fff}.seo h3{font-size:16px;margin:14px 0 4px;color:#ffcf3a}.seo p{margin:0}
+.site-footer{margin-top:18px;text-align:center;font-size:13px;color:#a9dcf3}.site-footer a{color:#ffcf3a}
+/* map */
+#map{display:flex;justify-content:center;padding:16px;background:rgba(5,25,58,.55)}
+.panel{width:min(520px,100%)}
+.phead{display:flex;align-items:center;gap:10px;margin-bottom:8px}.phead h2{margin:0;font-size:22px}
+.sea{margin:14px 0 6px;font-weight:800;color:#ffcf3a;letter-spacing:.03em}
+.lvgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lv{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border-radius:16px;border:0;background:rgba(230,247,255,.95);color:#06324f;font:inherit;cursor:pointer;min-height:92px;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.lv b{font-size:24px;line-height:1}.lv span{font-size:12px;font-weight:600;text-align:center;line-height:1.15}.lv em{font-style:normal;font-size:14px;letter-spacing:1px;color:#e09f00}
+.lv.locked{background:rgba(255,255,255,.18);color:#cfe7f3;cursor:not-allowed}.lv.locked em{color:#cfe7f3}
+.lv:focus-visible{outline:3px solid #ffd23f}
+/* HUD */
+#play{position:fixed;inset:0;pointer-events:none;min-height:0}
+.hud{position:absolute;left:0;right:0;top:0;display:flex;gap:8px;align-items:flex-start;padding:calc(8px + env(safe-area-inset-top,0px)) 10px 14px;background:linear-gradient(180deg,rgba(3,28,56,.62),rgba(3,28,56,.35) 70%,rgba(3,28,56,0))}
+.hud .btn{pointer-events:auto}
+.hl{flex:0 0 auto;min-width:74px}.hr{flex:0 0 auto}
+.hc{flex:1;max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+.lives{font-size:16px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.score{font-weight:900;font-size:20px;text-shadow:0 2px 3px rgba(0,0,0,.5);font-variant-numeric:tabular-nums}
+.grow{position:relative;height:16px;border-radius:9px;background:rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.7);overflow:hidden}
+.grow i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#3ddc84,#b6ff6b);transition:width .2s}
+.grow span{position:absolute;inset:0;font-size:11px;font-weight:800;text-align:center;line-height:12px;text-shadow:0 1px 2px #000}
+.grow b{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.8)}
+.rakus{height:6px;border-radius:4px;background:rgba(0,0,0,.3);overflow:hidden}.rakus i{display:block;height:100%;width:0;background:#ffcf3a;transition:width .2s}
+.rakus.on i{background:linear-gradient(90deg,#ff7a1a,#ffcf3a,#ff7a1a);animation:fz .5s linear infinite}
+@keyframes fz{50%{filter:brightness(1.5)}}
+.chain{display:flex;justify-content:center;gap:3px;flex-wrap:nowrap}
+.chain span{position:relative;width:36px;height:26px;border-radius:8px;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center}
+.chain img{width:34px;height:24px}
+.chain .ok{background:rgba(61,220,132,.38);box-shadow:inset 0 0 0 2px #3ddc84}
+.chain .no img{opacity:.55;filter:grayscale(.6)}
+.chain .no::after{content:"\2715 ";position:absolute;right:-1px;top:-5px;font-size:12px;font-weight:900;color:#ff5050;text-shadow:0 0 2px #000}
+.chain .next{box-shadow:inset 0 0 0 2px #ffcf3a}
+.combo{position:absolute;left:50%;top:30%;transform:translateX(-50%);font-weight:900;font-size:30px;color:#ffcf3a;text-shadow:0 3px 0 #7a3e00,0 6px 14px rgba(0,0,0,.5);animation:pop .4s}
+.banner{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);padding:10px 20px;border-radius:16px;background:rgba(4,30,60,.8);font-weight:900;font-size:24px;text-align:center;animation:pop .35s;white-space:nowrap}
+@keyframes pop{from{transform:translate(-50%,0) scale(.6);opacity:0}}
+.banner{animation-name:popb}@keyframes popb{from{transform:translate(-50%,-50%) scale(.6);opacity:0}}
+#joy{position:absolute;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;border:3px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08)}
+#joy i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(255,255,255,.55)}
+.toasts{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:6px}
+.toast{max-width:min(92vw,460px);padding:9px 14px;border-radius:12px;background:rgba(4,30,60,.88);font-weight:700;font-size:14px;text-align:center;animation:tin .25s}
+.toast.warn{background:rgba(160,30,40,.9)}.toast.good{background:rgba(20,120,70,.92)}.toast.edu{background:rgba(30,70,130,.92)}
+@keyframes tin{from{transform:translateY(10px);opacity:0}}
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(2,16,34,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.dlg{width:min(420px,100%);max-height:calc(100% - 8px);overflow:auto;background:#f2fbff;color:#06324f;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.dlg h2{margin:0;font-size:24px;text-align:center}
+.dlg .btn{background:#d8eef8}.dlg .btn.primary{background:linear-gradient(180deg,#ffd75e,#ffb703)}
+.kick{margin:0;text-align:center;font-weight:800;color:#118a9e;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.goal{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;font-weight:700;font-size:14px;text-align:center}
+.goal img{width:46px;height:32px;vertical-align:middle}
+.newhaz{background:#fff4d6;border:2px solid #ffcf3a;border-radius:14px;padding:10px;font-size:14px}
+.newhaz b{display:block;margin-bottom:2px}
+.ctl{margin:0;text-align:center;font-size:13px;color:#4a6b80}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px}
+.stars{text-align:center;font-size:40px;letter-spacing:4px;color:#ffb703;min-height:10px}.stars .off{color:#c8d6de}
+.resgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.resgrid div{background:#fff;border-radius:12px;padding:8px;text-align:center}.resgrid b{display:block;font-size:20px}.resgrid span{font-size:12px;color:#4a6b80}
+.eaten{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 10px;font-size:13px;font-weight:700}
+.eaten span{display:inline-flex;align-items:center;gap:2px}.eaten img{width:32px;height:22px}
+.lbform{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:14px;padding:10px}
+.lbform label span{display:block;font-size:13px;font-weight:700;margin-bottom:3px}
+.lbform input{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:2px solid #b9d9e8;color:#06324f}
+.lbform input::placeholder{color:#9aa5ad;opacity:1}
+.how{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}.red{color:#d62828}
+.lblist{margin:0;padding-left:26px;display:flex;flex-direction:column;gap:4px}
+.lblist li{background:#fff;border-radius:10px;padding:6px 10px}.lblist li span{display:inline-block;min-width:60%}.lblist li b{float:right}
+.lblist li.me{background:#fff2c2}.muted{color:#5f7d8f;text-align:center;font-size:14px;margin:0}
+.lblist li.muted{list-style:none;margin-left:-26px}
+.btn.shark{background:linear-gradient(180deg,#5aa9e6,#2f6690);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.hunger{position:relative;height:12px;border-radius:7px;background:rgba(0,0,0,.4);border:2px solid rgba(255,255,255,.6);overflow:hidden}
+.hunger i{position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,#ff3b3b,#ff9a3c);transition:width .2s}
+.hunger span{position:absolute;inset:0;font-size:9.5px;font-weight:800;text-align:center;line-height:8px;text-shadow:0 1px 2px #000}
+.hunger.low{animation:hl .5s infinite}@keyframes hl{50%{border-color:#ff3b3b;box-shadow:0 0 10px #ff3b3b}}
+body.shark .rakus{display:none}
+.dashbtn{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:78px;height:78px;border-radius:50%;border:0;pointer-events:auto;touch-action:none;cursor:pointer;color:#fff;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  background:radial-gradient(circle at 50% 50%,rgba(4,30,60,.78) 58%,transparent 59%),conic-gradient(#ffcf3a var(--f,100%),rgba(255,255,255,.18) 0);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:.75}
+.dashbtn span{font-size:26px;line-height:1}.dashbtn small{font-size:9.5px;font-weight:900;letter-spacing:.06em}
+.dashbtn.ready{opacity:1;background:radial-gradient(circle at 50% 50%,#ff9f1c 58%,transparent 59%),conic-gradient(#ffe066 100%,transparent 0)}
+.dashbtn:active{transform:scale(.94)}
+@media (max-width:640px){.toasts{bottom:calc(112px + env(safe-area-inset-bottom,0px))}}
+@media (hover:hover) and (pointer:fine){.dashbtn{width:64px;height:64px}.dashbtn span{font-size:20px}}
+.daily{background:rgba(0,0,0,.22);border-radius:16px;padding:10px 12px 8px}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.dhead h2{font-size:15px;margin:0}.dhead span{font-size:12.5px;font-weight:800;color:#ffcf3a}
+.daily ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.daily li{position:relative;overflow:hidden;border-radius:9px;background:rgba(255,255,255,.1);padding:6px 92px 6px 10px;font-size:13px;font-weight:700}
+.daily li i{position:absolute;left:0;top:0;bottom:0;background:rgba(61,220,132,.28);z-index:0}.daily li span,.daily li b{position:relative;z-index:1}
+.daily li b{position:absolute;right:10px;top:6px;font-size:12px;color:#c9fbff}.daily li.ok{background:rgba(61,220,132,.25)}.daily li.ok span{color:#c8ffd9}
+@media (max-width:420px){.chain span{width:32px;height:24px}.chain img{width:30px;height:21px}.chain{gap:2px}.score{font-size:18px}.hl{min-width:62px}.logo .l2{font-size:46px}}
+@media (max-height:460px){.dlg{padding:12px;gap:7px}.dlg h2{font-size:20px}.btn.big{min-height:46px;padding:10px}.stars{font-size:30px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="bl" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"inputs": ["#nameIn"], "keys": ["ikanrakus.name"], "max": 16, "icon": "\ud83d\udc1f", "title": "Ikan Rakus", "accent": "#4fd1ff", "slug": "ikanrakus"};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<canvas id="cv" aria-label="Laut: ikanmu, ikan lain, dan bahaya"></canvas>
+
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><canvas id="logoFish" width="240" height="120"></canvas><span class="l1">IKAN</span><span class="l2">RAKUS</span></div>
+    <h1 class="sr-only">Ikan Rakus: game ikan makan ikan</h1>
+    <p class="tagline">Makan yang kecil, kabur dari yang besar, tumbuh jadi raja laut Indonesia.</p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">&#x1F41F;</span> <span id="playLbl">Main</span></button>
+    <button type="button" class="btn big" id="endlessBtn"><span aria-hidden="true">&#x1F30A;</span> Laut Lepas <small>(tanpa akhir &#xB7; rekor)</small></button>
+    <button type="button" class="btn big shark" id="hiuBtn"><span aria-hidden="true">&#x1F988;</span> Hiu Lapar <small>(jadi hiu &#xB7; baru)</small></button>
+    <div class="row3">
+      <button type="button" class="btn" id="mapBtn"><span aria-hidden="true">&#x1F5FA;&#xFE0F;</span> Level</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">&#x1F393;</span> Cara main</button>
+      <button type="button" class="btn" id="lbBtn"><span aria-hidden="true">&#x1F3C6;</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">&#x1F50A;</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+    <section class="daily" aria-labelledby="dailyH"><div class="dhead"><h2 id="dailyH">&#x1F3AF; Misi harian</h2><span id="dailyStreak"></span></div><ul id="dailyList"></ul></section>
+  </div>
+  <section class="seo">
+    <h2>Game ikan makan ikan, langsung di browser</h2>
+    <p>Ikan Rakus adalah game ikan besar makan ikan kecil seperti Feeding Frenzy, tapi berlatar laut Indonesia. Kamu mulai sebagai ikan kecil. Makan teri, ikan badut, dan kembung untuk tumbuh. Setelah besar, kamu bisa memangsa baronang, kakap merah, kerapu, sampai barakuda dan hiu karang. Ikan yang lebih besar darimu akan mengejar, jadi lihat bar di atas layar: ikon yang menyala boleh dimakan, yang bertanda silang harus dihindari.</p>
+    <h3>9 level, 3 laut</h3>
+    <p>Kepulauan Seribu untuk pemanasan, Bunaken dengan dinding karangnya, lalu Raja Ampat tempat ikan paling besar berkumpul. Tiap laut punya bahaya nyata: ubur-ubur yang menyetrum, jaring nelayan yang turun dari kapal, kantong kresek yang mirip ubur-ubur, dan bom ikan yang merusak karang. Selesaikan level tanpa mati dengan cepat untuk dapat 3 bintang.</p>
+    <h3>Mode Hiu Lapar: game hiu tanpa download</h3>
+    <p>Suka game hiu seperti Hungry Shark? Di mode Hiu Lapar kamu jadi anak hiu yang perutnya terus keroncongan. Bar lapar turun tiap detik, jadi kamu harus terus berburu. Pakai tombol SRUDUK untuk menyergap ikan yang kabur, hindari jaring kapal dan bom ikan, lalu tumbuh sampai berani melawan Hiu Macan. Semua mode terbuka gratis sejak awal: tidak perlu APK mod, uang tak terbatas, atau beli permata.</p>
+    <h3>Misi harian baru setiap hari</h3>
+    <p>Setiap hari ada 3 misi baru yang sama untuk semua pemain, misalnya makan 60 teri, combo 8 beruntun, atau bertahan 2 menit di Laut Lepas. Selesaikan ketiganya untuk menjaga api &#x1F525; streak harianmu. Progres tersimpan otomatis di HP atau laptopmu.</p>
+    <h3>Main di HP atau laptop</h3>
+    <p>Di HP, seret jari di mana saja seperti joystick. Joystick ikut jarimu, jadi tidak lepas atau reset. Di laptop, ikan mengikuti mouse, atau pakai tombol panah/WASD. Tidak perlu download, tidak ada iklan, dan tidak ada nyawa yang harus ditebus dengan menonton video.</p>
+  </section>
+  <footer class="site-footer"><p><strong>Ikan Rakus</strong> &#xB7; game ikan gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<section id="map" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="mapBack" aria-label="Kembali">&#x2190;</button><h2>Pilih level</h2></div>
+    <div id="mapList"></div>
+  </div>
+</section>
+
+<section id="play" class="screen" hidden>
+  <div class="hud">
+    <div class="hl"><div class="lives" id="lives"></div><div class="score" id="score">0</div></div>
+    <div class="hc">
+      <div class="grow" id="grow" aria-label="Pertumbuhan"><i id="growFill"></i><span id="growTxt"></span></div>
+      <div class="rakus"><i id="rakusFill"></i></div>
+      <div class="hunger" id="hungerBox" hidden><i id="hungerFill"></i><span>&#x1F356; Kenyang</span></div>
+      <div class="chain" id="chain" aria-label="Rantai makanan"></div>
+    </div>
+    <div class="hr"><button type="button" class="btn sq" id="pauseBtn" aria-label="Jeda">&#x23F8;</button></div>
+  </div>
+  <div class="combo" id="combo" hidden></div>
+  <div class="banner" id="banner" hidden></div>
+  <div id="joy" hidden><i></i></div>
+  <button type="button" class="dashbtn ready" id="dashBtn" aria-label="Sruduk (ngebut sebentar)"><span>&#x26A1;</span><small>SRUDUK</small></button>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</section>
+
+<div class="overlay" id="intro" hidden><div class="dlg">
+  <p class="kick" id="introSea"></p><h2 id="introName"></h2>
+  <div class="goal" id="introGoal"></div>
+  <div class="newhaz" id="introHaz" hidden></div>
+  <p class="ctl" id="introCtl"></p>
+  <button type="button" class="btn big primary" id="introGo">Mulai!</button>
+</div></div>
+
+<div class="overlay" id="pause" hidden><div class="dlg">
+  <h2>Jeda</h2>
+  <button type="button" class="btn big primary" id="resumeBtn">&#x25B6; Lanjut</button>
+  <div class="row2"><button type="button" class="btn" id="restartBtn">&#x21BB; Ulang</button><button type="button" class="btn" id="quitBtn">&#x2302; Menu</button></div>
+  <label class="chk"><input type="checkbox" id="hintChk"> Lingkaran hijau di ikan yang bisa dimakan</label>
+</div></div>
+
+<div class="overlay" id="result" hidden><div class="dlg">
+  <p class="kick" id="resKick"></p><h2 id="resTitle"></h2>
+  <div class="stars" id="resStars"></div>
+  <div class="resgrid" id="resGrid"></div>
+  <div class="eaten" id="resEaten"></div>
+  <form id="lbForm" class="lbform" hidden>
+    <label><span>Nama untuk papan rekor</span><input id="nameIn" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring"></label>
+    <button type="submit" class="btn primary" id="lbSubmit">Kirim rekor</button>
+  </form>
+  <button type="button" class="btn big primary" id="resNext"></button>
+  <div class="row2"><button type="button" class="btn" id="resRetry">&#x21BB; Ulang</button><button type="button" class="btn" id="resMenu">&#x2302; Menu</button></div>
+</div></div>
+
+<div class="overlay" id="how" hidden><div class="dlg">
+  <h2>Cara main</h2>
+  <ul class="how">
+    <li><b>Gerak:</b> HP: seret jari di mana saja (joystick ikut jari). Laptop: gerakkan mouse, atau panah / WASD.</li>
+    <li><b>Makan</b> ikan yang lebih kecil. Bar atas: ikon menyala = boleh dimakan, &#x2715; = bahaya.</li>
+    <li><b>Tumbuh</b> tiap bar penuh. Bar penuh di ukuran terakhir = level selesai.</li>
+    <li><b>Sruduk &#x26A1;:</b> ngebut sebentar untuk kabur atau menyergap. HP: tombol &#x26A1; atau tap jari kedua. Laptop: klik / Spasi / Shift. Isi ulang 2 detik.</li>
+    <li><b>Kabur</b> dari ikan besar bertanda <b class="red">!</b>, mereka sedang mengejarmu.</li>
+    <li><b>Combo:</b> makan beruntun untuk skor &#xD7;2, &#xD7;3. Meter kuning penuh = mode <b>RAKUS</b> (cepat, skor &#xD7;2).</li>
+    <li><b>Bahaya:</b> &#x26A1; ubur-ubur menyetrum &#xB7; jaring turun dari kapal (tap cepat untuk lolos) &#xB7; kresek bukan makanan &#xB7; bom ikan: keluar dari lingkaran merah.</li>
+    <li><b>Hiu Lapar:</b> bar merah &#x1F356; turun terus. Makan untuk mengisinya. Habis = kehilangan 1 nyawa.</li>
+    <li><b>Bonus:</b> mutiara di dasar +250 &#xB7; gelembung &#x1F6E1;&#xFE0F; menahan 1 gigitan.</li>
+  </ul>
+  <button type="button" class="btn big primary" id="howClose">Siap!</button>
+</div></div>
+
+<div class="overlay" id="lb" hidden><div class="dlg">
+  <h2>Papan rekor Laut Lepas</h2>
+  <p class="muted" id="lbMine"></p>
+  <ol class="lblist" id="lbList"><li class="muted">Memuat&#x2026;</li></ol>
+  <button type="button" class="btn big primary" id="lbClose">Tutup</button>
+</div></div>
+
+<script>
+/* Ikan Rakus simulation: pure logic (no DOM). window.IRSim */
+(function (root) {
+'use strict';
+const SP = {
+  teri:     { n: 'Teri',        r: 8,  pts: 1,  spd: 78, school: true },
+  badut:    { n: 'Ikan Badut',  r: 11, pts: 2,  spd: 62 },
+  kembung:  { n: 'Kembung',     r: 12, pts: 2,  spd: 84 },
+  baronang: { n: 'Baronang',    r: 19, pts: 3,  spd: 70 },
+  kakap:    { n: 'Kakap Merah', r: 27, pts: 5,  spd: 76, hunter: true },
+  kerapu:   { n: 'Kerapu',      r: 35, pts: 7,  spd: 60, hunter: true },
+  barakuda: { n: 'Barakuda',    r: 45, pts: 10, spd: 96, hunter: true },
+  hiu:      { n: 'Hiu Karang',  r: 54, pts: 14, spd: 86, hunter: true },
+  macan:    { n: 'Hiu Macan',   r: 82, pts: 20, spd: 84, hunter: true }
+};
+const ORDER = ['teri', 'badut', 'kembung', 'baronang', 'kakap', 'kerapu', 'barakuda', 'hiu', 'macan'];
+const PR = [14, 23, 38, 58];        // player radius per stage
+const PSPD = [205, 212, 220, 232];  // player max speed per stage (world units/s)
+const SEAS = [
+  { id: 'seribu', n: 'Kepulauan Seribu', top: '#5fd0e6', mid: '#1e8fb8', deep: '#0b4f7a', sand: '#e9d29c', coral: ['#ff7a8a', '#ffb347', '#c86bfa', '#57d39b'] },
+  { id: 'bunaken', n: 'Bunaken', top: '#46b9e8', mid: '#176fb0', deep: '#0a3567', sand: '#d9c28c', coral: ['#ff5f7e', '#ffd166', '#06d6a0', '#ef8cff'] },
+  { id: 'rajaampat', n: 'Raja Ampat', top: '#3fe0d0', mid: '#118a9e', deep: '#062f4f', sand: '#cfe0b0', coral: ['#ff9f1c', '#ff4d6d', '#9b5de5', '#00f5d4'] },
+  { id: 'lepas', n: 'Laut Lepas', top: '#3aa6e0', mid: '#13558f', deep: '#05193a', sand: '#b9b08a', coral: ['#f15bb5', '#fee440', '#00bbf9', '#00f5d4'] }
+];
+const LEVELS = [
+  { sea: 0, n: 'Pantai Pulau Pramuka', goal: [10, 26, 44], mix: { teri: 5, badut: 2, kembung: 3, baronang: 1.4, kakap: 0.5 }, haz: [], par: 75 },
+  { sea: 0, n: 'Terumbu Pulau Tidung', goal: [12, 28, 48], mix: { teri: 4, badut: 2, kembung: 3, baronang: 1.6, kakap: 0.8 }, haz: ['ubur'], par: 85 },
+  { sea: 0, n: 'Dermaga Nelayan', goal: [12, 30, 52], mix: { teri: 4, badut: 1.5, kembung: 3, baronang: 1.8, kakap: 1, kerapu: 0.3 }, haz: ['ubur', 'jaring'], par: 100 },
+  { sea: 1, n: 'Dinding Karang Bunaken', goal: [14, 34, 60], mix: { teri: 3.5, badut: 2, kembung: 2.5, baronang: 2, kakap: 1.2, kerapu: 0.7 }, haz: ['plastik'], par: 110 },
+  { sea: 1, n: 'Arus Biru Siladen', goal: [14, 36, 64], mix: { teri: 3.5, badut: 1.5, kembung: 2.5, baronang: 2, kakap: 1.3, kerapu: 0.8, barakuda: 0.3 }, haz: ['ubur', 'plastik', 'jaring'], par: 125 },
+  { sea: 1, n: 'Teluk Manado', goal: [16, 38, 68], mix: { teri: 3, badut: 1.5, kembung: 2.5, baronang: 2, kakap: 1.4, kerapu: 1, barakuda: 0.4 }, haz: ['bom', 'plastik'], par: 125 },
+  { sea: 2, n: 'Laguna Kabui', goal: [14, 34, 60, 96], mix: { teri: 3, badut: 1.5, kembung: 2.5, baronang: 2, kakap: 1.4, kerapu: 1.1, barakuda: 0.6, hiu: 0.3 }, haz: ['ubur', 'jaring'], par: 165 },
+  { sea: 2, n: 'Gugusan Misool', goal: [16, 36, 64, 104], mix: { teri: 3, badut: 1.2, kembung: 2.5, baronang: 2, kakap: 1.5, kerapu: 1.2, barakuda: 0.7, hiu: 0.4 }, haz: ['ubur', 'plastik', 'bom'], par: 185 },
+  { sea: 2, n: 'Puncak Piaynemo', goal: [16, 38, 68, 112], mix: { teri: 3, badut: 1.2, kembung: 2.4, baronang: 2, kakap: 1.6, kerapu: 1.3, barakuda: 0.8, hiu: 0.6 }, haz: ['ubur', 'plastik', 'jaring', 'bom'], par: 190 }
+];
+const ENDLESS = { sea: 3, n: 'Laut Lepas', goal: [14, 34, 62, 100], mix: { teri: 3, badut: 1.3, kembung: 2.5, baronang: 2, kakap: 1.5, kerapu: 1.2, barakuda: 0.8, hiu: 0.6, macan: 0.7 }, haz: ['ubur', 'plastik', 'jaring', 'bom'], endless: true };
+const HIU = { sea: 3, n: 'Hiu Lapar', goal: [14, 34, 62, 100], mix: { teri: 3.4, badut: 1.4, kembung: 2.8, baronang: 2.2, kakap: 1.5, kerapu: 1.2, barakuda: 0.8, hiu: 0.5, macan: 0.8 }, haz: ['plastik', 'jaring', 'bom'], endless: true, shark: true };
+const DASH = { t: 0.34, cd: 2.0, cdShark: 1.3, mul: 2.15 };
+const WW = 1500, WH = 960, SURF = 60, FLOOR = WH - 90;
+/* t365u: death beat (belly-up float, world keeps swimming) then the fish plunges in from above the surface (nyemplung) */
+const DIE_T = 1.25, DROP_T = 1.05, DROP_FROM = SURF - 230, DROP_AIR = 0.38;
+
+function rng(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const dist2 = (ax, ay, bx, by) => (ax - bx) * (ax - bx) + (ay - by) * (ay - by);
+
+function create(lv, opts) {
+  opts = opts || {};
+  const L = lv === 'endless' ? ENDLESS : lv === 'hiu' ? HIU : LEVELS[lv];
+  const R = rng(opts.seed || (Date.now() & 0xffffff));
+  const w = {
+    lv, L, R, t: 0, fish: [], haz: [], fx: [], ev: [], id: 1,
+    p: { x: WW / 2, y: WH * 0.42, vx: 0, vy: 0, dir: 1, stage: 0, inv: 2, stun: 0, slow: 0, shield: 0, chomp: 0, trapped: null, taps: 0, dead: 0, dash: 0, dashCd: 0 },
+    grow: 0, score: 0, lives: 3, deaths: 0, combo: 0, comboT: 0, frenzy: 0, rakus: 0, eaten: {}, best: 0,
+    hunger: 1, dashes: 0, done: null, hazT: 6, pearlT: 14, shieldT: 30, diff: 0, tips: {}
+  };
+  plunge(w, WW / 2, WH * 0.42);
+  w.maxStage = L.goal.length - 1;
+  for (let i = 0; i < 15; i++) spawn(w, true);
+  return w;
+}
+const pr = w => PR[w.p.stage];
+const edible = (w, f) => SP[f.sp].r < pr(w) * 0.95;
+const danger = (w, f) => SP[f.sp].r > pr(w) * 1.0;
+
+function pickSp(w, wantEdible) {
+  const mix = w.L.mix; let tot = 0; const c = [];
+  for (const k in mix) { const ok = wantEdible ? SP[k].r < pr(w) * 0.95 : true; if (!ok) continue; let wt = mix[k]; if (w.L.endless && SP[k].r > 20) wt *= k === 'macan' ? w.diff / 3 : Math.min(1.6, 0.2 + w.diff * 0.2); c.push([k, wt]); tot += wt; }
+  if (!c.length) return 'teri';
+  let x = w.R() * tot; for (const [k, wt] of c) { if ((x -= wt) <= 0) return k; } return c[c.length - 1][0];
+}
+function spawn(w, anywhere, sp) {
+  const R = w.R; let edCount = 0; for (const f of w.fish) if (edible(w, f)) edCount++;
+  sp = sp || pickSp(w, edCount < 7);
+  const s = SP[sp], dir = R() < 0.5 ? 1 : -1;
+  let x = anywhere ? 80 + R() * (WW - 160) : (dir > 0 ? -60 : WW + 60);
+  if (anywhere && Math.abs(x - w.p.x) < 220) x = (x + WW / 2) % WW;
+  const y = SURF + 40 + s.r + R() * (FLOOR - SURF - 80 - s.r * 2);
+  const n = s.school ? 4 + Math.floor(R() * 4) : 1;
+  for (let i = 0; i < n; i++) {
+    w.fish.push({ id: w.id++, sp, x: x - dir * i * 18 + (R() - 0.5) * 20, y: clamp(y + (R() - 0.5) * 50, SURF + 20, FLOOR - 10), dir, v: s.spd * (0.6 + R() * 0.4), ph: R() * 6.28, vy: 0, chase: 0, cool: R() * 3, flee: 0, dead: 0 });
+  }
+}
+function addHaz(w) {
+  const R = w.R, kinds = w.L.haz; if (!kinds.length) return;
+  const k = kinds[Math.floor(R() * kinds.length)], px = w.p.x;
+  if (k === 'ubur') w.haz.push({ k, x: R() < 0.5 ? -40 : WW + 40, y: SURF + 120 + R() * 600, ph: R() * 6, vx: (R() < 0.5 ? 1 : -1) * 0 + 0, t: 0 }), (w.haz[w.haz.length - 1].vx = w.haz[w.haz.length - 1].x < 0 ? 38 : -38);
+  else if (k === 'plastik') w.haz.push({ k, x: clamp(px + (R() - 0.5) * 700, 100, WW - 100), y: SURF - 10, vx: (R() - 0.5) * 30, ph: R() * 6, t: 0 });
+  else if (k === 'jaring') { const x = clamp(px + (R() - 0.5) * 160, 180, WW - 180); w.haz.push({ k, x, wdt: 300 + w.diff * 20, depth: clamp(w.p.y + 140, 420, FLOOR - 40), t: 0, st: 'warn', trapped: [] }); w.ev.push({ e: 'boat', x }); }
+  else if (k === 'bom') { const x = clamp(px + (R() - 0.5) * 220, 150, WW - 150), y = clamp(w.p.y + (R() - 0.5) * 160, SURF + 140, FLOOR - 60); w.haz.push({ k, x, y, yy: SURF, rad: 150, t: 0, st: 'sink' }); w.ev.push({ e: 'boat', x }); }
+  if (!w.tips[k]) { w.tips[k] = 1; w.ev.push({ e: 'tip', k }); }
+}
+function inNet(h, x, y) { const top = SURF, bot = h.cur; return x > h.x - h.wdt / 2 && x < h.x + h.wdt / 2 && y > top && y < bot; }
+
+function plunge(w, x, y1) {
+  const p = w.p; p.x = x; p.y = DROP_FROM; p.dropY1 = y1; p.drop = DROP_T; p.vx = 0; p.vy = 0; p.dir = p.dir || 1; p.dying = 0; p.splashed = 0;
+  p.inv = Math.max(p.inv, DROP_T + 2); p.stun = 0; p.slow = 0; p.dash = 0; w.ev.push({ e: 'plunge' });
+  // the landing spot is cleared of predators
+  for (const f of w.fish) if (danger(w, f) && dist2(f.x, f.y, x, y1) < 320 * 320) f.x = f.x < x ? f.x - 420 : f.x + 420;
+}
+/** drop / death animation; returns true while the player has no control */
+function busyStep(w, dt) {
+  const p = w.p;
+  if (p.dying > 0) {
+    p.dying -= dt; p.vx *= Math.exp(-dt * 3); p.x = clamp(p.x + p.vx * dt, 40, WW - 40); p.y = Math.max(SURF + 24, p.y - dt * 46);
+    if (p.dying <= 0) { p.dying = 0; if (w.pendLose) { w.done = 'lose'; w.ev.push({ e: 'lose' }); return true; } plunge(w, WW / 2, SURF + 170); }
+    return true;
+  }
+  if (p.drop > 0) {
+    p.drop = Math.max(0, p.drop - dt); const k = 1 - p.drop / DROP_T;
+    if (k < DROP_AIR) { const q = k / DROP_AIR; p.y = DROP_FROM + (SURF - DROP_FROM) * q * q; p.vy = 600; }
+    else { if (!p.splashed) { p.splashed = 1; w.splash = { x: p.x, t: 0 }; w.ev.push({ e: 'splash', x: p.x }); } const q = (k - DROP_AIR) / (1 - DROP_AIR), e = 1 - (1 - q) * (1 - q); p.y = SURF + (p.dropY1 - SURF) * e; p.vy = (1 - q) * 380; }
+    if (p.drop <= 0) { p.vy = 0; p.y = p.dropY1; w.ev.push({ e: 'landed' }); }
+    return true;
+  }
+  return false;
+}
+function hurt(w, why) {
+  const p = w.p; if (p.inv > 0 || w.done) return;
+  if (p.shield > 0) { p.shield = 0; p.inv = 1.2; w.ev.push({ e: 'shieldpop' }); return; }
+  w.lives--; w.deaths++; w.combo = 0; w.frenzy = 0; w.ev.push({ e: 'die', why, x: p.x, y: p.y, last: w.lives <= 0 ? 1 : 0 });
+  p.trapped = null;
+  // no instant cut: a death beat first (fish goes belly-up and floats), then game over or a plunge-in respawn
+  p.dying = DIE_T; p.dash = 0; p.stun = 0; p.slow = 0; p.inv = DIE_T + DROP_T + 2.5; p.vy = 0;
+  if (w.lives <= 0) w.pendLose = 1;
+}
+const L_shark = w => !!w.L.shark;
+function dash(w) { const p = w.p; if (w.done || p.dashCd > 0 || p.stun > 0 || p.trapped || p.dead || p.dying > 0 || p.drop > 0) return false; p.dash = DASH.t; p.dashCd = w.L.shark ? DASH.cdShark : DASH.cd; w.dashes++; w.ev.push({ e: 'dash' }); return true; }
+function eat(w, f) {
+  const s = SP[f.sp], p = w.p; f.dead = 1; p.chomp = 0.22;
+  w.combo = w.comboT > 0 ? w.combo + 1 : 1; w.comboT = 1.4;
+  const mult = (w.combo >= 6 ? 3 : w.combo >= 3 ? 2 : 1) * (w.frenzy > 0 ? 2 : 1);
+  const gain = s.pts * 10 * mult; w.score += gain; w.eaten[f.sp] = (w.eaten[f.sp] || 0) + 1;
+  if (L_shark(w)) w.hunger = Math.min(1, w.hunger + 0.05 + s.pts * 0.03);
+  w.grow += s.pts; w.rakus = Math.min(1, w.rakus + 0.06 + s.pts * 0.02);
+  if (w.rakus >= 1 && w.frenzy <= 0) { w.frenzy = 6; w.rakus = 0; w.ev.push({ e: 'frenzy' }); }
+  w.ev.push({ e: 'eat', sp: f.sp, x: f.x, y: f.y, gain, combo: w.combo });
+  const g = w.L.goal;
+  while (p.stage < w.maxStage && w.grow >= g[p.stage]) { p.stage++; w.ev.push({ e: 'grow', stage: p.stage }); }
+  if (!w.L.endless && w.grow >= g[g.length - 1]) { w.done = 'win'; w.ev.push({ e: 'win' }); }
+}
+
+/** step(w, dt, input) input: {ax, ay} desired direction (-1..1, magnitude = throttle) */
+function step(w, dt, inp) {
+  if (w.done) { w.t += dt; return; }
+  dt = Math.min(dt, 0.05); w.t += dt; const p = w.p, R = w.R;
+  if (w.L.endless) w.diff = Math.min(10, w.t / 32);
+  p.inv = Math.max(0, p.inv - dt); p.stun = Math.max(0, p.stun - dt); p.slow = Math.max(0, p.slow - dt); p.shield = Math.max(0, p.shield - dt); p.chomp = Math.max(0, p.chomp - dt); p.dash = Math.max(0, p.dash - dt); p.dashCd = Math.max(0, p.dashCd - dt);
+  if (w.splash) { w.splash.t += dt; if (w.splash.t > 1.2) w.splash = null; }
+  const busy = busyStep(w, dt); if (w.done) return;
+  if (inp.dash && !busy) dash(w);
+  if (w.L.shark && !p.trapped && !busy) { w.hunger -= dt * (0.03 + p.stage * 0.012 + w.diff * 0.002); if (w.hunger <= 0) { w.hunger = 0.6; w.ev.push({ e: 'starve' }); hurt(w, 'lapar'); if (w.done) return; } if (w.hunger < 0.25 && !w._lowTold) { w._lowTold = 1; w.ev.push({ e: 'hungry' }); } if (w.hunger > 0.45) w._lowTold = 0;
+    w.mercyT = (w.mercyT || 0) - dt; if (w.hunger < 0.3 && w.mercyT <= 0) { w.mercyT = 6; const n0 = w.fish.length; spawn(w, true, 'teri'); for (let i = n0; i < w.fish.length; i++) { const f = w.fish[i], side = R() < 0.5 ? -1 : 1; f.x = clamp(p.x + side * (260 + i * 6 - n0 * 6), 40, WW - 40); f.y = clamp(p.y + (R() - 0.5) * 120, SURF + 30, FLOOR - 20); f.dir = -side; } w.ev.push({ e: 'school' }); } }
+  w.comboT -= dt; if (w.comboT <= 0) w.combo = 0; w.frenzy = Math.max(0, w.frenzy - dt);
+  // player
+  const ms = PSPD[p.stage] * (w.L.shark ? 1.06 : 1) * (w.frenzy > 0 ? 1.25 : 1) * (p.slow > 0 ? 0.55 : 1) * (p.dash > 0 ? DASH.mul : 1);
+  let ax = busy ? 0 : inp.ax || 0, ay = busy ? 0 : inp.ay || 0; const m = Math.hypot(ax, ay); if (m > 1) { ax /= m; ay /= m; }
+  if (!busy) {
+  if (p.stun > 0 || p.trapped) { ax = 0; ay = 0; }
+  if (p.dash > 0 && Math.hypot(ax, ay) < 0.2) { const vm = Math.hypot(p.vx, p.vy); if (vm > 10) { ax = p.vx / vm; ay = p.vy / vm; } else { ax = p.dir; ay = 0; } }
+  const k = 1 - Math.exp(-dt * (p.dash > 0 ? 14 : 7));
+  p.vx += (ax * ms - p.vx) * k; p.vy += (ay * ms - p.vy) * k;
+  if (p.trapped) { p.vx *= 0.8; p.vy *= 0.8; }
+  p.x = clamp(p.x + p.vx * dt, pr(w), WW - pr(w)); p.y = clamp(p.y + p.vy * dt, SURF + pr(w) * 0.6, FLOOR - pr(w) * 0.5);
+  if (Math.abs(p.vx) > 12) p.dir = p.vx > 0 ? 1 : -1;
+  }
+  const r = pr(w), mx = busy ? -1e5 : p.x + p.dir * r * 0.75, my = busy ? -1e5 : p.y;
+  // fish
+  for (const f of w.fish) {
+    if (f.dead) continue; const s = SP[f.sp], fr = s.r;
+    f.ph += dt * 2; f.cool -= dt;
+    const d2 = dist2(f.x, f.y, p.x, p.y), isDanger = danger(w, f), isEd = edible(w, f);
+    if (f.trap) continue;
+    if (isDanger && s.hunter && f.chase <= 0 && f.cool <= 0 && d2 < 270 * 270 && p.inv <= 0) { f.chase = 2.6 + w.diff * 0.2; w.ev.push({ e: 'hunt', id: f.id }); }
+    if (isEd && d2 < 150 * 150 && f.flee <= 0 && R() < dt * 3) f.flee = 0.9;
+    let tx = f.dir * f.v, ty = Math.sin(f.ph) * 14;
+    if (f.chase > 0) {
+      f.chase -= dt; if (f.chase <= 0 || !isDanger) { f.chase = 0; f.cool = 4; }
+      const a = Math.atan2(p.y - f.y, p.x - f.x), cs = Math.min(s.spd * 1.4, PSPD[p.stage] * (0.74 + w.diff * 0.012));
+      tx = Math.cos(a) * cs; ty = Math.sin(a) * cs; f.dir = tx >= 0 ? 1 : -1;
+    } else if (f.flee > 0) {
+      f.flee -= dt; const a = Math.atan2(f.y - p.y, f.x - p.x); tx = Math.cos(a) * s.spd * 1.35; ty = Math.sin(a) * s.spd * 1.35; if (Math.abs(tx) > 5) f.dir = tx > 0 ? 1 : -1;
+    }
+    const kk = 1 - Math.exp(-dt * 3);
+    f.vx = (f.vx || tx) + (tx - (f.vx || tx)) * kk; f.vy += (ty - f.vy) * kk;
+    f.x += f.vx * dt; f.y = clamp(f.y + f.vy * dt, SURF + fr * 0.6, FLOOR - fr * 0.4);
+    if (f.x < -120 || f.x > WW + 120) { f.dead = 2; continue; }
+    // interactions
+    if (p.dead || p.trapped || busy) continue;
+    if (isEd) { if (dist2(f.x, f.y, mx, my) < (r * 0.78 + fr * 0.55) ** 2) eat(w, f); }
+    else if (isDanger) {
+      const fmx = f.x + f.dir * fr * 0.8;
+      if (dist2(fmx, f.y, p.x, p.y) < (fr * 0.55 + r * 0.6) ** 2 && p.inv <= 0) { f.chase = 0; f.cool = 3; w.ev.push({ e: 'bite', sp: f.sp }); hurt(w, f.sp); }
+    } else if (d2 < (fr + r) * (fr + r) * 0.5) { const a = Math.atan2(p.y - f.y, p.x - f.x); p.vx += Math.cos(a) * 80; p.vy += Math.sin(a) * 80; }
+    if (w.done) break;
+  }
+  w.fish = w.fish.filter(f => !f.dead);
+  const target = 22 + Math.floor(w.diff * 1.2); let edN = 0; for (const f of w.fish) if (edible(w, f)) edN++;
+  if ((w.fish.length < target && R() < dt * 4) || (edN < 6 && R() < dt * 6)) spawn(w, false, edN < 6 ? pickSp(w, true) : null);
+  // hazards
+  if (w.L.haz.length) { w.hazT -= dt; if (w.hazT <= 0) { addHaz(w); w.hazT = Math.max(4.5, 11 - w.diff - (w.L.endless ? 0 : w.lv * 0.35)) + R() * 3; } }
+  for (const h of w.haz) {
+    h.t += dt;
+    if (h.k === 'ubur') {
+      h.x += h.vx * dt; h.y += Math.sin(h.t * 1.3 + h.ph) * 22 * dt;
+      if (h.x < -80 || h.x > WW + 80) h.gone = 1;
+      if (!p.trapped && p.stun <= 0 && p.inv <= 0 && dist2(h.x, h.y + 12, p.x, p.y) < (24 + r * 0.6) ** 2) { p.stun = 0.9; p.slow = 1.6; p.vx = -p.vx; p.vy = -p.vy; w.ev.push({ e: 'sting' }); w.combo = 0; }
+    } else if (h.k === 'plastik') {
+      h.y += (h.y < 300 ? 30 : 12) * dt; h.x += (h.vx + Math.sin(h.t + h.ph) * 16) * dt;
+      if (h.y > FLOOR - 10 || h.t > 40) h.gone = 1;
+      if (!h.hit && dist2(h.x, h.y, mx, my) < (18 + r * 0.6) ** 2) { h.hit = 1; h.gone = 1; w.grow = Math.max(p.stage ? w.L.goal[p.stage - 1] : 0, w.grow - 3); p.slow = 2.2; w.combo = 0; w.score = Math.max(0, w.score - 50); w.ev.push({ e: 'plastic', x: h.x, y: h.y }); }
+    } else if (h.k === 'jaring') {
+      const T1 = 2.2, T2 = T1 + 1.0, T3 = T2 + 2.6, T4 = T3 + 1.4;
+      if (h.t < T1) { h.st = 'warn'; h.cur = SURF; }
+      else if (h.t < T2) { h.st = 'drop'; h.cur = SURF + (h.depth - SURF) * ((h.t - T1) / (T2 - T1)); }
+      else if (h.t < T3) { h.st = 'hold'; h.cur = h.depth; if (!h.closed) { h.closed = 1; for (const f of w.fish) if (inNet(h, f.x, f.y)) { f.trap = h; h.trapped.push(f); } if (inNet(h, p.x, p.y) && p.inv <= 0 && !p.trapped) { p.trapped = h; p.taps = 0; w.ev.push({ e: 'trapped' }); } } }
+      else if (h.t < T4) { h.st = 'lift'; const q = (h.t - T3) / (T4 - T3); h.cur = h.depth - (h.depth - SURF + 40) * q; for (const f of h.trapped) f.y = Math.min(f.y, h.cur - 6); if (p.trapped === h) { p.y = Math.min(p.y, h.cur - 4); if (q > 0.85) hurt(w, 'jaring'); } }
+      else { h.gone = 1; for (const f of h.trapped) f.dead = 1; }
+      if (p.trapped === h && h.st !== 'lift' && h.st !== 'hold') p.trapped = null;
+    } else if (h.k === 'bom') {
+      if (h.st === 'sink') { h.yy += 260 * dt; if (h.yy >= h.y) { h.yy = h.y; h.st = 'tick'; h.t = 0; } }
+      else if (h.st === 'tick' && h.t > 2.3) {
+        h.st = 'boom'; h.t = 0; let killed = 0;
+        for (const f of w.fish) if (dist2(f.x, f.y, h.x, h.y) < h.rad * h.rad) { f.dead = 1; killed++; }
+        w.ev.push({ e: 'boom', x: h.x, y: h.y, killed });
+        if (dist2(p.x, p.y, h.x, h.y) < (h.rad + r * 0.3) ** 2) hurt(w, 'bom');
+      } else if (h.st === 'boom' && h.t > 0.8) h.gone = 1;
+    }
+  }
+  w.haz = w.haz.filter(h => !h.gone);
+  w.fish = w.fish.filter(f => !f.dead);
+  // pickups: pearl & shield bubble
+  w.pearlT -= dt; w.shieldT -= dt;
+  if (w.pearlT <= 0) { w.pearlT = 18 + R() * 8; w.fx.push({ k: 'pearl', x: 120 + R() * (WW - 240), y: FLOOR - 14, t: 0 }); }
+  if (w.shieldT <= 0) { w.shieldT = 34 + R() * 12; w.fx.push({ k: 'shield', x: 120 + R() * (WW - 240), y: FLOOR - 20, t: 0 }); }
+  for (const o of w.fx) {
+    o.t += dt; if (o.k === 'shield') o.y -= 26 * dt;
+    if (o.t > 16 || o.y < SURF) o.gone = 1;
+    if (!p.trapped && !busy && dist2(o.x, o.y, p.x, p.y) < (r + 16) ** 2) {
+      o.gone = 1;
+      if (o.k === 'pearl') { const g = 250 * (w.frenzy > 0 ? 2 : 1); w.score += g; w.ev.push({ e: 'pearl', x: o.x, y: o.y, gain: g }); }
+      else { p.shield = 10; w.ev.push({ e: 'shield' }); }
+    }
+  }
+  w.fx = w.fx.filter(o => !o.gone);
+  if (w.L.endless) { w.score += 0; }
+}
+function tapEscape(w) { const p = w.p; if (!p.trapped) return false; p.taps++; if (p.taps >= 7) { const h = p.trapped; p.trapped = null; p.inv = 1.2; p.y = Math.max(SURF + 20, h.cur + 40); p.vy = 220; w.ev.push({ e: 'escape' }); w.score += 30; } return true; }
+function stars(w) { if (w.done !== 'win') return 0; const L = w.L; return w.deaths === 0 && w.t <= L.par ? 3 : w.deaths <= 1 ? 2 : 1; }
+function progress(w) { const g = w.L.goal, st = w.p.stage, lo = st ? g[st - 1] : 0, hi = g[st]; return { st, lo, hi, cur: w.grow, f: hi ? clamp((w.grow - lo) / (hi - lo), 0, 1) : 1, total: clamp(w.grow / g[g.length - 1], 0, 1) }; }
+
+root.IRSim = { DIE_T, DROP_T, plunge, SP, ORDER, PR, PSPD, SEAS, LEVELS, ENDLESS, WW, WH, SURF, FLOOR, create, step, tapEscape, dash, DASH, HIU, edible, danger, stars, progress, pr, spawn, addHaz, hurt };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* Ikan Rakus renderer (canvas 2D). window.IRRender */
+(function (root) {
+'use strict';
+const S = root.IRSim, TAU = Math.PI * 2;
+const LOOK = {
+  teri:     { L: 2.9, H: 0.78, back: '#7d9fb4', belly: '#eef6fa', fin: '#b9d3e0', stripe: '#d8e9f2' },
+  badut:    { L: 2.2, H: 1.2, back: '#ff7a1a', belly: '#ffa24d', fin: '#ff8c2e', bands: '#ffffff', edge: '#1b1b1b' },
+  kembung:  { L: 2.6, H: 0.95, back: '#2f7aa6', belly: '#dbe9ef', fin: '#e6c14a', dots: '#123b56' },
+  baronang: { L: 2.05, H: 1.6, back: '#a88a2e', belly: '#f1dc8c', fin: '#d8b84a', spots: '#6d5615' },
+  kakap:    { L: 2.4, H: 1.25, back: '#d8344f', belly: '#ff9aa6', fin: '#e8546b' },
+  kerapu:   { L: 2.35, H: 1.35, back: '#7a5a3a', belly: '#c9a67a', fin: '#5e4128', spots: '#3e2a17', bigMouth: true },
+  barakuda: { L: 3.6, H: 0.62, back: '#566b7d', belly: '#dfe7ee', fin: '#3b4b58', bars: '#2c3a46', jaw: true },
+  hiu:      { L: 3.1, H: 0.82, back: '#6f8597', belly: '#eef2f5', fin: '#5b6f80', shark: true },
+  macan:    { L: 3.2, H: 0.86, back: '#5b6a55', belly: '#e9ecdf', fin: '#465440', shark: true, bars: '#2f3a2a' },
+  pshark:   { L: 3.0, H: 0.95, back: '#a9c4d6', belly: '#ffffff', fin: '#7f9fb5', shark: true, player: true, noCheek: true },
+  player:   { L: 2.25, H: 1.3, back: '#10b6c9', belly: '#c9fbff', fin: '#ffcf3a', player: true }
+};
+function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+/** draw a fish centred at 0,0 facing +x, radius r (body half-height ~ r*H/2) */
+function fish(c, key, r, t, o) {
+  o = o || {}; const lk = LOOK[key], L = r * lk.L, H = r * lk.H, hl = L / 2, wag = Math.sin(t * (o.fast ? 16 : 9)) * 0.28;
+  c.save();
+  if (o.dead) { c.scale(1, -1); c.globalAlpha *= 0.7; }
+  // tail
+  c.save(); c.translate(-hl * 0.86, 0); c.rotate(wag); c.fillStyle = lk.fin; c.beginPath();
+  if (lk.shark) { c.moveTo(0, 0); c.lineTo(-r * 0.95, -H * 0.95); c.quadraticCurveTo(-r * 0.55, 0, -r * 0.8, H * 0.6); c.closePath(); }
+  else { c.moveTo(r * 0.1, 0); c.quadraticCurveTo(-r * 0.5, -H * 0.2, -r * 0.8, -H * 0.62); c.quadraticCurveTo(-r * 0.55, 0, -r * 0.8, H * 0.62); c.quadraticCurveTo(-r * 0.5, H * 0.2, r * 0.1, 0); }
+  c.fill(); c.restore();
+  // dorsal fin
+  c.fillStyle = lk.fin; c.beginPath();
+  if (lk.shark) { c.moveTo(-hl * 0.15, -H * 0.42); c.lineTo(-hl * 0.02 - r * 0.15, -H * 1.25); c.lineTo(hl * 0.25, -H * 0.4); }
+  else { c.moveTo(-hl * 0.45, -H * 0.38); c.quadraticCurveTo(-hl * 0.05, -H * (lk.H > 1.4 ? 0.95 : 0.85), hl * 0.3, -H * 0.42); }
+  c.fill();
+  // body
+  const g = c.createLinearGradient(0, -H / 2, 0, H / 2); g.addColorStop(0, lk.back); g.addColorStop(0.55, lk.back); g.addColorStop(0.62, lk.belly); g.addColorStop(1, lk.belly);
+  c.fillStyle = o.tint || g; c.beginPath();
+  if (lk.shark || lk.jaw) { c.moveTo(hl, H * 0.02); c.quadraticCurveTo(hl * 0.55, -H * 0.62, -hl * 0.2, -H * 0.5); c.quadraticCurveTo(-hl * 0.85, -H * 0.3, -hl * 0.95, 0); c.quadraticCurveTo(-hl * 0.85, H * 0.3, -hl * 0.2, H * 0.48); c.quadraticCurveTo(hl * 0.6, H * 0.5, hl, H * 0.02); }
+  else c.ellipse(0, 0, hl, H / 2, 0, 0, TAU);
+  c.fill();
+  // patterns (clipped to body)
+  c.save(); c.clip();
+  if (lk.bands) { for (const bx of [hl * 0.42, -hl * 0.05, -hl * 0.55]) { c.fillStyle = lk.edge; c.fillRect(bx - r * 0.2, -H, r * 0.4, H * 2); c.fillStyle = lk.bands; c.fillRect(bx - r * 0.14, -H, r * 0.28, H * 2); } }
+  if (lk.stripe) { c.fillStyle = lk.stripe; c.fillRect(-hl, -H * 0.06, L, H * 0.16); }
+  if (lk.dots) { c.fillStyle = lk.dots; for (let i = 0; i < 6; i++) { c.beginPath(); c.arc(-hl * 0.6 + i * hl * 0.22, -H * 0.18 + (i % 2) * H * 0.1, r * 0.07, 0, TAU); c.fill(); } }
+  if (lk.spots) { c.fillStyle = lk.spots; for (let i = 0; i < 14; i++) { const a = i * 2.39996, d = Math.sqrt(i / 14); c.beginPath(); c.arc(Math.cos(a) * hl * 0.75 * d - hl * 0.05, Math.sin(a) * H * 0.4 * d, r * 0.075, 0, TAU); c.fill(); } }
+  if (lk.bars) { c.fillStyle = lk.bars; for (let i = 0; i < 7; i++) c.fillRect(-hl * 0.7 + i * hl * 0.2, -H * 0.5, r * 0.06, H * 0.45); }
+  if (lk.player) { c.fillStyle = 'rgba(255,255,255,.25)'; if (lk.noCheek) { c.beginPath(); c.ellipse(hl * 0.1, -H * 0.22, hl * 0.55, H * 0.1, -0.08, 0, TAU); c.fill(); } else { c.beginPath(); c.ellipse(hl * 0.1, -H * 0.22, hl * 0.55, H * 0.12, -0.08, 0, TAU); c.fill(); c.fillStyle = '#ff7ad1'; c.beginPath(); c.ellipse(hl * 0.42, H * 0.12, r * 0.14, r * 0.09, 0, 0, TAU); c.fill(); } }
+  c.restore();
+  if (lk.shark) { c.strokeStyle = 'rgba(40,50,60,.5)'; c.lineWidth = Math.max(1, r * 0.04); for (let i = 0; i < 3; i++) { c.beginPath(); c.moveTo(hl * 0.3 - i * r * 0.14, -H * 0.12); c.lineTo(hl * 0.26 - i * r * 0.14, H * 0.16); c.stroke(); } }
+  // pectoral fin
+  c.fillStyle = lk.fin; c.globalAlpha *= 0.9; c.beginPath(); c.ellipse(hl * 0.05, H * 0.16, r * 0.32, r * 0.13, 0.5 + wag * 0.6, 0, TAU); c.fill(); c.globalAlpha /= 0.9;
+  // eye
+  const ex = hl * (lk.shark ? 0.6 : lk.jaw ? 0.62 : 0.52), ey = -H * (lk.shark ? 0.12 : 0.14), er = r * (lk.player ? (lk.shark ? 0.2 : 0.3) : lk.shark ? 0.09 : 0.17);
+  if (o.dead) { c.strokeStyle = '#111'; c.lineWidth = Math.max(1.5, r * 0.06); c.beginPath(); c.moveTo(ex - er, ey - er); c.lineTo(ex + er, ey + er); c.moveTo(ex + er, ey - er); c.lineTo(ex - er, ey + er); c.stroke(); }
+  else {
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(ex, ey, er, 0, TAU); c.fill();
+    c.fillStyle = o.angry ? '#c1121f' : '#111'; c.beginPath(); c.arc(ex + er * 0.22, ey, er * (lk.player ? 0.55 : 0.58), 0, TAU); c.fill();
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(ex + er * 0.4, ey - er * 0.3, er * 0.22, 0, TAU); c.fill();
+    if (o.angry) { c.strokeStyle = '#111'; c.lineWidth = Math.max(1.5, r * 0.06); c.beginPath(); c.moveTo(ex - er * 1.2, ey - er * 1.5); c.lineTo(ex + er * 1.1, ey - er * 0.8); c.stroke(); }
+  }
+  // mouth
+  const mo = o.mouth || 0;
+  if (mo > 0) { c.fillStyle = '#3a0b16'; c.beginPath(); c.moveTo(hl * 1.02, 0); c.lineTo(hl * 0.55, -H * 0.05); c.lineTo(hl * 1.02, -H * 0.38 * mo); c.moveTo(hl * 1.02, 0); c.lineTo(hl * 0.55, H * 0.02); c.lineTo(hl * 1.02, H * 0.34 * mo); c.fill(); }
+  else { c.strokeStyle = 'rgba(0,0,0,.45)'; c.lineWidth = Math.max(1, r * 0.05); c.beginPath(); c.moveTo(hl * 0.98, H * 0.06); c.quadraticCurveTo(hl * 0.86, H * (lk.bigMouth ? 0.2 : 0.12), hl * (lk.bigMouth ? 0.66 : 0.78), H * 0.1); c.stroke(); }
+  if (lk.jaw || lk.shark) { c.fillStyle = '#fff'; for (let i = 0; i < 4; i++) { c.beginPath(); c.moveTo(hl * (0.92 - i * 0.07), H * 0.08); c.lineTo(hl * (0.89 - i * 0.07), H * 0.18); c.lineTo(hl * (0.86 - i * 0.07), H * 0.08); c.fill(); } }
+  c.restore();
+}
+
+/* ---------- scene decor (seeded per level) ---------- */
+function decor(seed, sea) {
+  let s = seed || 7; const R = () => (s = (s * 16807) % 2147483647) / 2147483647; const d = { corals: [], weeds: [], rocks: [], far: [] };
+  for (let x = 20; x < S.WW; x += 34 + R() * 60) { const k = R(); if (k < 0.42) d.corals.push({ x, t: Math.floor(R() * 3), h: 30 + R() * 60, c: sea.coral[Math.floor(R() * sea.coral.length)], ph: R() * 6 }); else if (k < 0.8) d.weeds.push({ x, h: 50 + R() * 90, ph: R() * 6 }); else d.rocks.push({ x, w: 40 + R() * 80, h: 18 + R() * 30 }); }
+  for (let x = -200; x < S.WW + 400; x += 120 + R() * 160) d.far.push({ x, h: 80 + R() * 200, w: 90 + R() * 160 });
+  d.bub = []; for (let i = 0; i < 40; i++) d.bub.push({ x: R() * S.WW, y: R() * S.WH, r: 1.5 + R() * 3.5, v: 18 + R() * 30 });
+  d.boat = []; return d;
+}
+function scene(c, w, cam, vw, vh, t, d) {
+  const sea = S.SEAS[w.L.sea], sc = cam.s, X = x => (x - cam.x) * sc + vw / 2, Y = y => (y - cam.y) * sc + vh / 2;
+  // water column
+  const g = c.createLinearGradient(0, Y(0), 0, Y(S.WH)); g.addColorStop(0, sea.top); g.addColorStop(0.45, sea.mid); g.addColorStop(1, sea.deep);
+  c.fillStyle = g; c.fillRect(0, 0, vw, vh);
+  // sky above surface
+  if (Y(S.SURF) > 0) { const sg = c.createLinearGradient(0, Y(-200), 0, Y(S.SURF)); sg.addColorStop(0, '#9be7ff'); sg.addColorStop(1, '#e6fbff'); c.fillStyle = sg; c.fillRect(0, 0, vw, Y(S.SURF)); }
+  // light rays
+  c.save(); c.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 7; i++) { const bx = X(i * 330 + Math.sin(t * 0.2 + i) * 40 - 100), a = 0.05 + 0.03 * Math.sin(t * 0.7 + i * 1.7); c.fillStyle = 'rgba(255,255,255,' + a.toFixed(3) + ')'; c.beginPath(); c.moveTo(bx, Y(S.SURF)); c.lineTo(bx + 90 * sc, Y(S.SURF)); c.lineTo(bx + 260 * sc, Y(S.FLOOR)); c.lineTo(bx + 60 * sc, Y(S.FLOOR)); c.fill(); }
+  c.restore();
+  // far reef silhouettes (parallax)
+  c.fillStyle = 'rgba(4,30,60,.28)';
+  for (const f of d.far) { const px = (f.x - cam.x) * sc * 0.55 + vw / 2, by = Y(S.FLOOR) + 10; c.beginPath(); c.ellipse(px, by, f.w * sc * 0.6, f.h * sc * 0.6, 0, Math.PI, 0); c.fill(); }
+  // surface wave
+  c.fillStyle = 'rgba(255,255,255,.35)'; c.beginPath(); c.moveTo(0, Y(S.SURF));
+  for (let x = 0; x <= vw + 20; x += 20) { const wx = (x - vw / 2) / sc + cam.x; c.lineTo(x, Y(S.SURF + Math.sin(wx * 0.02 + t * 1.6) * 5)); }
+  c.lineTo(vw, Y(S.SURF + 14)); c.lineTo(0, Y(S.SURF + 14)); c.fill();
+  // boats
+  for (const b of d.boat) { const bx = X(b.x), by = Y(S.SURF) - 2, k = Math.min(1, b.t, b.life - b.t); if (k <= 0) continue; c.save(); c.globalAlpha = Math.max(0, k); c.translate(bx, by + Math.sin(t * 2) * 2); c.scale(sc, sc); c.fillStyle = '#7a3e1d'; c.beginPath(); c.moveTo(-70, -10); c.lineTo(70, -10); c.lineTo(52, 14); c.lineTo(-52, 14); c.fill(); c.fillStyle = '#e63946'; c.fillRect(-70, -14, 140, 6); c.fillStyle = '#f1faee'; c.fillRect(-10, -50, 4, 40); c.beginPath(); c.moveTo(-6, -50); c.lineTo(30, -22); c.lineTo(-6, -22); c.fill(); c.restore(); }
+  // bubbles
+  c.strokeStyle = 'rgba(255,255,255,.4)'; c.lineWidth = 1;
+  for (const b of d.bub) { const y = ((b.y - t * b.v) % (S.FLOOR - S.SURF) + (S.FLOOR - S.SURF)) % (S.FLOOR - S.SURF) + S.SURF, x = b.x + Math.sin(t + b.y) * 6, sx = X(x), sy = Y(y); if (sx < -10 || sx > vw + 10 || sy < -10 || sy > vh + 10) continue; c.beginPath(); c.arc(sx, sy, b.r * sc, 0, TAU); c.stroke(); }
+}
+function floor(c, w, cam, vw, vh, t, d) {
+  const sea = S.SEAS[w.L.sea], sc = cam.s, X = x => (x - cam.x) * sc + vw / 2, Y = y => (y - cam.y) * sc + vh / 2, fy = Y(S.FLOOR);
+  for (const wd of d.weeds) { const x = X(wd.x); if (x < -60 || x > vw + 60) continue; c.strokeStyle = '#2f9e5a'; c.lineWidth = 5 * sc; c.lineCap = 'round'; c.beginPath(); c.moveTo(x, fy + 6); for (let i = 1; i <= 5; i++) c.lineTo(x + Math.sin(t * 1.4 + wd.ph + i * 0.7) * 9 * sc * i / 5, fy + 6 - wd.h * sc * i / 5); c.stroke(); }
+  for (const k of d.corals) {
+    const x = X(k.x); if (x < -80 || x > vw + 80) continue; c.fillStyle = k.c; c.strokeStyle = k.c; c.lineCap = 'round';
+    if (k.t === 0) { c.lineWidth = 7 * sc; const br = (x0, y0, a, len, dep) => { const x1 = x0 + Math.cos(a) * len, y1 = y0 + Math.sin(a) * len; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); if (dep > 0) { br(x1, y1, a - 0.45, len * 0.7, dep - 1); br(x1, y1, a + 0.45, len * 0.7, dep - 1); } }; br(x, fy + 4, -Math.PI / 2 + Math.sin(t * 0.6 + k.ph) * 0.03, k.h * sc * 0.42, 2); }
+    else if (k.t === 1) { c.beginPath(); c.ellipse(x, fy, k.h * sc * 0.45, k.h * sc * 0.42, 0, Math.PI, 0); c.fill(); c.fillStyle = 'rgba(0,0,0,.15)'; for (let i = -2; i <= 2; i++) { c.beginPath(); c.arc(x + i * k.h * sc * 0.15, fy - k.h * sc * 0.18 - Math.abs(i) * -2, 2.5 * sc, 0, TAU); c.fill(); } }
+    else { c.globalAlpha = 0.85; c.beginPath(); c.moveTo(x, fy); for (let i = 0; i <= 8; i++) { const a = Math.PI + i * Math.PI / 8; c.lineTo(x + Math.cos(a) * k.h * sc * 0.5, fy + Math.sin(a) * k.h * sc * 0.65); } c.fill(); c.globalAlpha = 1; }
+  }
+  c.fillStyle = 'rgba(70,60,50,.55)'; for (const r of d.rocks) { const x = X(r.x); if (x < -100 || x > vw + 100) continue; c.beginPath(); c.ellipse(x, fy + 6, r.w * sc / 2, r.h * sc, 0, Math.PI, 0); c.fill(); }
+  const sg = c.createLinearGradient(0, fy, 0, Y(S.WH)); sg.addColorStop(0, sea.sand); sg.addColorStop(1, '#8a7a55'); c.fillStyle = sg; c.beginPath(); c.moveTo(0, fy + 10);
+  for (let x = 0; x <= vw + 30; x += 30) { const wx = (x - vw / 2) / sc + cam.x; c.lineTo(x, fy + 4 + Math.sin(wx * 0.013) * 6 * sc); } c.lineTo(vw, vh + 10); c.lineTo(0, vh + 10); c.fill();
+}
+function hazards(c, w, cam, vw, vh, t) {
+  const sc = cam.s, X = x => (x - cam.x) * sc + vw / 2, Y = y => (y - cam.y) * sc + vh / 2;
+  for (const h of w.haz) {
+    if (h.k === 'ubur') {
+      const x = X(h.x), y = Y(h.y), s = sc * (1 + Math.sin(h.t * 3) * 0.06); c.save(); c.translate(x, y); c.scale(s, s);
+      c.strokeStyle = 'rgba(255,170,230,.75)'; c.lineWidth = 2.2; for (let i = -2; i <= 2; i++) { c.beginPath(); c.moveTo(i * 7, 6); for (let k = 1; k <= 6; k++) c.lineTo(i * 7 + Math.sin(h.t * 4 + k + i) * 4, 6 + k * 8); c.stroke(); }
+      const g = c.createRadialGradient(0, -4, 2, 0, 0, 26); g.addColorStop(0, 'rgba(255,230,250,.95)'); g.addColorStop(1, 'rgba(240,120,210,.7)'); c.fillStyle = g; c.beginPath(); c.ellipse(0, 0, 24, 18, 0, Math.PI, 0); c.quadraticCurveTo(12, 10, 0, 6); c.quadraticCurveTo(-12, 10, -24, 0); c.fill();
+      c.fillStyle = '#ffe14d'; c.font = 'bold 14px system-ui'; c.textAlign = 'center'; c.fillText('\u26a1', 0, -4); c.restore();
+    } else if (h.k === 'plastik') {
+      const x = X(h.x), y = Y(h.y); c.save(); c.translate(x, y); c.scale(sc, sc); c.rotate(Math.sin(h.t * 1.5 + h.ph) * 0.25);
+      c.fillStyle = 'rgba(245,250,255,.72)'; c.strokeStyle = 'rgba(120,140,160,.8)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-14, -10); c.lineTo(14, -10); c.quadraticCurveTo(18 + Math.sin(h.t * 3) * 3, 10, 10, 22); c.lineTo(-10, 22); c.quadraticCurveTo(-18, 10, -14, -10); c.fill(); c.stroke();
+      c.beginPath(); c.arc(-7, -12, 5, Math.PI, 0); c.moveTo(12, -12); c.arc(7, -12, 5, 0, Math.PI, true); c.stroke(); c.fillStyle = 'rgba(30,60,90,.5)'; c.font = 'bold 9px system-ui'; c.textAlign = 'center'; c.fillText('kresek', 0, 9); c.restore();
+    } else if (h.k === 'jaring') {
+      const l = X(h.x - h.wdt / 2), r = X(h.x + h.wdt / 2), top = Y(S.SURF), bot = Y(h.cur || S.SURF);
+      if (h.st === 'warn') { const a = 0.25 + 0.2 * Math.sin(h.t * 10); c.fillStyle = 'rgba(255,220,80,' + a.toFixed(2) + ')'; c.fillRect(l, top, r - l, Y(h.depth) - top); c.strokeStyle = 'rgba(255,230,120,.9)'; c.setLineDash([8, 8]); c.lineWidth = 2; c.strokeRect(l, top, r - l, Y(h.depth) - top); c.setLineDash([]); c.fillStyle = '#fff'; c.font = 'bold ' + Math.round(16 * Math.max(0.8, sc)) + 'px system-ui'; c.textAlign = 'center'; c.fillText('\u26a0 JARING!', (l + r) / 2, top + 30); continue; }
+      c.strokeStyle = 'rgba(240,240,220,.8)'; c.lineWidth = 1.4; const step = 18 * sc;
+      for (let x = l; x <= r + 0.1; x += step) { c.beginPath(); c.moveTo(x, top); c.lineTo(x + Math.sin(t * 2 + x) * 3, bot); c.stroke(); }
+      for (let y = top; y <= bot; y += step) { c.beginPath(); c.moveTo(l, y); c.lineTo(r, y); c.stroke(); }
+      c.strokeStyle = '#c8a26a'; c.lineWidth = 4; c.beginPath(); c.moveTo(l, bot); c.lineTo(r, bot); c.stroke(); c.fillStyle = '#f4a261'; for (let x = l; x <= r; x += step * 2) { c.beginPath(); c.arc(x, bot, 4, 0, TAU); c.fill(); }
+    } else if (h.k === 'bom') {
+      const x = X(h.x), y = Y(h.st === 'sink' ? h.yy : h.y);
+      if (h.st === 'tick') { const p = h.t / 2.3, pul = 0.5 + 0.5 * Math.sin(h.t * (8 + p * 18)); c.fillStyle = 'rgba(255,40,40,' + (0.08 + pul * 0.14).toFixed(3) + ')'; c.beginPath(); c.arc(x, y, h.rad * sc, 0, TAU); c.fill(); c.strokeStyle = 'rgba(255,80,80,.9)'; c.lineWidth = 3; c.setLineDash([10, 8]); c.beginPath(); c.arc(x, y, h.rad * sc, 0, TAU); c.stroke(); c.setLineDash([]); c.strokeStyle = 'rgba(255,255,255,.8)'; c.lineWidth = 4; c.beginPath(); c.arc(x, y, h.rad * sc * 0.25, -Math.PI / 2, -Math.PI / 2 + TAU * (1 - p)); c.stroke(); }
+      if (h.st === 'boom') { const p = h.t / 0.8; c.fillStyle = 'rgba(255,240,200,' + (1 - p).toFixed(2) + ')'; c.beginPath(); c.arc(x, y, h.rad * sc * (0.4 + p * 0.8), 0, TAU); c.fill(); c.strokeStyle = 'rgba(255,255,255,' + (1 - p).toFixed(2) + ')'; c.lineWidth = 6; c.beginPath(); c.arc(x, y, h.rad * sc * (0.6 + p), 0, TAU); c.stroke(); continue; }
+      c.save(); c.translate(x, y); c.scale(sc, sc); c.fillStyle = '#3d5a40'; rr(c, -8, -14, 16, 26, 5); c.fill(); c.fillStyle = '#2b2b2b'; c.fillRect(-4, -20, 8, 7); c.strokeStyle = '#c9a227'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -20); c.quadraticCurveTo(6, -28, 2, -32); c.stroke();
+      c.fillStyle = Math.sin(t * 30) > 0 ? '#ffd23f' : '#ff6b35'; c.beginPath(); c.arc(2, -33, 3.2, 0, TAU); c.fill(); c.fillStyle = '#fff'; c.font = 'bold 8px system-ui'; c.textAlign = 'center'; c.fillText('BOM', 0, 2); c.restore();
+    }
+  }
+  for (const o of w.fx) {
+    const x = X(o.x), y = Y(o.y); c.save(); c.translate(x, y); c.scale(sc, sc);
+    if (o.k === 'pearl') { const op = 0.5 + 0.5 * Math.sin(o.t * 2); c.fillStyle = '#c9a0dc'; c.beginPath(); c.ellipse(0, 4, 18, 9, 0, 0, Math.PI); c.fill(); c.save(); c.translate(0, 4); c.rotate(-0.6 * op); c.beginPath(); c.ellipse(0, 0, 18, 9, 0, Math.PI, TAU); c.fill(); c.restore(); const g = c.createRadialGradient(-2, -1, 1, 0, 0, 7); g.addColorStop(0, '#fff'); g.addColorStop(1, '#f2d7ee'); c.fillStyle = g; c.beginPath(); c.arc(0, 0, 6, 0, TAU); c.fill(); }
+    else { c.strokeStyle = 'rgba(180,240,255,.95)'; c.lineWidth = 2.5; c.fillStyle = 'rgba(120,220,255,.25)'; c.beginPath(); c.arc(0, 0, 15 + Math.sin(o.t * 4) * 1.5, 0, TAU); c.fill(); c.stroke(); c.fillStyle = '#fff'; c.font = '14px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('\ud83d\udee1\ufe0f', 0, 1); }
+    c.restore();
+  }
+}
+function draw(c, w, cam, vw, vh, t, d, ui) {
+  scene(c, w, cam, vw, vh, t, d);
+  const sc = cam.s, X = x => (x - cam.x) * sc + vw / 2, Y = y => (y - cam.y) * sc + vh / 2, p = w.p, pr = S.pr(w);
+  hazards(c, w, cam, vw, vh, t);
+  for (const f of w.fish) {
+    const s = S.SP[f.sp], x = X(f.x), y = Y(f.y), r = s.r * sc; if (x < -r * 3 || x > vw + r * 3 || y < -r * 3 || y > vh + r * 3) continue;
+    const dang = S.danger(w, f);
+    c.save(); c.translate(x, y); c.scale(f.dir, 1); c.rotate(Math.max(-0.5, Math.min(0.5, (f.vy || 0) / 260)) * f.dir);
+    fish(c, f.sp, r, t + f.ph, { fast: f.chase > 0 || f.flee > 0, angry: f.chase > 0, mouth: f.chase > 0 ? 0.6 + 0.4 * Math.sin(t * 14) : 0 });
+    c.restore();
+    if (ui.hint && !dang && S.edible(w, f) && Math.hypot(f.x - p.x, f.y - p.y) < 380) { c.strokeStyle = 'rgba(120,255,160,.55)'; c.lineWidth = 2; c.beginPath(); c.arc(x, y, r * 1.35 + 3, 0, TAU); c.stroke(); }
+    if (f.chase > 0) { c.fillStyle = '#ff3b3b'; c.strokeStyle = '#fff'; c.lineWidth = 3; const by = y - r * 1.3 - 18; c.beginPath(); c.arc(x, by, 12, 0, TAU); c.fill(); c.stroke(); c.fillStyle = '#fff'; c.font = 'bold 16px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('!', x, by + 1); }
+  }
+  // player
+  if (!ui.noPlayer && (!w.done || w.done === 'win')) {
+    const x = X(p.x), y = Y(p.y), r = pr * sc; c.save();
+    const dying = p.dying > 0, dropping = p.drop > 0;
+    if (p.inv > 0 && !dying && !dropping && Math.floor(t * 12) % 2) c.globalAlpha = 0.45;
+    if (dying) c.globalAlpha = Math.max(0.25, Math.min(1, p.dying / 0.5));
+    if (w.frenzy > 0) { const g = c.createRadialGradient(x, y, r * 0.5, x, y, r * 2.4); g.addColorStop(0, 'rgba(255,220,80,.55)'); g.addColorStop(1, 'rgba(255,220,80,0)'); c.fillStyle = g; c.beginPath(); c.arc(x, y, r * 2.4, 0, TAU); c.fill(); }
+    c.translate(x, y); c.scale(p.dir, 1);
+    if (dropping) { const k = 1 - p.drop / S.DROP_T; c.rotate((k < 0.38 ? 1.15 : 1.15 * Math.max(0, 1 - (k - 0.38) / 0.5)) + Math.sin(t * 20) * 0.05); }
+    else if (dying) c.rotate(Math.sin(t * 3) * 0.12);
+    else c.rotate(Math.max(-0.45, Math.min(0.45, p.vy / 400)) * p.dir);
+    if (p.stun > 0) c.rotate(Math.sin(t * 40) * 0.15);
+    if (p.dash > 0) { c.save(); c.globalAlpha = 0.35; c.fillStyle = '#e8fbff'; for (let i = 1; i <= 3; i++) { c.beginPath(); c.ellipse(-r * (0.9 + i * 0.7), 0, r * (0.9 - i * 0.18), r * (0.45 - i * 0.08), 0, 0, TAU); c.fill(); } c.restore(); }
+    if (w.L.shark) { c.shadowColor = 'rgba(255,240,170,.9)'; c.shadowBlur = 10; }
+    fish(c, w.L.shark ? 'pshark' : 'player', r, dying ? 0 : t, { dead: dying, fast: dropping || Math.hypot(p.vx, p.vy) > 60, mouth: dying ? 0 : p.chomp > 0 ? Math.sin(p.chomp / 0.22 * Math.PI) : ui.near ? 0.35 : 0 });
+    c.restore();
+    if (p.shield > 0) { c.strokeStyle = 'rgba(160,235,255,' + (0.6 + 0.3 * Math.sin(t * 6)).toFixed(2) + ')'; c.lineWidth = 3; c.beginPath(); c.arc(x, y, r * 1.7, 0, TAU); c.stroke(); }
+    if (p.stun > 0) { c.fillStyle = '#ffe14d'; c.font = 'bold ' + Math.round(18) + 'px system-ui'; c.textAlign = 'center'; c.fillText('\u26a1 \u26a1', x, y - r * 1.5); }
+    if (p.trapped) { c.fillStyle = 'rgba(0,0,0,.55)'; rr(c, x - 70, y - r - 54, 140, 34, 17); c.fill(); c.fillStyle = '#fff'; c.font = 'bold 15px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('TAP CEPAT! ' + p.taps + '/7', x, y - r - 37); }
+  }
+  // t365u: splash where the fish plunged in + 'falling' shadow marker while in the air
+  if (w.splash) { const k = w.splash.t / 1.2, sx = X(w.splash.x), sy = Y(S.SURF); c.save();
+    for (let i = 0; i < 3; i++) { const q = Math.max(0, k - i * 0.12); if (q <= 0) continue; c.globalAlpha = Math.max(0, 0.8 * (1 - q)); c.strokeStyle = '#ffffff'; c.lineWidth = 3 - i * 0.7; c.beginPath(); c.ellipse(sx, sy + 4, (30 + q * 170) * sc, (7 + q * 26) * sc, 0, 0, TAU); c.stroke(); }
+    c.fillStyle = '#e8fbff'; for (let i = 0; i < 14; i++) { const a = Math.PI * (0.12 + 0.76 * (i / 13)), v = (220 + (i * 37) % 120) * sc, tt = w.splash.t, dx = Math.cos(a) * v * tt, dy = -Math.sin(a) * v * tt + 520 * sc * tt * tt; if (dy > 6 * sc) continue; c.globalAlpha = Math.max(0, 1 - k * 1.2); c.beginPath(); c.arc(sx + dx, sy + dy, (3 + (i % 3)) * sc, 0, TAU); c.fill(); }
+    c.restore(); }
+  if (p.drop > 0 && p.y < S.SURF && !ui.noPlayer) { const sx = X(p.x), sy = Y(S.SURF), k = (p.y - (S.SURF - 230)) / 230; c.save(); c.globalAlpha = 0.25 + 0.5 * k; c.fillStyle = 'rgba(3,28,56,.6)'; c.beginPath(); c.ellipse(sx, sy + 6, pr * sc * (0.6 + k * 0.8), 5 * sc, 0, 0, TAU); c.fill(); c.restore(); }
+  // coach arrow to nearest edible fish
+  if (ui.coach) { const f = ui.coach, fx = X(f.x), fy = Y(f.y), px = X(p.x), py = Y(p.y), a = Math.atan2(fy - py, fx - px), dd = Math.hypot(fx - px, fy - py), b = 0.5 + 0.5 * Math.sin(t * 6);
+    c.save(); c.strokeStyle = 'rgba(120,255,160,.95)'; c.lineWidth = 3; c.beginPath(); c.arc(fx, fy, S.SP[f.sp].r * sc * 1.6 + 6 + b * 4, 0, TAU); c.stroke();
+    if (dd > 70) { const ax = px + Math.cos(a) * (pr * sc + 26), ay = py + Math.sin(a) * (pr * sc + 26); c.translate(ax, ay); c.rotate(a); c.fillStyle = '#7dffa8'; c.strokeStyle = '#063152'; c.lineWidth = 2; c.beginPath(); c.moveTo(14, 0); c.lineTo(-6, -10); c.lineTo(-2, 0); c.lineTo(-6, 10); c.closePath(); c.fill(); c.stroke(); }
+    c.restore(); c.save(); c.font = '800 14px system-ui'; c.textAlign = 'center'; c.lineWidth = 4; c.strokeStyle = 'rgba(3,28,56,.8)'; c.fillStyle = '#7dffa8'; c.strokeText('MAKAN INI!', fx, fy - S.SP[f.sp].r * sc - 18); c.fillText('MAKAN INI!', fx, fy - S.SP[f.sp].r * sc - 18); c.restore(); }
+  // popups & particles
+  for (const q of ui.pops) { const k = q.t / q.life; c.globalAlpha = Math.max(0, 1 - k); c.fillStyle = q.col || '#fff'; c.strokeStyle = 'rgba(0,0,0,.5)'; c.lineWidth = 3; c.font = '800 ' + Math.round(q.size || 16) + 'px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; const yy = Y(q.y) - k * 40; c.strokeText(q.txt, X(q.x), yy); c.fillText(q.txt, X(q.x), yy); }
+  c.globalAlpha = 1;
+  for (const b of ui.parts) { c.strokeStyle = 'rgba(255,255,255,' + Math.max(0, 1 - b.t / b.life).toFixed(2) + ')'; c.lineWidth = 1.5; c.beginPath(); c.arc(X(b.x), Y(b.y), b.r * sc, 0, TAU); c.stroke(); }
+  // offscreen predator arrows
+  for (const f of w.fish) if (f.chase > 0) { const x = X(f.x), y = Y(f.y); if (x > 0 && x < vw && y > 0 && y < vh) continue; const ax = Math.max(18, Math.min(vw - 18, x)), ay = Math.max(70, Math.min(vh - 18, y)), a = Math.atan2(y - vh / 2, x - vw / 2); c.save(); c.translate(ax, ay); c.rotate(a); c.fillStyle = '#ff3b3b'; c.beginPath(); c.moveTo(12, 0); c.lineTo(-8, -9); c.lineTo(-8, 9); c.fill(); c.restore(); }
+}
+/** small icon of a species for the HUD (returns dataURL) */
+function icon(key, size) {
+  const w = size, h = Math.round(size * 0.7), cv = document.createElement('canvas'), dpr = 2; cv.width = w * dpr; cv.height = h * dpr; const c = cv.getContext('2d'); c.scale(dpr, dpr);
+  const lk = LOOK[key], r = Math.min((w - 4) / (lk.L + 0.85), (h - 4) / (lk.H * (lk.shark ? 1.9 : 1.45))); c.translate(w / 2 + r * 0.38, h / 2 + (lk.shark ? r * lk.H * 0.3 : r * 0.08)); fish(c, key, r, 0.4, {}); return cv.toDataURL();
+}
+root.IRRender = { fish, draw, decor, icon, LOOK };
+})(window);
+</script>
+<script>
+/* Ikan Rakus app: screens, input, loop, audio, save, leaderboard. */
+(function (root) {
+'use strict';
+const S = root.IRSim, RD = root.IRRender, doc = document, $ = id => doc.getElementById(id);
+const SAVE_KEY = 'ikanrakus.save', NAME_KEY = 'ikanrakus.name', MUTE_KEY = 'ikanrakus.mute', HINT_KEY = 'ikanrakus.hint';
+const getLS = k => { try { return root.localStorage.getItem(k); } catch (e) { return null; } }, setLS = (k, v) => { try { root.localStorage.setItem(k, v); } catch (e) { /* private */ } };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtN = n => Math.round(n).toLocaleString('id-ID');
+let save = (() => { try { const s = JSON.parse(getLS(SAVE_KEY) || 'null'); if (s && typeof s.un === 'number') return s; } catch (e) { /* fresh */ } return { un: 1, st: {}, best: {}, eb: 0, hb: 0, runs: 0, how: 0 }; })();
+if (typeof save.hb !== 'number') save.hb = 0;
+if (!save.dm) save.dm = { d: '', p: [0, 0, 0], ok: [0, 0, 0], streak: 0, last: '', total: 0 };
+if (typeof save.coach !== 'number') save.coach = 0;
+/* ---------- daily missions (same 3 for everyone each day, seeded by WITA date) ---------- */
+const MISSIONS = [
+  { id: 'teri', t: n => 'Makan ' + n + ' teri', n: [40, 60, 80], ev: e => e.e === 'eat' && e.sp === 'teri' ? 1 : 0 },
+  { id: 'besar', t: n => 'Makan ' + n + ' ikan besar (kakap ke atas)', n: [5, 8, 12], ev: e => e.e === 'eat' && ['kakap', 'kerapu', 'barakuda', 'hiu', 'macan'].includes(e.sp) ? 1 : 0 },
+  { id: 'dash', t: n => 'Pakai SRUDUK ' + n + '\u00d7', n: [15, 25, 40], ev: e => e.e === 'dash' ? 1 : 0 },
+  { id: 'combo', t: n => 'Combo ' + n + ' beruntun', n: [6, 8, 10], max: true, ev: e => e.e === 'eat' ? e.combo : 0 },
+  { id: 'mutiara', t: n => 'Ambil ' + n + ' mutiara', n: [2, 3, 4], ev: e => e.e === 'pearl' ? 1 : 0 },
+  { id: 'rakus', t: n => 'Masuk mode RAKUS ' + n + '\u00d7', n: [3, 5, 7], ev: e => e.e === 'frenzy' ? 1 : 0 },
+  { id: 'hiu', t: n => 'Hiu Lapar: skor ' + fmtN(n) + ' dalam 1 run', n: [4000, 6000, 9000], max: true, fin: (w, lv) => lv === 'hiu' ? w.score : 0 },
+  { id: 'lepas', t: n => 'Laut Lepas: bertahan ' + n + ' detik', n: [60, 90, 120], max: true, fin: (w, lv) => lv === 'endless' ? Math.round(w.t) : 0 },
+  { id: 'raja', t: () => 'Capai ukuran terakhir (mode apa saja)', n: [1, 1, 1], max: true, ev: e => e.e === 'grow' && W && e.stage >= W.maxStage ? 1 : 0 },
+  { id: 'lolos', t: n => 'Lolos dari jaring ' + n + '\u00d7', n: [1, 2, 3], ev: e => e.e === 'escape' ? 1 : 0 }
+];
+function todayKey(off) { const d = new Date(Date.now() + 8 * 3600e3 - (off || 0) * 864e5); return d.toISOString().slice(0, 10); }
+function dayMissions(key) {
+  let h = 2166136261; for (const ch of key) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const pool = MISSIONS.map((m, i) => i), out = [];
+  while (out.length < 3) { h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; const i = pool.splice(h % pool.length, 1)[0]; const m = MISSIONS[i]; out.push({ m, n: m.n[(h >>> 8) % 3] }); }
+  return out;
+}
+let DM = null;
+function dmEnsure() { const k = todayKey(); if (save.dm.d !== k) { save.dm.d = k; save.dm.p = [0, 0, 0]; save.dm.ok = [0, 0, 0]; } DM = dayMissions(k); return DM; }
+function dmBump(i, v, isMax) { const dm = save.dm; if (dm.ok[i]) return; const n = DM[i].n; dm.p[i] = isMax ? Math.max(dm.p[i], v) : dm.p[i] + v; if (dm.p[i] >= n) { dm.p[i] = n; dm.ok[i] = 1; dmDone(i); } }
+function dmDone(i) {
+  const dm = save.dm; SFX.pick(); toast('\u2705 Misi harian: ' + DM[i].m.t(DM[i].n), 'good', 2600);
+  if (dm.ok.every(Boolean)) { const y = todayKey(1); dm.streak = dm.last === y ? dm.streak + 1 : dm.last === dm.d ? dm.streak : 1; dm.last = dm.d; dm.total++; setTimeout(() => { banner('MISI HARIAN BERES! \ud83d\udd25 ' + dm.streak + ' hari', 1800); SFX.win(); }, 900); }
+  persist();
+}
+function dmEvent(e) { if (!DM || mode !== 'game') return; DM.forEach((x, i) => { if (x.m.ev) { const v = x.m.ev(e); if (v) dmBump(i, v, x.m.max); } }); }
+function dmFinish(w, lv) { if (!DM) return; DM.forEach((x, i) => { if (x.m.fin) { const v = x.m.fin(w, lv); if (v) dmBump(i, v, true); } }); persist(); }
+function paintDaily() {
+  dmEnsure(); const dm = save.dm, streakAlive = dm.last === dm.d || dm.last === todayKey(1);
+  $('dailyList').innerHTML = DM.map((x, i) => '<li class="' + (dm.ok[i] ? 'ok' : '') + '"><span>' + (dm.ok[i] ? '\u2705 ' : '') + esc(x.m.t(x.n)) + '</span><i style="width:' + Math.round(dm.p[i] / x.n * 100) + '%"></i><b>' + fmtN(Math.min(dm.p[i], x.n)) + '/' + fmtN(x.n) + '</b></li>').join('');
+  $('dailyStreak').textContent = streakAlive && dm.streak ? '\ud83d\udd25 ' + dm.streak + ' hari' : 'Baru tiap hari';
+}
+
+const persist0 = () => setLS(SAVE_KEY, JSON.stringify(save));
+function persist() { persist0(); }
+let hint = getLS(HINT_KEY) !== '0';
+
+/* ---------- audio ---------- */
+let AC = null, muted = getLS(MUTE_KEY) === '1';
+function ac() { if (!AC) { try { AC = new (root.AudioContext || root.webkitAudioContext)(); } catch (e) { AC = null; } } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
+function tone(f, d, type, vol, f2) { if (muted || !AC) return; const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d); g.gain.setValueAtTime(vol || 0.08, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + 0.02); }
+function noise(d, vol, freq) { if (muted || !AC) return; const t = AC.currentTime, n = Math.floor(AC.sampleRate * d), b = AC.createBuffer(1, n, AC.sampleRate), a = b.getChannelData(0); for (let i = 0; i < n; i++) a[i] = (Math.random() * 2 - 1) * (1 - i / n); const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = b; f.type = 'lowpass'; f.frequency.value = freq || 900; g.gain.value = vol || 0.2; s.connect(f); f.connect(g); g.connect(AC.destination); s.start(t); }
+const SFX = {
+  eat: r => tone(700 - Math.min(400, r * 8), 0.12, 'sine', 0.12, 160),
+  combo: n => tone(500 + n * 70, 0.09, 'triangle', 0.07),
+  grow: () => [392, 523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 0.16, 'triangle', 0.09), i * 80)),
+  splash: () => { noise(0.35, 0.28, 900); setTimeout(() => tone(320, 0.18, 'sine', 0.05, 140), 40); },
+  whoosh: () => tone(900, 0.32, 'sine', 0.04, 300),
+  hurt: () => { tone(220, 0.35, 'sawtooth', 0.08, 70); noise(0.25, 0.2, 600); },
+  warn: () => tone(180, 0.18, 'square', 0.04, 140),
+  sting: () => { tone(1400, 0.06, 'square', 0.05); setTimeout(() => tone(1100, 0.06, 'square', 0.05), 60); },
+  boom: () => { noise(1.1, 0.5, 300); tone(90, 0.6, 'sine', 0.18, 40); },
+  pick: () => { tone(988, 0.08, 'triangle', 0.08); setTimeout(() => tone(1319, 0.14, 'triangle', 0.08), 70); },
+  frenzy: () => [523, 659, 784, 1046, 1319].forEach((f, i) => setTimeout(() => tone(f, 0.12, 'square', 0.05), i * 55)),
+  win: () => { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => tone(f, 0.2, 'triangle', 0.1), i * 120)); },
+  lose: () => tone(330, 0.5, 'triangle', 0.09, 120),
+  click: () => tone(660, 0.04, 'triangle', 0.05),
+  dash: () => { noise(0.18, 0.12, 1800); tone(240, 0.16, 'sine', 0.07, 520); },
+  growl: () => tone(120, 0.4, 'sawtooth', 0.05, 80),
+  tap: () => tone(500 + Math.random() * 300, 0.04, 'square', 0.04)
+};
+function paintMute() { $('muteBtn').textContent = muted ? '\ud83d\udd07' : '\ud83d\udd0a'; $('muteBtn').setAttribute('aria-label', muted ? 'Suara mati' : 'Suara nyala'); }
+
+/* ---------- canvas / camera ---------- */
+const cv = $('cv'), g = cv.getContext('2d'); let VW = 0, VH = 0, DPR = 1;
+function resize() { DPR = Math.min(2, root.devicePixelRatio || 1); VW = root.innerWidth; VH = root.innerHeight; cv.width = Math.round(VW * DPR); cv.height = Math.round(VH * DPR); g.setTransform(DPR, 0, 0, DPR, 0, 0); }
+root.addEventListener('resize', resize); resize();
+const cam = { x: S.WW / 2, y: S.WH / 2, s: 1, shake: 0 };
+function camTarget(w, snap) {
+  const st = w.p.stage, A = 760 * 470 * (1 + st * 0.16);
+  let s = Math.sqrt(VW * VH / A); s = Math.max(s, VW / S.WW, VH / (S.WH + 80)); s = Math.min(s, 2.2);
+  cam.s = snap ? s : cam.s + (s - cam.s) * 0.04;
+  const hw = VW / 2 / cam.s, hh = VH / 2 / cam.s, tx = Math.max(hw, Math.min(S.WW - hw, w.p.x)), ty = Math.max(-80 + hh, Math.min(S.WH - hh, w.p.drop > 0 ? Math.min(w.p.y, S.SURF + hh * 0.45) : w.p.y));
+  if (snap) { cam.x = tx; cam.y = ty; } else { cam.x += (tx - cam.x) * 0.12; cam.y += (ty - cam.y) * 0.12; }
+}
+
+/* ---------- state ---------- */
+let W = null, deco = null, mode = 'demo', running = false, paused = true, endTimer = 0, last = 0, T = 0;
+const ui = { pops: [], parts: [], hint, near: false };
+const key = { l: 0, r: 0, u: 0, d: 0 };
+const joy = { id: null, ax: 0, ay: 0, cx: 0, cy: 0, on: false }, mouse = { on: false, x: 0, y: 0 };
+let lastInputKind = 'touch';
+function demoWorld() { W = S.create(0, { seed: 99 }); W.p.inv = 1e9; W.p.dead = 1; W.L = Object.assign({}, W.L, { haz: [] }); deco = RD.decor(7, S.SEAS[0]); mode = 'demo'; paused = false; camTarget(W, true); }
+
+/* ---------- screens ---------- */
+function show(id) { for (const s of ['home', 'map', 'play']) $(s).hidden = s !== id; doc.body.classList.toggle('home-mode', id !== 'play'); doc.documentElement.classList.toggle('jr-hub-off', id === 'play'); }
+function overlay(id, on) { $(id).hidden = !on; }
+function toast(msg, kind, ms) { const t = doc.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg; $('toasts').appendChild(t); while ($('toasts').children.length > 3) $('toasts').firstChild.remove(); setTimeout(() => t.remove(), ms || 2600); }
+let bannerT = 0; function banner(txt, ms) { const b = $('banner'); b.textContent = txt; b.hidden = false; b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; clearTimeout(bannerT); bannerT = setTimeout(() => { b.hidden = true; }, ms || 1300); }
+const ICONS = {}; function ic(k) { return ICONS[k] || (ICONS[k] = RD.icon(k, 64)); }
+const HAZ_INFO = {
+  ubur: ['\u26a1 Ubur-ubur', 'Menyetrum dan bikin kamu lambat sebentar. Tidak bisa dimakan.'],
+  jaring: ['\ud83d\udd78\ufe0f Jaring nelayan', 'Kapal datang, area kuning = jaring turun. Kalau terjaring, tap/klik cepat 7\u00d7 untuk lolos.'],
+  plastik: ['\ud83d\udecd\ufe0f Kantong kresek', 'Mirip ubur-ubur, tapi itu sampah. Kalau termakan, pertumbuhan berkurang dan kamu lambat.'],
+  bom: ['\ud83d\udca3 Bom ikan', 'Botol bom tenggelam lalu meledak. Keluar dari lingkaran merah sebelum hitungan habis!']
+};
+function homeStats() {
+  const stars = Object.values(save.st).reduce((a, b) => a + b, 0);
+  $('statLine').textContent = save.runs ? '\u2b50 ' + stars + '/27 \u00b7 Level ' + Math.min(save.un, 9) + '/9 \u00b7 Laut Lepas ' + fmtN(save.eb) + (save.hb ? ' \u00b7 Hiu ' + fmtN(save.hb) : '') : '9 level \u00b7 Kepulauan Seribu, Bunaken, Raja Ampat';
+  paintDaily();
+  $('playLbl').textContent = save.runs ? 'Lanjut: Level ' + Math.min(save.un, 9) : 'Main';
+}
+function goHome() { doc.body.classList.remove('shark'); coach.on = false; running = false; overlay('result', false); overlay('pause', false); overlay('intro', false); show('home'); homeStats(); if (mode !== 'demo') demoWorld(); if (location.hash && root.history.replaceState) root.history.replaceState(null, '', location.pathname + location.search); }
+function paintMap() {
+  let html = '', prevSea = -1;
+  S.LEVELS.forEach((L, i) => {
+    if (L.sea !== prevSea) { if (prevSea >= 0) html += '</div>'; html += '<div class="sea">' + esc(S.SEAS[L.sea].n) + '</div><div class="lvgrid">'; prevSea = L.sea; }
+    const lock = i + 1 > save.un, st = save.st[i] || 0;
+    html += '<button type="button" class="lv' + (lock ? ' locked' : '') + '" data-lv="' + i + '"' + (lock ? ' aria-disabled="true"' : '') + ' aria-label="Level ' + (i + 1) + ' ' + esc(L.n) + (lock ? ' terkunci' : ', ' + st + ' bintang') + '"><b>' + (lock ? '\ud83d\udd12' : i + 1) + '</b><span>' + esc(L.n) + '</span><em>' + (lock ? '' : '\u2605'.repeat(st) + '\u2606'.repeat(3 - st)) + '</em></button>';
+  });
+  $('mapList').innerHTML = html + '</div>';
+}
+
+/* ---------- game flow ---------- */
+let curLv = 0;
+function start(lv) {
+  ac(); overlay('result', false); overlay('pause', false); curLv = lv; W = S.create(lv); const endl = lv === 'endless' || lv === 'hiu'; deco = RD.decor(lv === 'endless' ? 31 : lv === 'hiu' ? 53 : 11 + lv * 7, S.SEAS[W.L.sea]); mode = 'game'; running = true; paused = true; endTimer = 0;
+  ui.pops.length = 0; ui.parts.length = 0; $('toasts').innerHTML = ''; $('banner').hidden = true; $('combo').hidden = true;
+  camTarget(W, true); show('play'); paintChain(true); hud(true);
+  const L = W.L; doc.body.classList.toggle('shark', lv === 'hiu'); $('hungerBox').hidden = lv !== 'hiu'; paintDash(true);
+  $('introSea').textContent = lv === 'hiu' ? 'Mode hiu \u00b7 tanpa akhir' : lv === 'endless' ? 'Mode tanpa akhir' : S.SEAS[L.sea].n + ' \u00b7 Level ' + (lv + 1) + '/9';
+  $('introName').textContent = L.n;
+  const ed = S.ORDER.filter(k => S.SP[k].r < S.PR[0] * 0.95);
+  $('introGoal').innerHTML = (lv === 'hiu' ? 'Kamu anak hiu yang <b>selalu lapar</b>. Bar merah turun terus: makan terus atau kelaparan! Sruduk untuk menyergap.' : lv === 'endless' ? 'Bertahan selama mungkin. Bahaya makin sering, skor masuk papan rekor.' : 'Tumbuh ' + L.goal.length + '\u00d7 sampai bar penuh.') + '<br>Mulai bisa makan: ' + ed.map(k => '<img alt="' + esc(S.SP[k].n) + '" title="' + esc(S.SP[k].n) + '" src="' + ic(k) + '">').join('');
+  const prev = new Set(); if (!endl) for (let i = 0; i < lv; i++) S.LEVELS[i].haz.forEach(h => prev.add(h));
+  const nh = L.haz.filter(h => !prev.has(h)), list = endl ? [] : nh;
+  $('introHaz').hidden = !list.length; $('introHaz').innerHTML = list.map(h => '<b>Baru: ' + esc(HAZ_INFO[h][0]) + '</b>' + esc(HAZ_INFO[h][1])).join('<br>');
+  for (const h of L.haz) W.tips[h] = 1;
+  dmEnsure(); coach.on = lv === 0 && save.coach < 1; coach.eats = 0; coach.warned = false;
+  $('introCtl').textContent = lastInputKind === 'mouse' ? 'Gerakkan mouse (atau panah/WASD). Klik / Spasi = SRUDUK. Esc = jeda.' : 'Seret jari untuk berenang. Tombol \u26a1 atau tap jari kedua = SRUDUK (ngebut).';
+  overlay('intro', true); setTimeout(() => $('introGo').focus(), 50);
+}
+function go() { overlay('intro', false); paused = false; last = performance.now(); }
+function pause(on) { if (mode !== 'game' || W.done) return; paused = on; overlay('pause', on); $('hintChk').checked = hint; if (on) { joy.on = false; $('joy').hidden = true; } else last = performance.now(); }
+function finish() {
+  running = false; const win = W.done === 'win', lv = curLv, st = S.stars(W);
+  save.runs++; dmFinish(W, lv);
+  if (lv === 'hiu') { const nb = W.score > save.hb; if (nb) save.hb = W.score; persist(); $('resKick').textContent = 'Hiu Lapar'; $('resTitle').textContent = nb ? 'Rekor hiu baru! \ud83e\udd88' : 'Hiu tumbang\u2026'; $('resStars').innerHTML = ''; }
+  else if (lv === 'endless') { const nb = W.score > save.eb; if (nb) save.eb = W.score; persist(); $('resKick').textContent = 'Laut Lepas'; $('resTitle').textContent = nb ? 'Rekor baru!' : 'Dimakan juga\u2026'; $('resStars').innerHTML = ''; }
+  else {
+    if (win) { save.st[lv] = Math.max(save.st[lv] || 0, st); save.best[lv] = Math.max(save.best[lv] || 0, W.score); if (save.un < lv + 2) save.un = Math.min(9, lv + 2); }
+    persist(); $('resKick').textContent = 'Level ' + (lv + 1) + ' \u00b7 ' + W.L.n;
+    $('resTitle').textContent = win ? (lv === 8 ? 'Raja Laut Raja Ampat! \ud83d\udc51' : 'Kenyang! Level selesai') : 'Yah, dimakan\u2026';
+    $('resStars').innerHTML = win ? [0, 1, 2].map(i => '<span class="' + (i < st ? '' : 'off') + '">\u2605</span>').join('') : '';
+  }
+  const secs = Math.round(W.t), eatenN = Object.values(W.eaten).reduce((a, b) => a + b, 0);
+  $('resGrid').innerHTML = '<div><b>' + fmtN(W.score) + '</b><span>Skor' + (lv === 'hiu' ? ' \u00b7 rekor ' + fmtN(save.hb) : lv !== 'endless' && save.best[lv] ? ' \u00b7 terbaik ' + fmtN(save.best[lv]) : lv === 'endless' ? ' \u00b7 rekor ' + fmtN(save.eb) : '') + '</span></div><div><b>' + secs + ' dtk</b><span>' + (lv === 'endless' || lv === 'hiu' ? 'Bertahan' : 'Waktu \u00b7 3\u2605 \u2264 ' + W.L.par + ' dtk tanpa mati') + '</span></div>';
+  $('resEaten').innerHTML = eatenN ? S.ORDER.filter(k => W.eaten[k]).map(k => '<span><img alt="" src="' + ic(k) + '">' + esc(S.SP[k].n) + ' \u00d7' + W.eaten[k] + '</span>').join('') : '<span>Belum makan apa-apa</span>';
+  $('lbForm').hidden = lv !== 'endless' || W.score <= 0; $('lbSubmit').disabled = false;
+  if (lv === 'hiu') { $('resNext').textContent = '\ud83e\udd88 Main lagi'; $('resNext').dataset.act = 'retry'; }
+  else if (lv === 'endless') { $('resNext').textContent = '\ud83c\udf0a Main lagi'; $('resNext').dataset.act = 'retry'; }
+  else if (win && lv < 8) { $('resNext').textContent = 'Level ' + (lv + 2) + ' \u2192'; $('resNext').dataset.act = 'next'; }
+  else if (win) { $('resNext').textContent = '\ud83c\udf0a Coba Laut Lepas'; $('resNext').dataset.act = 'endless'; }
+  else { $('resNext').textContent = '\u21bb Coba lagi'; $('resNext').dataset.act = 'retry'; }
+  $('resRetry').hidden = $('resNext').dataset.act === 'retry';
+  (win ? SFX.win : SFX.lose)(); overlay('result', true); setTimeout(() => $('resNext').focus(), 60);
+}
+
+/* ---------- HUD ---------- */
+let hudCache = {};
+function paintChain(force) {
+  if (!W || mode !== 'game') return; const st = W.p.stage; if (!force && hudCache.chain === st) return; hudCache.chain = st;
+  const ks = S.ORDER.filter(k => W.L.mix[k]), nextR = S.PR[Math.min(W.maxStage, st + 1)];
+  $('chain').innerHTML = ks.map(k => { const r = S.SP[k].r, ok = r < S.PR[st] * 0.95, nx = !ok && st < W.maxStage && r < nextR * 0.95; return '<span class="' + (ok ? 'ok' : 'no') + (nx ? ' next' : '') + '" title="' + esc(S.SP[k].n) + (ok ? ': bisa dimakan' : nx ? ': bisa dimakan setelah tumbuh' : ': bahaya') + '"><img alt="' + esc(S.SP[k].n) + '" src="' + ic(k) + '"></span>'; }).join('');
+  const gl = W.L.goal; $('grow').querySelectorAll('b').forEach(b => b.remove());
+}
+function hud(force) {
+  if (!W || mode !== 'game') return; const pg = S.progress(W);
+  const lives = W.lives, sc = W.score, f = W.L.endless && W.p.stage >= W.maxStage ? 1 : pg.f;
+  if (force || hudCache.lives !== lives) { hudCache.lives = lives; $('lives').textContent = '\u2764\ufe0f'.repeat(Math.max(0, lives)) + '\ud83d\udda4'.repeat(Math.max(0, 3 - lives)); }
+  if (force || hudCache.sc !== sc) { hudCache.sc = sc; $('score').textContent = fmtN(sc); }
+  const fp = Math.round(f * 100); if (force || hudCache.f !== fp) { hudCache.f = fp; $('growFill').style.width = fp + '%'; }
+  const lbl = W.L.endless ? (W.p.stage >= W.maxStage ? 'RAJA LAUT \u00b7 bertahan!' : 'Ukuran ' + (W.p.stage + 1) + '/' + (W.maxStage + 1)) : (W.p.stage < W.maxStage ? 'Ukuran ' + (W.p.stage + 1) + '/' + (W.maxStage + 1) : 'Terakhir! Penuhi bar');
+  if (force || hudCache.lbl !== lbl) { hudCache.lbl = lbl; $('growTxt').textContent = lbl; }
+  const rk = W.frenzy > 0 ? Math.round(W.frenzy / 6 * 100) : Math.round(W.rakus * 100); if (force || hudCache.rk !== rk) { hudCache.rk = rk; $('rakusFill').style.width = rk + '%'; $('rakusFill').parentNode.classList.toggle('on', W.frenzy > 0); }
+  if (W.L.shark) { const hg = Math.round(W.hunger * 100); if (force || hudCache.hg !== hg) { hudCache.hg = hg; $('hungerFill').style.width = hg + '%'; $('hungerBox').classList.toggle('low', hg < 25); } }
+  paintDash(force);
+  paintChain(force);
+}
+function paintDash(force) { if (!W) return; const cd = W.L.shark ? S.DASH.cdShark : S.DASH.cd, f = W.p.dashCd > 0 ? 1 - W.p.dashCd / cd : 1, q = Math.round(f * 20); if (!force && hudCache.dq === q) return; hudCache.dq = q; const b = $('dashBtn'); b.style.setProperty('--f', (q * 5) + '%'); b.classList.toggle('ready', q >= 20); }
+let comboT = 0; function comboShow(n) { const c = $('combo'); c.textContent = 'COMBO \u00d7' + (n >= 6 ? 3 : 2) + ' \u00b7 ' + n; c.hidden = false; c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; clearTimeout(comboT); comboT = setTimeout(() => { c.hidden = true; }, 900); }
+
+/* ---------- events from sim ---------- */
+/* ---------- first-run coach (level 1) ---------- */
+const coach = { on: false, eats: 0, warned: false };
+function coachEvent(e) {
+  if (!coach.on) return;
+  if (e.e === 'eat') { coach.eats++; if (coach.eats === 1) toast('Nyam! Makan terus yang bercincin hijau \ud83d\udfe2', 'good', 1800); if (coach.eats === 3) toast('Bar hijau di atas = pertumbuhan. Penuh = tumbuh besar!', 'edu', 3000); if (coach.eats >= 5) { coach.on = false; save.coach = 1; persist(); } }
+  if (e.e === 'hunt' && !coach.warned) { coach.warned = true; toast('Ikan bertanda ! mengejarmu. Kabur, atau tekan SRUDUK \u26a1', 'warn', 3000); }
+}
+let lastWarn = 0, lastSting = 0;
+const WHY = { jaring: 'Terangkat jaring nelayan!', bom: 'Kena bom ikan!', lapar: 'Kelaparan! Makan terus!' };
+function events() {
+  for (const e of W.ev) {
+    if (mode === 'demo') continue;
+    dmEvent(e); coachEvent(e);
+    switch (e.e) {
+      case 'eat': { const r = S.SP[e.sp].r; SFX.eat(r); ui.pops.push({ x: e.x, y: e.y, txt: '+' + e.gain, t: 0, life: 0.8, col: e.gain >= 100 ? '#ffcf3a' : '#fff', size: 14 + Math.min(10, e.gain / 15) }); for (let i = 0; i < 5; i++) ui.parts.push({ x: e.x + (Math.random() - 0.5) * r, y: e.y + (Math.random() - 0.5) * r, r: 2 + Math.random() * 4, t: 0, life: 0.7, vy: -40 - Math.random() * 40 }); if (e.combo >= 3) { comboShow(e.combo); SFX.combo(e.combo); } break; }
+      case 'grow': SFX.grow(); banner(W.p.stage >= W.maxStage ? (W.L.endless ? 'RAJA LAUT! \ud83d\udc51' : 'UKURAN TERAKHIR! \ud83d\udc1f') : 'TUMBUH BESAR! \ud83d\udc1f', 1400); paintChain(true); toast('Sekarang bisa makan: ' + S.ORDER.filter(k => W.L.mix[k] && S.SP[k].r < S.PR[W.p.stage] * 0.95 && !(S.SP[k].r < S.PR[W.p.stage - 1] * 0.95)).map(k => S.SP[k].n).join(', '), 'good'); break;
+      case 'dash': SFX.dash(); for (let i = 0; i < 6; i++) ui.parts.push({ x: W.p.x - W.p.dir * S.pr(W) * (0.8 + Math.random()), y: W.p.y + (Math.random() - 0.5) * S.pr(W), r: 2 + Math.random() * 4, t: 0, life: 0.5, vy: -20 }); break;
+      case 'hungry': SFX.growl(); toast('Perut keroncongan! Bar merah hampir habis \ud83c\udf56', 'warn', 1800); break;
+      case 'school': if (!W._schoolTold) { W._schoolTold = 1; toast('Kawanan teri lewat! Sergap! \ud83d\udc1f', 'good', 1600); } break;
+      case 'starve': cam.shake = 0.3; break;
+      case 'frenzy': SFX.frenzy(); banner('MODE RAKUS! \u26a1 skor \u00d72', 1300); break;
+      case 'hunt': if (T - lastWarn > 1.5) { lastWarn = T; SFX.warn(); } break;
+      case 'bite': cam.shake = 0.4; break;
+      case 'plunge': SFX.whoosh(); break;
+      case 'splash': SFX.splash(); cam.shake = Math.max(cam.shake, 0.25); for (let i = 0; i < 16; i++) ui.parts.push({ x: e.x + (Math.random() - 0.5) * 90, y: S.SURF + 20 + Math.random() * 90, r: 2 + Math.random() * 5, t: 0, life: 0.6 + Math.random() * 0.6, vy: -30 - Math.random() * 40 }); break;
+      case 'die': SFX.hurt(); cam.shake = 0.5; banner(e.last ? 'GAME OVER \ud83d\udc80' : (e.why === 'lapar' ? 'KELAPARAN! \ud83d\udc80' : e.why === 'jaring' ? 'TERJARING! \ud83d\udc80' : e.why === 'bom' ? 'KENA BOM! \ud83d\udc80' : 'TERMAKAN! \ud83d\udc80'), 1100); if (W.lives > 0) toast((WHY[e.why] || 'Dimakan ' + (S.SP[e.why] ? S.SP[e.why].n : 'ikan besar') + '!') + ' Sisa nyawa ' + W.lives + '.', 'warn'); break;
+      case 'sting': SFX.sting(); if (T - lastSting > 4) { lastSting = T; toast('Kesetrum ubur-ubur! \u26a1', 'warn', 1600); } break;
+      case 'plastic': SFX.hurt(); toast('Itu kresek, bukan makanan! Sampah plastik bikin ikan sakit.', 'edu', 3200); ui.pops.push({ x: e.x, y: e.y, txt: '\u22123 \ud83d\udc1f', t: 0, life: 1, col: '#ff8080', size: 18 }); break;
+      case 'boat': deco.boat.push({ x: e.x, t: 0, life: 7 }); break;
+      case 'trapped': banner('TERJARING! Tap cepat!', 1200); SFX.warn(); break;
+      case 'escape': SFX.pick(); ui.pops.push({ x: W.p.x, y: W.p.y - 30, txt: 'LOLOS! +30', t: 0, life: 1, col: '#9dffb0', size: 18 }); break;
+      case 'boom': SFX.boom(); cam.shake = 0.7; if (!W._boomTold) { W._boomTold = 1; toast('Bom ikan menghancurkan karang dan semua ikan di sekitarnya' + (e.killed ? ' (' + e.killed + ' ekor)' : '') + '. Di dunia nyata itu dilarang!', 'edu', 3600); } break;
+      case 'pearl': SFX.pick(); ui.pops.push({ x: e.x, y: e.y - 20, txt: 'Mutiara +' + e.gain, t: 0, life: 1.1, col: '#ffd6ff', size: 18 }); break;
+      case 'shield': SFX.pick(); toast('Perisai gelembung: tahan 1 gigitan (10 dtk) \ud83d\udee1\ufe0f', 'good', 2000); break;
+      case 'shieldpop': SFX.sting(); toast('Perisai pecah! Kabur!', 'warn', 1500); break;
+      case 'tip': { const h = HAZ_INFO[e.k]; if (h) toast(h[0] + ': ' + h[1], 'edu', 3600); break; }
+      case 'win': endTimer = 1.3; break;
+      case 'lose': endTimer = 0.9; break;
+    }
+  }
+  W.ev.length = 0;
+}
+
+/* ---------- input ---------- */
+function inputVec() {
+  let ax = (key.r - key.l), ay = (key.d - key.u);
+  if (ax || ay) return { ax, ay };
+  if (joy.on) return { ax: joy.ax, ay: joy.ay };
+  if (mouse.on && W) { const wx = (mouse.x - VW / 2) / cam.s + cam.x, wy = (mouse.y - VH / 2) / cam.s + cam.y, dx = wx - W.p.x, dy = wy - W.p.y, d = Math.hypot(dx, dy); if (d < 6) return { ax: 0, ay: 0 }; const m = Math.min(1, d / 90); return { ax: dx / d * m, ay: dy / d * m }; }
+  return { ax: 0, ay: 0 };
+}
+let dashReq = false;
+function doDash() { if (mode === 'game' && W && !paused && $('intro').hidden) dashReq = true; }
+function escapeTap() { if (mode === 'game' && W && W.p.trapped && !paused) { S.tapEscape(W); SFX.tap(); return true; } return false; }
+cv.addEventListener('pointerdown', e => {
+  lastInputKind = e.pointerType === 'mouse' ? 'mouse' : 'touch'; ac(); if (mode !== 'game' || paused) return;
+  const wasTrapped = escapeTap();
+  if (e.pointerType === 'mouse') { if (!wasTrapped && e.button === 0) doDash(); mouse.on = true; mouse.x = e.clientX; mouse.y = e.clientY; return; }
+  if (joy.id !== null) { if (!wasTrapped) doDash(); return; } joy.id = e.pointerId; joy.on = true; joy.cx = e.clientX; joy.cy = e.clientY; joy.ax = joy.ay = 0; try { cv.setPointerCapture(e.pointerId); } catch (er) { /* ok */ }
+  const j = $('joy'); j.hidden = false; j.style.left = joy.cx + 'px'; j.style.top = joy.cy + 'px'; j.firstChild.style.transform = '';
+});
+cv.addEventListener('pointermove', e => {
+  if (e.pointerType === 'mouse') { lastInputKind = 'mouse'; mouse.on = true; mouse.x = e.clientX; mouse.y = e.clientY; return; }
+  if (e.pointerId !== joy.id) return; let dx = e.clientX - joy.cx, dy = e.clientY - joy.cy; const d = Math.hypot(dx, dy), R = 48;
+  if (d > R * 1.3) { joy.cx += dx / d * (d - R * 1.3); joy.cy += dy / d * (d - R * 1.3); dx = e.clientX - joy.cx; dy = e.clientY - joy.cy; const j = $('joy'); j.style.left = joy.cx + 'px'; j.style.top = joy.cy + 'px'; }
+  const dd = Math.hypot(dx, dy), m = Math.min(1, dd / R); joy.ax = dd > 4 ? dx / dd * m : 0; joy.ay = dd > 4 ? dy / dd * m : 0;
+  $('joy').firstChild.style.transform = 'translate(' + (joy.ax * R) + 'px,' + (joy.ay * R) + 'px)';
+});
+const joyEnd = e => { if (e.pointerId !== joy.id) return; joy.id = null; joy.on = false; joy.ax = joy.ay = 0; $('joy').hidden = true; };
+cv.addEventListener('pointerup', joyEnd); cv.addEventListener('pointercancel', joyEnd);
+cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') mouse.on = false; });
+const KEYS = { ArrowLeft: 'l', a: 'l', A: 'l', ArrowRight: 'r', d: 'r', D: 'r', ArrowUp: 'u', w: 'u', W: 'u', ArrowDown: 'd', s: 'd', S: 'd' };
+doc.addEventListener('keydown', e => {
+  if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  if (mode === 'game' && !$('intro').hidden && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); go(); return; }
+  if (KEYS[e.key] && mode === 'game') { key[KEYS[e.key]] = 1; lastInputKind = 'mouse'; mouse.on = false; e.preventDefault(); if (W && W.p.trapped && !e.repeat) escapeTap(); return; }
+  if ((e.key === ' ' || e.key === 'Shift') && mode === 'game') { e.preventDefault(); if (!escapeTap() && !e.repeat) doDash(); return; }
+  if ((e.key === 'Escape' || e.key === 'p' || e.key === 'P') && mode === 'game' && running && $('intro').hidden) pause(!paused);
+});
+doc.addEventListener('keyup', e => { if (KEYS[e.key]) key[KEYS[e.key]] = 0; });
+doc.addEventListener('visibilitychange', () => { if (doc.hidden && mode === 'game' && running && !paused && $('intro').hidden) pause(true); });
+
+/* ---------- loop ---------- */
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now; T += dt;
+  if (W) {
+    if (mode === 'demo') { const p = W.p; p.x = S.WW / 2 + Math.sin(T * 0.1) * 500; S.step(W, dt, { ax: 0, ay: 0 }); W.ev.length = 0; }
+    else if (!paused) {
+      const iv = inputVec(); iv.dash = dashReq; dashReq = false; S.step(W, dt, iv); events(); hud();
+      if (endTimer > 0) { endTimer -= dt; if (endTimer <= 0 && running) finish(); }
+    }
+    for (const b of deco.boat) b.t += paused ? 0 : dt; deco.boat = deco.boat.filter(b => b.t < b.life);
+    for (const q of ui.pops) q.t += dt; ui.pops = ui.pops.filter(q => q.t < q.life);
+    for (const b of ui.parts) { b.t += dt; b.y += b.vy * dt; } ui.parts = ui.parts.filter(b => b.t < b.life);
+    camTarget(W, false);
+    let near = false; if (mode === 'game') for (const f of W.fish) if (S.edible(W, f) && Math.hypot(f.x - W.p.x - W.p.dir * S.pr(W), f.y - W.p.y) < S.pr(W) * 3) { near = true; break; }
+    ui.near = near; ui.hint = hint && mode === 'game'; ui.noPlayer = mode === 'demo';
+    ui.coach = null; if (coach.on && mode === 'game' && !paused) { let bd = 1e12; for (const f of W.fish) if (S.edible(W, f)) { const d = (f.x - W.p.x) ** 2 + (f.y - W.p.y) ** 2; if (d < bd) { bd = d; ui.coach = f; } } }
+    const sx = cam.shake > 0 ? (Math.random() - 0.5) * 14 * cam.shake : 0, sy = cam.shake > 0 ? (Math.random() - 0.5) * 14 * cam.shake : 0; cam.shake = Math.max(0, cam.shake - dt);
+    g.save(); g.translate(sx, sy); RD.draw(g, W, cam, VW, VH, T, deco, ui); g.restore();
+  }
+  root.requestAnimationFrame(frame);
+}
+
+/* ---------- leaderboard ---------- */
+let lbCache;
+async function loadLb() {
+  $('lbList').innerHTML = '<li class="muted">Memuat\u2026</li>';
+  try { const r = await fetch('/api/game/scores?limit=20', { headers: { Accept: 'application/json' } }); if (!r.ok) throw Error(r.status); const d = await r.json(); lbCache = Array.isArray(d.scores) ? d.scores : []; } catch (e) { lbCache = null; }
+  const el = $('lbList'); $('lbMine').textContent = save.eb ? 'Rekormu: ' + fmtN(save.eb) : 'Main Laut Lepas untuk masuk papan rekor.';
+  if (lbCache === null) { el.innerHTML = '<li class="muted">Papan rekor offline. Coba lagi nanti.</li>'; return; }
+  if (!lbCache.length) { el.innerHTML = '<li class="muted">Belum ada rekor. Jadi yang pertama!</li>'; return; }
+  const me = myName(); el.innerHTML = lbCache.slice(0, 15).map(s => '<li' + (me && s.name === me ? ' class="me"' : '') + '><span>' + esc(s.name) + '</span><b>' + fmtN(s.score) + '</b></li>').join('');
+}
+function myName() { return ($('nameIn').value || '').replace(/[^\p{L}\p{N} ._'-]/gu, '').trim().slice(0, 16); }
+$('lbForm').addEventListener('submit', async e => {
+  e.preventDefault(); const name = myName(); if (!name) { toast('Isi nama dulu ya', 'warn'); $('nameIn').focus(); return; }
+  setLS(NAME_KEY, name); $('lbSubmit').disabled = true;
+  try { const r = await fetch('/api/game/scores', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ name, score: Math.round(W.score) }) }); if (!r.ok) throw Error(r.status); $('lbForm').hidden = true; toast('Terkirim ke papan rekor! \ud83c\udfc6', 'good'); }
+  catch (er) { $('lbSubmit').disabled = false; toast('Gagal mengirim, coba lagi', 'warn'); }
+});
+
+/* ---------- wiring ---------- */
+const on = (id, f) => $(id).addEventListener('click', e => { SFX.click(); f(e); });
+on('playBtn', () => { ac(); if (!save.how) { save.how = 1; persist(); } start(Math.min(save.un, 9) - 1); });
+on('endlessBtn', () => start('endless'));
+on('hiuBtn', () => start('hiu'));
+$('dashBtn').addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); ac(); if (!escapeTap()) doDash(); });
+on('mapBtn', () => { paintMap(); show('map'); });
+on('mapBack', () => goHome());
+$('mapList').addEventListener('click', e => { const b = e.target.closest('.lv'); if (!b) return; const lv = +b.dataset.lv; if (lv + 1 > save.un) { toast('Selesaikan level sebelumnya dulu', 'warn'); return; } SFX.click(); start(lv); });
+on('howBtn', () => overlay('how', true)); on('howClose', () => overlay('how', false));
+on('lbBtn', () => { overlay('lb', true); loadLb(); }); on('lbClose', () => overlay('lb', false));
+on('muteBtn', () => { muted = !muted; setLS(MUTE_KEY, muted ? '1' : '0'); paintMute(); });
+on('introGo', go);
+on('pauseBtn', () => pause(true)); on('resumeBtn', () => pause(false)); on('restartBtn', () => { overlay('pause', false); start(curLv); }); on('quitBtn', goHome);
+$('hintChk').addEventListener('change', e => { hint = e.target.checked; setLS(HINT_KEY, hint ? '1' : '0'); });
+on('resNext', () => { overlay('result', false); const a = $('resNext').dataset.act; if (a === 'next') start(curLv + 1); else if (a === 'endless') start('endless'); else start(curLv); });
+on('resRetry', () => { overlay('result', false); start(curLv); }); on('resMenu', goHome);
+for (const id of ['how', 'lb']) $(id).addEventListener('click', e => { if (e.target.id === id) overlay(id, false); });
+$('nameIn').value = getLS(NAME_KEY) || '';
+// logo fish
+(function () { const c = $('logoFish').getContext('2d'); let t = 0; (function lf() { t += 0.016; c.clearRect(0, 0, 240, 120); c.save(); c.translate(150 + Math.sin(t * 1.3) * 6, 56 + Math.sin(t * 2) * 4); RD.fish(c, 'player', 34, t, { mouth: 0.5 + 0.5 * Math.sin(t * 4) }); c.restore(); c.save(); c.translate(62 + Math.sin(t * 1.3 + 1) * 8, 64 + Math.sin(t * 2.6) * 5); RD.fish(c, 'teri', 10, t * 1.5, { fast: true }); c.restore(); c.save(); c.translate(36, 46 + Math.sin(t * 2.2) * 4); RD.fish(c, 'teri', 8, t * 1.7, { fast: true }); c.restore(); if (!$('home').hidden) root.requestAnimationFrame(lf); else setTimeout(lf, 500); })(); })();
+paintMute(); homeStats(); demoWorld();
+const h = (location.hash || '').toLowerCase(), mm = h.match(/^#level-?(\d)$/);
+if (h === '#hiu' || h === '#hiu-lapar') start('hiu'); else if (h === '#lepas' || h === '#endless') start('endless'); else if (mm && +mm[1] >= 1 && +mm[1] <= save.un) start(+mm[1] - 1); else show('home');
+root.requestAnimationFrame(t => { last = t; frame(t); });
+root.IRApp = { dmEnsure, paintDaily, MISSIONS, todayKey, start, go, get world() { return W; }, get mode() { return mode; }, get paused() { return paused; }, finish, save: () => save };
+})(window);
+</script>
+</body>
+</html>

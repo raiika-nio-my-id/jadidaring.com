@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Ikan Rakus · Game Ikan Makan Ikan &amp; Hiu Lapar Online Gratis di HP &amp; Laptop</title>
+<meta name="description" content="Ikan Rakus: game ikan besar makan ikan kecil di laut Indonesia. Mulai jadi ikan kecil, makan teri dan kembung, tumbuh besar sampai berani melawan hiu karang. 9 level dari Kepulauan Seribu, Bunaken sampai Raja Ampat, mode Laut Lepas dengan papan rekor, dan mode Hiu Lapar: jadi hiu yang terus kelaparan. Langsung main di browser HP atau laptop, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#0b4f7a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ikan Rakus · game ikan makan ikan">
+<meta property="og:description" content="Makan yang kecil, kabur dari yang besar, tumbuh jadi raja laut Raja Ampat. Gratis di browser, tanpa iklan.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Laut: ikanmu, ikan lain, dan bahaya"></canvas>
+
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><canvas id="logoFish" width="240" height="120"></canvas><span class="l1">IKAN</span><span class="l2">RAKUS</span></div>
+    <h1 class="sr-only">Ikan Rakus: game ikan makan ikan</h1>
+    <p class="tagline">Makan yang kecil, kabur dari yang besar, tumbuh jadi raja laut Indonesia.</p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">🐟</span> <span id="playLbl">Main</span></button>
+    <button type="button" class="btn big" id="endlessBtn"><span aria-hidden="true">🌊</span> Laut Lepas <small>(tanpa akhir · rekor)</small></button>
+    <button type="button" class="btn big shark" id="hiuBtn"><span aria-hidden="true">🦈</span> Hiu Lapar <small>(jadi hiu · baru)</small></button>
+    <div class="row3">
+      <button type="button" class="btn" id="mapBtn"><span aria-hidden="true">🗺️</span> Level</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">🎓</span> Cara main</button>
+      <button type="button" class="btn" id="lbBtn"><span aria-hidden="true">🏆</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">🔊</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+    <section class="daily" aria-labelledby="dailyH"><div class="dhead"><h2 id="dailyH">🎯 Misi harian</h2><span id="dailyStreak"></span></div><ul id="dailyList"></ul></section>
+  </div>
+  <section class="seo">
+    <h2>Game ikan makan ikan, langsung di browser</h2>
+    <p>Ikan Rakus adalah game ikan besar makan ikan kecil seperti Feeding Frenzy, tapi berlatar laut Indonesia. Kamu mulai sebagai ikan kecil. Makan teri, ikan badut, dan kembung untuk tumbuh. Setelah besar, kamu bisa memangsa baronang, kakap merah, kerapu, sampai barakuda dan hiu karang. Ikan yang lebih besar darimu akan mengejar, jadi lihat bar di atas layar: ikon yang menyala boleh dimakan, yang bertanda silang harus dihindari.</p>
+    <h3>9 level, 3 laut</h3>
+    <p>Kepulauan Seribu untuk pemanasan, Bunaken dengan dinding karangnya, lalu Raja Ampat tempat ikan paling besar berkumpul. Tiap laut punya bahaya nyata: ubur-ubur yang menyetrum, jaring nelayan yang turun dari kapal, kantong kresek yang mirip ubur-ubur, dan bom ikan yang merusak karang. Selesaikan level tanpa mati dengan cepat untuk dapat 3 bintang.</p>
+    <h3>Mode Hiu Lapar: game hiu tanpa download</h3>
+    <p>Suka game hiu seperti Hungry Shark? Di mode Hiu Lapar kamu jadi anak hiu yang perutnya terus keroncongan. Bar lapar turun tiap detik, jadi kamu harus terus berburu. Pakai tombol SRUDUK untuk menyergap ikan yang kabur, hindari jaring kapal dan bom ikan, lalu tumbuh sampai berani melawan Hiu Macan. Semua mode terbuka gratis sejak awal: tidak perlu APK mod, uang tak terbatas, atau beli permata.</p>
+    <h3>Misi harian baru setiap hari</h3>
+    <p>Setiap hari ada 3 misi baru yang sama untuk semua pemain, misalnya makan 60 teri, combo 8 beruntun, atau bertahan 2 menit di Laut Lepas. Selesaikan ketiganya untuk menjaga api 🔥 streak harianmu. Progres tersimpan otomatis di HP atau laptopmu.</p>
+    <h3>Main di HP atau laptop</h3>
+    <p>Di HP, seret jari di mana saja seperti joystick. Joystick ikut jarimu, jadi tidak lepas atau reset. Di laptop, ikan mengikuti mouse, atau pakai tombol panah/WASD. Tidak perlu download, tidak ada iklan, dan tidak ada nyawa yang harus ditebus dengan menonton video.</p>
+  </section>
+  <footer class="site-footer"><p><strong>Ikan Rakus</strong> · game ikan gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<section id="map" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="mapBack" aria-label="Kembali">←</button><h2>Pilih level</h2></div>
+    <div id="mapList"></div>
+  </div>
+</section>
+
+<section id="play" class="screen" hidden>
+  <div class="hud">
+    <div class="hl"><div class="lives" id="lives"></div><div class="score" id="score">0</div></div>
+    <div class="hc">
+      <div class="grow" id="grow" aria-label="Pertumbuhan"><i id="growFill"></i><span id="growTxt"></span></div>
+      <div class="rakus"><i id="rakusFill"></i></div>
+      <div class="hunger" id="hungerBox" hidden><i id="hungerFill"></i><span>🍖 Kenyang</span></div>
+      <div class="chain" id="chain" aria-label="Rantai makanan"></div>
+    </div>
+    <div class="hr"><button type="button" class="btn sq" id="pauseBtn" aria-label="Jeda">⏸</button></div>
+  </div>
+  <div class="combo" id="combo" hidden></div>
+  <div class="banner" id="banner" hidden></div>
+  <div id="joy" hidden><i></i></div>
+  <button type="button" class="dashbtn ready" id="dashBtn" aria-label="Sruduk (ngebut sebentar)"><span>⚡</span><small>SRUDUK</small></button>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</section>
+
+<div class="overlay" id="intro" hidden><div class="dlg">
+  <p class="kick" id="introSea"></p><h2 id="introName"></h2>
+  <div class="goal" id="introGoal"></div>
+  <div class="newhaz" id="introHaz" hidden></div>
+  <p class="ctl" id="introCtl"></p>
+  <button type="button" class="btn big primary" id="introGo">Mulai!</button>
+</div></div>
+
+<div class="overlay" id="pause" hidden><div class="dlg">
+  <h2>Jeda</h2>
+  <button type="button" class="btn big primary" id="resumeBtn">▶ Lanjut</button>
+  <div class="row2"><button type="button" class="btn" id="restartBtn">↻ Ulang</button><button type="button" class="btn" id="quitBtn">⌂ Menu</button></div>
+  <label class="chk"><input type="checkbox" id="hintChk"> Lingkaran hijau di ikan yang bisa dimakan</label>
+</div></div>
+
+<div class="overlay" id="result" hidden><div class="dlg">
+  <p class="kick" id="resKick"></p><h2 id="resTitle"></h2>
+  <div class="stars" id="resStars"></div>
+  <div class="resgrid" id="resGrid"></div>
+  <div class="eaten" id="resEaten"></div>
+  <form id="lbForm" class="lbform" hidden>
+    <label><span>Nama untuk papan rekor</span><input id="nameIn" type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring"></label>
+    <button type="submit" class="btn primary" id="lbSubmit">Kirim rekor</button>
+  </form>
+  <button type="button" class="btn big primary" id="resNext"></button>
+  <div class="row2"><button type="button" class="btn" id="resRetry">↻ Ulang</button><button type="button" class="btn" id="resMenu">⌂ Menu</button></div>
+</div></div>
+
+<div class="overlay" id="how" hidden><div class="dlg">
+  <h2>Cara main</h2>
+  <ul class="how">
+    <li><b>Gerak:</b> HP: seret jari di mana saja (joystick ikut jari). Laptop: gerakkan mouse, atau panah / WASD.</li>
+    <li><b>Makan</b> ikan yang lebih kecil. Bar atas: ikon menyala = boleh dimakan, ✕ = bahaya.</li>
+    <li><b>Tumbuh</b> tiap bar penuh. Bar penuh di ukuran terakhir = level selesai.</li>
+    <li><b>Sruduk ⚡:</b> ngebut sebentar untuk kabur atau menyergap. HP: tombol ⚡ atau tap jari kedua. Laptop: klik / Spasi / Shift. Isi ulang 2 detik.</li>
+    <li><b>Kabur</b> dari ikan besar bertanda <b class="red">!</b>, mereka sedang mengejarmu.</li>
+    <li><b>Combo:</b> makan beruntun untuk skor ×2, ×3. Meter kuning penuh = mode <b>RAKUS</b> (cepat, skor ×2).</li>
+    <li><b>Bahaya:</b> ⚡ ubur-ubur menyetrum · jaring turun dari kapal (tap cepat untuk lolos) · kresek bukan makanan · bom ikan: keluar dari lingkaran merah.</li>
+    <li><b>Hiu Lapar:</b> bar merah 🍖 turun terus. Makan untuk mengisinya. Habis = kehilangan 1 nyawa.</li>
+    <li><b>Bonus:</b> mutiara di dasar +250 · gelembung 🛡️ menahan 1 gigitan.</li>
+  </ul>
+  <button type="button" class="btn big primary" id="howClose">Siap!</button>
+</div></div>
+
+<div class="overlay" id="lb" hidden><div class="dlg">
+  <h2>Papan rekor Laut Lepas</h2>
+  <p class="muted" id="lbMine"></p>
+  <ol class="lblist" id="lbList"><li class="muted">Memuat…</li></ol>
+  <button type="button" class="btn big primary" id="lbClose">Tutup</button>
+</div></div>
+
+<script>
+/*SIM*/
+</script>
+<script>
+/*RENDER*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>

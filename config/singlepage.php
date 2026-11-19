@@ -37,7 +37,7 @@ return [
     'members_only_games' => env('GAME_MEMBERS_ONLY', '*'),
 
     // Games served from resources/games/{slug}/game.html inside the site layout (docs/games-in-git.md). Empty = all games use their database html.
-    'git_games' => env('GIT_GAMES', 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat'),
+    'git_games' => env('GIT_GAMES', 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus'),
 
     'subscription_years' => (int) env('SUBSCRIPTION_YEARS', 1),
 
