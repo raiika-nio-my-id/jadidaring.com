@@ -151,7 +151,9 @@ class SeoInfraTest extends TestCase
     public function test_home_has_branded_og_image_and_large_twitter_card(): void
     {
         $html = $this->get(self::SITE.'/')->assertOk()->getContent();
-        $this->assertStringContainsString('og:image" content="https://jadidaring.test/og-home.webp"', $html);
+        $this->assertStringContainsString('og:image" content="https://jadidaring.test/og-home-v2.webp?v=2"', $html);
+        $this->assertStringContainsString('og:image:type" content="image/webp"', $html);
+        $this->assertSame([1200, 630], array_slice(getimagesize(public_path('og-home-v2.webp')), 0, 2));
         $this->assertStringContainsString('twitter:card" content="summary_large_image"', $html);
         $r = $this->get(self::SITE.'/og-home.webp')->assertOk();
         $this->assertSame('image/webp', $r->headers->get('Content-Type'));

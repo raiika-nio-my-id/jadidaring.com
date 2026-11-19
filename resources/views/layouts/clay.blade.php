@@ -18,6 +18,7 @@
     <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    @if(!empty($ogImageType))<meta property="og:image:type" content="{{ $ogImageType }}">@endif
     @if(!empty($ogImageAlt))<meta property="og:image:alt" content="{{ $ogImageAlt }}">
     <meta name="twitter:image:alt" content="{{ $ogImageAlt }}">@endif
     <meta name="twitter:image" content="{{ $ogImage }}">
