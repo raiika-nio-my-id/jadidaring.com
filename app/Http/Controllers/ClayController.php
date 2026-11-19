@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\CompanyProfile;
 use App\Services\GameHubCatalog;
 use App\Services\TenantPath;
+use App\Services\PopularStats;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class ClayController extends Controller
 {
@@ -28,24 +28,20 @@ class ClayController extends Controller
 
     public function home(Request $request): View
     {
-        $views = DB::table('page_view_records')
-            ->selectRaw('company_profile_id, COUNT(*) as views_count')
-            ->where('viewed_on', '>=', now()->subDays(30)->toDateString())
-            ->groupBy('company_profile_id');
-
         $profiles = CompanyProfile::query()
             ->live()
             ->games()
             ->with('user:id,name')
             ->where('company_profiles.subdomain', '!=', 'gamehub')
-            ->select('company_profiles.*')
-            ->selectRaw('COALESCE(game_views.views_count, 0) as views_count')
-            ->leftJoinSub($views, 'game_views', 'game_views.company_profile_id', '=', 'company_profiles.id')
             ->orderByDesc('company_profiles.is_pinned')
-            ->orderByDesc('views_count')
             ->orderByDesc('company_profiles.created_at')
-            ->limit(6)
+            ->orderByDesc('company_profiles.id')
             ->get();
+
+        $views = PopularStats::gameViews();
+        $pinned = $profiles->filter(fn (CompanyProfile $p): bool => (bool) $p->is_pinned);
+        $rest = $profiles->reject(fn (CompanyProfile $p): bool => (bool) $p->is_pinned);
+        $profiles = collect([...$pinned, ...PopularStats::rank($rest, fn (CompanyProfile $p): string => $p->subdomain, $views)])->take(6);
 
         $games = $this->formatGames($profiles);
 
@@ -76,16 +72,7 @@ class ClayController extends Controller
             ->where('company_profiles.subdomain', '!=', 'gamehub');
 
         if ($sort === 'views') {
-            $views = DB::table('page_view_records')
-                ->selectRaw('company_profile_id, COUNT(*) as views_count')
-                ->where('viewed_on', '>=', now()->subDays(30)->toDateString())
-                ->groupBy('company_profile_id');
-
-            $query->select('company_profiles.*')
-                ->selectRaw('COALESCE(game_views.views_count, 0) as views_count')
-                ->leftJoinSub($views, 'game_views', 'game_views.company_profile_id', '=', 'company_profiles.id')
-                ->orderByDesc('views_count')
-                ->orderByDesc('company_profiles.created_at')
+            $query->orderByDesc('company_profiles.created_at')
                 ->orderByDesc('company_profiles.id');
         } elseif ($sort === 'az') {
             $query->orderBy('company_profiles.subdomain');
@@ -95,6 +82,11 @@ class ClayController extends Controller
         }
 
         $profiles = $query->get();
+
+        if ($sort === 'views') {
+            $profiles = collect(PopularStats::rank($profiles, fn (CompanyProfile $p): string => $p->subdomain, PopularStats::gameViews()));
+        }
+
         $games = $this->formatGames($profiles);
 
         return view('clay.game-index', [
@@ -193,7 +185,7 @@ class ClayController extends Controller
 
     /**
      * @param  Collection<int, CompanyProfile>  $profiles
-     * @return Collection<int, array{subdomain: string, title: string, description: string, image: string, avatar: string, views: int}>
+     * @return Collection<int, array{subdomain: string, title: string, description: string, image: string, avatar: string}>
      */
     private function formatGames(Collection $profiles): Collection
     {
@@ -219,7 +211,6 @@ class ClayController extends Controller
                 'description' => $description,
                 'image' => $image,
                 'avatar' => $avatar,
-                'views' => (int) $profile->getAttribute('views_count'),
             ];
         });
     }

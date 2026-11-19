@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user, backfill-email-normalized, merge-langit-dry, merge-langit]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -113,6 +113,9 @@ jobs:
                 ;;
               backfill-email-normalized)
                 docker exec singlepage-app php artisan users:backfill-email-normalized --no-ansi
+                ;;
+              refresh-popular)
+                docker exec singlepage-app php artisan stats:refresh-popular --no-ansi
                 ;;
               merge-langit-dry)
                 docker exec singlepage-app php artisan games:merge-rooms langitbersama "$VALUE" --no-ansi

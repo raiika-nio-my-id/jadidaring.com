@@ -66,11 +66,7 @@
                         <p class="game-card__desc">{{ $game['description'] ?: 'Game web santai dan seru untuk dimainkan bersama kawan.' }}</p>
                         <div class="game-card__footer">
                             <span class="game-card__badge">
-                                @if(!empty($game['views']))
-                                    {{ number_format($game['views']) }} main
-                                @else
-                                    Pilihan
-                                @endif
+                                Pilihan
                             </span>
                             <span class="game-card__play">Mainkan &rarr;</span>
                         </div>

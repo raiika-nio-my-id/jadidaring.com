@@ -50,9 +50,7 @@
                         <p class="game-card__desc">{{ $game['description'] ?: 'Game web santai dan seru untuk dimainkan bersama kawan.' }}</p>
                         <div class="game-card__footer">
                             <span class="game-card__badge">
-                                @if($sort === 'views' && !empty($game['views']))
-                                    {{ number_format($game['views']) }} tayang
-                                @elseif($sort === 'new')
+                                @if($sort === 'new')
                                     Baru
                                 @else
                                     Mainkan

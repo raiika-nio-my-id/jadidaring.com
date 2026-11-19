@@ -13,13 +13,18 @@
         </form>
 
         <div class="pills-bar" aria-label="Topik Berita">
-            <a href="/berita" class="clay-pill clay-pill--sky is-active" aria-current="page">Semua</a>
+            <a href="/berita" class="clay-pill clay-pill--sky @if(empty($popular)) is-active @endif" @if(empty($popular)) aria-current="page" @endif>Semua</a>
+            <a href="/berita?urut=populer" class="clay-pill clay-pill--peach @if(!empty($popular)) is-active @endif" @if(!empty($popular)) aria-current="page" @endif>Populer</a>
             @foreach($topics as $slug => $name)
                 <a href="/berita/{{ $slug }}" class="clay-pill clay-pill--sky">{{ $name }}</a>
             @endforeach
         </div>
 
         @include('clay._articles', ['articles' => $articles, 'emptyText' => ! empty($q) ? 'Tidak ada berita yang cocok dengan pencarian Anda.' : 'Artikel berita dari topik politik, gaming, saham, indonesia, musibah, teknologi, dan tren sosial media sedang disiapkan.'])
-        @include('clay._pagination')
+        @if(empty($popular))
+            @include('clay._pagination')
+        @else
+            <p class="clay-empty__text">Populer = paling banyak dibaca 7 hari terakhir (data Google Analytics).</p>
+        @endif
     </div>
 @endsection

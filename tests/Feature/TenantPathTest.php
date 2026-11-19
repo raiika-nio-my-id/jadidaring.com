@@ -159,12 +159,12 @@ HTML);
             ->assertJsonPath('scores.0.name', 'Ada');
     }
 
-    public function test_a_game_visit_is_counted(): void
+    public function test_a_game_visit_no_longer_increments_the_old_counter(): void
     {
         $this->publish('drawquarium', '<html><body>Aquarium</body></html>');
 
         $this->get('http://jadidaring.test/game/drawquarium/')->assertOk();
-        $this->assertSame(1, $this->views('drawquarium'));
+        $this->assertSame(0, $this->views('drawquarium'));
     }
 
     public function test_served_html_passes_the_connection_identity_check(): void

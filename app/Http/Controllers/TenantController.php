@@ -182,6 +182,11 @@ class TenantController extends Controller
 
     private function trackVisit(CompanyProfile $profile, Request $request): void
     {
+        // Game popularity now comes from Google Analytics; the old counter is frozen (data kept for rollback).
+        if ($profile->is_game) {
+            return;
+        }
+
         $ua = strtolower($request->userAgent() ?? '');
 
         foreach (self::BOT_UA_PATTERNS as $pattern) {

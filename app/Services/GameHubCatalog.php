@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use JsonException;
 
 /**
@@ -146,27 +145,23 @@ class GameHubCatalog
      */
     private function listings(Request $request, string $sort, array $previousBySubdomain): array
     {
-        $views = DB::table('page_view_records')
-            ->selectRaw('company_profile_id, COUNT(*) as views_count')
-            ->groupBy('company_profile_id');
-
         $query = CompanyProfile::query()
             ->live()
             ->games()
             ->with('user:id,name')
             ->select('company_profiles.*')
-            ->selectRaw('COALESCE(game_views.views_count, 0) as views_count')
-            ->leftJoinSub($views, 'game_views', 'game_views.company_profile_id', '=', 'company_profiles.id')
             ->where('company_profiles.subdomain', '!=', GameHub::subdomain());
-
-        if ($sort === self::SORT_VIEWS) {
-            $query->orderByRaw('COALESCE(game_views.views_count, 0) DESC');
-        }
 
         $profiles = $query
             ->orderByDesc('company_profiles.created_at')
             ->orderByDesc('company_profiles.id')
             ->get();
+
+        $gaViews = PopularStats::gameViews();
+
+        if ($sort === self::SORT_VIEWS) {
+            $profiles = collect(PopularStats::rank($profiles, fn (CompanyProfile $p): string => $p->subdomain, $gaViews));
+        }
 
         return $profiles->values()->map(function (CompanyProfile $profile, int $index) use ($request, $previousBySubdomain): array {
             $subdomain = strtolower($profile->subdomain);
@@ -208,7 +203,7 @@ class GameHubCatalog
                 'url' => TenantPath::homeUrl($request, $subdomain),
                 'hostLabel' => TenantPath::label($subdomain),
                 'image' => $image,
-                'views' => (int) $profile->getAttribute('views_count'),
+                'views' => (int) ($gaViews[strtolower($profile->subdomain)] ?? 0),
                 'number' => str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT),
                 'initials' => self::initials($title),
                 'tags' => self::stringList($previous['tags'] ?? []),

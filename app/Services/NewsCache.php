@@ -87,4 +87,24 @@ class NewsCache
                 ])->all();
         });
     }
+
+    /**
+     * Top articles by Google Analytics views (7 days). Falls back to newest-first when GA has no data.
+     *
+     * @return array{items: list<array<string, mixed>>, ranked: bool}
+     */
+    public static function popular(int $limit = 12): array
+    {
+        $views = PopularStats::newsViews();
+        $pool = self::latest(null, 100);
+
+        if ($views === null || $views === []) {
+            return ['items' => array_slice($pool, 0, $limit), 'ranked' => false];
+        }
+
+        $pool = array_values(array_filter($pool, fn (array $a): bool => ($views[strtolower($a['slug'])] ?? 0) > 0));
+        $pool = PopularStats::rank($pool, fn (array $a): string => $a['slug'], $views);
+
+        return ['items' => array_slice($pool, 0, $limit), 'ranked' => $pool !== []];
+    }
 }

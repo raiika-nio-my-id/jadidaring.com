@@ -110,6 +110,38 @@ class GoogleStats
         return Cache::remember($this->gscCacheKey($days), self::CACHE_TTL_SECONDS, fn (): array => $this->fetchGsc($days));
     }
 
+    /**
+     * Page views per host + path over the last $days days (uncached; used by the scheduled popularity refresh).
+     *
+     * @return list<array{host: string, path: string, views: int}>
+     */
+    public function pageViewsByPath(int $days): array
+    {
+        $json = $this->post('ga4', 'https://analyticsdata.googleapis.com/v1beta/properties/'.$this->propertyId().':runReport', [
+            'dateRanges' => [['startDate' => ($days - 1).'daysAgo', 'endDate' => 'today']],
+            'dimensions' => [['name' => 'hostName'], ['name' => 'pagePath']],
+            'metrics' => [['name' => 'screenPageViews']],
+            'orderBys' => [['metric' => ['metricName' => 'screenPageViews'], 'desc' => true]],
+            'limit' => 10000,
+        ]);
+
+        $rows = [];
+        foreach ($json['rows'] ?? [] as $row) {
+            $rows[] = [
+                'host' => strtolower((string) ($row['dimensionValues'][0]['value'] ?? '')),
+                'path' => (string) ($row['dimensionValues'][1]['value'] ?? ''),
+                'views' => (int) ($row['metricValues'][0]['value'] ?? 0),
+            ];
+        }
+
+        return $rows;
+    }
+
+    public function isConfigured(): bool
+    {
+        return $this->missingSetup()['ga4'] === [];
+    }
+
     /** @return array<string, mixed> */
     private function fetchGa4(int $days): array
     {

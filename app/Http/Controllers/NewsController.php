@@ -24,8 +24,14 @@ class NewsController extends Controller
     {
         $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
         $noindex = false;
-        $pg = $q === '' ? self::pageData($request, null) : ['page' => 1, 'pages' => 1];
-        $articles = $q === '' ? NewsCache::page(null, $pg['page']) : [];
+        $popular = $q === '' && $request->query('urut') === 'populer';
+        $pg = $q === '' && ! $popular ? self::pageData($request, null) : ['page' => 1, 'pages' => 1];
+        $articles = $q === '' && ! $popular ? NewsCache::page(null, $pg['page']) : [];
+
+        if ($popular) {
+            $articles = NewsCache::popular(12)['items'];
+            $noindex = true;
+        }
 
         if ($q !== '') {
             $like = '%'.addcslashes($q, '%_\\').'%';
@@ -40,13 +46,14 @@ class NewsController extends Controller
 
         return view('clay.berita-index', [
             'q' => $q,
+            'popular' => $popular,
             'noindex' => $noindex,
-            'pagination' => $q === '' ? $pg + ['base' => '/berita'] : null,
-            'relPrev' => $q === '' ? self::pageUrl('/berita', $pg['page'] - 1, $pg['page'] > 1) : null,
-            'relNext' => $q === '' ? self::pageUrl('/berita', $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
+            'pagination' => $q === '' && ! $popular ? $pg + ['base' => '/berita'] : null,
+            'relPrev' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] - 1, $pg['page'] > 1) : null,
+            'relNext' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
             'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => 'Berita terkini hari ini seputar politik, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
-            'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl('/berita', $pg['page']),
+            'canonicalUrl' => 'https://'.TenantPath::host().($popular ? '/berita' : self::pageUrl('/berita', $pg['page'])),
             'topics' => ClayController::TOPICS,
             'articles' => $articles,
         ]);
