@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Bajaj Drift · Game Balap Drift Bajaj Keliling Monas (Gratis di HP)</title>
+<meta name="description" content="Bajaj Drift: game balap drift gratis di browser HP tanpa download. Tahan untuk drift, lepas untuk boost! Bajaj oranye ngebut keliling Monas dan gang sempit Jakarta. Kejar ghost juara papan skor dan pecahkan rekor waktu.">
+<meta name="theme-color" content="#1d2a3a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bajaj Drift · tahan buat drift, lepas buat ngebut">
+<meta property="og:description" content="Bajaj oranye drift keliling Monas! Kejar ghost juara, pecahkan rekor 3 putaran.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="bajajdrift">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="chip hero-chip">🛺 Balap solo + ghost</span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">JAKARTA · SORE HARI</p><h1>BAJAJ <span>DRIFT</span></h1><p class="slogan">Tahan buat drift, lepas buat ngebut!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pembalap</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="card opts">
+        <div class="opt"><span>Sirkuit</span><div class="seg" id="trackSeg"><button data-v="monas" class="on">🗼 Putaran Monas</button><button data-v="gang">🏘️ Gang Senen</button></div></div>
+        <div class="opt"><span>Ghost</span><div class="seg" id="ghostSeg"><button data-v="top" class="on">👑 Juara</button><button data-v="rival">🎯 Rival</button><button data-v="me">👻 Rekorku</button><button data-v="none">Tanpa</button></div></div>
+        <div class="opt"><span>Warna</span><div class="seg" id="livSeg"><button data-v="oranye" class="on">🟠 Oranye klasik</button><button data-v="biru">🔵 Biru BBG</button></div></div>
+        <p class="ghost-note muted" id="ghostNote"></p>
+      </div>
+      <div class="modes">
+        <button class="mode big" id="playBtn"><i>🛺</i><span><b>Balapan</b><small id="playSub">3 putaran keliling Monas</small></span></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Latihan</b><small>Belajar drift &amp; boost</small></button>
+        <button class="mode" id="recBtn" disabled><i>⏱️</i><b id="recTitle">Rekorku</b><small id="recSub">Belum ada</small></button>
+      </div>
+      <div class="card board">
+        <h2>Papan juara <small id="boardTrack">Putaran Monas · 3 putaran</small></h2>
+        <ol class="lb-list" id="boardList"><li class="muted">Memuat…</li></ol>
+        <p class="muted small" id="boardNote"></p>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li>Bajaj <b>ngegas sendiri</b>. Belok pakai tombol <b>◀ ▶</b> (atau <kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd>).</li>
+          <li><b>Tahan DRIFT</b> sambil belok di tikungan (<kbd>Spasi</kbd>/<kbd>Shift</kbd>). Bajaj menyamping dan mengisi turbo.</li>
+          <li>Percikan berubah <b class="t1">biru</b> → <b class="t2">oranye</b> → <b class="t3">ungu</b>. <b>Lepas</b> untuk BOOST, makin lama makin kencang!</li>
+          <li>Jangan nabrak pagar atau masuk rumput: drift putus dan bajaj melambat.</li>
+          <li>Kejar <b>ghost biru</b>. Waktu Putaran Monas masuk papan juara.</li>
+        </ol>
+        <p class="muted keys"><kbd>P</kbd> jeda · <kbd>R</kbd> ulang · <kbd>M</kbd> suara</p>
+      </div>
+      <p class="foot muted">Bajaj Drift adalah game fiksi buatan penggemar. Tidak berafiliasi dengan pengelola Monumen Nasional (Monas), Pemprov DKI Jakarta, maupun produsen atau operator bajaj mana pun. Di jalan sungguhan: patuhi aturan lalu lintas, jangan drift! · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="pauseBtn" aria-label="Jeda">⏸</button>
+      <div class="hud" id="hud"><span class="lap" id="lapTxt">1/3</span><b class="time" id="timeTxt">0:00.00</b><span class="gap" id="gapTxt"></span></div>
+      <button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button></div>
+    <canvas id="mini" class="mini" width="92" height="92"></canvas>
+    <div class="speedo"><b id="kmh">0</b><small>km/j</small><div class="charge" id="charge"><i></i><i></i><i></i></div></div>
+    <div class="call" id="call"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="wrong" id="wrong" hidden>⚠ SALAH ARAH, PUTAR BALIK!</div>
+    <div class="pads" id="pads">
+      <button class="pad" id="padL" aria-label="Belok kiri">◀</button><button class="pad" id="padR" aria-label="Belok kanan">▶</button>
+      <button class="pad drift" id="padD" aria-label="Drift (tahan)"><b>DRIFT</b><small>tahan · lepas = boost</small></button>
+    </div>
+    <div class="overlay" id="pause" hidden><div class="sheet"><h2>Jeda</h2><div class="row end-btns"><button class="btn green" id="resumeBtn">▶ Lanjut</button><button class="btn" id="restartBtn">↻ Ulang</button><button class="btn ghost" id="quitBtn">Menu</button></div></div></div>
+    <div class="overlay" id="result" hidden>
+      <div class="sheet">
+        <p class="kicker dark" id="resKick">FINIS</p><h2 id="resTitle">Rekor baru!</h2>
+        <div class="res-big"><b id="resTime">0:00.00</b></div><p class="sub" id="resSub"></p>
+        <table class="res-table" id="resTable"></table>
+        <p class="muted small" id="resNote"></p>
+        <div class="row end-btns"><button class="btn green" id="againBtn">↻ Balap lagi</button><button class="btn" id="shareBtn">📤 Pamer</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      </div>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>

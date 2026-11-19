@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -137,6 +137,7 @@ class GitGamesTest extends TestCase
             'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
             'coratcoret' => ['coratcoret', 'JDNG_CFG'],
             'anomaliminimarket' => ['anomaliminimarket', 'data-jd-account-name-lock'],
+            'bajajdrift' => ['bajajdrift', 'data-jd-account-name-lock'],
         ];
     }
 

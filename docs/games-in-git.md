@@ -45,8 +45,8 @@ exported first (no admin GET endpoint exists yet).
 | 1 | `langitbersama` | in git (pilot 822b191; account name lock 2026-11-20) | repo | yes, account name | yes |
 | 2 | `drawquarium` | in git (50a0ece) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 3 | `coratcoret` | in git (fab7dfb) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 4 | `anomaliminimarket` | in git | local build, verified = live (`index.deploy.html`) | yes | no |
-| 5 | `bajajdrift` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 4 | `anomaliminimarket` | in git (6846a4d) | local build, verified = live (`index.deploy.html`) | yes | no |
+| 5 | `bajajdrift` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 6 | `rebutbendera` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 7 | `ogohogoharak` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 8 | `monyetuluwatu` | database | local build, verified = live (`index.deploy.html`) | yes | no |
