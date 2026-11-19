@@ -64,6 +64,17 @@ class RealtimeEngineTest extends TestCase
         $this->assertStringContainsString('/game/mahjong/api/game/config', $page);
     }
 
+    public function test_injected_bridge_is_byte_identical_to_the_js_file(): void
+    {
+        // Regression: preg_replace treated '$1' in the bridge as a backreference,
+        // which dropped the '&' before t= in the SSE URL (every SSE connect 401'd).
+        $js = (string) file_get_contents(public_path('js/realtime-bridge.js'));
+        $this->assertStringContainsString("'$1t='", $js);
+
+        $page = (new \App\Services\RealtimeBridge)->inject('<html><head><title>x</title></head><body></body></html>', 'mahjong');
+        $this->assertStringContainsString("\n".$js."\n</script>", $page);
+    }
+
     public function test_falls_back_to_reverb_when_rust_is_down_or_game_not_listed(): void
     {
         $this->health(false);

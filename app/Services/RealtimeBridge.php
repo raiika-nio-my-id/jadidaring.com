@@ -23,7 +23,9 @@ class RealtimeBridge
 
         $cfg = json_encode(['cfg' => '/game/'.TenantPath::segment($slug).'/api/game/config'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
         $tag = '<script '.self::MARKER.">\nwindow.__JD_RT=".$cfg.";\n".$js."\n</script>";
-        $out = preg_replace('/<head\b[^>]*>/i', '$0'.$tag, $html, 1, $count);
+        // Callback, not a replacement string: the bridge JS contains '$1', which
+        // preg_replace would treat as a backreference and silently strip.
+        $out = preg_replace_callback('/<head\b[^>]*>/i', fn (array $m) => $m[0].$tag, $html, 1, $count);
 
         return is_string($out) && $count > 0 ? $out : $tag.$html;
     }
