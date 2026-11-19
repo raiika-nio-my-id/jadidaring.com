@@ -18,6 +18,8 @@
             'csrf' => csrf_token(),
             'preview' => '/komunitas/halamanku/pratinjau',
             'upload' => '/komunitas/halamanku/gambar',
+            'autosave' => '/komunitas/halamanku/autosave',
+            'promptUrl' => '/komunitas/buat?embed=1',
             'fonts' => \App\Services\ProfileConfig::FONTS,
             'types' => \App\Services\ProfileConfig::WIDGETS,
             'patterns' => \App\Services\ProfileConfig::PATTERNS,

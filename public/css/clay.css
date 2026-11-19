@@ -1007,3 +1007,12 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 @media (max-width: 560px) { .pf-stats { justify-content: center; } }
 /* Flash message on a member profile: readable on any member background */
 .member-page > .news-comments__msg { display: inline-block; margin: 0 0 10px; padding: 8px 16px; border-radius: var(--radius-pill); background: var(--clay-surface); color: var(--clay-ink); font-weight: 700; box-shadow: var(--clay-out); }
+/* Prompt generator shown inside the live editor's modal */
+.is-embed .clay-header, .is-embed .clay-footer, .is-embed .clay-bottom-nav, .is-embed .clay-section__header .news-back { display: none !important; }
+.is-embed .clay-main { padding: 8px 0 24px !important; }
+/* Widget area: flex-wrap with per-widget widths; widths summing to 100% fit exactly with the gap. */
+.pf .pf-grid { display: flex; flex-wrap: wrap; gap: var(--pf-gap, 16px); justify-content: var(--pf-justify, flex-start); align-items: var(--pf-align, flex-start); }
+.pf .pf-grid > .pf-w { box-sizing: border-box; min-width: 0; flex: 0 0 calc(var(--w, 50) * 1% - var(--pf-gap, 16px) * (100 - var(--w, 50)) / 100); max-width: 100%; }
+.pf .pf-grid > .pf-w[style*="--w:33"] { flex-basis: calc(33.333% - var(--pf-gap, 16px) * .6667); }
+.pf .pf-grid > .pf-w[style*="--w:66"] { flex-basis: calc(66.667% - var(--pf-gap, 16px) * .3333); }
+@media (max-width: 639px) { .pf .pf-grid > .pf-w { flex-basis: 100% !important; } }

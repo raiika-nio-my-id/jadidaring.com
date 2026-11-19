@@ -57,6 +57,7 @@ class CommunityController extends Controller
     public function prompt(): View
     {
         return view('clay.komunitas-prompt', [
+            'embed' => request()->boolean('embed'),
             'metaTitle' => 'Buat / Edit Profil dengan AI — Jadidaring',
             'metaDescription' => 'Buat profil ala Friendster dengan bantuan AI: latar, tema, musik, dan widget. Pakai prompt siap pakai untuk ChatGPT atau Gemini.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/komunitas/buat',
@@ -417,6 +418,34 @@ class CommunityController extends Controller
         MemberPageDraft::query()->where('user_id', $request->user()->id)->delete();
 
         return redirect('/komunitas/halamanku')->with('status', 'Draft dibatalkan.');
+    }
+
+    /** Background autosave from the live editor: always a draft, never live. Returns the cleaned state. */
+    public function autosave(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $user = $request->user();
+        abort_if(! is_string($user->username) || $user->username === '', 403);
+        $data = $request->validate([
+            'config' => ['required', 'array'],
+            'custom_html' => ['nullable', 'string', 'max:400000'],
+        ]);
+        $raw = (string) ($data['custom_html'] ?? '');
+        [$clean, $extra, $notices] = $this->prepareHtml($raw);
+        $config = $this->normalizeConfig($data['config'], $clean, $extra);
+        $draft = MemberPageDraft::query()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['title' => $this->titleFor('', $user), 'html' => $clean, 'source' => 'paste', 'config' => $config],
+        );
+
+        return response()->json([
+            'ok' => true,
+            'saved_at' => now()->format('H.i'),
+            'notices' => $notices,
+            'config' => $draft->profileConfig(),
+            'html' => $clean,
+            'html_changed' => $clean !== $raw,
+            'frame' => trim($clean) !== '' ? $this->draftFrame($request, $user, $draft) : null,
+        ], 200, ['Cache-Control' => 'no-store']);
     }
 
     public function save(Request $request): RedirectResponse

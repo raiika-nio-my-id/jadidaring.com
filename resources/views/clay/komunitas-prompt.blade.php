@@ -1,5 +1,10 @@
 @extends('layouts.clay')
 
+@if ($embed ?? false)
+    @section('bodyclass', 'is-embed')
+    @push('head')<base target="_top">@endpush
+@endif
+
 @section('content')
     <div class="clay-section">
         <div class="clay-section__header">

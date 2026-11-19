@@ -152,6 +152,49 @@
     return box;
   }
 
+
+  /* visual icon buttons (no dropdowns) */
+  function bars(arr, vertical) {
+    // arr: list of [x, y, w, h] rects in a 28x20 box
+    return '<svg viewBox="0 0 28 20" width="28" height="20" aria-hidden="true">' + arr.map(function (r) { return '<rect x="' + r[0] + '" y="' + r[1] + '" width="' + r[2] + '" height="' + r[3] + '" rx="1.5" fill="currentColor"/>'; }).join('') + '<rect x="0.5" y="0.5" width="27" height="19" rx="3" fill="none" stroke="currentColor" stroke-opacity=".35"/></svg>';
+  }
+  var JUSTIFY_IC = {
+    start: [[3, 6, 6, 8], [11, 6, 6, 8]], center: [[7, 6, 6, 8], [15, 6, 6, 8]], end: [[11, 6, 6, 8], [19, 6, 6, 8]],
+    between: [[3, 6, 6, 8], [19, 6, 6, 8]], evenly: [[5, 6, 6, 8], [17, 6, 6, 8]], around: [[4, 6, 6, 8], [18, 6, 6, 8]]
+  };
+  var ALIGN_IC = { top: [[5, 3, 7, 7], [16, 3, 7, 11]], center: [[5, 6, 7, 7], [16, 4, 7, 11]], bottom: [[5, 10, 7, 7], [16, 6, 7, 11]], stretch: [[5, 3, 7, 14], [16, 3, 7, 14]] };
+  var GAP_IC = { tight: [[4, 6, 9, 8], [14, 6, 9, 8]], normal: [[3, 6, 9, 8], [16, 6, 9, 8]], loose: [[2, 6, 8, 8], [18, 6, 8, 8]] };
+  function iconSeg(path, lbl, hint, opts, icons) {
+    var wrap = h('div', { cls: 'le-iconseg', role: 'radiogroup', 'aria-label': lbl });
+    function paint() { Array.prototype.forEach.call(wrap.children, function (b) { b.setAttribute('aria-checked', b.dataset.v === String(get(path)) ? 'true' : 'false'); }); }
+    opts.forEach(function (o) {
+      var b = h('button', { type: 'button', role: 'radio', 'data-v': o[0], title: o[1], 'aria-label': o[1], on: { click: function () { set(path, o[0]); paint(); } } });
+      b.innerHTML = bars(icons[o[0]]) + '<span>' + o[1] + '</span>';
+      wrap.appendChild(b);
+    });
+    paint();
+    return h('div', { cls: 'le-field' }, [h('p', { cls: 'le-flabel', text: lbl }), hint ? h('p', { cls: 'le-hint', text: hint }) : null, wrap]);
+  }
+  var WIDE = ['gallery', 'youtube', 'spotify', 'custom_html'];
+  function widthChips(i) {
+    var w = cfg.widgets[i];
+    var cur = w.width ? String(w.width) : (WIDE.indexOf(w.type) >= 0 ? '100' : '50');
+    var wrap = h('div', { cls: 'le-widths', role: 'radiogroup', 'aria-label': 'Lebar kotak' });
+    ['20', '25', '33', '50', '66', '75', '100'].forEach(function (v) {
+      var b = h('button', { type: 'button', role: 'radio', 'aria-checked': v === cur ? 'true' : 'false', 'aria-label': 'Lebar ' + v + '%', on: { click: function () {
+        cfg.widgets[i].width = v; changed(true);
+        Array.prototype.forEach.call(wrap.children, function (c) { c.setAttribute('aria-checked', c === b ? 'true' : 'false'); });
+      } } });
+      b.innerHTML = '<span class="le-wbar"><i style="width:' + v + '%"></i></span><span>' + v + '%</span>';
+      wrap.appendChild(b);
+    });
+    return h('div', { cls: 'le-field le-field--first' }, [h('p', { cls: 'le-flabel', text: 'Lebar kotak' }), h('p', { cls: 'le-hint', text: 'Di HP semua kotak otomatis selebar layar.' }), wrap]);
+  }
+  function autoplayToggle() {
+    if (!cfg.music) cfg.music = { url: '', title: '', autoplay: false };
+    return toggle('music.autoplay', 'Putar otomatis', 'Musik mulai sendiri saat profil dibuka. Kalau browser menahan, musik mulai di ketukan atau scroll pertama pengunjung.');
+  }
+
   /* ---------- panels ---------- */
   var FONT_OPTS = (B.fonts || []).map(function (f) { return [f, f]; });
   var SOLIDS = ['#ffffff', '#f7f2ec', '#ede7ff', '#ffd9ec', '#d7f5e3', '#d6ecff', '#fff3b0', '#ffd6b8', '#2b2440', '#111827', '#0b1f3a', '#3b0a45'];
@@ -231,6 +274,15 @@
       ]));
       return { title: 'Kursor', hint: 'Bentuk penunjuk mouse saat orang membuka profilmu. Di HP tidak tampil.', kids: kids };
     },
+    layout: function () {
+      if (!cfg.layout) cfg.layout = { justify: 'start', align: 'top', gap: 'normal' };
+      return { title: 'Susunan kotak', hint: 'Atur posisi kotak-kotak di area profil.', kids: [
+        iconSeg('layout.justify', 'Posisi mendatar', 'Berlaku untuk baris yang tidak penuh.', [['start', 'Kiri'], ['center', 'Tengah'], ['end', 'Kanan'], ['between', 'Rata kiri-kanan'], ['evenly', 'Spasi merata'], ['around', 'Spasi sekeliling']], JUSTIFY_IC),
+        iconSeg('layout.align', 'Posisi tegak', 'Kalau tinggi kotak dalam satu baris berbeda.', [['top', 'Atas'], ['center', 'Tengah'], ['bottom', 'Bawah'], ['stretch', 'Sama tinggi']], ALIGN_IC),
+        iconSeg('layout.gap', 'Jarak antar kotak', '', [['tight', 'Rapat'], ['normal', 'Normal'], ['loose', 'Lega']], GAP_IC),
+        note('Lebar tiap kotak diatur dengan mengetuk kotaknya.')
+      ] };
+    },
     wall: function () {
       return { title: 'Komentar & Testimoni (kotak tetap)', hint: 'Selalu ada di bawah profil dan tidak bisa dihapus.', fixed: true, kids: [
         note('Kamu bisa menyembunyikan komentar yang mengganggu langsung dari halaman profilmu.')
@@ -273,7 +325,7 @@
       var ta = h('textarea', { id: 'le-ai-json', cls: 'clay-input', rows: 5, spellcheck: 'false', placeholder: '{ "theme": { … } }' });
       var msg = h('p', { cls: 'le-hint', role: 'status', 'aria-live': 'polite' });
       return { title: 'Buat pakai AI', hint: 'Minta ChatGPT, Claude, atau Gemini mendesain profilmu.', kids: [
-        h('a', { cls: 'clay-btn clay-btn--cta le-add', href: '/komunitas/buat', text: '✨ Buka generator prompt' }),
+        h('button', { type: 'button', cls: 'clay-btn clay-btn--cta le-add', text: '✨ Buka generator prompt', on: { click: function () { openAi(); } } }),
         note('Setelah AI menjawab, klik tautan impor dari AI. Hasilnya terbuka di halaman ini untuk ditinjau.'),
         field('Tempel JSON dari AI', 'Isi blok json saja, lalu tekan Muat.', ta, 'le-ai-json'),
         h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-add', text: 'Muat ke profil', on: { click: function () {
@@ -302,7 +354,7 @@
     var w = cfg.widgets[i];
     if (!w) return null;
     var p = 'widgets.' + i + '.';
-    var kids = [text(p + 'title', 'Judul kotak', 'Kosongkan untuk memakai judul bawaan "' + label(w.type) + '".', { max: 60, ph: label(w.type) })];
+    var kids = [widthChips(i), text(p + 'title', 'Judul kotak', 'Kosongkan untuk memakai judul bawaan "' + label(w.type) + '".', { max: 60, ph: label(w.type) })];
     switch (w.type) {
       case 'about': kids.push(text('profile.about', 'Tentang aku', 'Ceritakan dirimu. Enter untuk baris baru.', { area: true, max: 1200, rows: 6 })); break;
       case 'status': kids.push(text('profile.status', 'Status', 'Kabar atau mood hari ini.', { max: 140 })); break;
@@ -311,13 +363,13 @@
       case 'gallery': kids.push(h('p', { cls: 'le-flabel', text: 'Foto' }), h('p', { cls: 'le-hint', text: 'Unggah foto atau tempel link https. Maks. 12.' }), galleryEditor(w)); break;
       case 'friends': kids.push(h('p', { cls: 'le-flabel', text: 'Teman' }), h('p', { cls: 'le-hint', text: 'Username member Jadidaring, tanpa @. Maks. 8.' }), listEditor(w, [{ key: 'username', ph: 'username', label: 'Username', max: 20 }], 8, 'Tambah teman')); break;
       case 'quote': kids.push(text(p + 'text', 'Kutipan', 'Kalimat favoritmu.', { area: true, max: 300, rows: 3 }), text(p + 'author', 'Penulis', 'Siapa yang mengatakannya (opsional).', { max: 60 })); break;
-      case 'youtube': kids.push(text(p + 'id', 'Link video YouTube', 'Tempel link youtube.com atau youtu.be.', { url: true, max: 200, ph: 'https://youtu.be/…' })); break;
+      case 'youtube': kids.push(text(p + 'id', 'Link video YouTube', 'Tempel link youtube.com atau youtu.be.', { url: true, max: 200, ph: 'https://youtu.be/…' }), autoplayToggle()); break;
       case 'spotify':
         if (!w.url && w.id) w.url = 'https://open.spotify.com/' + w.kind + '/' + w.id;
         kids.push(text(p + 'url', 'Link atau kode embed Spotify', 'Dari Spotify: Bagikan → Salin link, atau Sematkan.', { url: true, max: 2000, ph: 'https://open.spotify.com/track/…' }));
-        kids.push(toggle(p + 'compact', 'Pemutar kecil', 'Hanya untuk satu lagu (track).'));
+        kids.push(toggle(p + 'compact', 'Pemutar kecil', 'Hanya untuk satu lagu (track).'), autoplayToggle());
         break;
-      case 'music': kids.push(text('music.url', 'Link lagu (mp3/ogg/wav)', 'Link https langsung ke file audio. Tidak autoplay.', { url: true, max: 500, ph: 'https://…/lagu.mp3' }), text('music.title', 'Judul lagu', 'Tampil di atas pemutar.', { max: 80 }), note('Punya lagu di Spotify? Pakai kotak Spotify.')); break;
+      case 'music': kids.push(text('music.url', 'Link lagu (mp3/ogg/wav)', 'Link https langsung ke file audio. Tidak autoplay.', { url: true, max: 500, ph: 'https://…/lagu.mp3' }), text('music.title', 'Judul lagu', 'Tampil di atas pemutar.', { max: 80 }), autoplayToggle(), note('Punya lagu di Spotify? Pakai kotak Spotify. Putar otomatis paling lancar dengan file mp3.')); break;
       case 'custom_html':
         var id = nid();
         var ta = h('textarea', { id: id, cls: 'clay-input le-code', rows: 10, spellcheck: 'false' });
@@ -475,7 +527,7 @@
   }
 
   /* ---------- panel open/close ---------- */
-  function open(key) {
+  function open(key, quiet) {
     var def = key.indexOf('w:') === 0 ? widgetPanel(Number(key.slice(2))) : (PANELS[key] ? PANELS[key]() : null);
     if (!def) return;
     current = key; uid = uid; // keep ids unique
@@ -487,17 +539,18 @@
     panel.hidden = false;
     document.body.classList.add('le-panel-open');
     highlight();
-    if (window.matchMedia('(max-width: 899px)').matches) {
+    if (!quiet && window.matchMedia('(max-width: 899px)').matches) {
       var sel = document.querySelector('.le-sel');
       if (sel && sel !== stage.querySelector('.pf')) {
         var r = sel.getBoundingClientRect(), room = window.innerHeight - panel.offsetHeight;
-        if (r.top < 110 || r.top > room - 60) window.scrollBy({ top: r.top - 116, behavior: 'smooth' });
+        var navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--jd-nav-h'), 10) || 92;
+        if (r.top < navH + 8 || r.top > room - 60) window.scrollBy({ top: r.top - navH - 16, behavior: 'smooth' });
       }
     }
     var f = pBody.querySelector('input:not([type=hidden]):not(.sr-only),textarea,select,button');
-    if (f && window.matchMedia('(pointer:fine)').matches) f.focus({ preventScroll: true });
+    if (!quiet && f && window.matchMedia('(pointer:fine)').matches) f.focus({ preventScroll: true });
   }
-  function reopen() { if (current) { var y = pBody.scrollTop; open(current); pBody.scrollTop = y; } }
+  function reopen(quiet) { if (current) { var y = pBody.scrollTop; open(current, quiet); pBody.scrollTop = y; } }
   function closePanel() {
     panel.hidden = true; current = null;
     document.body.classList.remove('le-panel-open');
@@ -513,21 +566,226 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
   document.querySelectorAll('[data-open]').forEach(function (b) {
     if (b.dataset.open !== 'w' && !PANELS[b.dataset.open]) { b.hidden = true; return; }
-    b.addEventListener('click', function () { open(b.dataset.open); });
+    b.addEventListener('click', function () { if (b.dataset.open === 'ai') openAi(); else open(b.dataset.open); });
   });
 
   /* tap anything on the page to edit it */
   document.getElementById('le').addEventListener('click', function (e) {
     if (document.body.classList.contains('le-peek')) return;
-    if (e.target.closest('.le-top, .le-classic, .pf-alert, .imp-fix, .le-draft')) return;
+    if (e.target.closest('.le-top, .le-classic, .pf-alert, .imp-fix, .le-draft, .le-drag')) return;
+    if (dragJustEnded) { e.preventDefault(); e.stopPropagation(); return; }
+    if (e.target.closest('[data-avatar-upload]')) { e.preventDefault(); e.stopPropagation(); avatarPick(); return; }
+    var ie = e.target.closest('#le-stage [data-inline]');
     var t = e.target.closest('[data-edit]');
     var inStage = e.target.closest('#le-stage');
     if (!t && !inStage) return;
-    e.preventDefault();
+    if (!ie) e.preventDefault();
     var key = t ? t.dataset.edit : 'bg';
     if (t && t.classList.contains('pf-inner')) key = 'bg';
+    if (ie) { startInline(ie); if (current !== key && !window.matchMedia('(max-width: 899px)').matches) open(key, true); return; }
     open(key);
   }, true);
+
+  /* ---------- type in place ---------- */
+  var editing = null;
+  function startInline(el) {
+    if (editing === el) return;
+    if (editing) commitInline();
+    editing = el;
+    el.dataset.before = el.textContent;
+    try { el.contentEditable = 'plaintext-only'; } catch (x) { el.contentEditable = 'true'; }
+    if (el.contentEditable !== 'plaintext-only') el.contentEditable = 'true';
+    el.setAttribute('role', 'textbox');
+    if (el.dataset.multi) el.setAttribute('aria-multiline', 'true');
+    el.setAttribute('aria-label', el.dataset.ph || 'Teks');
+    el.spellcheck = true;
+    el.classList.add('le-typing');
+    el.focus();
+    var r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  }
+  function commitInline(cancel) {
+    var el = editing; if (!el) return;
+    editing = null;
+    el.removeAttribute('contenteditable'); el.removeAttribute('role'); el.classList.remove('le-typing');
+    var v = cancel ? el.dataset.before : el.innerText.replace(/\u00a0/g, ' ');
+    if (!el.dataset.multi) v = v.replace(/\s*\n\s*/g, ' ');
+    v = v.replace(/\n{3,}/g, '\n\n').trim().slice(0, +el.dataset.max || 200);
+    el.textContent = v;
+    var path = el.dataset.inline;
+    if (cancel || String(get(path) || '') === v) { if (pendingRender) render(); return; }
+    set(path, v);
+    if (current) reopen(true);
+  }
+  stage.addEventListener('keydown', function (e) {
+    if (!editing || !editing.contains(e.target)) return;
+    if (e.key === 'Escape') { e.preventDefault(); commitInline(true); editing = null; }
+    else if (e.key === 'Enter' && (!editing.dataset.multi || e.ctrlKey || e.metaKey)) { e.preventDefault(); editing.blur(); }
+    else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && editing.innerText.length >= (+editing.dataset.max || 200) && window.getSelection().isCollapsed) e.preventDefault();
+  });
+  stage.addEventListener('paste', function (e) {
+    if (!editing) return;
+    e.preventDefault();
+    var t = (e.clipboardData || window.clipboardData).getData('text/plain') || '';
+    document.execCommand('insertText', false, t);
+  });
+  stage.addEventListener('focusout', function (e) { if (editing && e.target === editing) commitInline(); });
+
+  /* ---------- avatar: tap the + to swap the photo ---------- */
+  var avInput = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp,image/gif', cls: 'sr-only', 'aria-hidden': 'true', tabindex: '-1' });
+  document.body.appendChild(avInput);
+  function avatarPick() { avInput.click(); }
+  avInput.addEventListener('change', function () {
+    var f = avInput.files && avInput.files[0]; avInput.value = '';
+    if (!f) return;
+    if (f.size > 5 * 1024 * 1024) { toast('Foto maksimal 5 MB.'); return; }
+    var wrap = stage.querySelector('.pf-avwrap'); if (wrap) wrap.classList.add('is-busy');
+    var local = URL.createObjectURL(f);
+    var img = stage.querySelector('.pf-avwrap img'); if (img) img.src = local;
+    var fd = new FormData(); fd.append('image', f); fd.append('kind', 'avatar');
+    fetch(B.upload, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': B.csrf, 'Accept': 'application/json' }, body: fd })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; }, function () { return { ok: false, status: r.status, j: null }; }); })
+      .then(function (res) {
+        if (wrap) wrap.classList.remove('is-busy');
+        if (!res.ok) { toast(res.status === 429 ? 'Terlalu banyak unggahan. Coba lagi sebentar lagi.' : ((res.j && res.j.message) || 'Foto gagal diunggah.')); render(); return; }
+        set('profile.avatar', res.j.url); changed(true); toast('Foto profil diganti.');
+        if (current === 'head') reopen(true);
+      })
+      .catch(function () { if (wrap) wrap.classList.remove('is-busy'); toast('Foto gagal diunggah. Cek koneksi.'); render(); });
+  });
+  var toastEl = h('div', { cls: 'le-toast', role: 'status', 'aria-live': 'polite' });
+  document.body.appendChild(toastEl);
+  var toastT = null;
+  function toast(t) { toastEl.textContent = t; toastEl.classList.add('is-on'); clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('is-on'); }, 3200); }
+
+  /* ---------- drag boxes on the page to reorder ---------- */
+  var dragJustEnded = false;
+  function decorate() {
+    Array.prototype.forEach.call(stage.querySelectorAll('.pf-grid > [data-edit^="w:"]'), function (sec) {
+      if (sec.querySelector(':scope > .le-drag')) return;
+      var i = +sec.dataset.edit.slice(2);
+      var b = h('button', { type: 'button', cls: 'le-drag', 'aria-label': 'Pindahkan ' + label((cfg.widgets[i] || {}).type) + '. Seret, atau pakai panah atas/bawah.', title: 'Seret untuk memindah' });
+      b.innerHTML = '<svg viewBox="0 0 12 18" width="12" height="18" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="3" r="1.6"/><circle cx="9" cy="3" r="1.6"/><circle cx="3" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="3" cy="15" r="1.6"/><circle cx="9" cy="15" r="1.6"/></g></svg>';
+      sec.insertBefore(b, sec.firstChild);
+    });
+  }
+  function idxOf(sec) { return +sec.dataset.edit.slice(2); }
+  function moveWidget(from, to) {
+    if (to < 0 || to >= cfg.widgets.length || from === to) return false;
+    var w = cfg.widgets.splice(from, 1)[0];
+    cfg.widgets.splice(to, 0, w);
+    if (current && current.indexOf('w:') === 0) { var c = +current.slice(2); current = 'w:' + (c === from ? to : (from < c && to >= c ? c - 1 : (from > c && to <= c ? c + 1 : c))); }
+    changed(true);
+    return true;
+  }
+  stage.addEventListener('keydown', function (e) {
+    var b = e.target.closest && e.target.closest('.le-drag'); if (!b) return;
+    var d = { ArrowUp: -1, ArrowLeft: -1, ArrowDown: 1, ArrowRight: 1 }[e.key]; if (!d) return;
+    e.preventDefault();
+    var from = idxOf(b.parentNode), to = from + d;
+    if (moveWidget(from, to)) whenRendered(function () { var nb = stage.querySelector('[data-edit="w:' + to + '"] > .le-drag'); if (nb) nb.focus(); toast('Dipindah ke posisi ' + (to + 1) + '.'); });
+  });
+  var drag = null;
+  stage.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest('.le-drag'); if (!b || e.button > 0) return;
+    e.preventDefault();
+    var sec = b.parentNode, r = sec.getBoundingClientRect();
+    var ghost = sec.cloneNode(true); ghost.classList.add('le-ghost'); ghost.removeAttribute('data-edit');
+    Array.prototype.forEach.call(ghost.querySelectorAll('iframe,audio,video'), function (x) { x.remove(); });
+    ghost.style.width = r.width + 'px'; ghost.style.height = Math.min(r.height, 220) + 'px';
+    drag = { sec: sec, from: idxOf(sec), to: idxOf(sec), dx: e.clientX - r.left, dy: e.clientY - r.top, ghost: ghost, id: e.pointerId, moved: false, x0: e.clientX, y0: e.clientY };
+    b.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag.moved) {
+      if (Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) < 6) return;
+      drag.moved = true; document.body.appendChild(drag.ghost); drag.sec.classList.add('le-dragging'); document.body.classList.add('le-is-dragging');
+    }
+    drag.ghost.style.transform = 'translate(' + (e.clientX - drag.dx) + 'px,' + (e.clientY - drag.dy) + 'px)';
+    var under = document.elementFromPoint(e.clientX, e.clientY);
+    var tgt = under && under.closest('.pf-grid > [data-edit^="w:"]');
+    Array.prototype.forEach.call(stage.querySelectorAll('.le-drop-before,.le-drop-after'), function (x) { x.classList.remove('le-drop-before', 'le-drop-after'); });
+    if (tgt && tgt !== drag.sec) {
+      var tr = tgt.getBoundingClientRect(), ti = idxOf(tgt);
+      var after = tr.width > tr.height * 1.6 && tr.width > 500 ? e.clientY > tr.top + tr.height / 2 : e.clientX > tr.left + tr.width / 2;
+      tgt.classList.add(after ? 'le-drop-after' : 'le-drop-before');
+      var to = after ? ti + 1 : ti; if (to > drag.from) to -= 1;
+      drag.to = to;
+    } else if (!tgt) drag.to = drag.to;
+    if (e.clientY < 90) window.scrollBy(0, -12); else if (e.clientY > window.innerHeight - 110) window.scrollBy(0, 12);
+  });
+  function endDrag(e) {
+    if (!drag || (e && e.pointerId !== drag.id)) return;
+    var d = drag; drag = null;
+    d.ghost.remove(); d.sec.classList.remove('le-dragging'); document.body.classList.remove('le-is-dragging');
+    Array.prototype.forEach.call(stage.querySelectorAll('.le-drop-before,.le-drop-after'), function (x) { x.classList.remove('le-drop-before', 'le-drop-after'); });
+    if (!d.moved) { open('w:' + d.from); return; }
+    dragJustEnded = true; setTimeout(function () { dragJustEnded = false; }, 60);
+    if (moveWidget(d.from, d.to)) { if (current === 'order') reopen(true); toast('Urutan kotak diubah.'); }
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  decorate();
+
+  /* ---------- AI generator in a modal ---------- */
+  var aiModal = null;
+  function openAi() {
+    if (!aiModal) {
+      aiModal = h('dialog', { cls: 'le-modal', 'aria-label': 'Buat profil pakai AI' });
+      var head = h('div', { cls: 'le-modal__head' }, [
+        h('div', {}, [h('h2', { text: '✨ Buat pakai AI' }), h('p', { cls: 'le-hint', text: 'Isi singkat, salin prompt ke ChatGPT, Claude, atau Gemini, lalu buka tautan impor dari jawabannya.' })]),
+        h('button', { type: 'button', cls: 'le-x', 'aria-label': 'Tutup', text: '✕', on: { click: function () { aiModal.close(); } } })
+      ]);
+      var fr = h('iframe', { src: B.promptUrl, title: 'Generator prompt AI', loading: 'lazy' });
+      var tabs = h('div', { cls: 'le-modal__foot' }, [h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-btn', text: 'Sudah punya JSON? Tempel di sini', on: { click: function () { aiModal.close(); open('ai'); } } })]);
+      aiModal.appendChild(head); aiModal.appendChild(fr); aiModal.appendChild(tabs);
+      aiModal.addEventListener('click', function (e) { if (e.target === aiModal) aiModal.close(); });
+      document.body.appendChild(aiModal);
+    }
+    if (aiModal.showModal) aiModal.showModal(); else location.href = '/komunitas/buat';
+  }
+
+  /* ---------- autosave: local copy at once, server draft after a pause ---------- */
+  var LS = 'jd-le:' + B.username;
+  var saveT = null, lastSaved = JSON.stringify({ c: cfg, h: html });
+  function autosaveSoon() {
+    if (B.mode === 'import') return;
+    try { localStorage.setItem(LS, JSON.stringify({ at: Date.now(), c: cfg, h: html })); } catch (x) {}
+    clearTimeout(saveT); saveT = setTimeout(autosave, 2500);
+  }
+  function autosave() {
+    var snap = JSON.stringify({ c: cfg, h: html });
+    if (snap === lastSaved || submitting) return;
+    setState('Menyimpan otomatis…');
+    fetch(B.autosave, {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': B.csrf },
+      body: JSON.stringify({ config: cfg, custom_html: html })
+    }).then(function (r) {
+      if (r.status === 429) { saveT = setTimeout(autosave, 8000); return null; }
+      return r.ok ? r.json() : Promise.reject(r.status);
+    }).then(function (j) {
+      if (!j) return;
+      lastSaved = snap; B.hasDraft = true;
+      try { localStorage.removeItem(LS); } catch (x) {}
+      if (JSON.stringify({ c: cfg, h: html }) === snap) { dirty = false; setState('Draft tersimpan otomatis ' + j.saved_at + ' · belum tayang'); }
+    }).catch(function () { setState('Belum tersimpan (offline?) · disimpan di perangkat ini'); });
+  }
+  (function restoreLocal() {
+    if (B.mode === 'import') return;
+    var raw = null; try { raw = localStorage.getItem(LS); } catch (x) {}
+    if (!raw) return;
+    var d; try { d = JSON.parse(raw); } catch (x) { return; }
+    if (!d || !d.c || JSON.stringify({ c: d.c, h: d.h || '' }) === lastSaved) { try { localStorage.removeItem(LS); } catch (x) {} return; }
+    var bar = h('div', { cls: 'le-restore', role: 'status' }, [
+      h('span', { text: 'Ada perubahan yang belum tersimpan dari ' + new Date(d.at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + '.' }),
+      h('button', { type: 'button', cls: 'clay-btn clay-btn--cta le-btn', text: 'Pulihkan', on: { click: function () { cfg = d.c; html = d.h || ''; bar.remove(); changed(true); } } }),
+      h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-btn', text: 'Abaikan', on: { click: function () { try { localStorage.removeItem(LS); } catch (x) {} bar.remove(); } } })
+    ]);
+    document.getElementById('le').insertBefore(bar, stage);
+  })();
 
   /* visitor peek */
   var peek = document.getElementById('le-peek');
@@ -542,12 +800,16 @@
   /* ---------- live preview ---------- */
   var waiters = [];
   function whenRendered(fn) { waiters.push(fn); }
+  var pendingRender = false;
   function changed(now) {
     dirty = true; setState('Belum disimpan');
+    autosaveSoon();
     clearTimeout(timer);
     timer = setTimeout(render, now ? 0 : 280);
   }
   function render() {
+    if (editing) { pendingRender = true; return; }
+    pendingRender = false;
     var my = ++seq;
     stage.setAttribute('aria-busy', 'true');
     fetch(B.preview, {
@@ -559,6 +821,7 @@
       return r.ok ? r.text() : Promise.reject(r.status);
     }).then(function (t) {
       if (t === null || my !== seq) return;
+      if (editing) { pendingRender = true; return; }
       morph(t);
       stage.removeAttribute('aria-busy');
       var w = waiters; waiters = []; w.forEach(function (fn) { fn(); });
@@ -579,6 +842,8 @@
     if (ob && nb) ob.setAttribute('style', nb.getAttribute('style') || '');
     var oh = oldPf.querySelector('.pf-head'), nh = newPf.querySelector('.pf-head');
     if (oh && nh && oh.innerHTML !== nh.innerHTML) oh.innerHTML = nh.innerHTML;
+    var oa = oldPf.querySelector('.pf-avwrap img');
+    if (oa && /^blob:/.test(oa.src) && get('profile.avatar') === '') { /* upload still running: keep local preview */ }
     var og = oldPf.querySelector('.pf-grid'), ng = newPf.querySelector('.pf-grid');
     if (!og || !ng) return;
     var pool = Array.prototype.slice.call(og.children);
@@ -595,6 +860,8 @@
     });
     next.forEach(function (n, i) { if (og.children[i] !== n) og.insertBefore(n, og.children[i] || null); });
     while (og.children.length > next.length) og.removeChild(og.lastChild);
+    og.setAttribute('style', ng.getAttribute('style') || '');
+    decorate();
     highlight();
   }
 
@@ -606,7 +873,8 @@
     document.getElementById('le-action').value = btn.dataset.action;
     document.getElementById('le-config').value = JSON.stringify(cfg);
     document.getElementById('le-html').value = html;
-    submitting = true;
+    submitting = true; clearTimeout(saveT);
+    try { localStorage.removeItem(LS); } catch (x) {}
     form.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
     setState(btn.dataset.action === 'publish' ? 'Menerbitkan…' : 'Menyimpan draft…');
   });
@@ -615,6 +883,7 @@
     if (dirty) {
       if (!window.confirm('Buang perubahan yang belum disimpan?')) return;
       cfg = JSON.parse(initial); html = initialHtml; dirty = false; closePanel(); render();
+      clearTimeout(saveT); try { localStorage.removeItem(LS); } catch (x) {}
       setState(B.hasDraft ? 'Draft belum tayang' : 'Belum ada perubahan');
       return;
     }
@@ -624,5 +893,5 @@
     }
     location.href = '/u/' + B.username;
   });
-  window.addEventListener('beforeunload', function (e) { if (dirty && !submitting) { e.preventDefault(); e.returnValue = ''; } });
+  window.addEventListener('beforeunload', function (e) { if (editing) commitInline(); if (dirty && !submitting && JSON.stringify({ c: cfg, h: html }) !== lastSaved) { e.preventDefault(); e.returnValue = ''; } });
 })();

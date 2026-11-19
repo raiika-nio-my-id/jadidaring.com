@@ -20,6 +20,17 @@ class ProfileConfig
 
     public const INKS = ['dark', 'light'];
 
+    /** Widget widths in percent of the widget area; 'auto' keeps the original behaviour (wide types full, others half). */
+    public const WIDTHS = ['auto', '20', '25', '33', '50', '66', '75', '100'];
+
+    public const JUSTIFY = ['start', 'center', 'end', 'between', 'evenly', 'around'];
+
+    public const ALIGN = ['top', 'center', 'bottom', 'stretch'];
+
+    public const GAPS = ['tight', 'normal', 'loose'];
+
+    public const WIDE_TYPES = ['gallery', 'youtube', 'spotify', 'custom_html'];
+
     /** id => [label, hotspot x, hotspot y] at 32px; PNGs live in public/kursor/{id}-{24|32|48}.png (drawn in-house). */
     public const CURSORS = [
         'panah' => ['Panah ungu', 2, 1], 'neon' => ['Panah neon', 3, 2], 'pixel' => ['Piksel 8-bit', 2, 2],
@@ -163,7 +174,7 @@ class ProfileConfig
     public static function defaults(): array
     {
         return [
-            'profile' => ['tagline' => '', 'status' => '', 'about' => '', 'avatar' => ''],
+            'profile' => ['name' => '', 'tagline' => '', 'status' => '', 'about' => '', 'avatar' => ''],
             'theme' => [
                 'bg' => ['type' => 'gradient', 'color' => '#ede7ff', 'color2' => '#ffd9ec', 'angle' => 135, 'image' => '', 'pattern' => 'dots', 'fixed' => true, 'overlay' => 0, 'ink' => 'dark'],
                 'colors' => ['text' => '#2b2440', 'accent' => '#7c5cff', 'card' => '#ffffff', 'link' => '#5a3fa0'],
@@ -171,7 +182,8 @@ class ProfileConfig
                 'card' => ['radius' => 24, 'opacity' => 0.88, 'blur' => 8],
                 'cursor' => ['url' => '', 'preset' => '', 'size' => 32],
             ],
-            'music' => ['url' => '', 'title' => ''],
+            'music' => ['url' => '', 'title' => '', 'autoplay' => false],
+            'layout' => ['justify' => 'start', 'align' => 'top', 'gap' => 'normal'],
             'widgets' => [['type' => 'status'], ['type' => 'about'], ['type' => 'counter'], ['type' => 'links']],
         ];
     }
@@ -199,9 +211,11 @@ class ProfileConfig
         $cd = is_array($t['card'] ?? null) ? $t['card'] : [];
         $cu = is_array($t['cursor'] ?? null) ? $t['cursor'] : [];
         $m = is_array($in['music'] ?? null) ? $in['music'] : [];
+        $l = is_array($in['layout'] ?? null) ? $in['layout'] : [];
 
         $out = [
             'profile' => [
+                'name' => self::text($p['name'] ?? '', 60),
                 'tagline' => self::text($p['tagline'] ?? '', 80),
                 'status' => self::text($p['status'] ?? '', 140),
                 'about' => self::text($p['about'] ?? '', 1200, true),
@@ -237,7 +251,12 @@ class ProfileConfig
                     'size' => (int) self::num($cu['size'] ?? null, 16, 48, 32),
                 ],
             ],
-            'music' => ['url' => self::url($m['url'] ?? ''), 'title' => self::text($m['title'] ?? '', 80)],
+            'music' => ['url' => self::url($m['url'] ?? ''), 'title' => self::text($m['title'] ?? '', 80), 'autoplay' => filter_var($m['autoplay'] ?? false, FILTER_VALIDATE_BOOLEAN)],
+            'layout' => [
+                'justify' => self::enum($l['justify'] ?? null, self::JUSTIFY, 'start'),
+                'align' => self::enum($l['align'] ?? null, self::ALIGN, 'top'),
+                'gap' => self::enum($l['gap'] ?? null, self::GAPS, 'normal'),
+            ],
             'widgets' => [],
         ];
 
@@ -268,6 +287,11 @@ class ProfileConfig
     private static function widget(string $type, array $w): array
     {
         $o = ['type' => $type];
+        $width = is_scalar($w['width'] ?? null) ? (string) $w['width'] : 'auto';
+        $width = rtrim($width, '%');
+        if (in_array($width, self::WIDTHS, true) && $width !== 'auto') {
+            $o['width'] = $width;
+        }
         $title = self::text($w['title'] ?? '', 60);
         if ($title !== '') {
             $o['title'] = $title;
@@ -411,6 +435,23 @@ class ProfileConfig
         }
 
         return self::validate($data, $hasHtml);
+    }
+
+    /** Effective width (percent) of a validated widget. */
+    public static function widthOf(array $w): int
+    {
+        return isset($w['width']) ? (int) $w['width'] : (in_array($w['type'], self::WIDE_TYPES, true) ? 100 : 50);
+    }
+
+    /** @return string inline CSS variables for the widget area (constants from validated enums only) */
+    public static function layoutCss(array $c): string
+    {
+        $l = $c['layout'] ?? self::defaults()['layout'];
+        $j = ['start' => 'flex-start', 'center' => 'center', 'end' => 'flex-end', 'between' => 'space-between', 'evenly' => 'space-evenly', 'around' => 'space-around'][$l['justify']] ?? 'flex-start';
+        $a = ['top' => 'flex-start', 'center' => 'center', 'bottom' => 'flex-end', 'stretch' => 'stretch'][$l['align']] ?? 'flex-start';
+        $g = ['tight' => 8, 'normal' => 16, 'loose' => 28][$l['gap']] ?? 16;
+
+        return sprintf('--pf-justify:%s;--pf-align:%s;--pf-gap:%dpx;', $j, $a, $g);
     }
 
     /** @param array<string, mixed> $b validated theme.bg */

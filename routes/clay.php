@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/komunitas/buat/simpan', [CommunityController::class, 'promptSave'])->middleware('throttle:profile-preview')->name('community.prompt.save');
     Route::post('/komunitas/buat/reset', [CommunityController::class, 'promptReset'])->middleware('throttle:profile-preview')->name('community.prompt.reset');
     Route::post('/komunitas/halamanku/import', [CommunityController::class, 'importSave'])->middleware('throttle:profile-save')->name('community.import.save');
+    Route::post('/komunitas/halamanku/autosave', [CommunityController::class, 'autosave'])->middleware('throttle:profile-autosave')->name('community.autosave');
     Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:profile-save')->name('community.save');
     Route::post('/u/{username}/ikuti', [FollowController::class, 'follow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.follow');
     Route::post('/u/{username}/berhenti-mengikuti', [FollowController::class, 'unfollow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.unfollow');

@@ -68,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
         // Named, per-member limiters (separate counters; unnamed throttles share one key per user).
         RateLimiter::for('email-change', fn (Request $request) => [Limit::perHour(5)->by('email-change:'.($request->user()?->id ?? $request->ip())), Limit::perMinute(2)->by('email-change-m:'.($request->user()?->id ?? $request->ip()))]);
         RateLimiter::for('profile-save', fn (Request $request) => Limit::perMinute(30)->by('profile-save:'.($request->user()?->id ?? $request->ip())));
+        RateLimiter::for('profile-autosave', fn (Request $request) => Limit::perMinute(40)->by('profile-autosave:'.($request->user()?->id ?? $request->ip())));
         RateLimiter::for('profile-upload', fn (Request $request) => [
             Limit::perMinute(8)->by('profile-upload-m:'.($request->user()?->id ?? $request->ip())),
             Limit::perHour(60)->by('profile-upload-h:'.($request->user()?->id ?? $request->ip())),
