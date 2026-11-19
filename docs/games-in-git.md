@@ -87,8 +87,8 @@ exported first (no admin GET endpoint exists yet).
 | 40 | `boxing` | database | no local copy: export the database html first | no | no |
 | 41 | `spiderman` | database | no local copy: export the database html first | no | no |
 | 42 | `kehidupankonoha` | database | no local copy: export the database html first | yes | yes |
-| 43 | `mlbbpicker` | database | no local copy: export the database html first | no | no |
-| 44 | `clubgame` | in git | no local copy: export the database html first | no | no |
+| 43 | `mlbbpicker` | in git | no local copy: export the database html first | no | no |
+| 44 | `clubgame` | in git (4cfe732) | no local copy: export the database html first | no | no |
 | 45 | `idle-game` | in git (4c08517) | no local copy: export the database html first | no | no |
 <!-- inventory:end -->
 
