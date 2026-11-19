@@ -66,7 +66,7 @@ exported first (no admin GET endpoint exists yet).
 | 22 | `dapurpadang3d` | in git (851e0a9) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 23 | `dapurpadang` | in git (cb4b5e8) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 24 | `skalateman` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 25 | `duelular` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 25 | `duelular` | in git (6c5a285) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 26 | `sambungcoret` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 27 | `lanjutkata` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 28 | `nadapiano` | database | no local copy: export the database html first | no | no |
@@ -74,7 +74,7 @@ exported first (no admin GET endpoint exists yet).
 | 30 | `bumerangsakti` | in git (a520387) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 31 | `gamelanhero` | database | no local copy: export the database html first | no | no |
 | 32 | `pedangsihir` | database | local build, verified = live (`index.html`) | yes | yes |
-| 33 | `gelembung` | database | local build, verified = live (`index.html`) | yes | yes |
+| 33 | `gelembung` | in git | local build, verified = live (`index.html`) | yes | yes |
 | 34 | `benteng` | in git (f08c3a3) | local build, verified = live (`index.html`) | yes | yes |
 | 35 | `ulartangga` | database | local build, verified = live (`index.html`) | yes | yes |
 | 36 | `mahjong-master` | database | no local copy: export the database html first | yes | yes |

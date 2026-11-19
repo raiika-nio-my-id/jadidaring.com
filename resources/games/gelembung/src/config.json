@@ -1,0 +1,376 @@
+{
+  "site": {
+    "name": "Duel Gelembung",
+    "tagline": "Bubble shooter versus 2–4 pemain",
+    "themeColor": "#1b1640"
+  },
+  "realtime": {
+    "hostHeartbeatSeconds": 10,
+    "hostStaleSeconds": 30,
+    "reconnectMaxSeconds": 15
+  },
+  "colors": [
+    {
+      "name": "Biru",
+      "hex": "#0072B2",
+      "shape": "lingkaran"
+    },
+    {
+      "name": "Oranye",
+      "hex": "#E69F00",
+      "shape": "segitiga"
+    },
+    {
+      "name": "Hijau kebiruan",
+      "hex": "#009E73",
+      "shape": "kotak"
+    },
+    {
+      "name": "Kuning",
+      "hex": "#F0E442",
+      "shape": "bintang"
+    },
+    {
+      "name": "Ungu kemerahan",
+      "hex": "#CC79A7",
+      "shape": "hati"
+    },
+    {
+      "name": "Biru langit",
+      "hex": "#56B4E9",
+      "shape": "wajik"
+    }
+  ],
+  "chars": {
+    "batu": {
+      "name": "Mbah Batu",
+      "icon": "🪨",
+      "color": "#8d7b68",
+      "skill": "Hujan Batu",
+      "skillText": "Otomatis: 3 Bola Batu jatuh ke papan lawan tiap meter penuh.",
+      "perk": "Tiap 15 tembakan dapat 1 Bola Pelangi.",
+      "stack": "×3 = 9 Batu"
+    },
+    "es": {
+      "name": "Nyai Es",
+      "icon": "❄️",
+      "color": "#56B4E9",
+      "skill": "Napas Beku",
+      "skillText": "Otomatis: 5 bola lawan membeku jadi Bola Es tiap meter penuh.",
+      "perk": "Garis bidik lebih panjang.",
+      "stack": "×3 = 15 Es"
+    },
+    "kabut": {
+      "name": "Si Kabut",
+      "icon": "🌫️",
+      "color": "#9aa5b8",
+      "skill": "Kabut Tebal",
+      "skillText": "Otomatis: kabut menutup baris atas papan lawan 6 detik tiap meter penuh.",
+      "perk": "Bisa lihat 2 bola berikutnya.",
+      "stack": "×3 = kabut 12 detik, 6 baris"
+    },
+    "mercon": {
+      "name": "Pak Mercon",
+      "icon": "🧨",
+      "color": "#E69F00",
+      "skill": "Bom Waktu",
+      "skillText": "Otomatis: 1 Bom Waktu dipasang di papan lawan tiap meter penuh.",
+      "perk": "Tiap 15 tembakan dapat Bola Bom dengan ledakan lebih besar.",
+      "stack": "×3 = 3 Bom Waktu"
+    },
+    "gembok": {
+      "name": "Ki Gembok",
+      "icon": "🔒",
+      "color": "#CC79A7",
+      "skill": "Kunci Mati",
+      "skillText": "Otomatis: 4 bola lawan terkunci jadi Bola Gembok tiap meter penuh.",
+      "perk": "Tukar bola sekarang dengan berikutnya tanpa batas.",
+      "stack": "×3 = 12 Gembok"
+    },
+    "angin": {
+      "name": "Mbak Angin",
+      "icon": "🌪️",
+      "color": "#009E73",
+      "skill": "Angin Ribut",
+      "skillText": "Otomatis: bidikan lawan goyang 5 detik tiap meter penuh.",
+      "perk": "Plafonnya turun 1 detik lebih lambat.",
+      "stack": "×3 = goyang 10 detik, lebih kuat"
+    }
+  },
+  "balls": {
+    "x": {
+      "name": "Bola Batu",
+      "icon": "🪨",
+      "tip": "Batu nggak bisa dipecah: jatuhkan dari atasnya."
+    },
+    "e": {
+      "name": "Bola Es",
+      "icon": "🧊",
+      "tip": "Es: tembakan pertama memecah esnya, baru bisa dicocokkan."
+    },
+    "g": {
+      "name": "Bola Gembok",
+      "icon": "🔒",
+      "tip": "Gembok terbuka kalau bola di sebelahnya pecah."
+    },
+    "w": {
+      "name": "Bom Waktu",
+      "icon": "⏱️",
+      "tip": "Bom Waktu: pecahkan atau jatuhkan sebelum 10 detik, atau dapat 1 baris."
+    },
+    "h": {
+      "name": "Bola Bayangan",
+      "icon": "❔",
+      "tip": "Bayangan: warnanya terbuka kalau bola di sebelahnya pecah."
+    },
+    "r": {
+      "name": "Bola Pelangi",
+      "icon": "🌈",
+      "tip": "Pelangi cocok dengan warna apa pun."
+    },
+    "b": {
+      "name": "Bola Bom",
+      "icon": "💣",
+      "tip": "Bom memecah semua bola di sekitarnya, termasuk Batu dan Es."
+    }
+  },
+  "rules": [
+    {
+      "title": "Bidik dan tembak",
+      "text": "Seret jari (atau mouse) di papanmu untuk membidik, lepas untuk menembak. Bola memantul dari dinding kiri dan kanan. 3 bola sewarna atau lebih yang bersambung akan pecah, dan bola yang jadi nggak punya gantungan ikut jatuh."
+    },
+    {
+      "title": "Plafon turun",
+      "text": "Tumpukan turun satu baris tiap 12 detik di menit pertama, lalu 9, 7, 5, dan 4 detik setelah menit ke-4. Papan bergetar 2 detik sebelum turun. Kalau bola menyentuh garis bawah, kamu tersingkir dan lanjut menonton. Pemain terakhir yang bertahan menang."
+    },
+    {
+      "title": "Serangan otomatis",
+      "text": "Tidak ada tombol skill: tiap meter penuh, seranganmu langsung meluncur sendiri ke lawan dengan skor tertinggi yang tidak sedang kebal. Bola pecah = 1 poin, bola jatuh = 3 poin, tembakan yang memecah/menjatuhkan 5 bola atau lebih +5, 8 bola atau lebih +12 lagi, combo beruntun +1 per tingkat. Meter penuh di 15 dan sisanya terbawa: satu tembakan besar bisa mengisi 2–3 meter sekaligus dan semuanya meluncur bersamaan (DOUBLE / TRIPLE), dibagi ke lawan berbeda kalau bisa, kalau tidak ditumpuk ke satu lawan. Lawan yang baru kena kebal 3,5 detik."
+    },
+    {
+      "title": "Tukar bola",
+      "text": "Tap bola cadangan di sebelah meriam untuk menukar. Ki Gembok bebas menukar kapan saja, karakter lain perlu 2 tembakan di antara tukar."
+    },
+    {
+      "title": "Warna dan bentuk",
+      "text": "Warna memakai palet Okabe–Ito yang aman untuk buta warna, dan tiap warna punya bentuk sendiri: lingkaran, segitiga, kotak, bintang, hati, dan wajik. Mulai dengan 5 warna, warna keenam muncul setelah menit ke-2. Bola Bayangan muncul di baris baru setelah menit 1:30."
+    }
+  ],
+  "chat": [
+    {
+      "k": "halo",
+      "text": "Halo semua!"
+    },
+    {
+      "k": "gg",
+      "text": "GG!"
+    },
+    {
+      "k": "awas",
+      "text": "Awas ya!"
+    },
+    {
+      "k": "ampun",
+      "text": "Ampun, jangan aku!"
+    },
+    {
+      "k": "lagi",
+      "text": "Main lagi?"
+    }
+  ],
+  "emojis": [
+    {
+      "k": "laugh",
+      "icon": "😂"
+    },
+    {
+      "k": "cool",
+      "icon": "😎"
+    },
+    {
+      "k": "fire",
+      "icon": "🔥"
+    },
+    {
+      "k": "scared",
+      "icon": "😱"
+    },
+    {
+      "k": "wave",
+      "icon": "👋"
+    },
+    {
+      "k": "clap",
+      "icon": "👏"
+    }
+  ],
+  "text": {
+    "skip": "Lewati ke konten",
+    "navPlay": "Main",
+    "navChars": "Karakter",
+    "navRules": "Cara main",
+    "heroEyebrow": "Bubble shooter versus · 2–4 pemain",
+    "heroTitle": "Pecahkan gelembung, kirim kekacauan ke lawan",
+    "heroText": "Tiap pemain punya papan sendiri. Bidik, pantulkan, pecahkan 3 warna sama — lalu lempar skill karaktermu ke papan lawan. Langit-langit terus turun; yang bertahan terakhir menang.",
+    "heroCtaOnline": "Main online",
+    "heroCtaPractice": "Latihan vs bot",
+    "fact1": "2–4 pemain",
+    "fact2": "6 karakter",
+    "fact3": "Ramah buta warna",
+    "heroArtLabel": "Contoh papan permainan",
+    "playTitle": "Ayo main",
+    "onlineTitle": "Main online",
+    "onlineText": "Buat room privat dan bagikan link undangan, atau cari lawan acak.",
+    "nameLabel": "Nama kamu",
+    "namePh": "mis. JadiDaring",
+    "maxLabel": "Maks. pemain",
+    "createPrivate": "Buat room privat",
+    "quickMatch": "Cari lawan",
+    "codeLabel": "Kode room",
+    "codePh": "ABC234",
+    "join": "Gabung",
+    "watch": "Tonton",
+    "roomsTitle": "Room terbuka",
+    "refresh": "Muat ulang",
+    "roomsEmpty": "Belum ada room terbuka. Buat satu!",
+    "roomWaiting": "Menunggu",
+    "roomPlaying": "Sedang main",
+    "roomSeats": "{n}/{max} pemain",
+    "practiceTitle": "Latihan",
+    "practiceText": "Lawan 1–3 bot tanpa internet. Latihan pertama dipandu langkah demi langkah.",
+    "botsLabel": "Jumlah bot",
+    "levelLabel": "Level bot",
+    "level0": "Santai",
+    "level1": "Sedang",
+    "level2": "Jago",
+    "pickChar": "Pilih karakter",
+    "practiceStart": "Mulai latihan",
+    "tutorialStart": "Ulangi tutorial",
+    "statsTitle": "Statistik di perangkat ini",
+    "statsGames": "main",
+    "statsWins": "menang",
+    "statsBest": "skor terbaik",
+    "statsNone": "Belum ada pertandingan.",
+    "charsTitle": "Karakter",
+    "charsText": "Setiap karakter punya satu skill serangan (isi meteran sampai penuh) dan satu kelebihan pasif.",
+    "skillLabel": "Skill",
+    "perkLabel": "Kelebihan:",
+    "rulesTitle": "Cara main",
+    "ballsTitle": "Gelembung khusus",
+    "colorsTitle": "Warna & simbol",
+    "colorsText": "Palet Okabe–Ito: tiap warna punya simbol sendiri, jadi tetap terbaca bagi pemain buta warna.",
+    "color6Note": "muncul setelah menit ke-2",
+    "exit": "Keluar",
+    "chatOpen": "Chat",
+    "mute": "Matikan suara",
+    "unmute": "Nyalakan suara",
+    "boardLabel": "Papanmu. Seret untuk membidik, lepas untuk menembak.",
+    "tutSkip": "Lewati",
+    "skillBtn": "Meter serangan otomatis",
+    "chatTitle": "Chat",
+    "close": "Tutup",
+    "chatPh": "Tulis pesan…",
+    "send": "Kirim",
+    "footerNote": "Game gratis di browser. Tanpa unduhan.",
+    "swapShort": "tukar",
+    "swapWait": "Tukar lagi setelah {n} tembakan",
+    "immune": "KEBAL",
+    "hitBy": "{name} → {skill}",
+    "color6": "Warna ke-6 masuk: {name}",
+    "outShort": "KELUAR",
+    "pts": "poin",
+    "watchingName": "menonton {name}",
+    "you": "Kamu",
+    "demoMe": "Bot Demo",
+    "tut1": "Seret jari untuk membidik, lepas untuk menembak. Tembak bola biru ke pasangan biru di bawah — 3 warna sama akan pecah.",
+    "tut2": "Sekarang pantulkan ke dinding! Pecahkan biru di kiri dengan memantul sekali.",
+    "tut2b": "Hampir! Kali ini pantulkan dulu ke dinding.",
+    "tut3": "Pecahkan pasangan biru di atas: semua yang tergantung ikut jatuh.",
+    "tut4": "⚡ Isi meternya! Pecahkan 3 bola — serangan meluncur sendiri.",
+    "tut5": "Langit-langit turun tiap beberapa detik (lihat hitungan di atas). Jangan sampai bola menyentuh garis merah. Sekarang lawan bot ini!",
+    "tutGood": "Mantap!",
+    "tutDone": "Tutorial selesai. Semoga menang!",
+    "tutTitle": "Tutorial",
+    "practiceGameTitle": "Latihan vs {n} bot",
+    "demoTitle": "Demo",
+    "startingIn": "Mulai dalam",
+    "startHint": "Meter penuh → serangan meluncur sendiri. Tembakan besar = ×2 / ×3!",
+    "watchingHint": "Kamu menonton pertandingan ini.",
+    "winTitle": "Kamu menang!",
+    "loseTitle": "Pertandingan selesai",
+    "winnerIs": "Pemenang: {name}",
+    "playAgain": "Main lagi",
+    "backHome": "Menu utama",
+    "outTitle": "Kamu tersingkir",
+    "outPlace": "Peringkat {n}. Tonton sisa pertandingan?",
+    "watchRest": "Tonton",
+    "exitConfirmPractice": "Keluar dari latihan?",
+    "exitConfirm": "Keluar sekarang? Kamu akan dianggap kalah.",
+    "roomTitle": "Room {code}",
+    "loading": "Memuat…",
+    "closedTitle": "Room ditutup",
+    "closedText": "Room ini sudah tidak aktif.",
+    "lobbyTitle": "Lobi",
+    "lobbyInvite": "Bagikan kode atau link undangan:",
+    "copyInvite": "Salin undangan",
+    "youBadge": "kamu",
+    "hostBadge": "host",
+    "choosing": "memilih…",
+    "pickCharLobby": "Pilih karakter (satu karakter per pemain):",
+    "takenBy": "dipakai {name}",
+    "lobbyCount": "{n}/{max} pemain",
+    "spectatorsCount": "{n} penonton",
+    "start": "Mulai",
+    "lobbyNeed": "Butuh {n} pemain lagi.",
+    "lobbyHostHint": "Kamu host: mulai kapan saja.",
+    "lobbyWaitHost": "Menunggu host memulai…",
+    "rematch": "Main lagi",
+    "rematchWait": "Menunggu host…",
+    "playerOut": "{name} tersingkir!",
+    "playerGone": "{name} keluar dari pertandingan",
+    "resumeOut": "Pertandingan sudah berjalan — papanmu tidak bisa dipulihkan, kamu menonton.",
+    "skillFail": "Skill gagal dikirim",
+    "shareText": "Ayo duel gelembung!",
+    "copied": "Link undangan disalin",
+    "copyFail": "Gagal menyalin. Kode: {code}",
+    "nowWatching": "Room sedang main — kamu menonton.",
+    "connOnline": "Online",
+    "connOffline": "Offline",
+    "connReconnecting": "Menyambung ulang…",
+    "connConnecting": "Menyambung…",
+    "onlineChecking": "Memeriksa server…",
+    "onlineReady": "Server siap.",
+    "errName": "Isi nama dulu.",
+    "errCode": "Kode room 6 karakter.",
+    "errMember": "Kamu sudah tidak ada di room ini.",
+    "errBusy": "Server sibuk, coba lagi dalam {n} detik.",
+    "errFew": "Butuh minimal 2 pemain.",
+    "errBudget": "Terlalu banyak aksi, tunggu sebentar.",
+    "errSlow": "Pelan-pelan, tunggu sebentar.",
+    "errTaken": "Karakter itu sudah dipilih pemain lain.",
+    "errNetwork": "Koneksi bermasalah.",
+    "errOffline": "Mode online hanya tersedia di situs resmi. Latihan tetap bisa dimainkan.",
+    "errMismatch": "Versi game berbeda, muat ulang halaman.",
+    "errDisabled": "Mode online sedang nonaktif.",
+    "errNoRoom": "Room tidak ditemukan.",
+    "errFull": "Room penuh atau sudah mulai.",
+    "errGeneric": "Terjadi kesalahan, coba lagi.",
+    "heroCombo": "Combo ×3!",
+    "tut4b": "💥 Sekarang tembakan besar: ⚡⚡⚡ sekaligus!",
+    "tut4c": "Coba lagi: pecahkan gumpalan besar itu.",
+    "burst2": "DOUBLE!",
+    "burst3": "TRIPLE!",
+    "combo": "COMBO ×{n}!",
+    "autoTag": "OTOMATIS",
+    "chargeWait": "⚡ menunggu lawan tidak kebal",
+    "stackLabel": "Tumpuk",
+    "youTag": "KAMU",
+    "watchTag": "MENONTON",
+    "watchLabel": "👁 Menonton {name}",
+    "connLost": "terputus…",
+    "connAway": "💤 di latar",
+    "goneTag": "Keluar",
+    "awayOut": "Kamu terlalu lama meninggalkan permainan, jadi dianggap keluar.",
+    "leftRoom": "Kamu sudah keluar dari room."
+  }
+}

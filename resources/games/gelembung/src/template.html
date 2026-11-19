@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: change texts, characters, bubbles, colours and chat in this JSON only ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Duel Gelembung · Bubble Shooter Versus 2–4 Pemain</title>
+<meta name="description" content="Duel Gelembung: bubble shooter versus 2–4 pemain. Pecahkan gelembung untuk mengisi meter, lalu serangan karakter (Batu, Es, Kabut, Bom Waktu, Gembok, Angin) meluncur otomatis ke papan lawan, bisa DOUBLE atau TRIPLE sekaligus. Ramah buta warna, ada latihan lawan bot.">
+<meta name="theme-color" content="#1b1640">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Duel Gelembung">
+<meta property="og:description" content="Bubble shooter versus 2–4 pemain: pecahkan gelembung, isi meter, serangan karakter meluncur otomatis — tembakan besar = DOUBLE / TRIPLE! Pemain terakhir yang bertahan menang.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<a class="skip" href="#main" data-t="skip"></a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" id="brandLink"><span class="brand-mark" aria-hidden="true"></span><span><strong data-c="site.name"></strong><small data-c="site.tagline"></small></span></a>
+    <nav class="site-nav" aria-label="Menu"><a href="#play" data-t="navPlay"></a><a href="#karakter" data-t="navChars"></a><a href="#rules" data-t="navRules"></a></nav>
+    <span class="conn" id="conn" role="status" aria-live="polite"></span>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div id="home">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow" data-t="heroEyebrow"></span>
+          <h1 id="heroTitle" data-t="heroTitle"></h1>
+          <p class="lead" data-t="heroText"></p>
+          <div class="cta">
+            <a class="btn primary" href="#play" data-t="heroCtaOnline"></a>
+            <a class="btn yellow" href="#latihan" data-t="heroCtaPractice"></a>
+          </div>
+          <ul class="facts"><li data-t="fact1"></li><li data-t="fact2"></li><li data-t="fact3"></li></ul>
+        </div>
+        <div class="hero-art"><canvas id="heroArt" role="img" data-t-aria="heroArtLabel"></canvas></div>
+      </div>
+    </section>
+
+    <section class="section" id="play" aria-labelledby="playTitle">
+      <div class="wrap">
+        <h2 id="playTitle" data-t="playTitle"></h2>
+        <div class="play-grid">
+          <article class="card" aria-labelledby="onlineTitle">
+            <h3 id="onlineTitle"><span class="ic" aria-hidden="true">⚔️</span> <span data-t="onlineTitle"></span></h3>
+            <p class="muted" data-t="onlineText"></p>
+            <label class="field"><span data-t="nameLabel"></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-t-ph="namePh"></label>
+            <div class="row">
+              <label class="field small-field"><span data-t="maxLabel"></span><select id="maxSelect"><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option></select></label>
+              <button type="button" class="btn primary online-btn" id="createPrivate" data-t="createPrivate" disabled></button>
+              <button type="button" class="btn teal online-btn" id="quickMatch" data-t="quickMatch" disabled></button>
+            </div>
+            <form class="row" id="joinForm">
+              <label class="field grow"><span data-t="codeLabel"></span><input type="text" id="codeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" data-t-ph="codePh"></label>
+              <button type="submit" class="btn ghost online-btn" data-t="join" disabled></button>
+              <button type="button" class="btn ghost online-btn" id="watchBtn" data-t="watch" disabled></button>
+            </form>
+            <p class="note" id="onlineNote" role="status" aria-live="polite"></p>
+            <h4 class="rooms-h"><span data-t="roomsTitle"></span> <button type="button" class="btn tiny ghost online-btn" id="refreshRooms" data-t="refresh" disabled></button></h4>
+            <ul class="rooms" id="rooms"></ul>
+          </article>
+          <article class="card" id="latihanCard" aria-labelledby="practiceTitle">
+            <h3 id="practiceTitle"><span class="ic" aria-hidden="true">🤖</span> <span data-t="practiceTitle"></span></h3>
+            <p class="muted" data-t="practiceText"></p>
+            <div class="row">
+              <label class="field small-field"><span data-t="botsLabel"></span><select id="botsSelect"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+              <label class="field small-field"><span data-t="levelLabel"></span><select id="levelSelect"><option value="0" data-t="level0"></option><option value="1" selected data-t="level1"></option><option value="2" data-t="level2"></option></select></label>
+            </div>
+            <p class="field-label" data-t="pickChar"></p>
+            <div class="char-pick" id="practiceChars" role="radiogroup" data-t-aria="pickChar"></div>
+            <p class="char-info" id="charInfo" aria-live="polite"></p>
+            <div class="row">
+              <button type="button" class="btn yellow" id="practiceStart" data-t="practiceStart"></button>
+              <button type="button" class="btn ghost" id="tutorialStart" data-t="tutorialStart"></button>
+            </div>
+            <div class="stats" id="stats"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="karakter" aria-labelledby="charsTitle">
+      <div class="wrap">
+        <h2 id="charsTitle" data-t="charsTitle"></h2>
+        <p class="muted" data-t="charsText"></p>
+        <ul class="chars" id="charList"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="rules" aria-labelledby="rulesTitle">
+      <div class="wrap">
+        <h2 id="rulesTitle" data-t="rulesTitle"></h2>
+        <ol class="steps" id="steps"></ol>
+        <h3 data-t="ballsTitle"></h3>
+        <ul class="balls" id="ballList"></ul>
+        <h3 data-t="colorsTitle"></h3>
+        <p class="muted" data-t="colorsText"></p>
+        <ul class="colors" id="colorList"></ul>
+      </div>
+    </section>
+  </div>
+
+  <div id="game" class="game" hidden>
+    <div class="g-top">
+      <button type="button" class="icon-btn" id="exitBtn" data-t-aria="exit">✕</button>
+      <div class="g-info"><b id="gTitle"></b><span id="gSub" class="muted"></span></div>
+      <div class="ceil" id="ceil" aria-live="off"><span class="ceil-ic" aria-hidden="true">⬇</span><b id="ceilN">12</b><i><s id="ceilBar"></s></i></div>
+      <button type="button" class="icon-btn" id="chatBtn" data-t-aria="chatOpen">💬<i class="badge" id="chatBadge" hidden></i></button>
+      <button type="button" class="icon-btn" id="muteBtn" data-t-aria="mute">🔊</button>
+    </div>
+    <div class="arena" id="arena">
+      <div class="me-tag" id="meTag" aria-live="polite"><b class="kamu" id="meKamu"></b><span class="me-name" id="meName"></span></div>
+      <div class="opps" id="opps"></div>
+      <div class="mine" id="mine">
+        <div class="watch-tag" id="watchTag" hidden></div>
+        <canvas id="board" tabindex="0" data-t-aria="boardLabel"></canvas>
+        <div class="coach" id="coach" hidden><p id="coachText"></p><button type="button" class="btn tiny ghost" id="tutSkip" data-t="tutSkip"></button></div>
+        <div class="first" id="firstTip" role="status" aria-live="polite" hidden></div>
+      </div>
+    </div>
+    <div class="g-bottom">
+      <div class="portrait" id="portrait" role="img" data-t-aria="skillBtn"><span class="ring" id="ring"></span><span class="face" id="face"></span><span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i></span><b class="auto" data-t="autoTag"></b></div>
+      <div class="g-skill"><b id="skillName"></b><span id="skillText" class="muted"></span></div>
+      <div class="emos" id="emoBar"></div>
+    </div>
+    <div class="chat" id="chat" hidden>
+      <div class="chat-head"><b data-t="chatTitle"></b><button type="button" class="icon-btn" id="chatClose" data-t-aria="close">✕</button></div>
+      <ol class="chat-log" id="chatLog" aria-live="polite"></ol>
+      <div class="chat-quick" id="chatQuick"></div>
+      <form class="chat-form" id="chatForm"><input type="text" id="chatInput" maxlength="120" autocomplete="off" data-t-ph="chatPh" data-t-aria="chatPh"><button type="submit" class="btn small primary" data-t="send"></button></form>
+    </div>
+    <div class="ov" id="ov" hidden></div>
+    <canvas class="fx-layer" id="fxLayer" aria-hidden="true"></canvas>
+    <div class="flash" id="flash" aria-hidden="true"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong data-c="site.name"></strong> · <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script id="dg-sim">
+/*SIM*/
+</script>
+<script id="dg-net">
+/*NET*/
+</script>
+<script id="dg-render">
+/*RENDER*/
+</script>
+<script id="dg-app">
+/*APP*/
+</script>
+</body>
+</html>
