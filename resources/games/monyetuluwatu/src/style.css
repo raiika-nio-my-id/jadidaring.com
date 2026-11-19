@@ -1,0 +1,49 @@
+:root{--bg:#3b1d2e;--bg2:#8a3b2a;--ink:#2a160b;--cream:#fff6ea;--paper:#fffdf8;--muted:#7a6656;--edge:#e6c39c;--edge2:#f2dcc0;--accent:#f08a24;--accent2:#b85a0e;--accent3:#6e3008;--green:#2f9e5a;--green2:#1f7442;--yellow:#ffd23f}
+.hero{background:linear-gradient(#86a9d8,#ff9a55)}
+.hero-chip{background:rgba(40,16,8,.35);color:#fff;backdrop-filter:blur(4px)}
+.hero-title h1{text-shadow:0 4px 0 var(--accent3),0 10px 24px rgba(0,0,0,.45)}
+.hero-title h1 span{color:#ffd23f}
+.modes .mode.big{background:linear-gradient(135deg,#f08a24,#e8573c);color:#fff}
+.modes .mode.big small{color:#fff3e0}
+.mode:disabled{opacity:1;cursor:default}
+.tebus{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tebus div{background:#fff;border-radius:14px;padding:8px 4px;text-align:center;box-shadow:0 3px 0 var(--edge);font-weight:800;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tebus canvas{width:40px;height:40px}
+.tebus small{color:var(--muted);font-weight:700;display:flex;align-items:center;gap:2px}
+.tebus small canvas{width:18px;height:18px}
+.r{color:#d23a2a}
+/* play */
+.stage{background:#bba98d}
+.hud{display:flex;align-items:center;gap:10px;background:rgba(40,16,8,.78);color:#fff;border-radius:16px;padding:6px 12px;font-weight:900;box-shadow:0 3px 0 rgba(0,0,0,.3);min-width:0}
+.hud .clock{font-variant-numeric:tabular-nums;font-size:14px;color:#ffd9a0;background:rgba(255,255,255,.12);border-radius:8px;padding:2px 6px}
+.hud .score{font-size:24px;font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
+.hud .lives{font-size:16px;letter-spacing:1px;white-space:nowrap}
+.hud .lives i{font-style:normal}.hud .lives i.off{filter:grayscale(1);opacity:.35}
+.hud-r{display:flex;flex-direction:column;gap:6px}
+.sunbar{position:absolute;left:50%;transform:translateX(-50%);top:calc(64px + env(safe-area-inset-top,0px));width:min(60%,260px);height:6px;border-radius:6px;background:rgba(40,16,8,.4);overflow:hidden;z-index:5;pointer-events:none}
+.sunbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffe28a,#ff8a3c,#e8453c);border-radius:6px}
+.ban{position:absolute;left:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;display:flex;align-items:center;gap:4px;background:rgba(40,16,8,.8);color:#fff;border-radius:999px;padding:4px 14px 4px 6px;box-shadow:0 3px 0 rgba(0,0,0,.3);pointer-events:none}
+.ban canvas{width:34px;height:34px}
+.ban b{font-size:24px;font-variant-numeric:tabular-nums}
+.ban small{font-weight:800;opacity:.85}
+.ban.low{animation:lowban .6s ease-in-out infinite alternate}
+.ban.bump{animation:bump .35s ease-out}
+@keyframes lowban{to{background:rgba(190,40,30,.88)}}
+@keyframes bump{40%{transform:scale(1.18)}}
+.combo{position:absolute;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;background:#ffd23f;color:#3a1a00;font-weight:900;border-radius:999px;padding:6px 12px;box-shadow:0 3px 0 #b8860b;pointer-events:none;font-size:15px}
+.coach{position:absolute;left:12px;right:12px;top:calc(84px + env(safe-area-inset-top,0px));z-index:7;background:#fff7d6;color:#2a1a00;border-radius:14px;padding:10px 12px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-align:center;pointer-events:none}
+.coach b{color:#b85a0e}
+.pause{position:absolute;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;background:rgba(20,8,4,.55)}
+.pause .sheet{background:var(--cream);border-radius:20px;padding:18px 22px;text-align:center}
+/* result */
+.res-big{text-align:center;margin:4px 0 8px}
+.res-big b{display:block;font-size:52px;font-weight:900;color:var(--accent2);line-height:1;font-variant-numeric:tabular-nums}
+.res-big small{font-weight:800;color:var(--muted)}
+.res-stats{list-style:none;margin:0 0 10px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.res-stats li{background:#fff;border-radius:12px;padding:7px 10px;box-shadow:0 2px 0 var(--edge2);font-weight:700;font-size:13px;display:flex;justify-content:space-between;gap:6px}
+.res-stats li b{font-variant-numeric:tabular-nums}
+.lb h3{margin:4px 0;font-size:15px}
+.lb-list li.me{background:#fff1d6;font-weight:900}
+@media (prefers-reduced-motion:reduce){.ban.low,.ban.bump{animation:none}}
+.kicker.dark{color:var(--accent2);text-shadow:none;text-align:center}
+.hero-top{justify-content:flex-end;gap:8px}

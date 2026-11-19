@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Monyet Uluwatu · Game Usir Monyet Pencuri di Tangga Pura saat Sunset (Gratis di HP)</title>
+<meta name="description" content="Monyet Uluwatu: game arcade gratis di browser HP tanpa download. Monyet nakal mencuri kacamata, HP, dan sandal turis di tangga pura. Ketuk untuk mengusir, lempar pisang untuk menebus barang yang dicuri. Makin dekat sunset makin ramai. Kejar rekor tertinggimu!">
+<meta name="theme-color" content="#3b1d2e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Monyet Uluwatu · usir monyet, tebus pakai pisang">
+<meta property="og:description" content="Kacamata, HP, sandal turis dicuri monyet! Ketuk buat ngusir, lempar pisang buat nebus. Bertahan sampai sunset!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="monyetuluwatu">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="chip hero-chip">🐒 Arcade solo</span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">TANGGA PURA · SORE MENJELANG SUNSET</p><h1>MONYET <span>ULUWATU</span></h1><p class="slogan">Usir yang nakal, tebus pakai pisang!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pemain</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="modes">
+        <button class="mode big" id="playBtn"><i>🐒</i><span><b>Main</b><small id="playSub">Jaga turis dari 16.30 sampai sunset</small></span></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Tutorial</b><small>Usir, tebus, ambil pisang</small></button>
+        <button class="mode" id="bestBtn" disabled><i>🏆</i><b id="bestTitle">Rekor</b><small id="bestSub">Belum main</small></button>
+      </div>
+      <div class="card legend">
+        <h2>Harga tebusan <small>monyet tahu barang mahal</small></h2>
+        <div class="tebus" id="tebus"></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Ketuk monyet</b> yang mendekati turis untuk mengusirnya. <em class="g">HUS!</em> Usir beruntun = skor berlipat.</li>
+          <li>Kalau barang sudah dicuri, monyet naik ke <b>tembok pura</b>. <b>Ketuk dia</b> untuk melempar pisang sampai barangnya dilepas.</li>
+          <li>HP minta <b>2 pisang</b>, kacamata dan sandal 1. <b>Monyet bos</b> (bermahkota) harus diusir 2 kali dan minta 1 pisang ekstra.</li>
+          <li>Kehabisan waktu tebus = barang dibawa kabur, <b class="r">−1 nyawa</b>. Ketuk <b>keranjang pisang</b> untuk tambah stok.</li>
+          <li>Makin dekat sunset (18.30) makin banyak monyet. Bertahan sampai matahari terbenam untuk bonus besar!</li>
+        </ol>
+        <p class="muted keys">Bisa juga pakai mouse di laptop · <kbd>P</kbd> jeda · <kbd>M</kbd> suara</p>
+      </div>
+      <p class="foot muted">Game fiksi bertema wisata Bali. Tidak berafiliasi dengan pengelola Pura Uluwatu. Di dunia nyata: simpan barangmu dan jangan memberi makan monyet sembarangan. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="hud" id="hud"><span class="clock" id="clock">16:30</span><b class="score" id="score">0</b><span class="lives" id="lives"></span></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="pauseBtn" aria-label="Jeda">⏸</button></div></div>
+    <div class="sunbar"><i id="sunFill"></i></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="ban" id="ban"><canvas id="banIco" width="80" height="80"></canvas><b id="banN">4</b><small>pisang</small></div>
+    <div class="combo" id="combo" hidden></div>
+    <div class="pause" id="pause" hidden><div class="sheet"><h2>Jeda</h2><div class="row end-btns"><button class="btn green" id="resumeBtn">▶ Lanjut</button><button class="btn ghost" id="quitBtn">Menu</button></div></div></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">SUNSET ULUWATU</p><h2 id="resTitle">Sunset aman!</h2><p class="sub" id="resSub"></p>
+      <div class="res-big"><b id="resScore">0</b><small id="resBest"></small></div>
+      <ul class="res-stats" id="resStats"></ul>
+      <div class="lb"><h3>Rekor di HP ini</h3><ol class="lb-list" id="lbList"></ol></div>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Main lagi</button><button class="btn" id="shareBtn">📤 Pamer</button><button class="btn ghost" id="resMenu">Menu</button></div>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>

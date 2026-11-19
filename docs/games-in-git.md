@@ -48,8 +48,8 @@ exported first (no admin GET endpoint exists yet).
 | 4 | `anomaliminimarket` | in git (6846a4d) | local build, verified = live (`index.deploy.html`) | yes | no |
 | 5 | `bajajdrift` | in git (9d9ed7c) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 6 | `rebutbendera` | in git (d1f8eb5) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 7 | `ogohogoharak` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 8 | `monyetuluwatu` | database | local build, verified = live (`index.deploy.html`) | yes | no |
+| 7 | `ogohogoharak` | in git (fed96fe) | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 8 | `monyetuluwatu` | in git | local build, verified = live (`index.deploy.html`) | yes | no |
 | 9 | `penaltitimnas` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 10 | `tamiyalintasan` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 11 | `kopisenja` | database | local build, verified = live (`index.deploy.html`) | yes | no |
