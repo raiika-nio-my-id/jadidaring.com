@@ -73,6 +73,15 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(8)->by('profile-upload-m:'.($request->user()?->id ?? $request->ip())),
             Limit::perHour(60)->by('profile-upload-h:'.($request->user()?->id ?? $request->ip())),
         ]);
+        // Curhatan: per member, per minute and per hour.
+        $curhat = static fn (string $name, int $perMinute, int $perHour) => RateLimiter::for($name, fn (Request $request) => [
+            Limit::perMinute($perMinute)->by($name.'-m:'.($request->user()?->id ?? $request->ip())),
+            Limit::perHour($perHour)->by($name.'-h:'.($request->user()?->id ?? $request->ip())),
+        ]);
+        $curhat('curhat-post', 5, 30);
+        $curhat('curhat-comment', 8, 120);
+        $curhat('curhat-like', 60, 600);
+        $curhat('curhat-report', 10, 40);
         RateLimiter::for('profile-preview', fn (Request $request) => Limit::perMinute(240)->by('profile-preview:'.($request->user()?->id ?? $request->ip())));
 
         RateLimiter::for('admin-api', function (Request $request) {

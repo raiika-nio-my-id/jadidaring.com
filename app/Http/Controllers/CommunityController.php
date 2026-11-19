@@ -7,6 +7,7 @@ use App\Models\MemberPage;
 use App\Models\MemberPageComment;
 use App\Models\MemberPageDraft;
 use App\Models\User;
+use App\Services\CurhatanFeed;
 use App\Services\EmbedExtractor;
 use App\Services\MemberFrameToken;
 use App\Services\MemberPageSanitizer;
@@ -14,6 +15,7 @@ use App\Services\ProfileConfig;
 use App\Services\ProfileImage;
 use App\Services\ProfilePayload;
 use App\Services\TenantPath;
+use App\Support\BadWords;
 use App\Support\Ga4;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -26,8 +28,36 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CommunityController extends Controller
 {
-    public function index(Request $request): View
+    /**
+     * /komunitas: Curhatan feed tabs (Terbaru = public posts for everyone, Mengikuti = logged-in only) and the profile explorer.
+     * Guests get identical, public-only HTML, which is what PublicCache/nginx may store; logged-in responses are never shared-cached.
+     */
+    public function index(Request $request): View|Response
     {
+        $tab = in_array($request->query('tab'), ['terbaru', 'mengikuti', 'profil'], true) ? $request->query('tab')
+            : ($request->filled('urut') || $request->filled('q') || $request->filled('page') ? 'profil' : 'terbaru');
+
+        if ($tab !== 'profil') {
+            $viewer = $request->user();
+            $before = (int) $request->query('sebelum', 0) ?: null;
+            $feed = $tab === 'mengikuti' && $viewer ? CurhatanFeed::following($viewer, $before)
+                : ($tab === 'mengikuti' ? ['posts' => collect(), 'next' => null] : CurhatanFeed::latest($viewer, $before));
+            $data = $feed + CurhatanFeed::extras($feed['posts'], $viewer) + [
+                'moreUrl' => '/komunitas?tab='.$tab.'&partial=1', 'moreFull' => '/komunitas?tab='.$tab, 'showAuthor' => true,
+            ];
+            $view = $request->boolean('partial') ? 'clay._curhat-list' : 'clay.komunitas-feed';
+            $response = response()->view($view, $data + [
+                'metaTitle' => 'Komunitas: Curhatan Member — Jadidaring',
+                'metaDescription' => 'Curhatan terbaru dari member Jadidaring: cerita singkat, foto, suka, dan komentar. Ikuti member favoritmu.',
+                'canonicalUrl' => 'https://'.TenantPath::host().'/komunitas',
+                'tab' => $tab,
+                'noindex' => $before !== null || $tab === 'mengikuti',
+            ]);
+
+            // Belt and braces: anything rendered for a signed-in viewer never gets shared-cache headers.
+            return $viewer ? $response->header('X-No-Public-Cache', '1') : $response;
+        }
+
         $sort = in_array($request->query('urut'), ['baru', 'populer', 'update', 'mengikuti'], true) ? $request->query('urut') : 'update';
         $q = strtolower(trim((string) $request->query('q', '')));
         $q = preg_replace('/[^a-z0-9_]/', '', $q) ?? '';
@@ -47,6 +77,7 @@ class CommunityController extends Controller
             ->simplePaginate(24)->withQueryString();
 
         return view('clay.komunitas-jelajah', [
+            'tab' => 'profil',
             'metaTitle' => 'Komunitas: Jelajahi Profil Member — Jadidaring',
             'metaDescription' => 'Jelajahi profil member Jadidaring ala Friendster: latar unik, musik, galeri, dan komentar. Cari berdasarkan nama pengguna.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/komunitas',
@@ -421,7 +452,7 @@ class CommunityController extends Controller
     }
 
     /** Background autosave from the live editor: always a draft, never live. Returns the cleaned state. */
-    public function autosave(Request $request): \Illuminate\Http\JsonResponse
+    public function autosave(Request $request): JsonResponse
     {
         $user = $request->user();
         abort_if(! is_string($user->username) || $user->username === '', 403);
@@ -604,7 +635,9 @@ class CommunityController extends Controller
         $isFollowing = auth()->check() && ! $isOwner
             && DB::table('member_follows')->where('follower_id', auth()->id())->where('followed_id', $user->id)->exists();
 
-        return view('clay.komunitas-halaman', [
+        $curhat = CurhatanFeed::profile($user, $request->user(), (int) $request->query('sebelum', 0) ?: null);
+
+        return view('clay.komunitas-halaman', $curhat + CurhatanFeed::extras($curhat['posts'], $request->user()) + [
             'followersCount' => $followersCount, 'followingCount' => $followingCount, 'isFollowing' => $isFollowing,
             'metaTitle' => $user->name.' (@'.$user->username.') — Profil Jadidaring',
             'metaDescription' => 'Profil komunitas @'.$user->username.' di Jadidaring.',
@@ -733,7 +766,7 @@ class CommunityController extends Controller
             throw ValidationException::withMessages(['body' => 'Maksimal satu tautan per komentar.']);
         }
 
-        MemberPageComment::query()->create(['member_page_id' => $page->id, 'user_id' => $request->user()->id, 'body' => $body]);
+        MemberPageComment::query()->create(['member_page_id' => $page->id, 'user_id' => $request->user()->id, 'body' => BadWords::clean($body)]);
 
         Ga4::flash('comment_post', ['content_type' => 'profile']);
 

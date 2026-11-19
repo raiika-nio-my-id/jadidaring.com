@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\MemberPage;
+use App\Models\MemberPageDraft;
 use App\Models\User;
 use App\Services\ProfileConfig;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -129,7 +130,7 @@ class ProfileRedesignTest extends TestCase
         $cfg = json_encode(['profile' => ['tagline' => 'halo'], 'theme' => ['colors' => ['accent' => 'nope']], 'widgets' => [['type' => 'about']]]);
         $this->actingAs($u)->post($this->base().'/komunitas/halamanku', ['config' => $cfg])->assertRedirect('/komunitas/halamanku');
         $this->assertNull(MemberPage::where('user_id', $u->id)->first());
-        $draft = \App\Models\MemberPageDraft::where('user_id', $u->id)->first();
+        $draft = MemberPageDraft::where('user_id', $u->id)->first();
         $this->assertSame('#7c5cff', $draft->config['theme']['colors']['accent']);
 
         $this->actingAs($u)->post($this->base().'/komunitas/halamanku/draft/terbitkan')->assertRedirect('/u/dd_dd');
@@ -152,7 +153,7 @@ class ProfileRedesignTest extends TestCase
         auth()->logout();
         $this->postJson($this->base().'/api/komunitas/draft', ['key' => $key, 'config' => ['profile' => ['status' => 'ok'], 'widgets' => [['type' => 'status'], ['type' => 'custom_html']]], 'html' => '<html><body onclick="1"><p>w</p></body></html>'])
             ->assertCreated();
-        $d = \App\Models\MemberPageDraft::where('user_id', $u->id)->first();
+        $d = MemberPageDraft::where('user_id', $u->id)->first();
         $this->assertSame(['status', 'custom_html'], array_column($d->config['widgets'], 'type'));
         $this->assertStringContainsString('<p>w</p>', $d->html);
         $this->assertNull(MemberPage::where('user_id', $u->id)->first());
@@ -175,7 +176,7 @@ class ProfileRedesignTest extends TestCase
         $empty = User::factory()->member()->create(['username' => 'blank_x']);
         MemberPage::create(['user_id' => $empty->id, 'title' => 'x', 'html' => '']);
 
-        $r = $this->get($this->base().'/komunitas')->assertOk()->assertSee('@alpha_a')->assertSee('@beta_b')->assertDontSee('@blank_x');
+        $r = $this->get($this->base().'/komunitas?tab=profil')->assertOk()->assertSee('@alpha_a')->assertSee('@beta_b')->assertDontSee('@blank_x');
         $this->get($this->base().'/komunitas?q=beta')->assertOk()->assertSee('@beta_b')->assertDontSee('@alpha_a');
         $html = $this->get($this->base().'/komunitas?urut=populer')->getContent();
         $this->assertLessThan(strpos($html, '@alpha_a'), strpos($html, '@beta_b'));

@@ -101,7 +101,7 @@ class ProfileImage
     }
 
     /** Scales down (never up) into a max box; $cover crops to exactly that box from the centre. Keeps alpha. */
-    private static function fit(\GdImage $src, int $w, int $h, int $maxW, int $maxH, bool $cover): \GdImage
+    public static function fit(\GdImage $src, int $w, int $h, int $maxW, int $maxH, bool $cover): \GdImage
     {
         if ($cover) {
             $side = min($w, $h);

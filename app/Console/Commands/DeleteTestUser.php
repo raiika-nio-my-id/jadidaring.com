@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 /** Removes one throwaway member account named tmp<digits> (and its cascaded rows), after a JSON backup of its rows. */
 class DeleteTestUser extends Command
@@ -32,9 +34,9 @@ class DeleteTestUser extends Command
         }
 
         $rows = ['user' => $user->toArray()];
-        foreach (['member_pages', 'member_page_drafts', 'member_page_comments', 'member_follows', 'prompt_form_states'] as $table) {
-            if (\Illuminate\Support\Facades\Schema::hasTable($table)) {
-                $q = \Illuminate\Support\Facades\DB::table($table);
+        foreach (['member_pages', 'member_page_drafts', 'member_page_comments', 'member_follows', 'prompt_form_states', 'member_posts', 'member_post_comments', 'member_post_likes'] as $table) {
+            if (Schema::hasTable($table)) {
+                $q = DB::table($table);
                 $rows[$table] = match ($table) {
                     'member_follows' => $q->where('follower_id', $user->id)->orWhere('followed_id', $user->id)->get()->all(),
                     'member_page_comments' => $q->where('user_id', $user->id)->get()->all(),
@@ -62,7 +64,7 @@ class DeleteTestUser extends Command
             return self::SUCCESS;
         }
 
-        \Illuminate\Support\Facades\DB::table('sessions')->where('user_id', $user->id)->delete();
+        DB::table('sessions')->where('user_id', $user->id)->delete();
         $user->delete();
         $this->info('Deleted '.$username.'.');
 

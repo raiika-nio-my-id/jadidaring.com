@@ -11,7 +11,9 @@ All events go through `window.jdTrack(name, params)`: it does nothing unless GA 
 | view_article | article_id, topic | article page load |
 | read_complete | article_id, topic, percent_scrolled=75 | article scroll |
 | share | method, content_type=article, item_id | share links |
-| comment_post | content_type = article / profile | news (ajax) and profile wall |
+| comment_post | content_type = article / profile / curhatan | news (ajax), profile wall, Curhatan post comments (server flash) |
+| post_create | content_type=curhatan, visibility = public / followers / private, has_image | server flash after a Curhatan post |
+| like | content_type=curhatan | Curhatan like (fired by js/curhatan.js only when liking, not on unlike; server flash on the no-JS form) |
 | follow / unfollow | content_type=profile | server flash |
 | profile_publish / profile_draft_save | source = editor / ai_import | server flash |
 | ai_import_open | - | AI preview page |

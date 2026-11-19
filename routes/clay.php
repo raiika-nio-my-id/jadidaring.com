@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClayController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\CurhatanController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\Member\AuthController;
@@ -36,6 +37,10 @@ Route::get('/komunitas/prompt-spec.txt', fn () => response(file_get_contents(res
 Route::get('/komunitas/buat', [CommunityController::class, 'prompt'])->name('community.prompt');
 Route::get('/u/{username}/pengikut', [FollowController::class, 'followers'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.followers');
 Route::get('/u/{username}/mengikuti', [FollowController::class, 'following'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.following');
+Route::get('/u/{username}/curhatan', [CurhatanController::class, 'profileMore'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('curhatan.profile.more');
+Route::get('/u/{username}/curhatan/{post}', [CurhatanController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('post')->middleware('throttle:90,1')->name('curhatan.show');
+// Post images: no new session for guests (OptionalSession), so public images stay cacheable; visibility is checked per request.
+Route::get('/curhatan/{post}/gambar', [CurhatanController::class, 'image'])->whereNumber('post')->withoutMiddleware($guestCache)->middleware(OptionalSession::class)->name('curhatan.image');
 Route::get('/u/{username}', [CommunityController::class, 'show'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.show');
 $cached(Route::get('/syarat-ketentuan', [ClayController::class, 'terms'])->name('clay.terms'));
 $cached(Route::get('/robots.txt', [ClayController::class, 'robots'])->name('clay.robots'));
@@ -94,6 +99,13 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/u/{username}/komentar/{comment}/sembunyikan', [CommunityController::class, 'hideComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->name('community.comment.hide');
     Route::post('/u/{username}/komentar/{comment}/lapor', [CommunityController::class, 'reportComment'])->where('username', '[a-z0-9_]{3,20}')->whereNumber('comment')->middleware('throttle:20,1');
     Route::post('/u/{username}/lapor', [CommunityController::class, 'report'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1');
+    Route::post('/curhatan', [CurhatanController::class, 'store'])->middleware('throttle:curhat-post')->name('curhatan.store');
+    Route::post('/curhatan/{post}/hapus', [CurhatanController::class, 'destroy'])->whereNumber('post')->middleware('throttle:curhat-like')->name('curhatan.destroy');
+    Route::post('/curhatan/{post}/suka', [CurhatanController::class, 'like'])->whereNumber('post')->middleware('throttle:curhat-like')->name('curhatan.like');
+    Route::post('/curhatan/{post}/komentar', [CurhatanController::class, 'comment'])->whereNumber('post')->middleware('throttle:curhat-comment')->name('curhatan.comment');
+    Route::post('/curhatan/{post}/lapor', [CurhatanController::class, 'report'])->whereNumber('post')->middleware('throttle:curhat-report')->name('curhatan.report');
+    Route::post('/curhatan/komentar/{comment}/hapus', [CurhatanController::class, 'destroyComment'])->whereNumber('comment')->middleware('throttle:curhat-like')->name('curhatan.comment.destroy');
+    Route::post('/curhatan/komentar/{comment}/lapor', [CurhatanController::class, 'reportComment'])->whereNumber('comment')->middleware('throttle:curhat-report')->name('curhatan.comment.report');
     Route::post('/komunitas/halamanku/pratinjau', [CommunityController::class, 'preview'])->middleware('throttle:profile-preview')->name('community.preview');
     Route::post('/komunitas/draft-key', [CommunityController::class, 'mintKey'])->middleware('throttle:5,60')->name('community.draftkey');
     Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:profile-save')->name('community.draft.publish');

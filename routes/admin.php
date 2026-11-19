@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\CompanyProfileController;
+use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\CurhatanModerationController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Response;
@@ -37,12 +39,14 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/clients/{companyProfile}/pin', [CompanyProfileController::class, 'togglePin'])->name('admin.clients.pin');
     Route::get('/clients/{companyProfile}/analytics', [AnalyticsController::class, 'show'])->name('admin.clients.analytics');
     Route::middleware('can:manage-settings')->group(function (): void {
-        Route::get('/messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('admin.messages');
-        Route::post('/messages/{message}/read', [\App\Http\Controllers\Admin\ContactMessageController::class, 'read'])->name('admin.messages.read');
-        Route::delete('/messages/{message}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('admin.messages.destroy');
+        Route::get('/messages', [ContactMessageController::class, 'index'])->name('admin.messages');
+        Route::post('/messages/{message}/read', [ContactMessageController::class, 'read'])->name('admin.messages.read');
+        Route::delete('/messages/{message}', [ContactMessageController::class, 'destroy'])->name('admin.messages.destroy');
+        Route::get('/curhatan', [CurhatanModerationController::class, 'index'])->name('admin.curhatan');
+        Route::post('/curhatan/post/{post}', [CurhatanModerationController::class, 'togglePost'])->name('admin.curhatan.post');
+        Route::post('/curhatan/komentar/{comment}', [CurhatanModerationController::class, 'toggleComment'])->name('admin.curhatan.comment');
         Route::get('/settings', [SettingsController::class, 'edit'])->name('admin.settings');
         Route::put('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
     });
 
 });
-

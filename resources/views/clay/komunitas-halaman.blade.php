@@ -28,6 +28,20 @@
             @endauth
         </div>
 
+        {{-- Curhatan: site-rendered posts (outside the member HTML sandbox). The server only passes posts this viewer may see. --}}
+        <section class="ch-section" id="curhatan" aria-labelledby="ch-h">
+            <h2 id="ch-h" class="ch-section__title">Curhatan</h2>
+            @if ($isOwner)
+                @include('clay._curhat-composer')
+            @endif
+            <div class="ch-list" data-ch-list>
+                @include('clay._curhat-list', ['moreUrl' => '/u/'.$owner->username.'/curhatan', 'moreFull' => '/u/'.$owner->username])
+            </div>
+            @if ($posts->isEmpty())
+                <p class="ch-empty">{{ $isOwner ? 'Belum ada curhatan. Tulis yang pertama di atas, bisa juga cuma untuk pengikut atau untuk dirimu sendiri.' : 'Belum ada curhatan yang bisa kamu lihat.' }}</p>
+            @endif
+        </section>
+
         {{-- Trusted comment wall: rendered by the server outside the sandbox; members cannot remove or hide it. --}}
         <section class="clay-card clay-card--lavender news-comments pf-wall" id="komentar" aria-labelledby="kmt-h">
             <h2 id="kmt-h">Komentar &amp; Testimoni</h2>
@@ -62,4 +76,5 @@
     </div>
     <script src="{{ \App\Support\AssetUrl::to('js/member-frame.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/profile-music.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/curhatan.js') }}" defer></script>
 @endsection

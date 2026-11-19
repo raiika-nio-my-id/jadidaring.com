@@ -7,10 +7,14 @@ use App\Models\ArticleComment;
 use App\Services\NewsCache;
 use App\Services\NewsImage;
 use App\Services\TenantPath;
+use App\Support\BadWords;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
@@ -61,7 +65,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function show(string $topik, string $slug): View|RedirectResponse|\Illuminate\Http\Response
+    public function show(string $topik, string $slug): View|RedirectResponse|Response
     {
         $data = NewsCache::remember('article:'.$slug, function () use ($slug): ?array {
             $article = Article::query()->visible()->where('slug', $slug)->first();
@@ -80,7 +84,7 @@ class NewsController extends Controller
         });
 
         if ($data === null) {
-            $redirect = \Illuminate\Support\Facades\DB::table('article_slug_redirects')->where('old_slug', $slug)->value('article_id');
+            $redirect = DB::table('article_slug_redirects')->where('old_slug', $slug)->value('article_id');
             $target = $redirect ? Article::query()->visible()->find($redirect) : null;
 
             if ($target instanceof Article) {
@@ -121,7 +125,7 @@ class NewsController extends Controller
                 'publisher' => self::publisher(),
                 'citation' => array_map(fn (array $s): string => $s['url'], $data['sources']),
             ],
-        ])->header('Last-Modified', \Illuminate\Support\Carbon::parse($data['updated_at'])->toRfc7231String());
+        ])->header('Last-Modified', Carbon::parse($data['updated_at'])->toRfc7231String());
     }
 
     /** @return array<string, mixed> */
@@ -169,7 +173,7 @@ class NewsController extends Controller
 
         RateLimiter::hit($key, 60);
 
-        $comment = ArticleComment::query()->create(['article_id' => $article->id, 'user_id' => $user->id, 'body' => Str::limit($body, 1000, '')]);
+        $comment = ArticleComment::query()->create(['article_id' => $article->id, 'user_id' => $user->id, 'body' => BadWords::clean(Str::limit($body, 1000, ''))]);
 
         return response()->json(['comment' => [
             'id' => $comment->id, 'user' => $user->username ?? $user->name, 'body' => $comment->body, 'at' => $comment->created_at?->toIso8601String(),

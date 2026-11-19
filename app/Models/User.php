@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use App\Support\EmailNormalizer;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
 
 #[Fillable(['name', 'username', 'email', 'password', 'role', 'provider', 'provider_id'])]
 #[Hidden(['password', 'remember_token'])]
@@ -36,8 +39,13 @@ class User extends Authenticatable
         // (users left null by the backfill because of a collision must not crash on unrelated saves).
         static::saving(function (self $user): void {
             if ($user->isDirty('email') && ! $user->isDirty('email_normalized')) {
-                $user->email_normalized = \App\Support\EmailNormalizer::normalize($user->email);
+                $user->email_normalized = EmailNormalizer::normalize($user->email);
             }
+        });
+
+        // Curhatan rows cascade in the database; their images live on disk, so remove them with the account.
+        static::deleted(function (self $user): void {
+            File::deleteDirectory(storage_path('app/post-img/'.$user->id));
         });
     }
 
@@ -61,19 +69,19 @@ class User extends Authenticatable
         return $this->role === UserRole::Client;
     }
 
-    public function memberPage(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function memberPage(): HasOne
     {
         return $this->hasOne(MemberPage::class);
     }
 
     /** Members this user follows. */
-    public function following(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function following(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'member_follows', 'follower_id', 'followed_id')->withTimestamps();
     }
 
     /** Members who follow this user. */
-    public function followers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function followers(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'member_follows', 'followed_id', 'follower_id')->withTimestamps();
     }
