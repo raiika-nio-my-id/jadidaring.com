@@ -63,7 +63,7 @@ exported first (no admin GET endpoint exists yet).
 | 19 | `pawanghujan` | in git (5426f6a) | local build, verified = live (`index.deploy.html`) | no | no |
 | 20 | `mudikmacet` | in git (b740120) | local build, verified = live (`index.deploy.html`) | no | no |
 | 21 | `gasingarena` | in git (0d92d48) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 22 | `dapurpadang3d` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 22 | `dapurpadang3d` | in git (851e0a9) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 23 | `dapurpadang` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 24 | `skalateman` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 25 | `duelular` | database | local build, verified = live (`index.deploy.html`) | yes | yes |

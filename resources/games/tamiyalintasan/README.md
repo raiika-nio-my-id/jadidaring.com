@@ -9,7 +9,6 @@ Served at https://jadidaring.com/game/tamiyalintasan inside the site layout (mai
   The output was byte-identical to the deployed database html (after the retired GM key scrub the server already did).
 - Player name: shared name gate (`JDNG_CFG.inputs = #nameInput`), locked to the account name by `public/js/account-name.js` (guests = Tamu).
   The server also replaces `displayName` and score names with the account name; guests save nothing (401 opens the login prompt).
-
 - Player data (rooms, scores) lives in the database (`/game/tamiyalintasan/api/game/*`); nothing in this folder stores it.
 
 ## Build
