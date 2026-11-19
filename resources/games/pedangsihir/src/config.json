@@ -1,0 +1,367 @@
+{
+  "site": {
+    "name": "Pedang Sihir Perisai",
+    "tagline": "Duel suit sihir · 1v1 & 2–4 pemain",
+    "themeColor": "#150f2e"
+  },
+  "realtime": {
+    "hostHeartbeatSeconds": 10,
+    "hostStaleSeconds": 30,
+    "reconnectMaxSeconds": 15
+  },
+  "rules": {
+    "pickSeconds": 10,
+    "clashMs": 3600,
+    "koExtraMs": 1300,
+    "maxClashes": 40,
+    "countdownMs": 3500
+  },
+  "damage": {
+    "lose": 1,
+    "timeout": 1,
+    "noReveal": 2
+  },
+  "ladder": {
+    "healPerWin": 1,
+    "nextMs": 2600,
+    "cpuMinMs": 700,
+    "cpuMaxMs": 3600
+  },
+  "kinds": [
+    {
+      "key": "pedang",
+      "name": "Pedang",
+      "color": "#ff8a1f",
+      "beatsText": "menebas Perisai sampai pecah."
+    },
+    {
+      "key": "sihir",
+      "name": "Sihir",
+      "color": "#b45cff",
+      "beatsText": "meledakkan Pedang sampai patah."
+    },
+    {
+      "key": "perisai",
+      "name": "Perisai",
+      "color": "#3ea0ff",
+      "beatsText": "memantulkan Sihir balik ke penyihirnya."
+    }
+  ],
+  "steps": [
+    {
+      "title": "Pilih diam-diam",
+      "text": "Tiap ronde semua pemain memilih Pedang, Sihir, atau Perisai bersamaan dalam 10 detik. Pilihanmu terkunci dan tersembunyi; lawan hanya melihat tanda ✓ siap."
+    },
+    {
+      "title": "Bentrok!",
+      "text": "Begitu semua siap (atau waktu habis), semua pilihan dibuka bareng. Perisai menahan Sihir, Sihir menghancurkan Pedang, Pedang menembus Perisai."
+    },
+    {
+      "title": "Siapa yang kena",
+      "text": "Kalau tepat dua jenis muncul, semua pemain di jenis yang kalah kehilangan 1 nyawa. Kalau ketiga jenis muncul, atau semua memilih sama: SERI, tidak ada yang kena."
+    },
+    {
+      "title": "Jangan diam saja",
+      "text": "Tidak memilih sampai waktu habis = kena 1 nyawa (meski yang lain seri). Menahan pilihan yang sudah dikunci = kena 2. Menunda tidak pernah menguntungkan."
+    },
+    {
+      "title": "Bertahan terakhir",
+      "text": "Nyawa 0 = tumbang. Pemain yang keluar atau terputus juga dihitung kalah. Yang terakhir bertahan jadi JUARA. Host memilih nyawa 3, 5, atau 7 di room."
+    },
+    {
+      "title": "Tangga CPU",
+      "text": "Lawan CPU satu per satu tanpa henti. Tiap CPU punya kebiasaan (lihat tulisan kecil di bawah namanya) dan makin jago membaca polamu. Menang = +1 nyawa dan winstreak naik. Winstreak terbaik masuk Papan Juara."
+    }
+  ],
+  "avatars": [
+    "🦁",
+    "🐯",
+    "🐼",
+    "🐸",
+    "🐵",
+    "🐲",
+    "🦉",
+    "🐻"
+  ],
+  "cpus": {
+    "kroco": {
+      "name": "Kroco Cilik",
+      "av": "🐣",
+      "hint": "Asal pilih"
+    },
+    "besi": {
+      "name": "Ksatria Besi",
+      "av": "🤖",
+      "hint": "Paling suka Pedang"
+    },
+    "peniru": {
+      "name": "Si Peniru",
+      "av": "🦜",
+      "hint": "Suka meniru pilihanmu"
+    },
+    "kabut": {
+      "name": "Penyihir Kabut",
+      "av": "🧙",
+      "hint": "Paling suka Sihir"
+    },
+    "pembalas": {
+      "name": "Serigala Pembalas",
+      "av": "🐺",
+      "hint": "Melawan pilihan terakhirmu"
+    },
+    "tembok": {
+      "name": "Kura Tembok",
+      "av": "🐢",
+      "hint": "Paling suka Perisai"
+    },
+    "putar": {
+      "name": "Gasing Ajaib",
+      "av": "🌀",
+      "hint": "Berputar urut"
+    },
+    "licik": {
+      "name": "Rubah Licik",
+      "av": "🦊",
+      "hint": "Menebak tebakanmu"
+    },
+    "cermin": {
+      "name": "Nyai Cermin",
+      "av": "🪞",
+      "hint": "Menang? Ulangi lagi!"
+    },
+    "raja": {
+      "name": "Raja Iblis",
+      "av": "👹",
+      "hint": "Membaca polamu"
+    }
+  },
+  "chat": [
+    {
+      "k": "halo",
+      "text": "Halo semua!"
+    },
+    {
+      "k": "gg",
+      "text": "GG!"
+    },
+    {
+      "k": "awas",
+      "text": "Awas ya!"
+    },
+    {
+      "k": "tebak",
+      "text": "Coba tebak aku pilih apa 😏"
+    },
+    {
+      "k": "ampun",
+      "text": "Ampun, jangan aku!"
+    },
+    {
+      "k": "lagi",
+      "text": "Main lagi yuk!"
+    }
+  ],
+  "emojis": [
+    {
+      "k": "ketawa",
+      "icon": "😂"
+    },
+    {
+      "k": "keren",
+      "icon": "😎"
+    },
+    {
+      "k": "kaget",
+      "icon": "😱"
+    },
+    {
+      "k": "marah",
+      "icon": "😤"
+    },
+    {
+      "k": "nangis",
+      "icon": "😭"
+    },
+    {
+      "k": "api",
+      "icon": "🔥"
+    }
+  ],
+  "text": {
+    "skip": "Lewati ke konten",
+    "navPlay": "Main",
+    "navRules": "Cara main",
+    "navFoes": "Lawan CPU",
+    "heroEyebrow": "Duel suit sihir · 1v1 & 2–4 pemain",
+    "heroTitle": "Tebas, ledakkan, pantulkan!",
+    "heroText": "Pilih Pedang, Sihir, atau Perisai bersamaan dengan lawan. Semua dibuka sekaligus dan bentrokannya meledak di tengah arena. Yang salah tebak kehilangan nyawa — yang terakhir bertahan jadi juara.",
+    "heroCtaCpu": "Tantang CPU",
+    "heroCtaOnline": "Main online",
+    "fact1": "1v1 atau 2–4 pemain",
+    "fact2": "Tangga CPU + winstreak",
+    "fact3": "Tutorial sambil main",
+    "heroArtLabel": "Segitiga Pedang, Sihir, Perisai: tiap panah menunjuk yang dikalahkan",
+    "playTitle": "Ayo main",
+    "nameLabel": "Nama kamu",
+    "namePh": "mis. JadiDaring",
+    "cpuTitle": "Lawan CPU",
+    "cpuText": "Tanpa internet. Kalahkan CPU satu per satu dan kejar winstreak terpanjang. Main pertama kali langsung dipandu.",
+    "pickAv": "Pilih jagoan",
+    "hpLabel": "Nyawa",
+    "ladderStart": "🔥 Tantang tangga CPU",
+    "botsLabel": "Lawan",
+    "partyStart": "Pesta vs CPU",
+    "tutorialStart": "Tutorial",
+    "onlineTitle": "Main online",
+    "onlineText": "Buat room privat lalu bagikan link undangan, atau cari lawan acak. 2–4 pemain, host memilih nyawa.",
+    "maxLabel": "Maks. pemain",
+    "createPrivate": "Buat room privat",
+    "quickMatch": "Cari lawan",
+    "codeLabel": "Kode room",
+    "codePh": "ABC234",
+    "join": "Gabung",
+    "watch": "Tonton",
+    "roomsTitle": "Room terbuka",
+    "refresh": "Muat ulang",
+    "roomsEmpty": "Belum ada room terbuka. Buat satu!",
+    "roomWaiting": "Menunggu",
+    "roomPlaying": "Sedang main",
+    "roomSeats": "{n}/{max} pemain",
+    "lbTitle": "Papan Juara",
+    "lbText": "Winstreak terpanjang melawan tangga CPU.",
+    "lbLocal": "Papan skor tersimpan di perangkat ini saja.",
+    "lbEmpty": "Belum ada juara. Jadilah yang pertama!",
+    "lbHp": "{n} nyawa",
+    "statsLine": "{runs} tantangan · {kos} CPU tumbang · online {online}× (menang {wins})",
+    "rulesTitle": "Cara main",
+    "triAria": "Pedang mengalahkan Perisai, Perisai mengalahkan Sihir, Sihir mengalahkan Pedang",
+    "foesTitle": "Lawan di tangga CPU",
+    "foesText": "Tiap lawan punya kebiasaan yang bisa kamu baca. Makin jauh, makin jarang mereka ikut kebiasaan dan makin pintar menebak polamu. Setelah lawan ke-10, mereka kembali lebih kuat.",
+    "footerNote": "Game duel suit sihir. Skor CPU tersimpan di perangkat ini.",
+    "exit": "Keluar",
+    "mute": "Matikan suara",
+    "unmute": "Nyalakan suara",
+    "close": "Tutup",
+    "chatOpen": "Chat cepat",
+    "chatTitle": "Chat cepat",
+    "chatPh": "Tulis pesan…",
+    "send": "Kirim",
+    "skillsAria": "Pilih jurus",
+    "pickAria": "Pilih {name} (mengalahkan {prey})",
+    "tutSkip": "Lewati",
+    "youTag": "KAMU",
+    "you": "Kamu",
+    "youBadge": "kamu",
+    "hostBadge": "host",
+    "watching": "Menonton",
+    "hpAria": "{n} dari {max} nyawa",
+    "readyTag": "✓ siap",
+    "pickingTag": "memilih…",
+    "koTag": "Tumbang",
+    "goneTag": "Keluar",
+    "lostTag": "terputus…",
+    "getReady": "Bersiap…",
+    "pickNow": "Pilih jurusmu!",
+    "waitOthers": "Terkunci! Menunggu lawan…",
+    "watchPick": "Pemain sedang memilih…",
+    "revealing": "Membuka pilihan…",
+    "roundN": "Ronde {n}",
+    "nextFoe": "Lawan berikutnya",
+    "winKind": "{name} MENANG!",
+    "beatsKind": "{a} mengalahkan {b}",
+    "drawBan": "SERI!",
+    "draw3Sub": "Ketiga jurus muncul",
+    "sameSub": "Semua memilih sama",
+    "allLate": "WAKTU HABIS!",
+    "annFirstBlood": "FIRST BLOOD!",
+    "annKill": "KILL!",
+    "annDouble": "DOUBLE KILL!",
+    "annTriple": "TRIPLE KILL!",
+    "annQuad": "QUADRA KILL!",
+    "annKo": "K.O.!",
+    "annManiac": "MANIAC!",
+    "annSavage": "SAVAGE!",
+    "annLegend": "LEGENDARY!",
+    "annWinner": "JUARA!",
+    "koSub": "{names} tumbang",
+    "streakSub": "Winstreak {n}",
+    "streakN": "Winstreak {n}!",
+    "healNote": "+1 nyawa untuk tiap kemenangan",
+    "ladderTitle": "Tangga CPU",
+    "ladderSub": "🔥 {n} · terbaik {best}",
+    "partyTitle": "Pesta vs CPU",
+    "partySub": "{n} pemain",
+    "tutTitle": "Tutorial",
+    "demoTitle": "Demo",
+    "dummyName": "Boneka Latihan",
+    "tut1": "Boneka menyiapkan {a}. {b} menahan {a} — tekan {b}!",
+    "tut2": "Sekarang boneka pakai {a}. {b} menghancurkan {a} — tekan {b}!",
+    "tut3": "Boneka sembunyi di balik {a}. {b} menembus {a} — tekan {b}!",
+    "tut4": "Kalau pilihannya sama, hasilnya SERI. Coba pilih {b} juga!",
+    "tut5": "Sekarang pilihan boneka tersembunyi, seperti lawan sungguhan. Pilih sebelum waktu habis dan tumbangkan dia!",
+    "tutRetry": "Hampir! Lihat panah di segitiga: {b} mengalahkan {a}. Coba lagi!",
+    "tutDoneTitle": "Tutorial selesai!",
+    "tutDoneText": "Kamu sudah paham segitiganya. Sekarang tantang tangga CPU dan kejar winstreak!",
+    "ladderOver": "Kamu tumbang!",
+    "newBest": "Rekor baru di Papan Juara!",
+    "rankN": "Masuk Papan Juara peringkat {n}",
+    "ladderNoRank": "Belum masuk Papan Juara. Coba lagi!",
+    "again": "Main lagi",
+    "backHome": "Ke menu",
+    "winTitle": "Kamu JUARA!",
+    "loseTitle": "Kamu kalah",
+    "drawTitle": "Seri!",
+    "winnerIs": "{name} JUARA!",
+    "exitLadder": "Keluar sekarang? Winstreak-mu disimpan dan tantangan selesai.",
+    "exitConfirm": "Keluar dari pertandingan? Kamu dihitung kalah.",
+    "roomTitle": "Room {code}",
+    "roomSub": "{hp} nyawa",
+    "lobbyTitle": "Ruang tunggu",
+    "copyInvite": "Salin link undangan",
+    "lobbyCount": "{n}/{max} pemain",
+    "spectatorsCount": "{n} penonton",
+    "start": "Mulai!",
+    "lobbyNeed": "Butuh {n} pemain lagi. Bagikan link undangan!",
+    "lobbyHostHint": "Kamu host: pilih nyawa lalu tekan Mulai.",
+    "lobbyWaitHost": "Menunggu host memulai…",
+    "hpHost": "Nyawa tiap pemain",
+    "hpGuest": "Nyawa (dipilih host)",
+    "rematch": "Main lagi",
+    "rematchWait": "Menunggu host…",
+    "capNote": "Batas ronde tercapai: nyawa terbanyak menang.",
+    "outTitle": "Kamu tumbang",
+    "outText": "Tonton sisa pertandingan atau keluar.",
+    "watchRest": "Tonton",
+    "playerGone": "{name} keluar",
+    "loading": "Memuat…",
+    "closedTitle": "Room ditutup",
+    "closedText": "Room ini sudah tidak aktif.",
+    "leftRoom": "Kamu sudah keluar dari room.",
+    "nowWatching": "Pertandingan sudah mulai, kamu menonton.",
+    "pickFail": "Pilihan tidak terkirim. Coba lagi!",
+    "shareText": "Duel Pedang Sihir Perisai yuk!",
+    "copied": "Link undangan disalin!",
+    "copyFail": "Kode room: {code}",
+    "connOnline": "Online",
+    "connOffline": "Offline",
+    "connConnecting": "Menghubungkan…",
+    "connReconnecting": "Menyambung ulang…",
+    "connLost": "terputus…",
+    "onlineChecking": "Memeriksa server…",
+    "onlineReady": "Server siap.",
+    "errName": "Isi namamu dulu.",
+    "errCode": "Kode room 6 huruf/angka.",
+    "errBusy": "Server sibuk, coba lagi {n} detik lagi.",
+    "errFew": "Butuh minimal 2 pemain.",
+    "errBudget": "Terlalu banyak aksi, tunggu sebentar.",
+    "errSlow": "Pelan-pelan ya.",
+    "errNetwork": "Tidak bisa terhubung ke server.",
+    "errOffline": "Main online hanya tersedia di situs jadidaring. Lawan CPU tetap bisa!",
+    "errMismatch": "Konfigurasi server tidak cocok.",
+    "errDisabled": "Main online sedang dimatikan.",
+    "errNoRoom": "Room tidak ditemukan.",
+    "errFull": "Room penuh atau sudah mulai.",
+    "errGeneric": "Ada yang salah. Coba lagi.",
+    "errMember": "Kamu bukan anggota room ini lagi."
+  }
+}
