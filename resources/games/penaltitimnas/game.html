@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Penalti Timnas &#xB7; Game Adu Penalti Online 1 Lawan 1 di HP (Tendang &amp; Jaga Gawang)</title>
+<meta name="description" content="Penalti Timnas: game adu penalti di browser HP tanpa download. Usap untuk menendang, ketuk untuk menebak arah sebagai kiper. Bergantian 5 tendangan, lalu sudden death. Duel online 1 lawan 1 dengan teman lewat link undangan, atau latihan lawan bot. Ada sorakan stadion dan replay gerak lambat.">
+<meta name="theme-color" content="#0d1b3d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Penalti Timnas &#xB7; adu penalti 1 lawan 1">
+<meta property="og:description" content="Usap buat nendang, ketuk buat nebak arah. 5 tendangan bergantian + sudden death. Tantang temanmu online!">
+<style>
+:root{--r:16px;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overscroll-behavior:none}
+button,input{font:inherit;color:inherit}
+[hidden]{display:none!important}
+main{max-width:760px;margin:0 auto;min-height:100%;position:relative;background:var(--cream)}
+.screen{min-height:100vh;min-height:100dvh}
+.muted{color:var(--muted)}
+.btn{appearance:none;border:0;border-radius:14px;padding:12px 16px;min-height:46px;font-weight:800;background:#fff;color:var(--ink);box-shadow:0 4px 0 var(--edge),0 6px 14px rgba(60,20,0,.12);cursor:pointer;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.green{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green2),0 6px 14px rgba(0,60,30,.2)}
+.btn.ghost{background:transparent;box-shadow:inset 0 0 0 2px var(--edge)}
+.btn.small{padding:8px 12px;min-height:40px;font-size:14px}
+.icon-btn{appearance:none;border:0;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);font-size:20px;box-shadow:0 3px 0 rgba(0,0,0,.18);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card{background:var(--paper);border-radius:var(--r);padding:14px;margin:12px 0;box-shadow:0 2px 0 var(--edge2),0 8px 20px rgba(60,20,0,.08)}
+.card h2,.card h3{margin:0 0 10px;font-size:18px}.card h2 small,.card h3 small{font-weight:600;color:var(--muted);font-size:13px}
+.hero{position:relative;height:min(54vh,420px);min-height:290px;overflow:hidden;border-radius:0 0 28px 28px;background:var(--bg2)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-top{position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+.hero-title{position:absolute;left:0;right:0;bottom:14px;text-align:center;pointer-events:none;z-index:2}
+.hero-title h1{margin:0;font-size:clamp(34px,10vw,58px);line-height:.95;font-weight:900;letter-spacing:-.02em;color:#fff;text-shadow:0 4px 0 var(--accent2),0 8px 18px rgba(0,0,0,.35)}
+.hero-title h1 span{color:var(--yellow)}
+.kicker{margin:0 0 6px;font-size:12px;font-weight:900;letter-spacing:.14em;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.55)}
+.slogan{margin:8px auto 0;display:inline-block;background:rgba(20,10,4,.7);color:#fff;font-weight:700;font-size:14px;padding:5px 12px;border-radius:99px}
+.panel{padding:4px 14px 90px}
+.name-row{display:flex;align-items:center;gap:10px;background:var(--paper);border-radius:14px;padding:8px 10px 8px 14px;margin:14px 0 10px;box-shadow:0 2px 0 var(--edge2);color:var(--ink,#151821)}
+.name-row span{font-weight:800;white-space:nowrap}
+.name-row input,#codeInput,#chatInput{flex:1;min-width:0;border:2px solid var(--edge2);border-radius:12px;padding:10px 12px;background:#fff;color:var(--ink,#151821);caret-color:var(--ink,#151821);outline:none}
+.name-row input::placeholder,#codeInput::placeholder,#chatInput::placeholder{color:#8a8494;opacity:1;font-weight:500}
+.name-row input:focus,#codeInput:focus,#chatInput:focus{border-color:var(--accent)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.mode{appearance:none;border:0;border-radius:18px;padding:14px 12px;text-align:left;background:#fff;box-shadow:0 5px 0 var(--edge),0 8px 18px rgba(60,20,0,.1);cursor:pointer;min-height:92px;display:flex;flex-direction:column;gap:2px}
+.mode:active{transform:translateY(3px);box-shadow:0 2px 0 var(--edge)}
+.mode i{font-style:normal;font-size:26px}.mode b{font-size:17px}.mode small{color:var(--muted);font-weight:600;font-size:13px}
+.mode.big{grid-column:1/-1;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 5px 0 var(--accent3),0 10px 22px rgba(120,20,0,.28);flex-direction:row;align-items:center;gap:12px}
+.mode.big i{font-size:40px;animation:zoom 1.6s ease-in-out infinite}.mode.big small{color:#fff3e0}.mode.big b{font-size:20px;display:block}
+@keyframes zoom{50%{transform:translateX(5px) rotate(-3deg)}}
+.online .row{margin-bottom:8px}.online .btn{flex:1 1 30%}
+#joinForm input{text-transform:uppercase;letter-spacing:.2em;font-weight:800;text-align:center}
+.how-list{margin:0;padding-left:20px}.how-list li{margin:6px 0}
+.g{color:#0c8a5c;font-style:normal;font-weight:800}.r{color:var(--accent2)}
+kbd{background:#fff;border:1px solid var(--edge);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-size:12px}
+.keys{font-size:13px;margin:8px 0 0}
+.lb-list{margin:0;padding-left:22px}.lb-list li{margin:4px 0}
+.foot{text-align:center;font-size:13px;margin:22px 0}.foot a{color:var(--accent2);font-weight:700}
+.gm-rooms ul{list-style:none;padding:0;margin:8px 0 0}.gm-rooms li{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px dashed var(--edge2)}
+.badge{font-size:11px;background:var(--edge2);border-radius:6px;padding:1px 6px;font-weight:700}
+.gm-tag{color:#c0392b;font-style:normal;font-size:12px}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 12px;position:sticky;top:0;background:var(--cream);z-index:3;box-shadow:0 1px 0 var(--edge2)}
+.bar h2{flex:1;margin:0;font-size:19px;text-align:center}
+.code{font-family:ui-monospace,Menlo,monospace;letter-spacing:.12em;background:#fff;border-radius:8px;padding:2px 8px;color:var(--accent2)}
+#lobby .card,#lobbyVis{margin-left:12px;margin-right:12px}
+#lobbyVis{font-size:13px;margin-top:6px}
+.plist{list-style:none;margin:0 0 10px;padding:0}
+.plist li{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed var(--edge2);flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.2)}
+.tag{font-size:11px;font-weight:800;background:var(--yellow);border-radius:6px;padding:1px 6px}
+.seg{display:inline-flex;background:var(--edge2);border-radius:12px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;border-radius:9px;padding:8px 12px;min-width:40px;min-height:40px;font-weight:800;cursor:pointer}
+.seg button.on{background:#fff;box-shadow:0 2px 0 var(--edge)}
+#hostBox .row{margin:8px 0;justify-content:space-between}
+.big-btn{width:100%;font-size:18px;min-height:54px;margin-top:6px}
+.chat-log{height:150px;overflow:auto;background:#fff;border-radius:12px;padding:8px 10px;font-size:14px;box-shadow:inset 0 0 0 2px var(--edge2)}
+.chat-log p{margin:3px 0}.chat-log p.sys{color:var(--muted);font-style:italic;font-size:13px}
+.quick,.cheer{display:flex;gap:6px;overflow-x:auto;margin:8px 0;scrollbar-width:none}
+.quick button,.cheer button{appearance:none;border:0;white-space:nowrap;border-radius:99px;padding:8px 12px;min-height:40px;background:#fff;font-weight:800;font-size:14px;box-shadow:0 3px 0 var(--edge);cursor:pointer}
+.quick button:active,.cheer button:active{transform:translateY(2px)}
+#chatForm input{flex:1}
+.chip{background:rgba(20,10,4,.8);color:#fff;font-weight:900;padding:7px 11px;border-radius:99px;font-size:15px;font-variant-numeric:tabular-nums;box-shadow:0 2px 0 rgba(0,0,0,.25);white-space:nowrap}
+.callout{position:absolute;left:0;right:0;top:32%;text-align:center;pointer-events:none;z-index:6}
+.callout b{display:inline-block;font-size:clamp(30px,9vw,54px);font-weight:900;color:#fff;letter-spacing:-.01em;text-shadow:0 4px 0 rgba(0,0,0,.35),0 0 24px rgba(0,0,0,.25);animation:pop .9s ease-out forwards}
+.callout small{display:block;font-weight:800;color:#fff;font-size:15px;text-shadow:0 2px 4px rgba(0,0,0,.6)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}25%{transform:scale(1.15);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:scale(1) translateY(-16px);opacity:0}}
+.toasts{position:fixed;left:0;right:0;top:calc(62px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:center;gap:6px;z-index:50;pointer-events:none}
+.toast{background:rgba(20,10,4,.92);color:#fff;font-weight:700;border-radius:12px;padding:9px 14px;max-width:90vw;font-size:14px;animation:rise .25s ease-out}
+.toast.warn{background:#b8321f}.toast.good{background:#0c7a52}
+@keyframes rise{from{transform:translateY(-8px);opacity:0}}
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(15,6,2,.55);padding:16px}
+.overlay .sheet{background:var(--cream);border-radius:22px;padding:18px;width:min(100%,460px);max-height:92vh;overflow:auto;box-shadow:0 18px 50px rgba(0,0,0,.4);animation:rise .3s ease-out}
+.sheet h2{margin:0 0 4px;font-size:26px;text-align:center}.sheet .sub{text-align:center;margin:0 0 10px;color:var(--muted);font-weight:700}
+.end-btns{justify-content:center;margin-top:10px}
+.stage{position:fixed;inset:0;max-width:760px;margin:0 auto;overflow:hidden;background:var(--bg2);touch-action:none;user-select:none;-webkit-user-select:none}
+.stage canvas.full{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud-top{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));left:8px;right:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:6px;z-index:5;pointer-events:none}
+.hud-top>*{pointer-events:auto}.hud-mid{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.chat-pop{position:absolute;left:8px;right:8px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:8;background:var(--cream);border-radius:16px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--bg:#0d1b3d;--bg2:#13285a;--ink:#14182b;--cream:#fff7ec;--paper:#fffdf8;--muted:#6b6a78;--edge:#e3c9a8;--edge2:#f0dfc8;--accent:#e0242f;--accent2:#a8121c;--accent3:#6e0a10;--green:#13915a;--green2:#0b6b41;--yellow:#ffd23f}
+.hero{background:radial-gradient(120% 90% at 50% 0%,#28468f 0%,#0d1b3d 70%)}
+.hero-chip{background:rgba(255,255,255,.16);backdrop-filter:blur(4px)}
+.hero-title h1{text-shadow:0 4px 0 var(--accent2),0 10px 24px rgba(0,0,0,.5)}
+.kits{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:4px 0 6px}
+.kit{appearance:none;border:0;border-radius:14px;background:#fff;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;box-shadow:0 3px 0 var(--edge);font-size:11px;font-weight:800;min-height:72px}
+.kit canvas{width:40px;height:40px}
+.kit[aria-checked="true"]{box-shadow:0 0 0 3px var(--accent),0 3px 0 var(--edge);background:#fff3f0}
+.mode.big span{display:flex;flex-direction:column}
+.diff{grid-column:1/-1;margin:0;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:10px 12px}
+.diff>span{font-weight:800}
+.diff .seg button{padding:8px 9px;font-size:13px}
+.mode:disabled{opacity:1;cursor:default}
+.vs{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 10px;font-weight:900}
+.vs .side{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;flex:1;text-align:center}
+.vs .side b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vs canvas{width:54px;height:54px}
+.vs em{font-style:normal;font-size:26px;color:var(--accent)}
+/* play */
+.stage{background:#0d1b3d}
+.board{display:flex;align-items:center;gap:6px;background:rgba(8,12,30,.82);color:#fff;border-radius:14px;padding:6px 8px;font-weight:900;box-shadow:0 3px 0 rgba(0,0,0,.3);min-width:0;max-width:calc(100% - 110px)}
+.board .tm{display:flex;flex-direction:column;align-items:center;min-width:0;max-width:96px}
+.board .tm span{font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.9}
+.board .dots{display:flex;gap:2px}
+.board .dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22)}
+.board .dots i.g{background:#35d07f}.board .dots i.x{background:#ff4d4d}
+.board .sc{font-size:24px;font-variant-numeric:tabular-nums;padding:0 4px;letter-spacing:.02em}
+.board .sd{font-size:10px;color:var(--yellow);display:block;text-align:center}
+.hud-r{display:flex;flex-direction:column;gap:6px}
+.role{position:absolute;left:50%;transform:translateX(-50%);top:calc(72px + env(safe-area-inset-top,0px));z-index:5;text-align:center;color:#fff;pointer-events:none;width:min(92%,420px)}
+.role b{display:inline-block;background:rgba(8,12,30,.72);border-radius:10px;padding:3px 12px;font-size:19px;font-weight:900;letter-spacing:.04em;text-shadow:0 3px 0 rgba(0,0,0,.45)}
+.role small{display:block;font-weight:700;font-size:14px;text-shadow:0 2px 4px rgba(0,0,0,.7)}
+.role i{display:block;height:6px;margin:6px auto 0;border-radius:6px;background:var(--yellow);width:0;transition:width .2s linear;box-shadow:0 1px 0 rgba(0,0,0,.4)}
+.role.keep b{color:#ffe169}
+.cheer{position:absolute;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:6;margin:0}
+.cheer button{background:rgba(255,255,255,.92)}
+.coach{position:absolute;left:12px;right:12px;top:calc(150px + env(safe-area-inset-top,0px));z-index:7;background:#fff7d6;color:#2a1a00;border-radius:14px;padding:10px 12px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-align:center}
+.bubbles{position:absolute;left:10px;top:calc(150px + env(safe-area-inset-top,0px));z-index:6;display:flex;flex-direction:column;gap:4px;pointer-events:none;max-width:70%}
+.bubbles p{margin:0;background:rgba(255,255,255,.92);border-radius:12px 12px 12px 3px;padding:5px 9px;font-size:13px;font-weight:700;animation:rise .25s ease-out;align-self:flex-start;max-width:100%;overflow-wrap:anywhere}
+.replay-btn{position:absolute;right:10px;bottom:calc(120px + env(safe-area-inset-bottom,0px));z-index:6}
+.callout b.goal{color:#fff;text-shadow:0 4px 0 #a8121c,0 0 30px rgba(255,60,60,.6)}
+.callout b.save{color:#ffe169;text-shadow:0 4px 0 #6b4a00}
+.kicker.dark{color:var(--accent2);text-shadow:none;text-align:center}
+.res-board{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.res-board .ln{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 2px 0 var(--edge2)}
+.res-board .ln b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.res-board .ln .n{font-size:24px;font-weight:900}
+.res-board .dots{display:flex;gap:3px;flex-wrap:wrap;max-width:150px}
+.res-board .dots i{width:12px;height:12px;border-radius:50%;background:#ddd}.res-board .dots i.g{background:#13915a}.res-board .dots i.x{background:#e0242f}
+.reward{text-align:center;font-weight:800}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="tl" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"slug":"penaltitimnas","title":"Penalti Timnas","icon":"\u26bd","accent":"#d7192a","ink":"#14182b","bg":"#0d1b3d","bg2":"#1c3a7a","inputs":["#nameInput"],"keys":["penaltitimnas.name"],"invite":"room","max":16};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<!-- JaRing invite gate v1 (jr-invite): opening an invite link (?room=CODE) shows only a name prompt when the room exists and joins it directly; a missing/expired room falls back to the main menu with a short notice. Game code calls JRInvite.run({...}); see /workspace/fixes-2026-10-23/README.md -->
+<style id="jr-invite-css">
+.jr-inv{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));background:rgba(14,16,24,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#1c1f2b;text-align:center;overflow:auto}
+.jr-inv[hidden],.jr-note[hidden]{display:none!important}
+.jr-inv *{box-sizing:border-box;letter-spacing:normal;text-transform:none}
+.jr-inv-card{width:100%;max-width:360px;margin:auto;background:#fffdf8;border-radius:18px;padding:22px 20px 18px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.jr-inv-kicker{margin:0;font-size:13px;font-weight:700;color:#6a6f82}
+.jr-inv-title{margin:2px 0 0;font-size:21px;line-height:1.2;font-weight:800;color:#1c1f2b}
+.jr-inv-code{display:inline-block;margin:10px 0 14px;padding:6px 12px 6px 16px;border:2px dashed #c9c2ad;border-radius:10px;background:#fff6d6;font:800 22px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:4px!important;color:#1c1f2b}
+.jr-inv-form{margin:0}
+.jr-inv-label{display:block;margin:0 0 6px;text-align:left;font-size:14px;font-weight:700;color:#3a3f52}
+.jr-inv-input{display:block;width:100%;min-height:48px;margin:0;padding:10px 14px;border:2px solid #c9ccd8;border-radius:12px;background:#fff;color:#1c1f2b;font-weight:600;font-size:16px;line-height:1.2;font-family:inherit;outline:none}
+.jr-inv-input:focus{border-color:var(--jr-inv-accent,#e8553b);box-shadow:0 0 0 3px rgba(232,85,59,.18)}
+.jr-inv-go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin:12px 0 0;padding:10px 16px;border:0;border-radius:12px;background:var(--jr-inv-accent,#e8553b);color:var(--jr-inv-accent-ink,#fff);font-weight:800;font-size:16px;line-height:1;font-family:inherit;cursor:pointer}
+.jr-inv-go:disabled{opacity:.65;cursor:progress}
+.jr-inv-alt{margin:10px 0 0;padding:6px 8px;border:0;background:none;color:#555b70;font-weight:600;font-size:14px;line-height:1.2;font-family:inherit;text-decoration:underline;cursor:pointer}
+.jr-inv-err{min-height:1.3em;margin:8px 0 0;font-size:14px;font-weight:600;color:#c0262d}
+.jr-inv-wait{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0 6px;font-weight:600;color:#3a3f52}
+.jr-inv-spin{width:28px;height:28px;border:3px solid #e4e1d6;border-top-color:var(--jr-inv-accent,#e8553b);border-radius:50%;animation:jr-inv-spin .8s linear infinite}
+.jr-inv-go .jr-inv-spin{width:18px;height:18px;border-width:2px;border-color:rgba(255,255,255,.45);border-top-color:#fff}
+@keyframes jr-inv-spin{to{transform:rotate(360deg)}}
+.jr-note{position:fixed;z-index:2147482500;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:flex-start;gap:10px;box-sizing:border-box;width:max-content;max-width:min(94vw,520px);margin:0;padding:11px 12px 11px 16px;border-radius:14px;background:#2b2433;color:#fff;font:600 14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.jr-note-x{flex:none;margin:-4px -4px -4px 0;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-weight:700;font-size:18px;line-height:1;font-family:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.jr-inv-spin{animation-duration:2s}}
+</style>
+<script id="jr-invite-js">
+window.JRInvite = (function () {
+  'use strict';
+  var TXT = {
+    id: { checking: 'Memeriksa room\u2026', kicker: 'Kamu diundang main', title: 'Gabung ke room', nameLabel: 'Nama kamu', namePh: 'JadiDaring', join: 'Gabung', joining: 'Masuk\u2026', menu: 'Ke menu utama', nameErr: 'Isi nama dulu ya.', missing: 'Room {code} tidak ditemukan atau sudah berakhir. Buat room baru atau cari room lain di menu ini.', failed: 'Tidak bisa masuk ke room {code}: {msg}', offline: 'Tautan undangan hanya bisa dipakai di situs jadidaring.com. Kamu tetap bisa main mode latihan.', close: 'Tutup' },
+    en: { checking: 'Checking the room\u2026', kicker: 'You are invited', title: 'Join the room', nameLabel: 'Your name', namePh: 'JadiDaring', join: 'Join', joining: 'Joining\u2026', menu: 'Go to main menu', nameErr: 'Please enter your name.', missing: 'Room {code} was not found or has ended. Create a new room or pick another one from this menu.', failed: 'Could not join room {code}: {msg}', offline: 'Invite links only work on jadidaring.com. You can still play practice mode.', close: 'Close' }
+  };
+  function fmt(s, v) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return v && v[k] !== undefined ? v[k] : m; }); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function getLS(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function setLS(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  /** '' = no invite in the URL, '!' = a malformed code, otherwise the 6-character room code */
+  function code(param) {
+    var v = ''; try { v = new URLSearchParams(location.search).get(param || 'room') || ''; } catch (e) { v = ''; }
+    v = v.trim().toUpperCase(); return /^[A-Z2-9]{6}$/.test(v) ? v : (v ? '!' : '');
+  }
+  function strip(param) {
+    try { var u = new URL(location.href); if (!u.searchParams.has(param || 'room')) return; u.searchParams.delete(param || 'room'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); } catch (e) { /* ignore */ }
+  }
+  /** Read-only existence check on /api/game: GET rooms/{code} with a placeholder token answers 404 when the room
+      does not exist and 403 ("not a member") when it does (GameRoomService::show looks the room up before the player). */
+  function probe(c) {
+    if (!/^[A-Z2-9]{6}$/.test(c || '')) return Promise.resolve('missing');
+    return fetch('/api/game/rooms/' + encodeURIComponent(c), { headers: { Accept: 'application/json', Authorization: 'Bearer jr-invite-check' }, credentials: 'same-origin', cache: 'no-store' })
+      .then(function (r) { return r.status === 403 || r.ok ? 'exists' : (r.status === 404 || r.status === 422) ? 'missing' : 'unknown'; }, function () { return 'unknown'; });
+  }
+  var noteTimer = 0;
+  function notice(msg, o) {
+    o = o || {}; var T = TXT[o.lang] || TXT.id, el = document.getElementById('jr-note');
+    if (!el) { el = document.createElement('div'); el.id = 'jr-note'; el.className = 'jr-note'; el.setAttribute('role', 'alert'); document.body.appendChild(el); }
+    el.innerHTML = '<span>' + esc(msg) + '</span><button type="button" class="jr-note-x" aria-label="' + esc(T.close) + '">\u00d7</button>';
+    el.hidden = false; el.querySelector('button').onclick = function () { el.hidden = true; };
+    clearTimeout(noteTimer); noteTimer = setTimeout(function () { el.hidden = true; }, o.ms || 12000);
+  }
+  /**
+   * o.code       room code from code()
+   * o.check(c)   -> Promise<'exists'|'missing'|'unknown'|'offline'|'session'|{fallback:msg}> (default: probe)
+   * o.join(name) -> Promise<{ok:true} | {ok:false, missing?:true, retry?:true, message?:string}>
+   * o.fallback(msg) shows the main menu (msg = notice text, '' when the user chose "main menu")
+   * o.nameKey, o.nameMax (24), o.lang ('id'|'en'), o.accent, o.param ('room')
+   */
+  function run(o) {
+    var T = TXT[o.lang] || TXT.id, param = o.param || 'room', c = o.code, prevOverflow = document.documentElement.style.overflow, done = false;
+    var root = document.createElement('div'); root.className = 'jr-inv'; root.id = 'jr-invite'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'jr-inv-title');
+    if (o.accent) root.style.setProperty('--jr-inv-accent', o.accent);
+    if (o.accentInk) root.style.setProperty('--jr-inv-accent-ink', o.accentInk);
+    root.innerHTML = '<div class="jr-inv-card"><p class="jr-inv-kicker">' + esc(o.gameName || T.kicker) + '</p><h2 class="jr-inv-title" id="jr-inv-title">' + esc(T.title) + '</h2><div class="jr-inv-code">' + esc(c === '!' ? '------' : c) + '</div>' +
+      '<div class="jr-inv-wait" aria-live="polite"><span class="jr-inv-spin" aria-hidden="true"></span><span>' + esc(T.checking) + '</span></div>' +
+      '<form class="jr-inv-form" hidden novalidate><label class="jr-inv-label" for="jr-inv-name">' + esc(T.nameLabel) + '</label><input class="jr-inv-input" id="jr-inv-name" type="text" maxlength="' + (o.nameMax || 24) + '" autocomplete="off" enterkeyhint="go" placeholder="JadiDaring">' +
+      '<p class="jr-inv-err" role="alert"></p><button class="jr-inv-go" type="submit">' + esc(T.join) + '</button></form>' +
+      '<button class="jr-inv-alt" type="button">' + esc(T.menu) + '</button></div>';
+    document.body.appendChild(root); document.documentElement.style.overflow = 'hidden';
+    var form = root.querySelector('form'), input = root.querySelector('input'), err = root.querySelector('.jr-inv-err'), go = root.querySelector('.jr-inv-go'), wait = root.querySelector('.jr-inv-wait');
+    var resolve; var result = new Promise(function (r) { resolve = r; });
+    function close(how, msg) {
+      if (done) return; done = true; root.remove(); document.documentElement.style.overflow = prevOverflow; strip(param);
+      if (how === 'fallback') { if (msg) notice(msg, o); try { o.fallback && o.fallback(msg || ''); } catch (e) { /* ignore */ } }
+      resolve(how);
+    }
+    root.querySelector('.jr-inv-alt').onclick = function () { close('fallback', ''); };
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') close('fallback', ''); });
+    form.onsubmit = function (e) {
+      e.preventDefault(); if (go.disabled) return;
+      var name = input.value.replace(/\s+/g, ' ').trim().slice(0, o.nameMax || 24);
+      if (!name || name.length < (o.nameMin || 1)) { err.textContent = T.nameErr; input.focus(); return; }
+      err.textContent = ''; go.disabled = true; input.disabled = true; go.innerHTML = '<span class="jr-inv-spin" aria-hidden="true"></span>' + esc(T.joining);
+      if (o.nameKey) setLS(o.nameKey, name);
+      Promise.resolve().then(function () { return o.join(name); }).then(function (r) { return r || { ok: false, retry: true }; }, function (e) { return { ok: false, retry: true, message: e && e.message }; }).then(function (r) {
+        if (done) return;
+        if (r.ok) { close('joined'); return; }
+        if (r.retry) { go.disabled = false; input.disabled = false; go.textContent = T.join; err.textContent = r.message || ''; return; }
+        close('fallback', r.missing ? fmt(T.missing, { code: c }) : fmt(T.failed, { code: c, msg: r.message || '' }));
+      });
+    };
+    Promise.resolve().then(function () { return c === '!' ? 'missing' : (o.check ? o.check(c) : probe(c)); }).then(null, function () { return 'unknown'; }).then(function (st) {
+      if (done) return;
+      if (st && typeof st === 'object' && st.fallback) { close('fallback', st.fallback); return; }
+      if (st === 'session') { close('session'); return; }
+      if (st === 'offline') { close('fallback', T.offline); return; }
+      if (st === 'missing') { close('fallback', fmt(T.missing, { code: c === '!' ? '' : c }).replace('  ', ' ')); return; }
+      wait.hidden = true; form.hidden = false; input.value = ''; /* t367u: never prefill (placeholder JadiDaring) */
+      try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+    });
+    return result;
+  }
+  return { code: code, strip: strip, probe: probe, notice: notice, run: run, text: TXT };
+})();
+</script>
+<!-- /jr-invite -->
+<main id="main" data-game="penaltitimnas">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="chip hero-chip">&#x26BD; 1 lawan 1</span><button class="icon-btn" id="muteBtn" aria-label="Suara">&#x1F50A;</button></div>
+      <div class="hero-title"><p class="kicker">ADU PENALTI &#xB7; TENDANG &amp; JAGA GAWANG</p><h1>PENALTI <span>TIMNAS</span></h1><p class="slogan">Usap buat nendang, ketuk buat nebak!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pemain</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="kits" id="kitPick" role="radiogroup" aria-label="Pilih kostum"></div>
+      <div class="modes">
+        <button class="mode big" id="botBtn"><i>&#x26BD;</i><span><b>Latihan vs Bot</b><small id="botSub">Adu penalti 5 tendangan, offline</small></span></button>
+        <div class="card diff"><span>Lawan bot</span><div class="seg" id="diffPick"></div></div>
+        <button class="mode" id="tutBtn"><i>&#x1F393;</i><b>Tutorial</b><small>Belajar usap &amp; tebak arah</small></button>
+        <button class="mode" id="statBtn" disabled><i>&#x1F3C6;</i><b id="statTitle">Rekor</b><small id="statSub">Belum main</small></button>
+      </div>
+      <div class="online card">
+        <h2>Duel online <small>1 lawan 1 &#xB7; teman atau acak</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">&#x1F50E; Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false" aria-label="Kode room"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh" aria-label="Muat ulang">&#x21BB;</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Penendang:</b> usap bola ke arah gawang. Arah usapan = arah bola, <b>panjang usapan = tinggi</b>, <b>kecepatan usapan = tenaga</b>.</li>
+          <li>Tenaga <em class="g">pas</em> (zona hijau) paling akurat. Kelembekan gampang ditepis, kekerasan bisa <b class="r">melambung</b>.</li>
+          <li><b>Kiper:</b> ketuk titik di gawang untuk menebak arah lompatan. Pojok atas paling susah dijangkau, tapi juga paling gampang meleset.</li>
+          <li>Bergantian 5 tendangan per tim. Kalau masih seri: <b>sudden death</b>. Peran bertukar tiap tendangan.</li>
+          <li>Online: undang teman lewat link. Kalau lawan keluar, bot menggantikannya.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>&#x2190;</kbd><kbd>&#x2192;</kbd><kbd>&#x2191;</kbd><kbd>&#x2193;</kbd> bidik, tahan <kbd>Spasi</kbd> untuk tenaga &#xB7; kiper: <kbd>1</kbd>&#x2013;<kbd>6</kbd> &#xB7; <kbd>M</kbd> suara</p>
+      </div>
+      <p class="foot muted">Penalti Timnas adalah game penggemar sepak bola dan tidak berafiliasi dengan PSSI, klub, atau stadion mana pun. &#xB7; <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">&#x2190; Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">&#x1F517; Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><div class="vs" id="lobbyVs"></div><h3>Pemain <small id="pCount">1/2</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Kalau sendirian</span><div class="seg" id="onBot"></div></div>
+        <button class="btn green big-btn" id="startBtn">&#x26BD; Mulai adu penalti</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik sorakan&#x2026;" autocomplete="off" aria-label="Pesan chat"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">&#x2715;</button>
+      <div class="board" id="board"></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">&#x1F50A;</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>&#x1F4AC;</button></div></div>
+    <div class="role" id="role"><b id="roleT">KAMU MENENDANG</b><small id="roleS">Usap bola ke gawang</small><i id="timer"></i></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="bubbles" id="bubbles" aria-live="polite"></div>
+    <div id="chatSlot" class="chat-pop" hidden></div>
+    <button class="btn small replay-btn" id="replayBtn" hidden>&#x1F501; Replay</button>
+    <div class="cheer" id="cheer"></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">HASIL ADU PENALTI</p><h2 id="resTitle">Menang!</h2><p class="sub" id="resSub"></p>
+      <div class="res-board" id="resBoard"></div>
+      <p class="reward" id="resNote"></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">&#x21BB; Lagi</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/* penaltitimnas */
+window.JD_SLUG = "penaltitimnas";
+/* JaRing kit: tiny shared helpers (localStorage, toast, WebAudio SFX, mute, screens). window.JDK */
+(function (root) {
+'use strict';
+const doc = document, $ = id => doc.getElementById(id);
+const getLS = k => { try { return root.localStorage.getItem(k); } catch (e) { return null; } }, setLS = (k, v) => { try { root.localStorage.setItem(k, v); } catch (e) { /* private */ } };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function toast(msg, kind, ms) { const box = $('toasts'); if (!box) return; for (const o of box.children) if (o.textContent === msg) o.remove(); const t = doc.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg; box.appendChild(t); setTimeout(() => t.remove(), ms || 2200); while (box.children.length > 3) box.firstChild.remove(); }
+function show(id, hubOn) { for (const s of doc.querySelectorAll('.screen')) s.hidden = s.id !== id; doc.documentElement.classList.toggle('jr-hub-off', !(hubOn || id === 'home')); }
+const Snd = { muted: false, key: null, AC: null };
+function ac() { if (Snd.muted) return null; try { if (!Snd.AC) Snd.AC = new (root.AudioContext || root.webkitAudioContext)(); if (Snd.AC.state === 'suspended') Snd.AC.resume(); } catch (e) { Snd.AC = null; } return Snd.AC; }
+function tone(f, d, type, vol, f2, delay) { const a = ac(); if (!a) return; const t = a.currentTime + (delay || 0), o = a.createOscillator(), g = a.createGain(); o.type = type || 'square'; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d); g.gain.setValueAtTime(vol || 0.06, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g).connect(a.destination); o.start(t); o.stop(t + d + 0.02); }
+function noise(d, vol, hp, delay, lp) { const a = ac(); if (!a) return; const b = a.createBuffer(1, Math.max(1, a.sampleRate * d), a.sampleRate), ch = b.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length); const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); f.type = lp ? 'lowpass' : 'highpass'; f.frequency.value = lp || hp || 800; g.gain.value = vol || 0.12; s.buffer = b; s.connect(f).connect(g).connect(a.destination); s.start(a.currentTime + (delay || 0)); }
+function initMute(key, ids, onChange) {
+  Snd.key = key; Snd.muted = getLS(key) === '1';
+  const paint = () => ids.forEach(id => { const b = $(id); if (b) { b.textContent = Snd.muted ? '\ud83d\udd07' : '\ud83d\udd0a'; b.setAttribute('aria-pressed', Snd.muted ? 'true' : 'false'); } });
+  const toggle = () => { Snd.muted = !Snd.muted; setLS(key, Snd.muted ? '1' : '0'); paint(); if (!Snd.muted) tone(660, 0.05, 'square', 0.04); if (onChange) onChange(Snd.muted); };
+  ids.forEach(id => { const b = $(id); if (b) b.addEventListener('click', toggle); });
+  doc.addEventListener('keydown', e => { if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return; if (e.key === 'm' || e.key === 'M') toggle(); });
+  paint(); return toggle;
+}
+const buzz = ms => { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* no */ } };
+/* seeded PRNG (mulberry32) */
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function fitCanvas(c) { const W = c.clientWidth || 360, H = c.clientHeight || 640, r = Math.min(2, root.devicePixelRatio || 1); if (c.width !== Math.round(W * r) || c.height !== Math.round(H * r)) { c.width = Math.round(W * r); c.height = Math.round(H * r); } const g = c.getContext('2d'); g.setTransform(r, 0, 0, r, 0, 0); return { g, W, H, r }; }
+root.JDK = Object.assign(root.JDK || {}, { $, getLS, setLS, esc, toast, show, Snd, ac, tone, noise, initMute, buzz, rng, fitCanvas });
+})(window);
+/* JaRing kit: platform transport (copied from malampendakian) (/api/game + raw Reverb websocket wake-ups; Connection is the shared JaRing pattern),
+   an offline LocalLink, and a small Room coordinator with read throttling. */
+(function (root) {
+'use strict';
+const LIMITS = { stateMax: 200000, nameMax: 24 };
+const GM_KEY = 'gamemaster'; // #gamemaster -> GET rooms?gm=gamemaster (all lobbies, incl. private)
+const copy = v => JSON.parse(JSON.stringify(v));
+const bytes = v => new TextEncoder().encode(JSON.stringify(v)).length;
+function rnd(n) { return Math.floor(Math.random() * n); }
+const err = (code) => { const e = Error(code); e.code = code; return e; };
+const obj = v => (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+const arr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : []);
+/** PHP turns {} into [] - every state read goes through this */
+function normState(s) { s = obj(s); s.v = 1; if (!['lobby', 'play', 'end'].includes(s.ph)) s.ph = 'lobby'; s.set = obj(s.set); if (s.res && typeof s.res !== 'object') s.res = null; s.cm = arr(s.cm).filter(m => m && typeof m === 'object').slice(-30); if (s.s && typeof s.s !== 'object') s.s = null; return s; }
+function normalizeRoom(d) { if (d && !d.unchanged && d.code) { d.state = normState(d.state); d.private = obj(d.private); d.players = arr(d.players); d.events = arr(d.events).map(e => { const x = obj(e); x.payload = obj(x.payload); return x; }); } return d; }
+function seated(players) { return (players || []).filter(p => !p.spectator).sort((a, b) => (a.seat ?? 0) - (b.seat ?? 0)); }
+
+/* ---------- Platform transport (from gelembung net.js) ---------- */
+function gameSubdomain(hostname) { const m = /^([a-z0-9-]+)\.jadidaring\.(?:com|test)$/i.exec(String(hostname || '')); return m ? m[1].toLowerCase() : null; }
+const SESSION_KEY = (root.JD_SLUG || 'jd') + '.session';
+class Connection {
+  constructor({ location = root.location, fetch = root.fetch, Socket = root.WebSocket, storage = null, now = () => Date.now(), onWake = () => {}, onSocket = () => {}, lobbyWake = () => {}, timers = null, random = Math.random, reconnectMaxMs = 15000 } = {}) {
+    this.location = location; this.fetchFn = typeof fetch === 'function' ? fetch.bind(root) : null; this.Socket = Socket; this.storage = storage; this.now = now; this.onWake = onWake; this.onSocket = onSocket; this.lobbyWake = lobbyWake;
+    this.timers = timers || { setTimeout: (f, ms) => root.setTimeout(f, ms), clearTimeout: id => root.clearTimeout(id), setInterval: (f, ms) => root.setInterval(f, ms), clearInterval: id => root.clearInterval(id) };
+    this.random = random; this.reconnectMaxMs = reconnectMaxMs; this.attempts = 0; this.state = 'idle'; this.lastError = null; this.stats = { sockets: 0, catchUps: 0, wakeups: 0, errors: 0, inputs: 0, inputsSent: 0, inputFails: 0 }; this.inputBackoffUntil = 0; this.onInput = () => {};
+    this.allowed = !!location && /^https?:$/.test(location.protocol) && !!gameSubdomain(location.hostname);
+    this.config = null; this.code = null; this.token = null; this.version = null; this.latest = null; this.socket = null; this.channel = null; this.ready = false; this.subscribed = false; this.stopped = false; this.backoffUntil = 0;
+    this.lo = -Infinity; this.hi = Infinity; this.offset = 0;
+    try { const s = JSON.parse((storage && storage.getItem(SESSION_KEY)) || 'null'); if (s && s.origin === location.origin && /^[A-Z2-9]{6}$/.test(s.code) && typeof s.token === 'string') { this.code = s.code; this.token = s.token; } } catch (e) { /* ignore */ }
+  }
+  serverNow() { return this.now() + this.offset; }
+  clock(dateHeader, sent, received) {
+    const d = Date.parse(dateHeader || ''); if (!Number.isFinite(d)) return;
+    const lo = d - received, hi = d + 1000 - sent;
+    if (Math.max(lo, this.lo) > Math.min(hi, this.hi)) { this.lo = lo; this.hi = hi; } else { this.lo = Math.max(lo, this.lo); this.hi = Math.min(hi, this.hi); }
+    this.offset = Math.round((this.lo + this.hi) / 2);
+  }
+  save() { try { if (!this.storage) return; if (this.code && this.token) this.storage.setItem(SESSION_KEY, JSON.stringify({ origin: this.location.origin, code: this.code, token: this.token })); else this.storage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ } }
+  async request(path, { body, auth = true, bearer = null, ownBackoff = false, timeout = 20000 } = {}) {
+    if (!this.allowed) throw err('offline');
+    if (!ownBackoff && this.now() < this.backoffUntil) { const e = err('busy'); e.status = 429; e.wait = Math.ceil((this.backoffUntil - this.now()) / 1000); throw e; }
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    if (bearer) headers.Authorization = 'Bearer ' + bearer; else if (auth && this.token) headers.Authorization = 'Bearer ' + this.token;
+    const sent = this.now(); let res;
+    try {
+      const opts = { method: body === undefined ? 'GET' : 'POST', headers, credentials: 'same-origin', cache: 'no-store' };
+      if (body !== undefined) opts.body = JSON.stringify(body);
+      if (root.AbortSignal && AbortSignal.timeout) opts.signal = AbortSignal.timeout(timeout);
+      res = await this.fetchFn('/api/game/' + path, opts);
+    } catch (e) { throw err('network'); }
+    this.clock(res.headers && res.headers.get && res.headers.get('Date'), sent, this.now());
+    let data = {}; try { data = await res.json(); } catch (e) { data = {}; }
+    if (!res.ok) {
+      const e = Error(data.error || data.message || ('HTTP ' + res.status)); e.status = res.status; e.server = data.error || data.message || '';
+      if (res.status === 429 && ownBackoff) { e.code = 'busy'; e.retryAfter = Math.max(1, Number(res.headers && res.headers.get && res.headers.get('Retry-After')) || 5); }
+      else if (res.status === 429) { this.backoffUntil = this.now() + Math.max(1, Number(res.headers && res.headers.get && res.headers.get('Retry-After')) || 10) * 1000 + rnd(1000); e.code = 'busy'; }
+      throw e;
+    }
+    return data;
+  }
+  async start() {
+    if (this.config) { if (this.stopped) { this.stopped = false; this.openSocket(); } return this.config; }
+    if (this.starting) return this.starting;
+    this.starting = (async () => {
+      const c = await this.request('config', { auth: false }), w = c.websocket, sub = gameSubdomain(this.location.hostname), prefix = 'game.' + sub;
+      if (c.game !== sub || !c.database || c.database.shared !== true || c.database.isolatedBy !== 'subdomain' || !w || w.channelPrefix !== prefix || w.lobbyChannel !== prefix || w.roomChannel !== prefix + '.{code}') throw err('mismatch');
+      if (!w.enabled || !w.url) throw err('disabled');
+      const url = new URL(w.url); if (!['ws:', 'wss:'].includes(url.protocol) || (this.location.protocol === 'https:' && url.protocol !== 'wss:')) throw err('mismatch');
+      this.config = c; this.stopped = false; this.openSocket(); return c;
+    })();
+    try { return await this.starting; } finally { this.starting = null; }
+  }
+  desiredChannel() { const w = this.config.websocket; return this.code ? w.channelPrefix + '.' + this.code : w.lobbyChannel; }
+  /* Realtime is socket-only: there is no HTTP polling loop. Reads happen on join, on room.updated wakeups,
+     once after every (re)subscribe (catch-up), when the tab becomes visible, and after a 409. */
+  setState(st) { if (this.state !== st) { this.state = st; try { this.onSocket(st === 'online', st); } catch (e) { /* a UI error must never break the socket */ } } }
+  subscribe() {
+    if (!this.ready || !this.socket || this.socket.readyState !== 1) return; const next = this.desiredChannel(); if (next === this.channel) return;
+    if (this.channel) this.socket.send(JSON.stringify({ event: 'pusher:unsubscribe', data: { channel: this.channel } }));
+    this.channel = next; this.subscribed = false; this.setState('subscribing'); this.socket.send(JSON.stringify({ event: 'pusher:subscribe', data: { channel: next } }));
+  }
+  /** exponential backoff 1s\u21922s\u21924s\u21928s\u2026 capped (15 s), \u00b125% jitter */
+  backoffDelay(hint) {
+    const base = hint === 'now' ? 1000 : hint === 'max' ? this.reconnectMaxMs : Math.min(this.reconnectMaxMs, 1000 * Math.pow(2, this.attempts));
+    return Math.round(base * (0.75 + this.random() * 0.5));
+  }
+  scheduleReconnect(hint) {
+    if (this.stopped || this.reconnectTimer) return;
+    const delay = this.backoffDelay(hint); this.attempts++; this.nextRetryAt = this.now() + delay; this.setState('reconnecting');
+    this.reconnectTimer = this.timers.setTimeout(() => { this.reconnectTimer = null; this.openSocket(); }, delay);
+  }
+  openSocket() {
+    if (this.stopped || !this.config || !this.Socket) return;
+    if (this.reconnectTimer) { this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; }
+    let ws; try { ws = this.socket = new this.Socket(this.config.websocket.url); } catch (e) { this.socket = null; this.scheduleReconnect(); return; }
+    this.stats.sockets++; this.ready = false; this.channel = null; this.subscribed = false; this.setState(this.attempts ? 'reconnecting' : 'connecting'); this.errorHint = null;
+    ws.onmessage = ev => {
+      if (ws !== this.socket) return; this.lastMessage = this.now(); let frame, data;
+      try { frame = JSON.parse(ev.data); data = typeof frame.data === 'string' ? JSON.parse(frame.data) : frame.data; } catch (e) { return; }
+      if (frame.event === 'pusher:connection_established') {
+        this.ready = true; this.subscribe();
+        this.timers.clearInterval(this.heartbeat);
+        const activity = Math.max(10, Math.min(120, Number(data && data.activity_timeout) || 30)) * 1000;
+        this.heartbeat = this.timers.setInterval(() => { if (this.now() - this.lastMessage > activity * 2) { ws.close(); return; } if (ws.readyState === 1) ws.send(JSON.stringify({ event: 'pusher:ping', data: {} })); }, activity);
+      }
+      else if (frame.event === 'pusher:ping') { if (ws.readyState === 1) ws.send(JSON.stringify({ event: 'pusher:pong', data: {} })); }
+      else if (frame.event === 'pusher:error') {
+        // Pusher protocol: 4000\u20134099 do not retry unchanged (back off to max), 4100\u20134199 retry with backoff, 4200\u20134299 retry soon.
+        const code = Number(data && data.code); this.stats.errors++; this.lastError = { code: code || null, message: String((data && data.message) || '') };
+        this.errorHint = code >= 4000 && code < 4100 ? 'max' : code >= 4200 && code < 4300 ? 'now' : null;
+        if (code >= 4000 && code < 4300 && ws.readyState < 2) ws.close();
+      }
+      else if (frame.event === 'pusher_internal:subscription_succeeded' && frame.channel === this.channel) {
+        this.subscribed = true; this.attempts = 0; this.onlineSince = this.now(); this.setState('online'); this.stats.catchUps++;
+        if (this.code) this.onWake({ catchUp: true }); else this.lobbyWake({ catchUp: true });
+      }
+      else if (frame.event === this.config.websocket.event && frame.channel === this.channel) {
+        if (this.code) { if (data && data.code === this.code && Number(data.version) > (this.version ?? -1)) { this.hint = Math.max(this.hint || 0, Number(data.version) || 0); if (this.acting) this.deferWake = Math.max(this.deferWake || 0, Number(data.version) || 0); else { this.stats.wakeups++; this.onWake(data); } } }
+        else this.lobbyWake(data);
+      }
+      /* light input fanout (POST rooms/{code}/input -> room.input on the room channel; not persisted, no version bump) */
+      else if (frame.event === (this.config.websocket.inputEvent || 'room.input') && frame.channel === this.channel && this.code) {
+        if (data && data.code === this.code && data.input && typeof data.input === 'object') { this.stats.inputs++; try { this.onInput(data); } catch (e) { /* never break the socket */ } }
+      }
+    };
+    ws.onerror = () => { if (ws.readyState < 2) ws.close(); };
+    ws.onclose = () => {
+      if (ws !== this.socket) return; this.socket = null; this.ready = false; this.subscribed = false; this.channel = null; this.timers.clearInterval(this.heartbeat);
+      if (!this.stopped) this.scheduleReconnect(this.errorHint); else this.setState('idle');
+    };
+  }
+  /** one catch-up read when the tab becomes visible again (no-op without a room) */
+  visible() { if (!this.config || this.stopped) return; if (!this.socket && !this.reconnectTimer) this.openSocket(); else if (this.reconnectTimer && this.state === 'reconnecting') { this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; this.openSocket(); } if (this.code) this.onWake({ visible: true }); else this.lobbyWake({ visible: true }); }
+  adopt(data) { normalizeRoom(data); if (data && !data.unchanged && data.code && (!this.latest || this.latest.code !== data.code || data.version >= this.latest.version)) { this.latest = data; this.version = data.version; } return data; }
+  async enter(mode, { displayName, code, maxPlayers, state } = {}) {
+    await this.start();
+    if (this.code && this.token) { try { await this.leave(); } catch (e) { this.forget(); } }
+    const common = { displayName: String(displayName || 'Tamu').slice(0, 24) }, create = Object.assign({}, common, { maxPlayers, state, private: {} });
+    let data;
+    if (mode === 'private' || mode === 'public') data = await this.request('rooms', { body: Object.assign({}, create, { visibility: mode }), auth: false });
+    else if (mode === 'match') data = await this.request('rooms/match', { body: create, auth: false });
+    else if (mode === 'watch') data = await this.request('rooms/' + encodeURIComponent(code) + '/watch', { body: common, auth: false });
+    else data = await this.request('rooms/join', { body: Object.assign({}, common, { code, private: {} }), auth: false });
+    if (typeof data.playerToken !== 'string' || !/^[A-Z2-9]{6}$/.test(data.code)) throw Error('no-session');
+    this.code = data.code; this.token = data.playerToken; this.latest = null; this.version = null; this.hint = 0; this.adopt(data); this.save(); this.subscribe(); return data;
+  }
+  /** Lobby list. Public only by default; `{ gm: true }` (the #gamemaster hash) asks the platform for every lobby incl. private ones. */
+  async rooms({ gm = false } = {}) { return this.request('rooms' + (gm ? '?gm=' + GM_KEY : ''), { auth: false }); }
+  /** typed GM claim: POST rooms/{code}/gamemaster {code} (seated or spectator). 200 = room payload with gamemaster: true; wrong code = 403 */
+  async gamemaster(code) { if (!this.code || !this.token) throw err('noroom'); return this.adopt(await this.request('rooms/' + this.code + '/gamemaster', { body: { code: String(code || '') } })); }
+  /** Does an invite code exist? Asks GET rooms/{code} with a throw-away bearer: 403 = the room exists (we are just not a member), 404/422 = no such room. */
+  async probe(code) {
+    if (!/^[A-Z2-9]{6}$/.test(code || '')) return 'missing';
+    try { await this.request('rooms/' + code, { auth: false, bearer: 'invite-check' }); return 'exists'; }
+    catch (e) { if (e.status === 403 || e.status === 401) return 'exists'; if (e.status === 404 || e.status === 422) return 'missing'; return 'unknown'; }
+  }
+  /** POST rooms/{code}/actions. The response already carries the full room (state + last 50 events) at the new version, so a
+      wake-up that arrives while our own write is in flight (usually the echo of that write) is held and only turned into a read
+      if the room moved past what the response gave us. Before: every own write cost one extra read and used up the read gap,
+      delaying the read of the NEXT real update (host snapshot / guest input) by up to ~330 ms. */
+  async act(req) {
+    this.acting = (this.acting || 0) + 1;
+    try { return this.adopt(await this.request('rooms/' + this.code + '/actions', { body: req })); }
+    finally {
+      this.acting--;
+      if (!this.acting && this.deferWake) { const v = this.deferWake; this.deferWake = 0; if (this.code && v > (this.version ?? -1)) { this.stats.wakeups++; try { this.onWake({ code: this.code, version: v }); } catch (e) { /* ignore */ } } else this.stats.echoSkips = (this.stats.echoSkips || 0) + 1; }
+    }
+  }
+  async read({ full = false } = {}) { const code = this.code; if (!code) return null; const data = await this.request('rooms/' + code + (full || this.version === null ? '' : '?since=' + this.version)); if (code === this.code) this.adopt(data); return data; }
+  /** build(latest) returns {state?, private?, status?, payload?} or null. A 409 refetches and retries once. */
+  async write(type, build) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const latest = this.latest || await this.read({ full: true });
+      const body = await build(latest); if (!body) return null;
+      const req = Object.assign({ payload: {} }, body, { type, expectedVersion: latest.version });
+      if (req.state && bytes(req.state) > LIMITS.stateMax) throw err('toolarge');
+      try { return await this.act(req); }
+      catch (e) { if (e.status !== 409 || attempt) throw e; this.latest = null; await this.read({ full: true }); }
+    }
+    return null;
+  }
+  /** light realtime input: POST rooms/{code}/input {key?, direction?, payload?} (own limiter 120/min per token; 429 only pauses input) */
+  inputReady() { return !!(this.code && this.token && this.state === 'online' && this.config && this.config.websocket && this.config.websocket.inputEvent && this.now() >= this.inputBackoffUntil); }
+  async input(body) {
+    if (!this.code || !this.token) throw err('noroom');
+    if (this.now() < this.inputBackoffUntil) { const e = err('busy'); e.status = 429; throw e; }
+    try { const r = await this.request('rooms/' + this.code + '/input', { body, ownBackoff: true, timeout: 4000 }); this.stats.inputsSent++; return r; }
+    catch (e) { this.stats.inputFails++; if (e.status === 429) this.inputBackoffUntil = this.now() + (e.retryAfter || 5) * 1000; else if (e.status === 404 || e.status === 405 || e.status === 422) this.inputBackoffUntil = this.now() + 30000; throw e; }
+  }
+  /** one write attempt (no hidden retry, so write budgets stay exact). Uses the newest version we know of: the last read OR the
+      version announced by a websocket wake-up (GameRoomUpdated carries it), so a busy room does not need a read before every write.
+      409 -> e.status 409, e.used = the version we tried */
+  async push(type, body) {
+    if (this.version === null) await this.read({ full: true });
+    const used = Math.max(this.version, this.hint || 0), req = Object.assign({ payload: {} }, body, { type, expectedVersion: used });
+    if (req.state && bytes(req.state) > LIMITS.stateMax) throw err('toolarge');
+    try { return await this.act(req); }
+    catch (e) { e.used = used; throw e; }
+  }
+  /** a newer version than `used` was announced since -> a retry without a read has a fair chance */
+  fresher(used) { return Math.max(this.version ?? 0, this.hint || 0) > used; }
+  async leave() { if (this.code && this.token) await this.request('rooms/' + this.code + '/leave', { body: {} }); this.forget(); }
+  /** best-effort leave while the page is going away (pagehide): keepalive POST, no await, then forget the session */
+  leaveBeacon() {
+    if (!this.allowed || !this.code || !this.token || !this.fetchFn) return false;
+    try { const p = this.fetchFn('/api/game/rooms/' + this.code + '/leave', { method: 'POST', keepalive: true, credentials: 'same-origin', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token }, body: '{}' }); if (p && p.catch) p.catch(() => {}); } catch (e) { /* page is going away */ }
+    this.forget(); return true;
+  }
+  forget() { this.latest = null; this.code = null; this.token = null; this.version = null; this.hint = 0; this.save(); this.subscribe(); }
+  stop() { this.stopped = true; if (this.reconnectTimer) this.timers.clearTimeout(this.reconnectTimer); this.reconnectTimer = null; this.timers.clearInterval(this.heartbeat); if (this.socket) this.socket.close(); this.setState('idle'); }
+}
+
+/* ---------- Room coordinator ----------
+   Lobby edits (settings, start, end, rematch) are read-modify-write with expectedVersion (edit() retries 409 with jitter).
+   During play the host pushes snapshots and clients push turns via Connection.push (one attempt, budgeted by the app).
+   Reads are throttled to one per READ_GAP_MS so a busy room never exceeds the 240 reads/min per player limit. */
+const POLL_MS = 900, READ_GAP_MS = 300;
+class Room {
+  constructor(link, { onChange = () => {} } = {}) { this.net = link; this.onChange = onChange; this.data = null; this.tail = Promise.resolve(); this.reading = false; this.again = false; this.lastRead = 0; this.readTimer = null; }
+  get local() { return !!this.net.local; }
+  get me() { return this.data ? this.data.playerId : null; }
+  get s() { return (this.data && this.data.state) || normState({}); }
+  get spectator() { return !!(this.data && this.data.spectator); }
+  get code() { return this.data ? this.data.code : ''; }
+  get version() { return this.data ? this.data.version : 0; }
+  players() { return (this.data && this.data.players) || []; }
+  /** server-owned GM flag (game_players.is_gamemaster) */
+  isGamemaster(id) { const d = this.data; if (!d || this.local) return false; if (id == null) id = d.playerId; const p = (d.players || []).find(q => q.id === id); return !!(p ? p.gamemaster : (id === d.playerId && d.gamemaster)); }
+  claimGamemaster(code) { if (this.local || !this.net.gamemaster) return Promise.reject(err('offline')); return this.serial(async () => { const d = await this.net.gamemaster(code); this.receive(d); return d; }); }
+  seated() { return seated(this.players()); }
+  isHost() { const d = this.data; if (!d || d.spectator) return false; if (this.local) return true; const p = d.players.find(q => q.id === d.playerId); return !!(p ? p.host : d.host); }
+  receive(data) {
+    if (!data || data.unchanged || !data.code) return; normalizeRoom(data);
+    if (this.data && this.data.code === data.code && data.version < this.data.version) return;
+    this.data = data; this.rxAt = Date.now(); this.onChange(this, data);
+  }
+  serial(work) { const next = this.tail.then(work); this.tail = next.catch(() => {}); return next; }
+  /** fn(s, d) mutates a normalized copy of state; return false/null to cancel, or {status} to also set the room status */
+  edit(type, fn) {
+    return this.serial(async () => {
+      for (let i = 0; i < 6; i++) {
+        try {
+          const res = await this.net.write(type, d => {
+            if (d) this.receive(d); if (!d) return null;
+            const s = normState(copy(d.state)), out = fn(s, d); if (out === null || out === false) return null;
+            return Object.assign({ state: s }, typeof out === 'object' ? out : {});
+          });
+          if (res) this.receive(res); return res;
+        } catch (e) { if (e.status !== 409 || i === 5) throw e; this.net.latest = null; await new Promise(r => setTimeout(r, 60 + Math.random() * 240 * (i + 1))); }
+      }
+      return null;
+    });
+  }
+  /** single-attempt write used for snapshots / turns */
+  async push(type, body) { const res = await this.net.push(type, body); this.receive(res); return res; }
+  /** after a 409: wait briefly for the wake-up that announces the winning write; read only if none arrives */
+  async settle(used) { for (let i = 0; i < 4 && !this.net.fresher(used); i++) await new Promise(r => setTimeout(r, 25)); if (!this.net.fresher(used)) await this.readNow(); }
+  async enter(mode, opts) {
+    const data = await this.net.enter(mode, Object.assign({}, opts, { state: normState({ ph: 'lobby', set: opts.set || {} }), maxPlayers: opts.maxPlayers || 4 }));
+    this.data = null; this.receive(data); return this.data;
+  }
+  /** throttled read: at most one request per READ_GAP_MS, extra wake-ups coalesce into one trailing read */
+  refresh(full) {
+    if (this.local) return;
+    if (this.reading) { this.again = true; return; }
+    const wait = this.lastRead + READ_GAP_MS - Date.now();
+    if (wait > 0) { if (!this.readTimer) this.readTimer = setTimeout(() => { this.readTimer = null; this.refresh(full); }, wait); return; }
+    this.reading = true; this.lastRead = Date.now();
+    this.net.read({ full }).then(d => this.receive(d), e => { if (e.status === 403 || e.status === 404) { this.gone = true; this.onChange(this, null); } })
+      .finally(() => { this.reading = false; if (this.again) { this.again = false; this.refresh(); } });
+  }
+  /** immediate read (after a 409) that still respects the read gap */
+  async readNow() { const wait = this.lastRead + READ_GAP_MS - Date.now(); if (wait > 0) await new Promise(r => setTimeout(r, wait)); this.lastRead = Date.now(); this.receive(await this.net.read()); }
+  /** poll only while the websocket is down */
+  tick() { if (this.local || this.net.state === 'online') return; const t = Date.now(); if (t - (this.lastPoll || 0) >= POLL_MS) { this.lastPoll = t; this.refresh(); } }
+  async leave() { if (this.readTimer) clearTimeout(this.readTimer); try { await this.net.leave(); } catch (e) { if (this.net.forget) this.net.forget(); } }
+}
+
+root.MPNet = { Connection, Room, normalizeRoom, normState, seated, gameSubdomain, LIMITS, GM_KEY };
+})(typeof window !== 'undefined' ? window : globalThis);
+/* JaRing kit MPShell: shared online plumbing for multiplayer games (/api/game rooms + Reverb via MPNet):
+   enter/match/public/private/join, lobby list with capacity, chat (rate limit 1.2 s, 120 chars, word filter, quick chips),
+   GM tools (#gamemaster / ?gmjd claim prompt, #gamemaster lobby list incl. private), ?room= invite (JRInvite card), pagehide leave.
+   The game supplies hooks; DOM ids are the kit standard (see README). */
+(function (root) {
+'use strict';
+const N = root.MPNet, doc = document, $ = id => doc.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const BAD = /\b(anjing|bangsat|babi|kontol|memek|ngentot|goblok|tolol|fuck|shit|bitch)\b/gi;
+function cleanChat(x) { return String(x || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120).replace(BAD, w => w[0] + '*'.repeat(w.length - 1)); }
+function MPShell(cfg) {
+  const MAX = cfg.max, toast = cfg.toast, sfx = cfg.sfx || {};
+  const conn = new N.Connection({ storage: root.sessionStorage, onWake: () => room && room.refresh(), lobbyWake: () => gmWake() });
+  let room = null, me = 0, onlineOk = false, seatSeen = null, gm = false, gmRooms = null, gmErr = '', gmBusy = false, gmAt = 0, gmWakeT = 0, gmUI = null;
+  const chatKeys = new Set(); let chatSeq = Date.now() % 1e7, chatAt = 0;
+  const myName = () => cfg.myName();
+  function errMsg(e) { if (!e) return 'Koneksi bermasalah'; if (e.code === 'busy') return 'Server sibuk, coba ' + (e.wait || 10) + ' dtk lagi'; if (e.code === 'network') return 'Koneksi bermasalah'; if (e.status === 404 || e.status === 422) return 'Room tidak ditemukan'; if (e.status === 409) return 'Room penuh / sedang main'; return 'Gagal: ' + (e.server || e.message || ''); }
+  const canRun = r => { r = r || room; return !!r && (r.isHost() || r.isGamemaster()); };
+  const isGm = id => !!room && id != null && id > 0 && room.isGamemaster(id);
+  function gmMeSync() { doc.documentElement.classList.toggle('gm-on', !!room && room.isGamemaster()); if (gmUI) gmUI.sync(); }
+  async function enter(kind, opts) {
+    if (room) { const old = room; room = null; old.leave(); }
+    const r = new N.Room(conn, { onChange: onRoom }); room = r; resetChat(); if (cfg.onEnter) cfg.onEnter(r);
+    try { await r.enter(kind, Object.assign({ set: Object.assign({}, cfg.defSet || {}), maxPlayers: MAX }, opts)); } catch (e) { if (room === r) room = null; throw e; }
+    me = r.me; addChatLine({ k: 'sys-in' + Date.now(), t: 'sys', x: (myName() || 'Kamu') + ' masuk room' }); gmMeSync(); onRoom(r, r.data); if (cfg.afterEnter) cfg.afterEnter(r); return r;
+  }
+  async function action(kind) {
+    const name = myName(); if (!name) { toast('Isi nama dulu', 'warn'); $('nameInput').focus(); return; }
+    if (cfg.saveName) cfg.saveName(name); const code = $('codeInput').value.trim().toUpperCase();
+    if (kind === 'join' && !/^[A-Z2-9]{6}$/.test(code)) { toast('Kode room 6 huruf/angka', 'warn'); return; }
+    btns(true);
+    try { await enter(kind, { displayName: name, code }); }
+    catch (e) { if (kind === 'join' && e.status === 409) { try { await enter('watch', { displayName: name, code }); toast('Room penuh (maks ' + MAX + '), kamu menonton', 'warn', 4000); } catch (e2) { toast(errMsg(e2), 'warn', 4000); } } else toast(errMsg(e), 'warn', 4000); }
+    finally { btns(!onlineOk); }
+  }
+  const btns = dis => doc.querySelectorAll('.online-btn').forEach(b => { b.disabled = dis; });
+  function onRoom(r, data) {
+    if (r !== room) return;
+    if (!data) { toast('Room ditutup', 'warn'); leave(true); return; }
+    me = r.me; gmMeSync(); joinLeave(r.seated()); syncChat(r.s.cm); cfg.onRoom(r, data);
+  }
+  function joinLeave(ps) { const ids = new Map(ps.map(p => [p.id, p.displayName])); if (seatSeen) { for (const [id, n] of ids) if (!seatSeen.has(id) && id !== me) { addChatLine({ k: 'sj' + id + Date.now(), t: 'sys', x: n + ' masuk room' }); if (sfx.chat) sfx.chat(); } for (const [id, n] of seatSeen) if (!ids.has(id)) addChatLine({ k: 'sl' + id + Date.now(), t: 'sys', x: n + ' keluar' }); } seatSeen = ids; }
+  async function leave(silent) { const r = room; room = null; if (r) { try { await r.leave(); } catch (e) { /* gone */ } } if (cfg.onLeave) cfg.onLeave(silent); }
+  async function edit(type, fn) { const r = room; if (!r) return null; try { return await r.edit(type, fn); } catch (e) { toast(errMsg(e), 'warn'); return null; } }
+  async function setRoom(k, v) { if (!canRun()) return; await edit('set', s => { if (s.ph !== 'lobby') return null; s.set[k] = v; }); }
+  /* standard lobby: code, visibility, players x/MAX, host box */
+  function renderLobby() {
+    const r = room; if (!r || !r.data) return; const ps = r.seated(), host = canRun(r);
+    $('roomCode').textContent = r.code; $('lobbyVis').textContent = (r.data.visibility === 'public' ? 'Room publik: siapa saja bisa masuk lewat "Cari lawan".' : 'Room privat: masuk pakai kode atau link undangan.') + ' Maks ' + MAX + ' pemain.';
+    const extra = cfg.lobbyRows ? cfg.lobbyRows(r, ps) : { rows: null, count: ps.length };
+    $('pCount').textContent = extra.count + '/' + MAX;
+    $('pList').innerHTML = extra.rows || ps.map((p, i) => '<li><span class="dot" style="background:' + (cfg.color ? cfg.color(p, i) : '#f5b301') + '"></span><span>' + esc(p.displayName) + (isGm(p.id) ? ' <em class="gm-tag">(GM)</em>' : '') + '</span>' + (p.id === r.me ? '<span class="tag">kamu</span>' : '') + (p.host ? '<span class="tag">host</span>' : '') + (cfg.tag ? cfg.tag(p, i, r) : '') + '</li>').join('');
+    $('hostBox').hidden = !host;
+    $('lobbyWait').textContent = r.spectator ? 'Kamu menonton.' : host ? (cfg.hostHint ? cfg.hostHint(r, ps) : '') : 'Menunggu host memulai\u2026';
+    if (cfg.renderLobby) cfg.renderLobby(r, ps, host);
+  }
+  /* chat */
+  function resetChat() { chatKeys.clear(); $('chatLog').innerHTML = ''; seatSeen = null; }
+  function addChatLine(m) {
+    if (!m || !m.k || chatKeys.has(m.k)) return; chatKeys.add(m.k); const log = $('chatLog'), p = doc.createElement('p');
+    if (m.t === 'sys') { p.className = 'sys'; p.textContent = m.x; } else { p.innerHTML = '<b>' + esc(m.n || '?') + (isGm(m.p) ? ' <em class="gm-tag">(GM)</em>' : '') + ':</b> ' + esc(m.x); if (cfg.onChat) cfg.onChat(m); }
+    const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.appendChild(p); while (log.children.length > 80) log.firstChild.remove(); if (stick) log.scrollTop = log.scrollHeight;
+  }
+  function syncChat(cm) { for (const m of cm || []) { if (!m || typeof m !== 'object') continue; const fresh = !chatKeys.has(String(m.k || '')); addChatLine({ k: String(m.k || ''), p: m.p, n: String(m.n || ''), x: cleanChat(m.x) }); if (fresh && m.p !== me && chatKeys.size > 1 && sfx.chat) sfx.chat(); } }
+  async function sendChat(raw) {
+    const x = cleanChat(raw); if (!x) return false; const n = Date.now(); if (n - chatAt < 1200) { toast('Pelan-pelan soraknya \ud83d\ude42', 'warn', 1400); return false; } chatAt = n;
+    if (!room) { if (cfg.localChat) cfg.localChat(x); return true; }
+    const m = { k: 'c' + me + '.' + (++chatSeq), p: me, n: myName() || '?', x }; addChatLine(m); if (sfx.cheer) sfx.cheer();
+    try { await room.edit('chat', s => { s.cm = (s.cm || []).concat([m]).slice(-30); }); } catch (e) { toast(errMsg(e), 'warn'); } return true;
+  }
+  /* GM */
+  const gmHash = () => { const h = (location.hash || '').toLowerCase(); return h.includes(N.GM_KEY) || h.includes('gamemaster'); };
+  function gmSync() { const on = gmHash(); if (on === gm) return; gm = on; gmRooms = null; gmErr = ''; $('gmRooms').hidden = !gm; if (gm) gmLoad(); else renderGm(); }
+  async function gmLoad() { if (!gm || gmBusy) return; if (!onlineOk) { renderGm(); return; } gmBusy = true; gmAt = Date.now(); renderGm(); try { const d = await conn.rooms({ gm: true }); gmRooms = Array.isArray(d && d.rooms) ? d.rooms : []; gmErr = ''; } catch (e) { gmErr = errMsg(e); } finally { gmBusy = false; renderGm(); } }
+  function gmWake() { if (!gm || room) return; clearTimeout(gmWakeT); gmWakeT = setTimeout(gmLoad, 1200); }
+  function renderGm() {
+    const box = $('gmRooms'); box.hidden = !gm; if (!gm) return; const list = gmRooms || [];
+    $('gmNote').textContent = !onlineOk ? 'Online belum siap' : gmErr ? gmErr : gmRooms === null ? 'Memuat\u2026' : list.length ? list.length + ' room' : 'Belum ada room';
+    $('gmList').innerHTML = list.map(r => { const code = esc(r.code), playing = r.status === 'playing'; return '<li><b class="code">' + code + '</b><span class="gm-meta"><span class="badge">' + (r.visibility === 'private' ? 'privat' : 'publik') + '</span> <span class="badge">' + (playing ? 'main' : 'lobby') + '</span> <small class="muted">' + (Number(r.seated) || 0) + '/' + (Number(r.maxPlayers) || 0) + '</small></span>' + (playing ? '' : '<button class="btn small green online-btn" data-gm="join" data-code="' + code + '">Masuk</button>') + '<button class="btn small ghost online-btn" data-gm="watch" data-code="' + code + '">Tonton</button></li>'; }).join('');
+  }
+  async function gmEnter(kind, code) { if (!/^[A-Z2-9]{6}$/.test(code || '')) return; $('codeInput').value = code; if (kind === 'join') return action('join'); const name = myName(); if (!name) { toast('Isi nama dulu', 'warn'); return; } try { await enter('watch', { displayName: name, code }); } catch (e) { toast(errMsg(e), 'warn'); } }
+  function gmClaimUI({ canClaim, claim, onDone }) {
+    const d = document, w = window, m = d.createElement('div'); m.id = 'gmClaim'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Kode gamemaster');
+    m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center';
+    m.innerHTML = '<form id="gmClaimForm" style="background:#fff;color:#222;padding:16px;border-radius:14px;width:260px;max-width:86vw;font:14px system-ui,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.3)"><b style="display:block;margin-bottom:8px">Kode gamemaster</b>'
+      + '<input id="gmClaimInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Masukkan kode" maxlength="128" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #bbb;border-radius:8px;font:inherit;color:#222;background:#fff">'
+      + '<p id="gmClaimErr" role="alert" style="color:#c0392b;min-height:1.2em;margin:6px 0;font-size:13px"></p><div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" id="gmClaimCancel" style="padding:6px 12px;border-radius:8px;border:1px solid #bbb;background:#f3f3f3;color:#222;font:inherit">Batal</button>'
+      + '<button type="submit" id="gmClaimOk" style="padding:6px 12px;border-radius:8px;border:0;background:#c0392b;color:#fff;font:600 14px system-ui,sans-serif">Masuk</button></div></form>';
+    d.body.appendChild(m);
+    const inp = m.querySelector('#gmClaimInput'), er = m.querySelector('#gmClaimErr'), ok = m.querySelector('#gmClaimOk');
+    const trig = () => /[?&]gmjd(=|&|$)/i.test(w.location.search || '') || /gamemaster/i.test(w.location.hash || '');
+    let busy = false, want = trig(), asked = false;
+    const close = () => { m.style.display = 'none'; inp.value = ''; er.textContent = ''; };
+    const open = () => { if (!canClaim()) return; er.textContent = ''; inp.value = ''; m.style.display = 'flex'; setTimeout(() => inp.focus(), 20); };
+    m.addEventListener('click', e => { if (e.target === m) close(); }); m.addEventListener('keydown', e => { e.stopPropagation(); if (e.key === 'Escape') close(); }); m.addEventListener('keyup', e => e.stopPropagation());
+    m.querySelector('#gmClaimCancel').addEventListener('click', close);
+    m.querySelector('#gmClaimForm').addEventListener('submit', async e => {
+      e.preventDefault(); e.stopPropagation(); const code = inp.value.trim(); if (!code || busy) { inp.focus(); return; } busy = true; ok.disabled = true; er.textContent = '';
+      try { await claim(code); want = false; close(); if (trig() && w.history && w.history.replaceState) { const u = new URL(w.location.href); for (const k of [...u.searchParams.keys()]) if (k.toLowerCase() === 'gmjd') u.searchParams.delete(k); w.history.replaceState(w.history.state, '', u.pathname + u.search + u.hash); } sync(); if (onDone) onDone(); }
+      catch (x) { inp.value = ''; er.textContent = x && x.status === 403 ? 'Kode salah.' : 'Gagal, coba lagi.'; inp.focus(); }
+      finally { busy = false; ok.disabled = false; }
+    });
+    function sync() { const on = !!canClaim(); if (!on) { asked = false; if (m.style.display !== 'none' && !busy) close(); return; } if (want && !asked) { asked = true; open(); } }
+    return { sync, open, close };
+  }
+  function invite() { if (!room) return; const url = location.origin + location.pathname + '?room=' + room.code, done = () => toast('Link undangan disalin', 'good'); if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) navigator.share({ title: cfg.title, text: cfg.inviteText + ' \u00b7 room ' + room.code, url }).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => toast(url, '', 6000)); else toast(url, '', 6000); }
+  async function boot() {
+    $('matchBtn').addEventListener('click', () => action('match')); $('createPub').addEventListener('click', () => action('public')); $('createPriv').addEventListener('click', () => action('private'));
+    $('joinForm').addEventListener('submit', e => { e.preventDefault(); action('join'); });
+    $('codeInput').addEventListener('input', e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+    $('inviteBtn').addEventListener('click', invite); $('lobbyLeave').addEventListener('click', () => leave(false));
+    $('quickChat').innerHTML = (cfg.quick || []).map(q => '<button type="button">' + esc(q) + '</button>').join(''); $('quickChat').addEventListener('click', e => { const b = e.target.closest('button'); if (b) sendChat(b.textContent); });
+    $('chatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('chatInput'); Promise.resolve(sendChat(i.value)).then(ok => { if (ok) i.value = ''; }); if (cfg.afterChatSubmit) cfg.afterChatSubmit(i); });
+    root.addEventListener('pagehide', () => { if (room) conn.leaveBeacon(); });
+    doc.addEventListener('visibilitychange', () => { if (doc.visibilityState === 'visible' && conn.config) conn.visible(); });
+    $('gmRefresh').addEventListener('click', gmLoad); $('gmList').addEventListener('click', e => { const b = e.target.closest('[data-gm]'); if (b) gmEnter(b.dataset.gm, b.dataset.code); });
+    root.addEventListener('hashchange', gmSync); setInterval(() => { if (gm && !room && doc.visibilityState === 'visible' && Date.now() - gmAt > 10000) gmLoad(); }, 2000);
+    gmSync(); gmUI = gmClaimUI({ canClaim: () => !!room && !!room.data && !room.local && !room.isGamemaster(), claim: code => room.claimGamemaster(code), onDone: () => { toast('Mode gamemaster aktif: kamu bisa mulai & atur room', 'good', 3200); gmMeSync(); if (room) cfg.onRoom(room, room.data); } });
+    btns(true);
+    if (conn.allowed) { try { await conn.start(); onlineOk = true; } catch (e) { conn.failed = true; onlineOk = false; } }
+    btns(!onlineOk);
+    const note = $('onlineNote'), msg = !conn.allowed ? 'Mode online hanya di ' + cfg.slug + '.jadidaring.com. Mode lawan bot tetap jalan.' : conn.failed ? 'Server online sedang tidak bisa dihubungi. Mode lawan bot tetap jalan.' : ''; note.textContent = msg; note.hidden = !msg;
+    if (gm) gmLoad();
+    if (conn.code && conn.token) { try { await conn.leave(); } catch (e) { conn.forget(); } }
+    const JR = root.JRInvite, invCode = JR && JR.code ? JR.code('room') : '';
+    if (invCode && JR.run) {
+      JR.run({ code: invCode, lang: 'id', gameName: cfg.title, nameMax: 16, accent: cfg.accent,
+        check: async code => { if (!conn.allowed) return 'offline'; if (!onlineOk) return { fallback: 'Server online sedang tidak bisa dihubungi.' }; return conn.probe(code); },
+        join: async name => {
+          $('nameInput').value = name; if (cfg.saveName) cfg.saveName(myName());
+          try { await enter('join', { displayName: myName() || name, code: invCode }); return { ok: true }; }
+          catch (e) { if (e.status === 409) { try { await enter('watch', { displayName: name, code: invCode }); toast('Room penuh (maks ' + MAX + '), kamu menonton', 'warn', 4000); return { ok: true }; } catch (e2) { /* fall through */ } } if (e.status === 404 || e.status === 422) return { ok: false, missing: true }; return { ok: false, retry: true, message: errMsg(e) }; }
+        }, fallback: () => {} });
+    }
+  }
+  return { conn, boot, enter, action, leave, edit, setRoom, renderLobby, sendChat, addChatLine, canRun, isGm, errMsg, invite, get room() { return room; }, get me() { return me; }, get online() { return onlineOk; }, sNow: () => conn.serverNow() };
+}
+root.MPShell = MPShell; root.JDK = Object.assign(root.JDK || {}, { esc, cleanChat });
+})(window);
+/* Penalti Timnas rules (pure, deterministic): shot = {x, y, p} aim on goal plane (x -1..1 posts, y 0..1 bar) + power 0..1.3,
+   dive = {x, y} keeper guess. resolve() -> outcome. Match = 5 kicks each alternating, then sudden death (max 10 rounds), early finish when decided. */
+(function (root) {
+'use strict';
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const gauss = r => { let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+const POST = 0.045; // post thickness in goal units
+const KITS = [
+  { id: 'merah', n: 'Garuda Merah', a: '#d7192a', b: '#ffffff', c: '#fff' },
+  { id: 'putih', n: 'Putih Away', a: '#f5f5f0', b: '#d7192a', c: '#d7192a' },
+  { id: 'biru', n: 'Biru Samudra', a: '#1d4fb8', b: '#ffd23f', c: '#fff' },
+  { id: 'hijau', n: 'Hijau Kampung', a: '#13915a', b: '#ffffff', c: '#fff' },
+];
+const kitOf = id => KITS.find(k => k.id === id) || KITS[0];
+const BOTS = [
+  { n: 'Ucup FC', skill: 0.35, read: 0.15, kit: 'hijau' }, { n: 'Persikampung', skill: 0.5, read: 0.3, kit: 'biru' },
+  { n: 'Gajah Putih', skill: 0.65, read: 0.45, kit: 'putih' }, { n: 'Badai Timur', skill: 0.78, read: 0.55, kit: 'biru' },
+];
+/** shot + dive -> outcome. seed adds the scatter (power overshoot / mishit). */
+function resolve(shot, dive, seed) {
+  const r = rng(seed || 1), p = clamp(+shot.p || 0, 0, 1.4);
+  const sig = 0.035 + 0.16 * Math.max(0, p - 0.88) + 0.05 * Math.max(0, 0.3 - p);
+  let x = clamp(+shot.x || 0, -1.8, 1.8) + gauss(r) * sig, y = clamp(+shot.y || 0, -0.1, 1.8) + gauss(r) * sig * 0.8 + Math.max(0, p - 0.95) * 1.4;
+  y = Math.max(0.02, y);
+  const kx = clamp(+dive.x || 0, -1, 1), ky = clamp(+dive.y || 0.3, 0, 1);
+  const speed = 0.55 + 0.6 * Math.min(p, 1.1); // goal units per 0.1 s-ish (only for anim + reach)
+  let out;
+  const ax = Math.abs(x);
+  if (ax > 1 + POST || y > 1 + POST) out = y > 1 + POST && ax <= 1.15 ? 'over' : ax > 1 + POST && y <= 1.1 ? 'wide' : 'over';
+  else if (ax > 1 - POST * 0.2 || y > 1 - POST * 0.2) out = y > 1 - POST * 0.2 && ax < 1 - POST ? 'bar' : 'post';
+  else out = 'in';
+  let saved = false, reach = 0, dist = 0;
+  if (out === 'in') {
+    const corner = ax > 0.72 && (y > 0.66 || y < 0.16);
+    reach = (0.43 + 0.3 * clamp(1 - p, 0, 0.8)) * (corner ? 0.72 : 1) * (Math.abs(kx) < 0.25 ? 0.85 : 1);
+    dist = Math.hypot(x - kx, (y - ky) * 1.25);
+    if (dist < reach) saved = true;
+    else if (Math.abs(kx) < 0.25 && Math.abs(x) < 0.3 && y < 0.7) saved = true; // blasted straight at a keeper who stayed
+    out = saved ? 'save' : 'goal';
+  }
+  return { out, goal: out === 'goal', x, y, kx, ky, p, speed, reach, dist };
+}
+const LABEL = { goal: 'GOOOL!', save: 'DITEPIS!', post: 'TIANG!', bar: 'MISTAR!', wide: 'MELEBAR!', over: 'MELAMBUNG!' };
+/** match state from results: res = [bool goal per kick], kick n: side n%2 kicks */
+function tally(res) {
+  const a = [], b = []; res.forEach((g, i) => (i % 2 ? b : a).push(!!g));
+  const sa = a.filter(Boolean).length, sb = b.filter(Boolean).length, n = res.length;
+  let done = false, win = -1;
+  if (n <= 10) {
+    const leftA = 5 - a.length, leftB = 5 - b.length;
+    if (sa > sb + leftB || sb > sa + leftA) done = true;
+    if (n === 10 && sa !== sb) done = true;
+  } else if (n % 2 === 0 && sa !== sb) done = true;
+  if (n >= 20 && n % 2 === 0 && !done) done = true; // safety: 10 rounds -> by last kick (coin)
+  if (done) win = sa > sb ? 0 : sb > sa ? 1 : (res[n - 1] ? 1 : 0);
+  return { a, b, sa, sb, done, win, round: Math.floor(n / 2), sudden: n >= 10 };
+}
+/** bot picks */
+function botShot(skill, r) {
+  const zx = [-0.82, -0.5, 0, 0.5, 0.82][Math.floor(r() * 5)], zy = [0.18, 0.5, 0.82][Math.floor(r() * 3)];
+  const wob = (1 - skill) * 0.35;
+  return { x: zx + gauss(r) * wob, y: zy + gauss(r) * wob * 0.7, p: clamp(0.62 + skill * 0.2 + gauss(r) * (0.18 - skill * 0.12), 0.3, 1.2) };
+}
+function botDive(read, history, r) {
+  // reads the kicker: leans to the side the human used most
+  if (history && history.length >= 2 && r() < read) { const mx = history.reduce((s, h) => s + h.x, 0) / history.length, my = history.reduce((s, h) => s + h.y, 0) / history.length; const side = history.reduce((s, h) => s + Math.sign(h.x), 0); return { x: clamp((side ? Math.sign(side) * 0.66 : mx) + (r() - 0.5) * 0.3, -1, 1), y: clamp(my, 0.1, 0.9) }; }
+  const opts = [{ x: -0.7, y: 0.25 }, { x: -0.7, y: 0.7 }, { x: 0, y: 0.35 }, { x: 0.7, y: 0.25 }, { x: 0.7, y: 0.7 }, { x: -0.4, y: 0.5 }, { x: 0.4, y: 0.5 }];
+  return opts[Math.floor(r() * opts.length)];
+}
+root.PT = { rng, resolve, tally, botShot, botDive, KITS, kitOf, BOTS, LABEL, clamp, POST };
+if (typeof module !== 'undefined') module.exports = root.PT;
+})(typeof window !== 'undefined' ? window : globalThis);
+/* Penalti Timnas renderer: night stadium (ring roof, red-white crowd wave, flares), pitch in perspective, goal + net, keeper & kicker, ball flight, replay zoom. window.PR */
+(function (root) {
+'use strict';
+const P = root.PT, TAU = Math.PI * 2, clamp = (v, a, b) => Math.max(a, Math.min(b, v)), lerp = (a, b, t) => a + (b - a) * t, ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
+let crowd = null, cW = 0, cH = 0; const parts = [];
+function layout(W, H) {
+  const GW = Math.min(W * 0.84, H * 0.56), GH = GW * 0.34, gy = H * 0.5;
+  return { W, H, cx: W / 2, hz: H * 0.3, gy, GW, GH, by: H * 0.79, br: clamp(W * 0.042, 12, 22) };
+}
+const g2s = (L, x, y) => [L.cx + x * L.GW / 2, L.gy - y * L.GH];
+const s2g = (L, sx, sy) => [(sx - L.cx) / (L.GW / 2), (L.gy - sy) / L.GH];
+/* timeline */
+const RUN = 0.55;
+const flyT = o => 0.62 - 0.22 * Math.min(o.p, 1.1);
+const arriveT = o => RUN + flyT(o);
+const animLen = o => arriveT(o) + 1.25;
+function ballAt(L, o, t) {
+  const [sx, sy] = [L.cx, L.by]; let [tx, ty] = g2s(L, o.x, o.y);
+  if (t < RUN) return { x: sx, y: sy, r: L.br, sh: 1, z: 0 };
+  const F = flyT(o), u = (t - RUN) / F;
+  if (u <= 1) { const k = ease(u * 0.9 + 0.1 * u * u), arc = Math.sin(Math.PI * u) * L.GH * (0.25 + 0.25 * o.p); return { x: lerp(sx, tx, k), y: lerp(sy, ty, k) - arc * (1 - o.y * 0.4), r: lerp(L.br, L.br * 0.42, k), sh: 1 - k * 0.6, z: u }; }
+  const a = t - RUN - F, r0 = L.br * 0.42;
+  if (o.out === 'goal') { const q = ease(a / 0.18), fall = clamp((a - 0.12) / 0.45, 0, 1); const bx = tx + (tx - L.cx) * 0.06 * q, byy = lerp(ty - L.GH * 0.04 * q, L.gy - L.GH * 0.1, fall * fall); return { x: bx, y: byy - Math.abs(Math.sin(fall * 5)) * (1 - fall) * L.GH * 0.06, r: r0 * (1 - 0.14 * q), sh: 0.4, z: 2 }; }
+  if (o.out === 'save' || o.out === 'post' || o.out === 'bar') {
+    const dir = o.out === 'save' ? (Math.sign(o.x - o.kx) || (o.x >= 0 ? 1 : -1)) : -Math.sign(o.x) || 1, up = o.out === 'bar' ? -1 : 0.4;
+    const q = clamp(a / 0.9, 0, 1), k = ease(q);
+    return { x: tx + dir * L.GW * 0.38 * k, y: ty + (L.by - ty) * 0.55 * k - Math.sin(Math.PI * q) * L.GH * (0.35 + up * 0.3), r: lerp(r0, L.br * 0.75, k), sh: 0.6, z: 1 };
+  }
+  // wide / over: keep flying
+  const vx = (tx - sx) / F, vy = (ty - sy) / F, q = clamp(a / 0.6, 0, 1);
+  return { x: tx + vx * a * 0.6, y: ty + vy * a * 0.6 - a * a * L.GH * 0.2, r: r0 * (1 - 0.3 * q), sh: 0, z: 3, fade: q };
+}
+function keeperAt(L, o, t, idle) {
+  if (!o || t < 0.47) return { x: Math.sin(idle * 3.1) * 0.06, y: 0, ang: 0, q: 0 };
+  const q = ease((t - 0.47) / 0.42), side = Math.abs(o.kx) < 0.25 ? 0 : Math.sign(o.kx), reach = side ? Math.min(1, Math.abs(o.kx) / 0.7) : 0;
+  return { x: o.kx * q * 0.86, y: Math.max(0, (o.ky - 0.25)) * q * 0.9, ang: -side * q * 1.25 * reach, q, side };
+}
+/* ---- painters ---- */
+function buildCrowd(L) {
+  const r = P.rng(77), dots = [], tiers = 4;
+  for (let t = 0; t < tiers; t++) {
+    const y0 = L.H * 0.06 + t * L.H * 0.055, n = Math.round(L.W / 7);
+    for (let i = 0; i < n; i++) { const x = (i + r() * 0.6) / n * L.W, curve = Math.pow((x - L.cx) / L.W, 2) * L.H * 0.12; const c = r(); dots.push({ x, y: y0 + curve + r() * L.H * 0.04, c: c < 0.55 ? '#e0242f' : c < 0.85 ? '#f4f1ea' : c < 0.93 ? '#ffd23f' : '#3a4a8a', s: 2 + r() * 2 + t * 0.6, ph: r() * TAU }); }
+  }
+  return dots;
+}
+function stadium(g, L, now, ex) {
+  const { W, H, hz } = L;
+  let gr = g.createLinearGradient(0, 0, 0, hz); gr.addColorStop(0, '#060d24'); gr.addColorStop(1, '#1b2f66'); g.fillStyle = gr; g.fillRect(0, 0, W, hz + 2);
+  // ring roof (temu gelang style)
+  g.strokeStyle = 'rgba(190,205,255,.35)'; g.lineWidth = 3; g.beginPath(); g.ellipse(L.cx, H * 0.02, W * 0.75, H * 0.09, 0, 0, Math.PI); g.stroke();
+  g.lineWidth = 1; for (let i = 0; i < 18; i++) { const a = i / 17 * Math.PI; g.beginPath(); g.moveTo(L.cx + Math.cos(a) * W * 0.75, H * 0.02 + Math.sin(a) * H * 0.09); g.lineTo(L.cx + Math.cos(a) * W * 0.8, H * 0.02 + Math.sin(a) * H * 0.13 - 4); g.stroke(); }
+  // stands
+  g.fillStyle = '#15204a'; g.beginPath(); g.moveTo(0, H * 0.06); g.quadraticCurveTo(L.cx, H * 0.02, W, H * 0.06); g.lineTo(W, hz); g.lineTo(0, hz); g.fill();
+  for (let t = 0; t < 5; t++) { const y = H * 0.06 + t * H * 0.055; g.fillStyle = t % 2 ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.18)'; g.beginPath(); g.moveTo(0, y + H * 0.012); g.quadraticCurveTo(L.cx, y - H * 0.02, W, y + H * 0.012); g.lineTo(W, y + H * 0.03); g.quadraticCurveTo(L.cx, y, 0, y + H * 0.03); g.fill(); }
+  if (!crowd || cW !== W || cH !== H) { crowd = buildCrowd(L); cW = W; cH = H; }
+  const wave = now * 2.2;
+  for (const d of crowd) { const w = Math.max(0, Math.sin(wave - d.x / W * 7)); const j = (w * w * 3 + Math.max(0, Math.sin(now * 9 + d.ph)) * ex * 4); g.fillStyle = d.c; g.fillRect(d.x, d.y - j, d.s, d.s * 1.4); }
+  // flags
+  for (let i = 0; i < 3; i++) { const fx = W * (0.18 + i * 0.32), fy = H * 0.12 + i % 2 * H * 0.04, wv = Math.sin(now * 3 + i) * 4; g.fillStyle = '#e0242f'; g.beginPath(); g.moveTo(fx, fy); g.quadraticCurveTo(fx + 14, fy - 4 + wv, fx + 30, fy + wv); g.lineTo(fx + 30, fy + 9 + wv); g.quadraticCurveTo(fx + 14, fy + 5 + wv, fx, fy + 9); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.moveTo(fx, fy + 9); g.quadraticCurveTo(fx + 14, fy + 5 + wv, fx + 30, fy + 9 + wv); g.lineTo(fx + 30, fy + 18 + wv); g.quadraticCurveTo(fx + 14, fy + 14 + wv, fx, fy + 18); g.fill(); }
+  // floodlights
+  for (const fx of [W * 0.06, W * 0.94]) { const rg = g.createRadialGradient(fx, H * 0.035, 2, fx, H * 0.035, W * 0.35); rg.addColorStop(0, 'rgba(255,255,235,.95)'); rg.addColorStop(0.08, 'rgba(255,255,220,.35)'); rg.addColorStop(1, 'rgba(255,255,220,0)'); g.fillStyle = rg; g.fillRect(0, 0, W, hz); }
+  // flares when excited
+  if (ex > 0.3) for (let i = 0; i < 5; i++) { const fx = W * (0.1 + i * 0.2) + Math.sin(now + i) * 6, fy = H * 0.15 + (i % 2) * H * 0.05; const rg = g.createRadialGradient(fx, fy, 1, fx, fy, 26 * ex); rg.addColorStop(0, 'rgba(255,230,180,' + ex + ')'); rg.addColorStop(0.3, 'rgba(255,60,30,' + 0.6 * ex + ')'); rg.addColorStop(1, 'rgba(255,40,20,0)'); g.fillStyle = rg; g.fillRect(fx - 30, fy - 30, 60, 60); }
+  // ad boards
+  const ay = hz - H * 0.035; g.fillStyle = '#0a1230'; g.fillRect(0, ay, W, H * 0.035);
+  g.font = '900 ' + Math.round(H * 0.022) + 'px system-ui,sans-serif'; g.textBaseline = 'middle'; g.textAlign = 'center';
+  const ads = ['AYO GARUDA', 'JADIDARING', 'MERAH PUTIH', 'GAME HUB']; const off = (now * 30) % (W / 2);
+  for (let i = -1; i < 5; i++) { const x = i * W / 2 - off + W / 4; g.fillStyle = i % 2 ? '#ffd23f' : '#fff'; g.fillText(ads[(i + 4) % 4], x, ay + H * 0.018); }
+}
+function pitch(g, L) {
+  const { W, H, hz, gy } = L; const gr = g.createLinearGradient(0, hz, 0, H); gr.addColorStop(0, '#1d7a3c'); gr.addColorStop(1, '#2fa152'); g.fillStyle = gr; g.fillRect(0, hz, W, H - hz);
+  // mowing wedges converging to a vanishing point (oblique ground plane)
+  { const vx = L.cx, vy = hz - H * 0.55; g.fillStyle = 'rgba(255,255,255,.045)'; for (let i = -9; i <= 9; i += 2) { const x0 = L.cx + i * W * 0.16, x1 = L.cx + (i + 1) * W * 0.16, k0 = (H - vy) / (hz - vy); g.beginPath(); g.moveTo(vx + (x0 - vx) / k0, hz); g.lineTo(vx + (x1 - vx) / k0, hz); g.lineTo(x1, H); g.lineTo(x0, H); g.fill(); } }
+  // stripes
+  let y = hz, k = 0, h = 6; while (y < H) { if (k % 2) { g.fillStyle = 'rgba(255,255,255,.05)'; g.fillRect(0, y, W, h); } y += h; h *= 1.28; k++; }
+  g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 2;
+  g.beginPath(); g.moveTo(0, gy); g.lineTo(W, gy); g.stroke(); // goal line
+  const bw = L.GW * 0.78, sixY = gy + (L.by - gy) * 0.28; g.beginPath(); g.moveTo(L.cx - bw, gy); g.lineTo(L.cx - bw * 1.12, sixY); g.lineTo(L.cx + bw * 1.12, sixY); g.lineTo(L.cx + bw, gy); g.stroke();
+  const pw = L.GW * 1.6, boxY = gy + (L.by - gy) * 1.25; g.beginPath(); g.moveTo(L.cx - pw, gy); g.lineTo(L.cx - pw * 1.35, boxY); g.lineTo(L.cx + pw * 1.35, boxY); g.lineTo(L.cx + pw, gy); g.stroke();
+  g.beginPath(); g.ellipse(L.cx, boxY, L.GW * 0.5, (H - boxY) * 0.25, 0, 0, Math.PI); g.stroke();
+  g.fillStyle = '#fff'; g.beginPath(); g.ellipse(L.cx, L.by + L.br * 0.9, 5, 2.4, 0, 0, TAU); g.fill();
+}
+function goalBack(g, L, bulge) {
+  const [lx, ty] = g2s(L, -1, 1), [rx] = g2s(L, 1, 1), d = L.GH * 0.42;
+  g.fillStyle = 'rgba(10,20,40,.25)'; g.beginPath(); g.moveTo(lx, L.gy); g.lineTo(lx + d * 0.4, L.gy - d * 0.25); g.lineTo(lx + d * 0.4, ty - d * 0.3); g.lineTo(rx - d * 0.4, ty - d * 0.3); g.lineTo(rx - d * 0.4, L.gy - d * 0.25); g.lineTo(rx, L.gy); g.closePath(); g.fill();
+  g.strokeStyle = 'rgba(255,255,255,.38)'; g.lineWidth = 1;
+  const off = (x, y) => { if (!bulge) return [x, y]; const dx = x - bulge.x, dy = y - bulge.y, dd = Math.hypot(dx, dy), f = bulge.a * Math.exp(-dd * dd / (L.GH * L.GH * 0.18)); return [x + dx * f * 0.3, y + dy * f * 0.3 - f * 4]; };
+  const nx = 18, ny = 7;
+  for (let i = 0; i <= nx; i++) { g.beginPath(); for (let j = 0; j <= ny; j++) { const x = lerp(lx + d * 0.4, rx - d * 0.4, i / nx), y = lerp(ty - d * 0.3, L.gy - d * 0.25, j / ny); const [a, b] = off(x, y); j ? g.lineTo(a, b) : g.moveTo(a, b); } g.stroke(); }
+  for (let j = 0; j <= ny; j++) { g.beginPath(); for (let i = 0; i <= nx; i++) { const x = lerp(lx + d * 0.4, rx - d * 0.4, i / nx), y = lerp(ty - d * 0.3, L.gy - d * 0.25, j / ny); const [a, b] = off(x, y); i ? g.lineTo(a, b) : g.moveTo(a, b); } g.stroke(); }
+  for (let j = 0; j <= 4; j++) { const t = j / 4; g.beginPath(); g.moveTo(lx, lerp(ty, L.gy, t)); g.lineTo(lx + d * 0.4, lerp(ty - d * 0.3, L.gy - d * 0.25, t)); g.moveTo(rx, lerp(ty, L.gy, t)); g.lineTo(rx - d * 0.4, lerp(ty - d * 0.3, L.gy - d * 0.25, t)); g.stroke(); }
+}
+function goalFrame(g, L, shake) {
+  const [lx, ty] = g2s(L, -1, 1), [rx] = g2s(L, 1, 1), w = Math.max(4, L.GW * 0.018), s = shake || 0;
+  g.fillStyle = 'rgba(0,0,0,.25)'; g.fillRect(lx - w / 2 + 3, L.gy - 2, rx - lx + w, 4);
+  for (const px of [lx, rx]) { const pg = g.createLinearGradient(px - w / 2 + s, 0, px + w / 2 + s, 0); pg.addColorStop(0, '#ffffff'); pg.addColorStop(0.55, '#e9eae4'); pg.addColorStop(1, '#9ea3a8'); g.fillStyle = pg; g.fillRect(px - w / 2 + s, ty - w / 2, w, L.gy - ty + w / 2); }
+  { const cg = g.createLinearGradient(0, ty - w / 2, 0, ty + w / 2); cg.addColorStop(0, '#ffffff'); cg.addColorStop(1, '#b8bcc0'); g.fillStyle = cg; g.fillRect(lx - w / 2 + s, ty - w / 2, rx - lx + w, w); }
+  softShadow(g, lx + (rx - lx) / 2 + w, L.gy + 2, (rx - lx) * 0.55, L.GH * 0.06, 0.25);
+  g.fillStyle = 'rgba(0,0,0,.12)'; g.fillRect(lx + w * 0.15 + s, ty, w * 0.3, L.gy - ty);
+}
+function person(g, x, fy, h, kit, o) {
+  // o: {ang, back, arms, leg, glove, num}
+  o = o || {}; g.save(); g.translate(x, fy - h * 0.5); g.rotate(o.ang || 0);
+  const sh = kit.a, tr = kit.b, skin = o.skin || '#c98a5a', hw = h * 0.17;
+  // legs
+  g.strokeStyle = '#1a1a2a'; g.lineCap = 'round'; g.lineWidth = h * 0.09; const lg = o.leg || 0;
+  g.beginPath(); g.moveTo(-hw * 0.45, h * 0.12); g.lineTo(-hw * 0.6 - lg * h * 0.1, h * 0.48); g.moveTo(hw * 0.45, h * 0.12); g.lineTo(hw * 0.6 + lg * h * 0.25, h * 0.48 - lg * h * 0.12); g.stroke();
+  g.strokeStyle = skin; g.lineWidth = h * 0.06; g.beginPath(); g.moveTo(-hw * 0.55, h * 0.3); g.lineTo(-hw * 0.6 - lg * h * 0.1, h * 0.46); g.stroke();
+  // shorts
+  g.fillStyle = tr; g.fillRect(-hw, h * 0.02, hw * 2, h * 0.14);
+  // arms
+  const ar = o.arms || 0; g.strokeStyle = sh; g.lineWidth = h * 0.075;
+  g.beginPath(); g.moveTo(-hw * 0.9, -h * 0.25); g.lineTo(-hw * 1.4 - ar * h * 0.25, -h * 0.05 - ar * h * 0.42); g.moveTo(hw * 0.9, -h * 0.25); g.lineTo(hw * 1.4 + ar * h * 0.25, -h * 0.05 - ar * h * 0.42); g.stroke();
+  if (o.glove) { g.fillStyle = o.glove; for (const s of [-1, 1]) { g.beginPath(); g.arc(s * (hw * 1.4 + ar * h * 0.25), -h * 0.05 - ar * h * 0.42, h * 0.065, 0, TAU); g.fill(); } }
+  // torso (painted: light from the floodlights top-left, dark outline)
+  g.fillStyle = sh; g.beginPath(); g.moveTo(-hw, -h * 0.3); g.lineTo(hw, -h * 0.3); g.lineTo(hw * 0.9, h * 0.04); g.lineTo(-hw * 0.9, h * 0.04); g.closePath(); g.fill(); g.strokeStyle = 'rgba(10,10,24,.55)'; g.lineWidth = Math.max(1, h * 0.012); g.stroke();
+  { const tg = g.createLinearGradient(-hw, -h * 0.3, hw, h * 0.04); tg.addColorStop(0, 'rgba(255,255,255,.22)'); tg.addColorStop(0.5, 'rgba(255,255,255,0)'); tg.addColorStop(1, 'rgba(0,0,30,.28)'); g.fillStyle = tg; g.fill(); }
+  g.fillStyle = tr; g.fillRect(-hw, -h * 0.3, hw * 2, h * 0.04);
+  if (o.back && o.num) { g.fillStyle = kit.c; g.font = '900 ' + Math.round(h * 0.16) + 'px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(o.num, 0, -h * 0.12); }
+  // head
+  g.fillStyle = skin; g.beginPath(); g.arc(0, -h * 0.4, h * 0.09, 0, TAU); g.fill(); g.strokeStyle = 'rgba(10,10,24,.45)'; g.lineWidth = Math.max(1, h * 0.01); g.stroke(); g.fillStyle = '#1b130e'; g.beginPath(); g.arc(0, -h * 0.42 - (o.back ? -h * 0.01 : h * 0.01), h * 0.092, Math.PI * (o.back ? 0.9 : 1.05), Math.PI * (o.back ? 2.1 : 1.95)); g.fill(); if (o.back) { g.beginPath(); g.arc(0, -h * 0.41, h * 0.085, 0, TAU); g.fill(); }
+  g.restore();
+}
+function softShadow(g, x, y, rx, ry, a) { const gr = g.createRadialGradient(x, y, 0, x, y, rx); gr.addColorStop(0, 'rgba(0,8,4,' + a + ')'); gr.addColorStop(0.6, 'rgba(0,8,4,' + a * 0.5 + ')'); gr.addColorStop(1, 'rgba(0,8,4,0)'); g.save(); g.translate(x, y); g.scale(1, ry / rx); g.translate(-x, -y); g.fillStyle = gr; g.beginPath(); g.arc(x, y, rx, 0, TAU); g.fill(); g.restore(); }
+function ball(g, b, alpha) {
+  if (alpha != null) g.globalAlpha = alpha; const bg = g.createRadialGradient(b.x - b.r * 0.35, b.y - b.r * 0.4, b.r * 0.1, b.x, b.y, b.r); bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.7, '#eef0f4'); bg.addColorStop(1, '#a9afbd'); g.fillStyle = bg; g.beginPath(); g.arc(b.x, b.y, b.r, 0, TAU); g.fill(); g.strokeStyle = 'rgba(0,0,0,.35)'; g.lineWidth = 1; g.stroke();
+  g.fillStyle = '#1a1a2a'; g.beginPath(); g.arc(b.x, b.y, b.r * 0.32, 0, TAU); g.fill(); for (let i = 0; i < 5; i++) { const a = i / 5 * TAU + (b.spin || 0); g.beginPath(); g.arc(b.x + Math.cos(a) * b.r * 0.78, b.y + Math.sin(a) * b.r * 0.78, b.r * 0.2, 0, TAU); g.fill(); }
+  g.globalAlpha = 1;
+}
+function burst(x, y, n, cols) { for (let i = 0; i < n; i++) { const a = Math.random() * TAU, s = 80 + Math.random() * 260; parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 160, life: 1 + Math.random() * 0.8, c: cols[i % cols.length], w: 3 + Math.random() * 4, rot: Math.random() * TAU }); } }
+function stepParts(g, dt) { for (let i = parts.length - 1; i >= 0; i--) { const p = parts[i]; p.life -= dt; if (p.life <= 0) { parts.splice(i, 1); continue; } p.vy += 380 * dt; p.vx *= 0.99; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += dt * 8; g.save(); g.globalAlpha = Math.min(1, p.life); g.translate(p.x, p.y); g.rotate(p.rot); g.fillStyle = p.c; g.fillRect(-p.w / 2, -p.w * 0.3, p.w, p.w * 0.6); g.restore(); } }
+/** main scene. st: {now, dt, anim:{o,t,kKit,gKit,num,replay}, ex, aim:{x,y,p,live}, keep:{x,y,show}, kKit, gKit} */
+function scene(g, L, st) {
+  const A = st.anim, o = A && A.o, t = A ? A.t : 0;
+  g.save();
+  if (A && A.replay) { const z = 1.4, fx = L.cx, fy = L.gy - L.GH * 0.3; g.translate(fx, fy); g.scale(z, z); g.translate(-fx, -fy + L.H * 0.06); }
+  { const par = (o ? (ballAt(L, o, t).x - L.cx) : (st.aim ? (g2s(L, st.aim.x, 0)[0] - L.cx) : Math.sin(st.now * 0.2) * L.W * 0.05)) * -0.04; g.save(); g.translate(L.cx, 0); g.scale(1.05, 1); g.translate(-L.cx + par, 0); stadium(g, L, st.now, st.ex || 0); g.restore(); } pitch(g, L);
+  const b = o ? ballAt(L, o, t) : { x: L.cx, y: L.by, r: L.br, sh: 1, z: 0 };
+  b.spin = o ? t * 18 * (o.p || 0.5) : 0;
+  const bul = o && o.out === 'goal' && t > arriveT(o) ? { x: g2s(L, o.x, o.y)[0], y: g2s(L, o.x, o.y)[1], a: Math.max(0, 1 - (t - arriveT(o)) * 1.4) * 1.2 } : null;
+  goalBack(g, L, bul);
+  const behind = o && (o.out === 'goal' || o.out === 'over' || o.out === 'wide') && b.z >= 2;
+  if (behind) ball(g, b, b.fade != null ? 1 - b.fade : 1);
+  // keeper
+  const K = keeperAt(L, o, t, st.now), kh = L.GH * 0.82, [kx] = g2s(L, K.x, 0);
+  softShadow(g, kx, L.gy + 2, kh * 0.26, kh * 0.05, 0.4);
+  person(g, kx + (K.side || 0) * kh * 0.15 * K.q, L.gy - K.y * L.GH, kh, st.gKit || P.KITS[1], { ang: K.ang, arms: o ? 0.4 + K.q * 0.6 : 0.35 + Math.sin(st.now * 3) * 0.08, glove: '#9cff5a', leg: K.q * 0.3 });
+  const shake = o && (o.out === 'post' || o.out === 'bar') && t > arriveT(o) ? Math.sin(t * 80) * Math.max(0, 1 - (t - arriveT(o)) * 2) * 3 : 0;
+  goalFrame(g, L, shake);
+  // shadow + ball
+  if (!behind) { if (b.sh > 0) { const shy = o && t > RUN ? lerp(L.by + L.br * 0.9, L.gy, clamp((t - RUN) / flyT(o), 0, 1)) : L.by + L.br * 0.9; softShadow(g, b.x, shy, b.r * 1.3, b.r * 0.42, 0.45 * b.sh); } ball(g, b, b.fade != null ? 1 - b.fade : 1); }
+  // kicker from behind
+  const kk = st.kKit || P.KITS[0], ph = o ? clamp(t / RUN, 0, 1) : 0, kH = L.H * 0.26;
+  const kxp = lerp(L.cx - L.W * 0.2, L.cx - L.br * 1.6, ph), kyp = lerp(L.H * 1.06, L.by + L.br * 1.6, ph);
+  if (!st.noKicker && (!A || !A.replay || t < 1.1)) softShadow(g, kxp, kyp, kH * 0.22, kH * 0.05, 0.42);
+  if (!st.noKicker && (!A || !A.replay || t < 1.1)) person(g, kxp, kyp + Math.abs(Math.sin(ph * 9)) * -6, kH, kk, { back: true, num: st.num || '10', leg: o && t > RUN - 0.12 && t < RUN + 0.3 ? 1 : 0, arms: 0.15 + ph * 0.2 });
+  // aim overlay
+  if (st.aim) { const [ax, ay] = g2s(L, st.aim.x, st.aim.y); g.strokeStyle = 'rgba(255,255,255,.75)'; g.setLineDash([4, 6]); g.lineWidth = 2; g.beginPath(); g.moveTo(L.cx, L.by); g.quadraticCurveTo((L.cx + ax) / 2, (L.by + ay) / 2 - L.GH * 0.4, ax, ay); g.stroke(); g.setLineDash([]);
+    const rr = L.GH * 0.11; g.strokeStyle = st.aim.p > 1 ? '#ff5a4d' : st.aim.p >= 0.5 ? '#5dff9a' : '#ffd23f'; g.lineWidth = 3; g.beginPath(); g.arc(ax, ay, rr, 0, TAU); g.moveTo(ax - rr * 1.5, ay); g.lineTo(ax + rr * 1.5, ay); g.moveTo(ax, ay - rr * 1.5); g.lineTo(ax, ay + rr * 1.5); g.stroke();
+    // power gauge
+    const gx = L.cx + L.br * 3.2, gh = L.H * 0.14, gy0 = L.by + L.br - gh; g.fillStyle = 'rgba(0,0,0,.45)'; g.fillRect(gx, gy0, 12, gh); g.fillStyle = 'rgba(93,255,154,.55)'; g.fillRect(gx, gy0 + gh * (1 - 0.95 / 1.3), 12, gh * 0.4 / 1.3); const pv = clamp(st.aim.p, 0, 1.3) / 1.3; g.fillStyle = st.aim.p > 1 ? '#ff5a4d' : '#fff'; g.fillRect(gx - 3, gy0 + gh * (1 - pv) - 2, 18, 4); }
+  if (st.keep && st.keep.show) { g.strokeStyle = 'rgba(255,255,255,.28)'; g.lineWidth = 1; g.font = '800 ' + Math.round(L.GH * 0.16) + 'px system-ui'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = 'rgba(255,255,255,.45)'; let n = 1; for (const zy of [0.72, 0.26]) for (const zx of [-0.66, 0, 0.66]) { const [a, c] = g2s(L, zx, zy); g.strokeRect(a - L.GW / 6 + 3, c - L.GH / 4 + 3, L.GW / 3 - 6, L.GH / 2 - 6); g.fillText(String(n++), a, c); } }
+  if (st.keep && st.keep.x != null) { const [a, c] = g2s(L, st.keep.x, st.keep.y); g.fillStyle = 'rgba(156,255,90,.9)'; g.beginPath(); g.arc(a, c, L.GH * 0.1, 0, TAU); g.fill(); g.fillStyle = '#183'; g.font = '900 ' + Math.round(L.GH * 0.12) + 'px system-ui'; g.fillText('\ud83e\udde4', a, c + 1); }
+  stepParts(g, st.dt || 0.016);
+  g.restore();
+  const vg = g.createRadialGradient(L.cx, L.H * 0.5, L.H * 0.3, L.cx, L.H * 0.5, L.H * 0.75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,20,.35)'); g.fillStyle = vg; g.fillRect(0, 0, L.W, L.H);
+  if (A && A.replay) { const bh = L.H * 0.07; g.fillStyle = '#000'; g.fillRect(0, 0, L.W, bh); g.fillRect(0, L.H - bh, L.W, bh); g.fillStyle = '#ff3b3b'; g.beginPath(); g.arc(18, bh + 18, 6, 0, TAU); g.fill(); g.fillStyle = '#fff'; g.font = '900 15px system-ui'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText('REPLAY \u00b7 GERAK LAMBAT', 30, bh + 18); }
+}
+function kitIcon(c, kit) { const x = c.getContext('2d'), s = c.width; x.clearRect(0, 0, s, s); x.fillStyle = kit.a; x.beginPath(); x.moveTo(s * 0.3, s * 0.12); x.lineTo(s * 0.7, s * 0.12); x.lineTo(s * 0.95, s * 0.3); x.lineTo(s * 0.82, s * 0.45); x.lineTo(s * 0.74, s * 0.38); x.lineTo(s * 0.74, s * 0.9); x.lineTo(s * 0.26, s * 0.9); x.lineTo(s * 0.26, s * 0.38); x.lineTo(s * 0.18, s * 0.45); x.lineTo(s * 0.05, s * 0.3); x.closePath(); x.fill(); x.strokeStyle = kit.b; x.lineWidth = s * 0.06; x.stroke(); x.fillStyle = kit.c; x.font = '900 ' + Math.round(s * 0.32) + 'px system-ui'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('10', s * 0.5, s * 0.6); }
+root.PR = { layout, g2s, s2g, scene, ballAt, keeperAt, arriveT, animLen, RUN, burst, kitIcon, parts };
+})(window);
+/* Penalti Timnas app: home, offline vs bot / tutorial / demo, online 1v1 (host-authoritative kick sequencing), audio, chat. */
+(function () {
+'use strict';
+const P = window.PT, R = window.PR, J = window.JDK, $ = J.$, toast = J.toast;
+const NAME_KEY = 'penaltitimnas.name', KIT_KEY = 'penaltitimnas.kit', DIFF_KEY = 'penaltitimnas.diff', STAT_KEY = 'penaltitimnas.stat', TUT_KEY = 'penaltitimnas.tut';
+const PICK_MS = 9000, NEXT_MS = 6200, MAXP = 2;
+const DEMO = /demo/i.test(location.hash);
+let kit = J.getLS(KIT_KEY) || 'merah', diff = +(J.getLS(DIFF_KEY) || 1);
+if (!P.KITS.some(k => k.id === kit)) kit = 'merah'; if (!(diff >= 0 && diff < 4)) diff = 1;
+const stat = (() => { try { return Object.assign({ w: 0, l: 0, g: 0, s: 0, st: 0, best: 0 }, JSON.parse(J.getLS(STAT_KEY) || '{}')); } catch (e) { return { w: 0, l: 0, g: 0, s: 0, st: 0, best: 0 }; } })();
+const myName = () => ($('nameInput').value || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 16);
+/* ---------- audio ---------- */
+const S = {
+  whistle() { J.tone(2900, 0.16, 'sine', 0.08, 2750); J.tone(2900, 0.32, 'sine', 0.08, 2600, 0.2); },
+  kick() { J.tone(140, 0.12, 'sine', 0.3, 45); J.noise(0.05, 0.25, 1800); },
+  net() { J.noise(0.4, 0.14, 0, 0, 2200); },
+  post() { J.tone(880, 0.6, 'triangle', 0.12, 860); J.tone(1320, 0.4, 'sine', 0.05, 1300); },
+  roar() { J.noise(2.4, 0.3, 0, 0, 1100); J.noise(1.6, 0.12, 2500, 0.1); },
+  groan() { J.noise(1.3, 0.16, 0, 0, 420); J.tone(220, 0.9, 'sawtooth', 0.025, 140); },
+  save() { J.noise(0.12, 0.22, 900); this.roar(); },
+  tap() { J.tone(520, 0.05, 'square', 0.04); },
+  chat() { J.tone(990, 0.06, 'sine', 0.05); },
+  chant() { const seq = [392, 392, 392, 466]; seq.forEach((f, i) => { J.tone(f, 0.22, 'sawtooth', 0.025, f * 0.98, i * 0.24); J.tone(f / 2, 0.22, 'triangle', 0.05, 0, i * 0.24); }); [1.15, 1.4, 1.65].forEach(d => J.noise(0.06, 0.35, 1500, d)); },
+};
+let amb = null;
+function ambience(on) {
+  const a = J.ac(); if (!a) return; if (!amb) { const len = a.sampleRate * 2, b = a.createBuffer(1, len, a.sampleRate), ch = b.getChannelData(0); let last = 0; for (let i = 0; i < len; i++) { last = last * 0.97 + (Math.random() * 2 - 1) * 0.03; ch[i] = last * 6; } const s = a.createBufferSource(); s.buffer = b; s.loop = true; const f = a.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 700; f.Q.value = 0.6; const gn = a.createGain(); gn.gain.value = 0; s.connect(f).connect(gn).connect(a.destination); s.start(); amb = gn; }
+  amb.gain.setTargetAtTime(on && !J.Snd.muted ? 0.05 : 0, a.currentTime, 0.4);
+}
+/* ---------- home UI ---------- */
+function paintKits() { $('kitPick').innerHTML = P.KITS.map(k => '<button class="kit" role="radio" aria-checked="' + (k.id === kit) + '" data-k="' + k.id + '"><canvas width="80" height="80"></canvas>' + J.esc(k.n) + '</button>').join(''); $('kitPick').querySelectorAll('.kit').forEach((b, i) => R.kitIcon(b.querySelector('canvas'), P.KITS[i])); }
+function paintDiff() { $('diffPick').innerHTML = P.BOTS.map((b, i) => '<button data-v="' + i + '" class="' + (i === diff ? 'on' : '') + '">' + ['Mudah', 'Sedang', 'Sulit', 'Juara'][i] + '</button>').join(''); $('botSub').textContent = 'Lawan ' + P.BOTS[diff].n + ' \u00b7 5 tendangan, offline'; }
+function paintStat() { const n = stat.w + stat.l; $('statTitle').textContent = n ? stat.w + ' menang \u00b7 ' + stat.l + ' kalah' : 'Rekor'; $('statSub').textContent = n ? 'Gol ' + stat.g + ' \u00b7 tepisan ' + stat.s + ' \u00b7 beruntun ' + stat.best : 'Belum main'; }
+function saveStat() { J.setLS(STAT_KEY, JSON.stringify(stat)); paintStat(); }
+/* ---------- match engine ---------- */
+let M = null; // {mode, names[2], kits[2], bots[2] (null|skill obj), me side, seed, kicks[], shown, phase, anim, aimAt, n}
+const hist = []; // my shots (bot reads them)
+function newMatch(mode, o) {
+  M = Object.assign({ mode, names: ['Kamu', 'Bot'], kits: [P.kitOf(kit), P.kitOf('putih')], bots: [null, P.BOTS[diff]], side: 0, seed: (Math.random() * 1e9) | 0, kicks: [], res: [], shown: 0, phase: 'idle', anim: null, n: -1, aimT0: 0, end: null }, o || {});
+  if (M.kits[0].id === M.kits[1].id) M.kits[1] = P.kitOf(M.kits[0].id === 'merah' ? 'putih' : 'merah');
+  return M;
+}
+const kickerSide = n => n % 2, keeperSide = n => 1 - n % 2;
+function tallyM() { return P.tally(M.res); }
+function outcomeOf(n, k) { return P.resolve(k.s, k.d, (M.seed + n * 7919) >>> 0); }
+/* offline sequencing */
+function offStartKick() {
+  const t = tallyM(); if (t.done) return finish(t);
+  const n = M.kicks.length, k = { t: Date.now() }; M.kicks.push(k); beginAim(n);
+  const ks = kickerSide(n), gs = keeperSide(n), r = P.rng(M.seed + n * 31);
+  if (M.bots[ks] && (!M.tut || n > 99)) k.s = P.botShot(M.bots[ks].skill, r);
+  if (M.tut && M.bots[ks]) k.s = P.botShot(0.2, r);
+  if (M.bots[gs]) k.d = M.tut ? { x: 0, y: 0.35 } : P.botDive(M.bots[gs].read, hist.slice(-4), r);
+  if (M.side < 0) setTimeout(() => offCheck(), 900 + r() * 900);
+}
+function offCheck() { const n = M.kicks.length - 1, k = M.kicks[n]; if (k && k.s && k.d && M.shown === n && M.phase === 'aim') playKick(n); }
+function myPick(kind, v) {
+  if (!M || M.phase !== 'aim') return; const n = M.n, k = M.kicks[n]; if (!k || k[kind]) return;
+  if (kind === 's') hist.push({ x: v.x, y: v.y });
+  if (M.mode !== 'online') { k[kind] = v; M.picked = kind; setRole(); offCheck(); return; }
+  M.picked = kind; M.pend = { n, kind, v }; setRole();
+  shell.edit('pick', s => { if (s.ph !== 'play' || s.g !== M.g || !Array.isArray(s.k) || s.k.length - 1 !== n) return null; const kk = s.k[n]; if (kk[kind]) return null; kk[kind] = v; });
+}
+function beginAim(n) { M.n = n; M.phase = 'aim'; M.picked = null; M.pend = null; M.aim = null; M.keep = null; M.aimT0 = performance.now(); M.anim = null; $('replayBtn').hidden = true; S.whistle(); setRole(); board(); coachFor(n); }
+function playKick(n) {
+  const k = M.kicks[n]; const o = outcomeOf(n, k); k.o = o; M.shown = n + 1; M.phase = 'anim'; M.anim = { o, t: 0, n, kKit: M.kits[kickerSide(n)], gKit: keeperKitOf(keeperSide(n)), num: String([10, 7, 9, 11, 8][Math.floor(n / 2) % 5]) }; M.aim = null; M.keep = M.keep && { x: M.keep.x, y: M.keep.y };
+  M.fired = false; setRole(); S.kick();
+}
+function keeperKitOf(side) { const k = M.kits[side]; return { a: k.id === 'hijau' ? '#ff7a1a' : '#24b04a', b: '#111', c: '#fff' }; }
+function onArrive(A) {
+  const o = A.o, n = A.n; M.res[n] = o.goal; M.fired = true; const ks = kickerSide(n), mine = M.side === ks, keepMine = M.side === keeperSide(n);
+  const [bx, by] = R.g2s(L, o.x, o.y);
+  callout(P.LABEL[o.out], o.out === 'goal' ? 'goal' : o.out === 'save' ? 'save' : '', sublineFor(o, n));
+  if (o.goal) { S.net(); S.roar(); setTimeout(() => S.chant(), 900); R.burst(bx, by, 60, ['#e0242f', '#ffffff', '#ffd23f']); ex = 1; J.buzz(mine ? [30, 40, 60] : 40); }
+  else if (o.out === 'save') { S.save(); R.burst(bx, by, 26, ['#9cff5a', '#ffffff']); ex = 0.8; J.buzz(keepMine ? [30, 40, 60] : 50); }
+  else if (o.out === 'post' || o.out === 'bar') { S.post(); setTimeout(() => S.groan(), 300); ex = 0.4; }
+  else { S.groan(); ex = 0.2; }
+  if (M.mode !== 'online' || M.side >= 0) { if (mine && o.goal) stat.g++; if (keepMine && !o.goal && o.out === 'save') stat.s++; }
+  board();
+}
+function sublineFor(o, n) { const kn = M.names[kickerSide(n)], gn = M.names[keeperSide(n)]; if (o.goal) return kn + ' mencetak gol'; if (o.out === 'save') return gn + ' menebak tepat!'; if (o.out === 'post' || o.out === 'bar') return 'Aduh, membentur ' + (o.out === 'bar' ? 'mistar' : 'tiang'); return kn + ' gagal (' + (o.p > 1 ? 'kekencangan' : 'meleset') + ')'; }
+function afterAnim(n) {
+  const o = M.kicks[n].o, dramatic = o.out === 'save' || o.out === 'post' || o.out === 'bar' || tallyM().done || (n >= 8);
+  $('replayBtn').hidden = false;
+  if (dramatic && !M.noReplay) startReplay(n, () => nextAfter(n)); else { M.phase = 'gap'; M.gapUntil = performance.now() + 900; M.gapN = n; }
+}
+function startReplay(n, then) { const o = M.kicks[n].o; M.phase = 'replay'; M.anim = Object.assign({}, M.anim || {}, { o, t: Math.max(0.3, R.arriveT(o) - 0.5), n, replay: true, then, kKit: M.kits[kickerSide(n)], gKit: keeperKitOf(keeperSide(n)) }); $('replayBtn').hidden = true; }
+function nextAfter(n) { M.phase = 'gap'; M.gapUntil = performance.now() + 500; M.gapN = n; }
+function gapDone() {
+  if (M.mode === 'online') { M.phase = 'idle'; onlineSync(); return; }
+  M.phase = 'idle'; offStartKick();
+}
+function finish(t) {
+  M.phase = 'end'; ambience(false); const me = M.side; let title = '', sub = '';
+  const nameW = M.names[t.win];
+  if (me < 0) { title = nameW + ' menang!'; } else if (t.win === me) { title = 'MENANG! \ud83c\udfc6'; sub = 'Kamu juara adu penalti'; } else { title = 'Kalah tipis\u2026'; sub = nameW + ' lebih dingin di titik putih'; }
+  if (me >= 0 && !M.tut && M.mode !== 'demo') { if (t.win === me) { stat.w++; stat.st++; stat.best = Math.max(stat.best, stat.st); } else { stat.l++; stat.st = 0; } saveStat(); }
+  if (M.tut) { J.setLS(TUT_KEY, '1'); title = 'Tutorial selesai!'; sub = 'Siap lawan bot atau tantang teman.'; }
+  $('resTitle').textContent = title; $('resSub').textContent = sub + (t.sudden ? ' \u00b7 lewat sudden death' : '');
+  $('resBoard').innerHTML = [0, 1].map(s => '<div class="ln"><canvas width="64" height="64" style="width:32px;height:32px"></canvas><b>' + J.esc(M.names[s]) + (s === me ? ' (kamu)' : '') + '</b><span class="dots">' + (s ? t.b : t.a).map(g => '<i class="' + (g ? 'g' : 'x') + '"></i>').join('') + '</span><span class="n">' + (s ? t.sb : t.sa) + '</span></div>').join('');
+  $('resBoard').querySelectorAll('canvas').forEach((c, i) => R.kitIcon(c, M.kits[i]));
+  $('resNote').textContent = me >= 0 && M.mode !== 'online' && !M.tut ? 'Rekor: ' + stat.w + ' menang \u00b7 beruntun ' + stat.st : '';
+  const online = M.mode === 'online', host = online && shell.canRun();
+  $('againBtn').hidden = online; $('toLobbyBtn').hidden = !host; $('endWait').textContent = online && !host ? 'Menunggu host kembali ke lobby\u2026' : '';
+  $('result').hidden = false; S.whistle(); setTimeout(() => S.whistle(), 400); if (t.win === me) setTimeout(() => S.chant(), 700);
+}
+/* ---------- HUD ---------- */
+function board() {
+  if (!M) return; const t = tallyM(), dots = (arr, n0) => { let h = ''; const len = Math.max(5, arr.length); for (let i = 0; i < len; i++) h += '<i class="' + (i < arr.length ? (arr[i] ? 'g' : 'x') : '') + '"></i>'; return h; };
+  $('board').innerHTML = '<div class="tm"><span>' + J.esc(M.names[0]) + '</span><div class="dots">' + dots(t.a) + '</div></div><div><span class="sc">' + t.sa + '\u2013' + t.sb + '</span>' + (t.sudden ? '<small class="sd">SUDDEN DEATH</small>' : '') + '</div><div class="tm"><span>' + J.esc(M.names[1]) + '</span><div class="dots">' + dots(t.b) + '</div></div>';
+}
+function setRole() {
+  if (!M) return; const n = M.n, ks = kickerSide(n), el = $('role'); el.classList.remove('keep');
+  let T = '', Sb = '';
+  if (M.phase === 'aim') {
+    if (M.side === ks) { T = 'KAMU MENENDANG'; Sb = M.picked ? 'Menunggu kiper lawan\u2026' : 'Usap bola ke arah gawang'; }
+    else if (M.side === keeperSide(n)) { T = 'KAMU JAGA GAWANG'; Sb = M.picked ? 'Menunggu penendang\u2026' : 'Ketuk titik tebakanmu di gawang'; el.classList.add('keep'); }
+    else { T = M.names[ks] + ' bersiap'; Sb = M.names[keeperSide(n)] + ' di bawah mistar'; }
+  } else if (M.phase === 'anim' || M.phase === 'replay') { T = ''; Sb = ''; }
+  $('roleT').textContent = T; $('roleS').textContent = Sb; $('roleT').hidden = !T; if (M.phase !== 'aim') $('timer').style.width = '0';
+}
+function callout(txt, cls, sub) { const c = $('callout'); c.innerHTML = '<b class="' + (cls || '') + '">' + J.esc(txt) + '</b>' + (sub ? '<small>' + J.esc(sub) + '</small>' : ''); clearTimeout(callout.t); callout.t = setTimeout(() => { c.innerHTML = ''; }, 1700); }
+const COACH = { 0: 'Kamu menendang duluan. <b>Usap ke atas</b> dari bola ke titik di gawang. Usapan sedang = tenaga pas.', 1: 'Sekarang kamu kiper. <b>Ketuk</b> titik di gawang untuk menebak lompatan.', 2: 'Coba pojok atas: usap lebih panjang &amp; agak miring. Jangan kekencangan!', 3: 'Bot suka menendang ke pojok. Tebak sisi yang kosong.' };
+function coachFor(n) { const c = $('coach'); if (M.tut && COACH[n]) { c.innerHTML = COACH[n]; c.hidden = false; } else c.hidden = true; }
+function bubble(name, x) { const b = $('bubbles'), p = document.createElement('p'); p.textContent = name + ': ' + x; b.appendChild(p); while (b.children.length > 3) b.firstChild.remove(); setTimeout(() => p.remove(), 4200); }
+/* ---------- canvas + input ---------- */
+const cv = $('cv'); let L = null, G = null, ex = 0, last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame); const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (!$('home').hidden) { heroFrame(now, dt); return; }
+  if ($('play').hidden || !M) return;
+  const f = J.fitCanvas(cv); G = f.g; L = R.layout(f.W, f.H); ex = Math.max(0, ex - dt * 0.35);
+  if (M.phase === 'anim' && M.anim) { M.anim.t += dt; const A = M.anim; if (!M.fired && A.t >= R.arriveT(A.o)) onArrive(A); if (A.t >= R.animLen(A.o)) afterAnim(A.n); }
+  else if (M.phase === 'replay' && M.anim) { M.anim.t += dt * 0.4; if (M.anim.t >= R.arriveT(M.anim.o) + 0.5) { const th = M.anim.then; M.anim = Object.assign({}, M.anim, { replay: false, t: R.animLen(M.anim.o) }); th && th(); } }
+  else if (M.phase === 'gap' && now >= M.gapUntil) gapDone();
+  if (M.phase === 'aim') timerTick(now);
+  if (M.mode === 'online') onlineTick();
+  G.clearRect(0, 0, f.W, f.H);
+  R.scene(G, L, { now: now / 1000, dt, anim: M.anim, ex, aim: M.aim, keep: M.phase === 'aim' && M.side === keeperSide(M.n) ? Object.assign({ show: !M.picked }, M.keep || {}) : (M.phase === 'anim' && M.keep) ? M.keep : null, kKit: M.kits[kickerSide(Math.max(0, M.n))], gKit: keeperKitOf(keeperSide(Math.max(0, M.n))), num: '10' });
+}
+function timerTick(now) {
+  let left;
+  if (M.mode === 'online') { const k = M.kicks[M.n]; left = k ? (k.t + PICK_MS - shell.sNow()) / PICK_MS : 1; }
+  else left = 1 - (now - M.aimT0) / (M.tut ? 1e9 : 12000);
+  $('timer').style.width = Math.max(0, Math.min(1, left)) * 100 + '%';
+  if (M.mode !== 'online' && left <= 0 && !M.picked) { const n = M.n; if (M.side === kickerSide(n)) myPick('s', { x: 0, y: 0.25, p: 0.4 }); else if (M.side === keeperSide(n)) myPick('d', { x: 0, y: 0.35 }); }
+}
+let drag = null;
+const myRole = () => !M || M.phase !== 'aim' || M.picked ? '' : M.side === kickerSide(M.n) ? 'k' : M.side === keeperSide(M.n) ? 'g' : '';
+function aimFrom(d) {
+  const dx = d.x - d.x0, dy = d.y0 - d.y, S2 = (L.by - (L.gy - L.GH * 0.5)) / (L.H * 0.27);
+  const [gx, gy] = R.s2g(L, L.cx + dx * S2 * 1.15, L.by - dy * S2);
+  const pts = d.pts, a = pts[pts.length - 1], b = pts.find(p => a.t - p.t <= 110) || pts[0], sp = Math.hypot(a.x - b.x, a.y - b.y) / Math.max(16, a.t - b.t);
+  return { x: P.clamp(gx, -1.7, 1.7), y: P.clamp(gy, 0, 1.7), p: P.clamp(sp / (L.H * 0.0031), 0.12, 1.35) };
+}
+cv.addEventListener('pointerdown', e => {
+  const role = myRole(); if (!role || !L) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  if (role === 'g') { const [gx, gy] = R.s2g(L, x, y); M.keep = { x: P.clamp(gx, -1, 1), y: P.clamp(gy, 0, 1) }; S.tap(); myPick('d', M.keep); return; }
+  if (y < L.gy) return; drag = { x0: x, y0: y, x, y, pts: [{ x, y, t: e.timeStamp }] }; cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove', e => { if (!drag) return; const r = cv.getBoundingClientRect(); drag.x = e.clientX - r.left; drag.y = e.clientY - r.top; drag.pts.push({ x: drag.x, y: drag.y, t: e.timeStamp }); if (drag.pts.length > 30) drag.pts.shift(); if (drag.y0 - drag.y > 20) M.aim = aimFrom(drag); });
+cv.addEventListener('pointerup', e => { if (!drag) return; const d = drag; drag = null; if (d.y0 - d.y < 30) { M.aim = null; toast('Usap ke atas, ke arah gawang', '', 1400); return; } const a = aimFrom(d); M.aim = a; myPick('s', a); });
+cv.addEventListener('pointercancel', () => { drag = null; if (M) M.aim = null; });
+/* keyboard */
+let kAim = null, kHold = 0;
+document.addEventListener('keydown', e => {
+  if ($('play').hidden || !M || /INPUT/.test(e.target.tagName)) return; const role = myRole();
+  if (role === 'g' && /^[1-6]$/.test(e.key)) { const i = +e.key - 1, z = { x: [-0.66, 0, 0.66][i % 3], y: i < 3 ? 0.72 : 0.26 }; M.keep = z; myPick('d', z); }
+  if (role === 'k') { kAim = kAim || { x: 0, y: 0.5, p: 0 }; const st = 0.12; if (e.key === 'ArrowLeft') kAim.x -= st; if (e.key === 'ArrowRight') kAim.x += st; if (e.key === 'ArrowUp') kAim.y += st; if (e.key === 'ArrowDown') kAim.y -= st; kAim.x = P.clamp(kAim.x, -1.5, 1.5); kAim.y = P.clamp(kAim.y, 0, 1.5); if (e.key === ' ' && !kHold) kHold = performance.now(); if (kHold) kAim.p = Math.min(1.35, (performance.now() - kHold) / 900); M.aim = Object.assign({}, kAim); if (/Arrow| /.test(e.key)) e.preventDefault(); }
+});
+document.addEventListener('keyup', e => { if (e.key === ' ' && kHold && myRole() === 'k') { kAim.p = Math.min(1.35, (performance.now() - kHold) / 900); kHold = 0; myPick('s', Object.assign({}, kAim)); kAim = null; } });
+/* ---------- hero ---------- */
+const hero = $('heroCv'); let heroA = null, heroNext = 0;
+function heroFrame(now, dt) {
+  const f = J.fitCanvas(hero), Lh = R.layout(f.W, f.H * 1.25); const r = Math.random;
+  if (!heroA && now > heroNext) { const s = P.botShot(0.7, r), d = P.botDive(0, [], r); heroA = { o: P.resolve(s, d, (now | 0)), t: 0, kKit: P.kitOf(kit), gKit: { a: '#24b04a', b: '#111', c: '#fff' } }; }
+  if (heroA) { heroA.t += dt; if (heroA.o.goal && !heroA.b && heroA.t > R.arriveT(heroA.o)) { heroA.b = 1; const [x, y] = R.g2s(Lh, heroA.o.x, heroA.o.y); R.burst(x, y, 30, ['#e0242f', '#fff', '#ffd23f']); } if (heroA.t > R.animLen(heroA.o)) { heroA = null; heroNext = now + 1200; } }
+  f.g.clearRect(0, 0, f.W, f.H); R.scene(f.g, Lh, { now: now / 1000, dt, anim: heroA, ex: heroA && heroA.b ? 0.8 : 0.1, kKit: P.kitOf(kit), noKicker: true });
+}
+/* ---------- screens ---------- */
+function startPlay() { J.show('play'); $('result').hidden = true; $('callout').innerHTML = ''; $('bubbles').innerHTML = ''; ambience(true); board(); }
+function startBot(tut) {
+  const nm = myName() || 'Kamu';
+  newMatch(tut ? 'tut' : 'bot', { names: [nm, tut ? 'Pelatih' : P.BOTS[diff].n], kits: [P.kitOf(kit), P.kitOf(tut ? 'putih' : P.BOTS[diff].kit)], bots: [null, tut ? P.BOTS[0] : P.BOTS[diff]], tut: !!tut, noReplay: false });
+  if (tut) M.tutLeft = 4; startPlay(); $('chatBtn').hidden = true; setTimeout(offStartKick, 600);
+}
+function startDemo() { newMatch('demo', { names: ['Garuda Merah', 'Gajah Putih'], kits: [P.kitOf('merah'), P.kitOf('putih')], bots: [P.BOTS[2], P.BOTS[2]], side: -1 }); startPlay(); setTimeout(offStartKick, 300); }
+function toMenu() { if (M && M.mode === 'online') { shell.leave(true); } M = null; ambience(false); $('result').hidden = true; J.show('home'); }
+/* tutorial ends after 4 kicks */
+const _tally = tallyM; // eslint-friendly
+function tutDone() { return M && M.tut && M.res.length >= 4; }
+const _offStart = offStartKick;
+offStartKick = function () { if (tutDone()) { const t = Object.assign(P.tally(M.res), { win: 0, done: true }); return finish(t); } return _offStart(); }; // eslint-disable-line no-func-assign
+/* ---------- online ---------- */
+let shell = null, hostSeen = {}, lastWrite = 0, kitSent = '';
+function sideOf(s, id) { return s.m && Array.isArray(s.m.ids) ? s.m.ids.indexOf(id) : -1; }
+function onRoom(r, data) {
+  const s = r.s;
+  if (s.ph === 'lobby') { if (M && M.mode === 'online') { M = null; $('result').hidden = true; } if ($('lobby').hidden) J.show('lobby'); shell.renderLobby(); paintVs(r); sendKit(r); return; }
+  if (!s.m || !Array.isArray(s.k)) return;
+  if (!M || M.mode !== 'online' || M.g !== s.g) {
+    const ids = s.m.ids, names = s.m.nm, sd = sideOf(s, r.me);
+    newMatch('online', { g: s.g, seed: s.seed >>> 0, names: names.slice(), kits: s.m.kt.map(P.kitOf), bots: ids.map(id => id ? null : P.BOTS[s.m.bs || 1]), side: sd, noReplay: false });
+    startPlay(); $('chatBtn').hidden = false; hostSeen = {};
+    const kk = s.k; for (let i = 0; i < kk.length; i++) { M.kicks[i] = Object.assign({}, kk[i]); if (kk[i].s && kk[i].d && i < kk.length - 1) { M.kicks[i].o = outcomeOf(i, kk[i]); M.res[i] = M.kicks[i].o.goal; M.shown = i + 1; } }
+    board();
+  }
+  M.bots = s.m.ids.map(id => id ? null : P.BOTS[s.m.bs || 1]); M.names = s.m.nm.slice(); M.side = sideOf(s, r.me);
+  for (let i = 0; i < s.k.length; i++) M.kicks[i] = Object.assign(M.kicks[i] || {}, s.k[i]);
+  M.sph = s.ph; M.sres = s.res;
+  onlineSync();
+}
+function onlineSync() {
+  if (!M || M.mode !== 'online') return; const n = M.kicks.length - 1, k = M.kicks[n];
+  if (M.phase === 'anim' || M.phase === 'replay' || M.phase === 'gap' || M.phase === 'end') return;
+  if (M.shown < n) { for (let i = M.shown; i < n; i++) { const kk = M.kicks[i]; if (kk.s && kk.d) { kk.o = outcomeOf(i, kk); M.res[i] = kk.o.goal; } } M.shown = n; board(); }
+  if (k && k.s && k.d && M.shown === n) { if (M.n !== n) beginAim(n); playKick(n); return; }
+  if (M.sph === 'end' && M.shown >= M.kicks.length) { finish(tallyM()); return; }
+  if (k && M.n !== n && M.shown === n) beginAim(n);
+  if (M.phase === 'aim' && M.pend && M.pend.n === n && k[M.pend.kind]) M.pend = null;
+}
+function onlineTick() {
+  const r = shell.room; if (!r || !shell.canRun(r) || !M || M.mode !== 'online' || M.sph !== 'play') return;
+  const t = performance.now(); if (t - lastWrite < 350) return;
+  const s = r.s, n = s.k.length - 1, k = s.k[n], now = shell.sNow(); if (!k) return;
+  // replace departed players with a bot
+  const seatedIds = r.seated().map(p => p.id);
+  const gone = s.m.ids.map((id, i) => id && !seatedIds.includes(id) ? i : -1).filter(i => i >= 0);
+  if (gone.length) { lastWrite = t; shell.edit('bot-in', st => { if (st.ph !== 'play') return null; for (const i of gone) { st.m.ids[i] = 0; st.m.nm[i] = st.m.nm[i] + ' (bot)'; } }); toast('Lawan keluar, bot menggantikan', 'warn', 3000); return; }
+  const ks = kickerSide(n), gs = keeperSide(n), rr = P.rng((s.seed + n * 31) >>> 0);
+  const need = {};
+  if (!k.s && !s.m.ids[ks] && (k.d || now > k.t + 1200)) need.s = P.botShot((P.BOTS[s.m.bs || 1]).skill, rr);
+  if (!k.d && !s.m.ids[gs] && (k.s || now > k.t + 1600)) need.d = P.botDive(P.BOTS[s.m.bs || 1].read, s.k.slice(0, n).filter((x, i) => kickerSide(i) === ks && x.s).slice(-4).map(x => x.s), rr);
+  if (now > k.t + PICK_MS + 700) { if (!k.s) need.s = { x: 0, y: 0.25, p: 0.4 }; if (!k.d) need.d = { x: 0, y: 0.35 }; }
+  if (need.s || need.d) { lastWrite = t; shell.edit('auto', st => { const q = st.k[n]; if (st.ph !== 'play' || st.k.length - 1 !== n) return null; if (need.s && !q.s) q.s = need.s; if (need.d && !q.d) q.d = need.d; }); return; }
+  if (k.s && k.d) {
+    if (!hostSeen[n]) hostSeen[n] = t;
+    if (t - hostSeen[n] < NEXT_MS) return;
+    lastWrite = t; const res = s.k.map((q, i) => P.resolve(q.s, q.d, (s.seed + i * 7919) >>> 0).goal), tl = P.tally(res);
+    if (tl.done) shell.edit('end', st => { if (st.ph !== 'play' || st.k.length - 1 !== n) return null; st.ph = 'end'; st.res = { win: tl.win, sa: tl.sa, sb: tl.sb }; return { status: 'waiting' }; });
+    else shell.edit('next', st => { if (st.ph !== 'play' || st.k.length - 1 !== n) return null; st.k.push({ t: Math.round(shell.sNow() + 300) }); });
+  }
+}
+function sendKit(r) { if (r.spectator || kitSent === r.code + kit) return; const id = r.me; const kt = r.s.kt || {}; if (kt[id] === kit) { kitSent = r.code + kit; return; } kitSent = r.code + kit; shell.edit('kit', s => { s.kt = Object.assign({}, s.kt || {}); s.kt[id] = kit; for (const k of Object.keys(s.kt)) if (!r.seated().some(p => String(p.id) === k)) delete s.kt[k]; }); }
+function paintVs(r) { const ps = r.seated(), kt = r.s.kt || {}; const side = p => '<div class="side"><canvas width="108" height="108"></canvas><b>' + (p ? J.esc(p.displayName) : '???') + '</b><small class="muted">' + (p ? '' : r.s.set.bot != null ? 'atau bot ' + P.BOTS[r.s.set.bot].n : 'menunggu') + '</small></div>'; $('lobbyVs').innerHTML = side(ps[0]) + '<em>VS</em>' + side(ps[1]); $('lobbyVs').querySelectorAll('canvas').forEach((c, i) => R.kitIcon(c, P.kitOf(ps[i] ? kt[ps[i].id] || 'merah' : 'putih'))); const ob = $('onBot'); ob.innerHTML = P.BOTS.map((b, i) => '<button data-v="' + i + '" class="' + ((r.s.set.bot ?? 1) === i ? 'on' : '') + '">' + ['Mudah', 'Sedang', 'Sulit', 'Juara'][i] + '</button>').join(''); ob.parentElement.hidden = ps.length >= 2; $('startBtn').textContent = ps.length >= 2 ? '\u26bd Mulai adu penalti' : '\u26bd Mulai lawan bot'; }
+async function startOnline() {
+  const r = shell.room; if (!shell.canRun(r)) return; const ps = r.seated(); const kt = r.s.kt || {}; const bs = r.s.set.bot ?? 1;
+  let ids, nm, kts; if (ps.length >= 2) { const sw = Math.random() < 0.5; const a = sw ? ps[1] : ps[0], b = sw ? ps[0] : ps[1]; ids = [a.id, b.id]; nm = [a.displayName, b.displayName]; kts = [kt[a.id] || 'merah', kt[b.id] || 'putih']; }
+  else { const a = ps[0] || { id: r.me, displayName: myName() }; ids = [a.id, 0]; nm = [a.displayName, P.BOTS[bs].n]; kts = [kt[a.id] || kit, P.BOTS[bs].kit]; }
+  if (kts[0] === kts[1]) kts[1] = kts[0] === 'merah' ? 'putih' : 'merah';
+  const g = Math.random().toString(36).slice(2, 8);
+  await shell.edit('start', s => { if (s.ph !== 'lobby') return null; s.ph = 'play'; s.g = g; s.seed = (Math.random() * 1e9) | 0; s.m = { ids, nm: nm.map(x => String(x).slice(0, 16)), kt: kts, bs }; s.k = [{ t: Math.round(shell.sNow() + 2500) }]; s.res = null; return { status: 'playing' }; });
+}
+async function toLobby() { if (!shell.canRun()) return; await shell.edit('lobby', s => { s.ph = 'lobby'; s.k = []; s.m = null; s.res = null; return { status: 'waiting' }; }); }
+/* ---------- chat in play ---------- */
+const CHEERS = ['Ayo Garuda! \ud83e\udd85', 'GOOOL!', 'Tenang, fokus!', 'Kiper hebat! \ud83e\udde4', 'Sudah kuduga \ud83d\ude0f', 'Sekali lagi!', 'GG \ud83e\udd1d'];
+function cheer(x) { S.chant(); ex = Math.max(ex, 0.5); if (M && M.mode === 'online' && shell.room) shell.sendChat(x); else bubble(myName() || 'Kamu', x); }
+/* ---------- boot ---------- */
+function boot() {
+  $('nameInput').value = J.getLS(NAME_KEY) || ''; $('nameInput').addEventListener('change', () => J.setLS(NAME_KEY, myName()));
+  if (window.JDNG) window.JDNG.on(n => { if (n && !$('nameInput').value) { $('nameInput').value = n; J.setLS(NAME_KEY, myName()); } });
+  paintKits(); paintDiff(); paintStat();
+  $('kitPick').addEventListener('click', e => { const b = e.target.closest('.kit'); if (!b) return; kit = b.dataset.k; J.setLS(KIT_KEY, kit); paintKits(); S.tap(); kitSent = ''; if (shell && shell.room && shell.room.s.ph === 'lobby') sendKit(shell.room); });
+  $('diffPick').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; diff = +b.dataset.v; J.setLS(DIFF_KEY, String(diff)); paintDiff(); S.tap(); });
+  $('botBtn').addEventListener('click', () => { J.setLS(NAME_KEY, myName()); startBot(false); });
+  $('tutBtn').addEventListener('click', () => startBot(true));
+  $('exitBtn').addEventListener('click', toMenu); $('resMenu').addEventListener('click', toMenu);
+  $('againBtn').addEventListener('click', () => { if (M && M.mode === 'demo') return startDemo(); startBot(M && M.tut && false); });
+  $('toLobbyBtn').addEventListener('click', toLobby); $('startBtn').addEventListener('click', startOnline);
+  $('onBot').addEventListener('click', e => { const b = e.target.closest('button'); if (b) shell.setRoom('bot', +b.dataset.v); });
+  $('replayBtn').addEventListener('click', () => { if (!M || M.phase !== 'gap' && M.phase !== 'aim') return; const n = M.shown - 1; if (n < 0 || !M.kicks[n].o) return; const ph = M.phase, keep = { n: M.n, picked: M.picked }; startReplay(n, () => { if (ph === 'aim') { M.phase = 'aim'; M.anim = null; } else nextAfter(n); }); });
+  $('cheer').innerHTML = CHEERS.map(c => '<button type="button">' + J.esc(c) + '</button>').join(''); $('cheer').addEventListener('click', e => { const b = e.target.closest('button'); if (b) cheer(b.textContent); });
+  $('chatBtn').addEventListener('click', () => { const slot = $('chatSlot'), chat = $('chat'); if (slot.hidden) { slot.appendChild(chat); slot.hidden = false; } else { $('chatCard').appendChild(chat); slot.hidden = true; } });
+  J.initMute('penaltitimnas.mute', ['muteBtn', 'muteBtn2'], m => ambience(!m && !$('play').hidden));
+  shell = window.MPShell({ slug: 'penaltitimnas', title: 'Penalti Timnas', max: MAXP, defSet: { bot: 1 }, myName, saveName: n => J.setLS(NAME_KEY, n), toast, sfx: { chat: S.chat, cheer: () => {} }, accent: '#e0242f', inviteText: 'Duel adu penalti denganku di Penalti Timnas!',
+    quick: ['Siap duel! \u26bd', 'Ayo mulai!', 'Kiper siap \ud83e\udde4', 'Nggak bakal masuk \ud83d\ude0f', 'GG \ud83e\udd1d'],
+    onRoom, onLeave: () => { if (M && M.mode === 'online') M = null; $('result').hidden = true; $('chatSlot').hidden = true; $('chatCard').appendChild($('chat')); ambience(false); J.show('home'); },
+    onChat: m => { if (!$('play').hidden) bubble(m.n, m.x); },
+    localChat: x => bubble(myName() || 'Kamu', x),
+    color: (p) => P.kitOf((shell.room && shell.room.s.kt || {})[p.id] || 'merah').a,
+    hostHint: (r, ps) => ps.length >= 2 ? 'Siap! Peran tendang/kiper diundi saat mulai.' : 'Bagikan link undangan, atau mulai lawan bot.' });
+  window.PTApp = { get M() { return M; }, shell, startBot, startDemo, myPick, toMenu };
+  shell.boot();
+  if (DEMO) startDemo();
+  requestAnimationFrame(frame);
+}
+boot();
+})();
+</script>
+</body>
+</html>

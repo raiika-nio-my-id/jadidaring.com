@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Penalti Timnas · Game Adu Penalti Online 1 Lawan 1 di HP (Tendang &amp; Jaga Gawang)</title>
+<meta name="description" content="Penalti Timnas: game adu penalti di browser HP tanpa download. Usap untuk menendang, ketuk untuk menebak arah sebagai kiper. Bergantian 5 tendangan, lalu sudden death. Duel online 1 lawan 1 dengan teman lewat link undangan, atau latihan lawan bot. Ada sorakan stadion dan replay gerak lambat.">
+<meta name="theme-color" content="#0d1b3d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Penalti Timnas · adu penalti 1 lawan 1">
+<meta property="og:description" content="Usap buat nendang, ketuk buat nebak arah. 5 tendangan bergantian + sudden death. Tantang temanmu online!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="penaltitimnas">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="chip hero-chip">⚽ 1 lawan 1</span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">ADU PENALTI · TENDANG &amp; JAGA GAWANG</p><h1>PENALTI <span>TIMNAS</span></h1><p class="slogan">Usap buat nendang, ketuk buat nebak!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama pemain</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="kits" id="kitPick" role="radiogroup" aria-label="Pilih kostum"></div>
+      <div class="modes">
+        <button class="mode big" id="botBtn"><i>⚽</i><span><b>Latihan vs Bot</b><small id="botSub">Adu penalti 5 tendangan, offline</small></span></button>
+        <div class="card diff"><span>Lawan bot</span><div class="seg" id="diffPick"></div></div>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Tutorial</b><small>Belajar usap &amp; tebak arah</small></button>
+        <button class="mode" id="statBtn" disabled><i>🏆</i><b id="statTitle">Rekor</b><small id="statSub">Belum main</small></button>
+      </div>
+      <div class="online card">
+        <h2>Duel online <small>1 lawan 1 · teman atau acak</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">🔎 Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false" aria-label="Kode room"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh" aria-label="Muat ulang">↻</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Penendang:</b> usap bola ke arah gawang. Arah usapan = arah bola, <b>panjang usapan = tinggi</b>, <b>kecepatan usapan = tenaga</b>.</li>
+          <li>Tenaga <em class="g">pas</em> (zona hijau) paling akurat. Kelembekan gampang ditepis, kekerasan bisa <b class="r">melambung</b>.</li>
+          <li><b>Kiper:</b> ketuk titik di gawang untuk menebak arah lompatan. Pojok atas paling susah dijangkau, tapi juga paling gampang meleset.</li>
+          <li>Bergantian 5 tendangan per tim. Kalau masih seri: <b>sudden death</b>. Peran bertukar tiap tendangan.</li>
+          <li>Online: undang teman lewat link. Kalau lawan keluar, bot menggantikannya.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> bidik, tahan <kbd>Spasi</kbd> untuk tenaga · kiper: <kbd>1</kbd>–<kbd>6</kbd> · <kbd>M</kbd> suara</p>
+      </div>
+      <p class="foot muted">Penalti Timnas adalah game penggemar sepak bola dan tidak berafiliasi dengan PSSI, klub, atau stadion mana pun. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">← Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">🔗 Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><div class="vs" id="lobbyVs"></div><h3>Pemain <small id="pCount">1/2</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Kalau sendirian</span><div class="seg" id="onBot"></div></div>
+        <button class="btn green big-btn" id="startBtn">⚽ Mulai adu penalti</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik sorakan…" autocomplete="off" aria-label="Pesan chat"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="board" id="board"></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>💬</button></div></div>
+    <div class="role" id="role"><b id="roleT">KAMU MENENDANG</b><small id="roleS">Usap bola ke gawang</small><i id="timer"></i></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="bubbles" id="bubbles" aria-live="polite"></div>
+    <div id="chatSlot" class="chat-pop" hidden></div>
+    <button class="btn small replay-btn" id="replayBtn" hidden>🔁 Replay</button>
+    <div class="cheer" id="cheer"></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">HASIL ADU PENALTI</p><h2 id="resTitle">Menang!</h2><p class="sub" id="resSub"></p>
+      <div class="res-board" id="resBoard"></div>
+      <p class="reward" id="resNote"></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Lagi</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>
