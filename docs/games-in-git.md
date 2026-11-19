@@ -57,8 +57,8 @@ exported first (no admin GET endpoint exists yet).
 | 13 | `whoosh` | in git (1f4d4ac) | local build, verified = live (`index.deploy.html`) | yes | no |
 | 14 | `ttskilat` | in git (d1f7e72) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 15 | `ikanrakus` | in git (e2a793a) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 16 | `drag201` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 17 | `malampendakian` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 16 | `drag201` | in git (01ce461) | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 17 | `malampendakian` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 18 | `cukurkekinian` | database | local build, verified = live (`index.deploy.html`) | no | no |
 | 19 | `pawanghujan` | database | local build, verified = live (`index.deploy.html`) | no | no |
 | 20 | `mudikmacet` | database | local build, verified = live (`index.deploy.html`) | no | no |
