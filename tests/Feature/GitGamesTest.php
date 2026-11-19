@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -137,6 +137,7 @@ class GitGamesTest extends TestCase
             'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
             'coratcoret' => ['coratcoret', 'JDNG_CFG'],
             'anomaliminimarket' => ['anomaliminimarket', 'data-jd-account-name-lock'],
+            'cukurkekinian' => ['cukurkekinian', 'data-jd-account-name-lock'],
             'malampendakian' => ['malampendakian', 'data-jd-account-name-lock'],
             'drag201' => ['drag201', 'data-jd-account-name-lock'],
             'ikanrakus' => ['ikanrakus', 'data-jd-account-name-lock'],
@@ -177,7 +178,7 @@ class GitGamesTest extends TestCase
         $html = (string) file_get_contents(resource_path('games/'.$slug.'/game.html'));
         $this->assertSame(1, preg_match('/^[\x00-\x7f]*$/', $html));
         $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
-        $this->assertTrue(str_contains($html, 'window.__JD_ME') || str_contains($html, 'JDNG_CFG'), 'the game reads the account name itself or through the shared name gate lock');
+        $this->assertTrue(str_contains($html, 'window.__JD_ME') || str_contains($html, 'JDNG_CFG') || str_contains($html, 'data-jd-account-name '), 'the game reads the account name itself, through the shared name gate lock, or marks its name field for the lock');
     }
 
     public function test_shared_name_gate_games_get_the_account_name_lock_after_the_bridge(): void
