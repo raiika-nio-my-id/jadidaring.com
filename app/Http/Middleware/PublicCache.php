@@ -27,7 +27,7 @@ class PublicCache
         $response->headers->set('Cache-Control', "public, max-age={$maxAge}, s-maxage={$sMaxAge}, stale-while-revalidate=600, stale-if-error=3600");
         $response->headers->set('Vary', 'Accept-Encoding');
 
-        if (! $response->headers->has('ETag') && ! $response instanceof \Symfony\Component\HttpFoundation\StreamedResponse && ! $response instanceof \Symfony\Component\HttpFoundation\BinaryFileResponse) {
+        if ($request->isMethod('GET') && ! $response->headers->has('ETag') && ! $response instanceof \Symfony\Component\HttpFoundation\StreamedResponse && ! $response instanceof \Symfony\Component\HttpFoundation\BinaryFileResponse) {
             $response->setEtag(md5((string) $response->getContent()));
         }
 
