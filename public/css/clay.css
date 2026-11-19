@@ -1024,12 +1024,13 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 @media (prefers-reduced-motion: reduce) { .pf-ap-hint, .pf-ap-hint span { animation: none; } }
 
 /* Curhatan (site-rendered member posts: profile section + /komunitas feed). Mobile first. */
-.ch-section { margin: 8px 0 18px; }
+.ch-section { margin: 8px 0 18px; scroll-margin-top: 96px; }
+.ch-card { scroll-margin-top: 96px; }
 .ch-section__title { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 12px; color: var(--clay-ink); }
 .is-profile .ch-section__title { display: inline-block; padding: 4px 14px; border-radius: var(--radius-pill); background: var(--clay-surface); box-shadow: var(--clay-out); }
 .ch-list { display: grid; gap: 14px; }
-.ch-list--feed { max-width: 680px; margin: 0 auto; }
-.ch-page .ch-card { max-width: 680px; margin-left: auto; margin-right: auto; }
+.ch-list--feed { max-width: 680px; }
+.ch-page .ch-card { max-width: 680px; }
 .ch-card, .ch-composer { background: var(--clay-surface); color: var(--clay-ink); border-radius: var(--radius-md); box-shadow: var(--clay-out); padding: 14px 16px; overflow-wrap: anywhere; }
 .ch-composer { display: grid; gap: 10px; margin-bottom: 14px; }
 .ch-composer__text { width: 100%; box-sizing: border-box; resize: none; min-height: 56px; line-height: 1.6; font-size: 1rem; }
@@ -1057,7 +1058,7 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .ch-flag { margin: 10px 0 0; padding: 8px 12px; border-radius: var(--radius-sm); background: var(--clay-peach); color: var(--clay-peach-ink); font-size: .9rem; font-weight: 700; }
 .ch-body { margin: 10px 0 0; white-space: pre-wrap; line-height: 1.65; font-size: 1.02rem; }
 .ch-img { display: block; margin: 10px 0 0; border-radius: var(--radius-sm); overflow: hidden; background: color-mix(in srgb, var(--clay-lavender) 40%, transparent); }
-.ch-img img { display: block; width: 100%; max-height: 560px; object-fit: contain; }
+.ch-img img { display: block; width: 100%; max-height: 520px; object-fit: contain; }
 .ch-actions { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--clay-ink-2) 30%, transparent); }
 .ch-actions form { margin: 0; }
 .ch-act { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--clay-ink-2); font: inherit; font-weight: 800; text-decoration: none; cursor: pointer; }
@@ -1080,7 +1081,7 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .ch-tabs { display: flex; gap: 6px; padding: 6px; margin: 0 0 18px; border-radius: var(--radius-pill); background: var(--clay-surface); box-shadow: var(--clay-pressed); overflow-x: auto; scrollbar-width: none; }
 .ch-tab { flex: 1 0 auto; text-align: center; padding: 10px 16px; min-height: 44px; box-sizing: border-box; border-radius: var(--radius-pill); font-weight: 800; color: var(--clay-ink-2); text-decoration: none; white-space: nowrap; }
 .ch-tab[aria-current="page"] { background: var(--clay-lavender); color: var(--clay-lavender-ink); box-shadow: var(--clay-out); }
-.ch-cta { display: flex; align-items: center; gap: 10px; max-width: 680px; margin: 0 auto 14px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink-2); font-weight: 700; text-decoration: none; box-shadow: var(--clay-pressed); }
+.ch-cta { display: flex; align-items: center; gap: 10px; max-width: 680px; margin: 0 0 14px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink-2); font-weight: 700; text-decoration: none; box-shadow: var(--clay-pressed); }
 @media (min-width: 720px) { .ch-card, .ch-composer { padding: 18px 20px; } .ch-tabs { display: inline-flex; } .ch-tab { flex: 0 0 auto; } }
 @media (max-width: 420px) { .ch-vis-select { flex: 1 1 140px; } .ch-count { margin-left: 0; } .ch-send { margin-left: auto; } }
 
