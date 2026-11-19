@@ -145,5 +145,6 @@
 
     @include('partials.ga4-consent')
     <script src="{{ \App\Support\AssetUrl::to('js/theme.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/local-time.js') }}" defer></script>
 </body>
 </html>

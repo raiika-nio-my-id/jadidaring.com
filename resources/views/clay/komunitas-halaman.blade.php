@@ -58,7 +58,7 @@
             @endauth
             @forelse ($comments as $c)
                 <article class="member-comment">
-                    <header><strong>{{ '@'.($c->user?->username ?? 'anonim') }}</strong> <time class="news-date" datetime="{{ $c->created_at?->toIso8601String() }}">{{ $c->created_at?->wita() }}</time></header>
+                    <header><strong>{{ '@'.($c->user?->username ?? 'anonim') }}</strong> <time class="news-date" data-jd-time datetime="{{ $c->created_at?->toIso8601String() }}">{{ $c->created_at?->wita() }}</time></header>
                     <p>{{ $c->body }}</p>
                     @auth
                         <div class="member-comment__tools">

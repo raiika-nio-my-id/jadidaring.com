@@ -20,7 +20,7 @@
         </a>
         <div class="ch-who">
             <a class="ch-name" href="/u/{{ $author->username }}">{{ $name }}</a>
-            <span class="ch-meta"><span class="pf-user">{{ '@'.$author->username }}</span> · <a href="{{ $post->url() }}" class="ch-time"><time datetime="{{ $post->created_at?->toIso8601String() }}" title="{{ $post->created_at?->wita() }}">{{ $post->created_at?->locale('id')->diffForHumans() }}</time></a> · <span class="ch-vis" title="{{ $vis[1] }}"><span aria-hidden="true">{{ $vis[0] }}</span> {{ $vis[1] }}</span></span>
+            <span class="ch-meta"><span class="pf-user">{{ '@'.$author->username }}</span> · <a href="{{ $post->url() }}" class="ch-time"><time data-jd-time="title" datetime="{{ $post->created_at?->toIso8601String() }}" title="{{ $post->created_at?->wita() }}">{{ $post->created_at?->locale('id')->diffForHumans() }}</time></a> · <span class="ch-vis" title="{{ $vis[1] }}"><span aria-hidden="true">{{ $vis[0] }}</span> {{ $vis[1] }}</span></span>
         </div>
     </header>
     @if ($post->is_hidden)

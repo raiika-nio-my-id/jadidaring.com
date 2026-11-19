@@ -30,4 +30,14 @@ class WitaDisplayTimeTest extends TestCase
             $this->assertMatchesRegularExpression('/datetime="2026-11-19T07:52:00\+00:00"/', $html);
         }
     }
+
+    public function test_time_elements_carry_hook_for_local_time_script(): void
+    {
+        Article::create(['topic' => 'teknologi', 'slug' => 'tes-lokal', 'title' => 'Tes lokal', 'summary' => 's', 'body' => str_repeat('x ', 80),
+            'sources' => [], 'status' => 'published', 'published_at' => '2026-11-19 07:52:00']);
+        $html = $this->get('http://jadidaring.test/berita')->assertOk()->getContent();
+        $this->assertStringContainsString('data-jd-time', $html);
+        $this->assertStringContainsString('js/local-time.js', $html);
+        $this->assertFileExists(public_path('js/local-time.js'));
+    }
 }
