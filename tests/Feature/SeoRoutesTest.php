@@ -109,8 +109,8 @@ class SeoRoutesTest extends TestCase
 
         $this->get('http://jadidaring.test/ulartangga/')
             ->assertOk()
-            ->assertSee('<link rel="icon" href="/favicon.ico" sizes="48x48">', false)
-            ->assertSee('<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">', false);
+            ->assertSee('<link rel="icon" href="/favicon.ico?v=2" sizes="48x48">', false)
+            ->assertSee('<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" sizes="180x180">', false);
     }
 
     public function test_non_gamehub_show_does_not_inject_og_image(): void
