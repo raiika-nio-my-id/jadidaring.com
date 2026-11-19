@@ -123,7 +123,7 @@ class CommunityDraftKeyTest extends TestCase
     public function test_builder_prompt_script_has_cdn_allowlist_and_draft_instructions(): void
     {
         $js = file_get_contents(public_path('js/prompt-builder.js'));
-        $spec = file_get_contents(public_path('komunitas/prompt-spec.txt'));
+        $spec = file_get_contents(resource_path('static/prompt-spec.txt'));
         foreach (['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'cdn.tailwindcss.com'] as $needle) {
             $this->assertStringContainsString($needle, $spec);
         }

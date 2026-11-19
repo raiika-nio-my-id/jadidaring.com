@@ -28,6 +28,7 @@ Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'
 Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
 $cached(Route::get('/game', [ClayController::class, 'game'])->name('clay.game'));
 $cached(Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas'));
+Route::get('/komunitas/prompt-spec.txt', fn () => response(file_get_contents(resource_path('static/prompt-spec.txt')), 200, ['Content-Type' => 'text/plain; charset=utf-8', 'Cache-Control' => 'public, max-age=300']));
 Route::get('/komunitas/buat', [CommunityController::class, 'prompt'])->name('community.prompt');
 Route::get('/u/{username}/pengikut', [\App\Http\Controllers\FollowController::class, 'followers'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.followers');
 Route::get('/u/{username}/mengikuti', [\App\Http\Controllers\FollowController::class, 'following'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:90,1')->name('community.following');
