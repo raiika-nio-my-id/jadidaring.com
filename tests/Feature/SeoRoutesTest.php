@@ -14,27 +14,27 @@ class SeoRoutesTest extends TestCase
 
     public function test_tenant_robots_txt_allows_crawling_and_disallows_api_and_boost(): void
     {
-        CompanyProfile::factory()->published()->create(['subdomain' => 'nadapiano']);
+        CompanyProfile::factory()->published()->create(['subdomain' => 'contohgame']);
 
-        $response = $this->get('http://jadidaring.test/nadapiano/robots.txt');
+        $response = $this->get('http://jadidaring.test/contohgame/robots.txt');
 
         $response->assertOk();
         $response->assertHeader('Content-Type', 'text/plain; charset=utf-8');
         $response->assertSee('User-agent: *', false);
-        $response->assertSee('Allow: /nadapiano/', false);
-        $response->assertSee('Disallow: /nadapiano/api/', false);
+        $response->assertSee('Allow: /contohgame/', false);
+        $response->assertSee('Disallow: /contohgame/api/', false);
         $response->assertSee('Disallow: /_boost/', false);
-        $response->assertSee('Sitemap: https://jadidaring.test/nadapiano/sitemap.xml', false);
+        $response->assertSee('Sitemap: https://jadidaring.test/contohgame/sitemap.xml', false);
     }
 
     public function test_tenant_robots_txt_includes_correct_host_in_sitemap_url(): void
     {
-        CompanyProfile::factory()->published()->create(['subdomain' => 'nadapiano']);
+        CompanyProfile::factory()->published()->create(['subdomain' => 'contohgame']);
 
-        $response = $this->get('http://jadidaring.test/nadapiano/robots.txt');
+        $response = $this->get('http://jadidaring.test/contohgame/robots.txt');
 
         $response->assertOk();
-        $response->assertSee('Sitemap: https://jadidaring.test/nadapiano/sitemap.xml', false);
+        $response->assertSee('Sitemap: https://jadidaring.test/contohgame/sitemap.xml', false);
         $response->assertDontSee('gamehub', false);
     }
 
@@ -59,19 +59,19 @@ class SeoRoutesTest extends TestCase
     public function test_non_gamehub_sitemap_lists_only_its_own_url(): void
     {
         CompanyProfile::factory()->published()->create(['subdomain' => 'gamehub']);
-        CompanyProfile::factory()->published()->create(['subdomain' => 'nadapiano']);
+        CompanyProfile::factory()->published()->create(['subdomain' => 'contohgame']);
 
-        $response = $this->get('http://jadidaring.test/nadapiano/sitemap.xml');
+        $response = $this->get('http://jadidaring.test/contohgame/sitemap.xml');
 
         $response->assertOk();
-        $response->assertSee('http://jadidaring.test/nadapiano/', false);
+        $response->assertSee('http://jadidaring.test/contohgame/', false);
         $response->assertDontSee('gamehub', false);
-        $response->assertDontSee('nadapiano.jadidaring.test', false);
+        $response->assertDontSee('contohgame.jadidaring.test', false);
     }
 
     public function test_sitemap_is_valid_xml(): void
     {
-        CompanyProfile::factory()->game()->published()->create(['subdomain' => 'nadapiano']);
+        CompanyProfile::factory()->game()->published()->create(['subdomain' => 'contohgame']);
 
         $response = $this->get('http://jadidaring.test/sitemap.xml');
 
@@ -91,23 +91,23 @@ class SeoRoutesTest extends TestCase
     public function test_tenant_show_injects_canonical_link(): void
     {
         CompanyProfile::factory()->published()->create([
-            'subdomain' => 'nadapiano',
+            'subdomain' => 'contohgame',
             'html' => '<html><head><title>Game</title></head><body>Play</body></html>',
         ]);
 
-        $this->get('http://jadidaring.test/nadapiano/')
+        $this->get('http://jadidaring.test/contohgame/')
             ->assertOk()
-            ->assertSee('<link rel="canonical" href="http://jadidaring.test/nadapiano/">', false);
+            ->assertSee('<link rel="canonical" href="http://jadidaring.test/contohgame/">', false);
     }
 
     public function test_tenant_show_injects_favicon_links(): void
     {
         CompanyProfile::factory()->published()->create([
-            'subdomain' => 'nadapiano',
+            'subdomain' => 'contohgame',
             'html' => '<html><head><title>Game</title></head><body>Play</body></html>',
         ]);
 
-        $this->get('http://jadidaring.test/nadapiano/')
+        $this->get('http://jadidaring.test/contohgame/')
             ->assertOk()
             ->assertSee('<link rel="icon" href="/favicon.ico?v=2" sizes="48x48">', false)
             ->assertSee('<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" sizes="180x180">', false);
@@ -116,11 +116,11 @@ class SeoRoutesTest extends TestCase
     public function test_non_gamehub_show_does_not_inject_og_image(): void
     {
         CompanyProfile::factory()->published()->create([
-            'subdomain' => 'nadapiano',
+            'subdomain' => 'contohgame',
             'html' => '<html><head><title>Game</title></head><body>Play</body></html>',
         ]);
 
-        $this->get('http://jadidaring.test/nadapiano/')
+        $this->get('http://jadidaring.test/contohgame/')
             ->assertOk()
             ->assertDontSee('og-gamehub.jpg', false);
     }

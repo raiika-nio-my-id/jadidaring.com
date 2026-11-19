@@ -41,16 +41,16 @@ class Ga4EventsTest extends TestCase
 
     public function test_game_pages_get_consent_gated_game_start_and_score_hooks(): void
     {
-        CompanyProfile::factory()->published()->create(['subdomain' => 'mahjong', 'is_game' => true, 'html' => '<html><head></head><body>x</body></html>']);
+        CompanyProfile::factory()->published()->create(['subdomain' => 'contohgame', 'is_game' => true, 'html' => '<html><head></head><body>x</body></html>']);
 
         config(['services.ga4.measurement_id' => null]);
-        $this->get(self::HOST.'/game/mahjong')->assertOk()->assertDontSee('game_start', false);
+        $this->get(self::HOST.'/game/contohgame')->assertOk()->assertDontSee('game_start', false);
 
         config(['services.ga4.measurement_id' => 'G-TEST123456']);
-        $this->get(self::HOST.'/game/mahjong')->assertOk()
+        $this->get(self::HOST.'/game/contohgame')->assertOk()
             ->assertSee("jdTrack('game_start', { game_slug: slug })", false)
             ->assertSee("'post_score'", false)
-            ->assertSee('"mahjong"', false);
+            ->assertSee('"contohgame"', false);
     }
 
     public function test_article_hooks_and_search_carry_ids_only(): void

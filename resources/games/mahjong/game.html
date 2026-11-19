@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102b25">
+<title>Jade Room &#x2014; Mahjong, together</title>
+<style>
+:root{--bg:#f3f2e9;--ink:#203b33;--muted:#69776d;--green:#234f3d;--line:#d6dace;--gold:#c7a960;--felt:#214c3e;--tile:#fff9e6;--red:#a63d35}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:4px}header{height:88px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.mark{width:40px;height:46px;border:1px solid #496a54;border-radius:5px;background:#fffcf0;box-shadow:0 3px #9ba78b;font:28px Georgia;text-align:center;color:var(--green);line-height:44px}.brand-name{font:26px Georgia;letter-spacing:-1px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:700;color:var(--muted);text-transform:uppercase}.header-right{display:flex;align-items:center;gap:24px}.live{font-size:12px;color:var(--muted)}.live:before{content:'';display:inline-block;width:6px;height:6px;background:#578367;border-radius:50%;margin-right:7px}.text-button{border:0;background:none;color:var(--ink);padding:8px}.wrap{max-width:1500px;margin:auto;padding:30px 5% 45px}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}h1{font:36px/1.1 Georgia;margin:0 0 7px;letter-spacing:-1px}.intro p{margin:0;color:var(--muted);font-size:13px}.round-tag{border:1px solid var(--line);padding:8px 14px;font-size:12px;letter-spacing:.5px;border-radius:20px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}.game{min-width:0}.table{height:620px;background:var(--felt);border:10px solid #c2c4ae;outline:1px solid #929d84;border-radius:26px;position:relative;overflow:hidden;box-shadow:inset 0 0 90px #153f30,0 12px 30px #17352812;color:#f3f2dc}.table:before{content:'';position:absolute;inset:17px;border:1px solid #ffffff12;border-radius:10px;pointer-events:none}.table-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:210px Georgia;opacity:.026;pointer-events:none}.seat{position:absolute;display:flex;align-items:center;gap:9px;font-size:12px;z-index:2}.avatar{width:32px;height:32px;border-radius:50%;background:#ffffff0e;border:1px solid #ffffff22;display:grid;place-items:center;color:#e1d7aa}.seat.current .avatar{background:var(--gold);color:#253b27;box-shadow:0 0 0 4px #c7a96022}.seat small{display:block;font-size:9px;color:#b1c8b8;letter-spacing:1px;text-transform:uppercase}.seat.top{top:20px;left:50%;transform:translateX(-50%)}.seat.left{left:20px;top:42%;flex-direction:column;text-align:center}.seat.right{right:20px;top:42%;flex-direction:column;text-align:center}.seat.bottom{bottom:115px;left:28px}.opponent-rack{position:absolute;display:flex;gap:10px;align-items:center;flex-direction:column}.opponent-rack.top{top:78px;left:50%;transform:translateX(-50%);width:calc(100% - 104px)}.opponent-rack.left{left:18px;top:110px}.opponent-rack.right{right:18px;top:110px}.backs{display:flex;gap:2px;justify-content:center}.backs.top{width:100%;align-items:center}.backs.left,.backs.right{flex-direction:column}.back{position:relative;display:grid;place-items:center;flex:0 0 auto;width:23px;height:33px;background:#93ad86;border:2px solid #e5e7cc;border-radius:3px;box-shadow:0 2px #6c895f}.back:after{content:'';position:absolute;inset:2px;border:1px solid #547b574d;border-radius:2px;pointer-events:none}.back-logo{font:17px/1 Georgia,'Songti SC',serif;color:#284d35;text-shadow:0 1px #e3ebca88}.backs.top .back{flex:1 1 0;min-width:0;max-width:23px;width:auto;aspect-ratio:23/33;height:auto}.backs.left .back,.backs.right .back{width:28px;height:20px}.backs.left .back-logo,.backs.right .back-logo{font-size:13px}.opponent-open{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}.opponent-rack.left .opponent-open,.opponent-rack.right .opponent-open{flex-direction:column;flex-wrap:nowrap}.opponent-open .tile{opacity:1;width:21px;height:30px;border-bottom-width:3px;box-shadow:none}.opponent-open .tile .face{font-size:17px}.opponent-open .tile .num{display:none}.opponent-open .face svg{width:15px;height:18px;max-width:100%}.opponent-rack.left .meld-group,.opponent-rack.right .meld-group{flex-direction:column;align-items:center}.opponent-rack.left .tile,.opponent-rack.right .tile{width:28px;height:20px;border-bottom-width:2px}.opponent-rack.left .tile .face,.opponent-rack.right .tile .face{font-size:14px}.opponent-rack.left .face svg,.opponent-rack.right .face svg{width:12px;height:15px}.opponent-rack.left .meld-group.kong,.opponent-rack.right .meld-group.kong{display:grid;grid-template-columns:repeat(2,14px);gap:2px}.opponent-rack .meld-group.kong .tile{max-width:100%}.opponent-rack.left .meld-group.kong .face,.opponent-rack.right .meld-group.kong .face{font-size:12px}.seat-name{display:block;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.seat.left,.seat.right{top:16px;gap:4px;max-width:76px}.seat.left .avatar,.seat.right .avatar{width:24px;height:24px}.seat.left .seat-name,.seat.right .seat-name{max-width:76px}.seat.top .seat-name{max-width:140px}.center{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);text-align:center;width:240px;pointer-events:none}.center-logo{font:42px Georgia;color:#e4d5a9;margin-bottom:8px}.center h2{font:22px Georgia;margin:0}.center .caption{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a9c1ac;margin-top:8px}.wall{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff21;border-radius:5px;padding:7px 12px;margin-top:15px;font-size:12px;color:#d6dfca}.river{position:absolute;top:54%;left:50%;transform:translateX(-50%);width:70%;display:flex;justify-content:center;gap:4px;flex-wrap:wrap;max-height:100px;overflow:auto}.river .tile{width:25px;height:35px;font-size:20px;border-bottom-width:2px;box-shadow:none}.river .tile .num{font-size:7px}.river .tile .face{font-size:18px}.hand{position:absolute;bottom:28px;left:4%;right:4%;display:flex;gap:5px;justify-content:center;align-items:end;min-height:65px}.tile{position:relative;flex:0 0 auto;border:1px solid #c7cdb3;border-bottom:5px solid #a9b99a;border-radius:5px;width:44px;height:64px;background:var(--tile);color:#345739;box-shadow:0 2px 3px #0002;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;user-select:none;transition:transform .14s}.tile .num{position:absolute;left:4px;top:2px;font:9px Georgia;color:#788468}.tile .face{max-width:100%;font:32px/1 Georgia,'Songti SC',serif}.tile .suit{font-size:8px;line-height:1;color:#8b8e73}.tile.chars .face,.tile.red .face{color:var(--red)}.tile.dots .face{color:#315c79}.tile.selected{transform:translateY(-13px);outline:2px solid var(--gold);outline-offset:1px}.tile:hover:not(:disabled){transform:translateY(-7px)}.tile.selected:hover{transform:translateY(-13px)}.tile.drawn{background:#fff1bc;border-color:#bca254;border-bottom-color:#b08d3f;box-shadow:inset 0 0 0 1px #bd9a43,0 2px 3px #0002}.tile.drawn:after{content:"";position:absolute;right:3px;top:3px;width:5px;height:5px;border-radius:50%;background:#9b7321}.hand .tile{flex:1 1 0;max-width:49px;min-width:0;width:auto}.hand .tile:disabled{opacity:1}.face svg{width:30px;height:36px;display:block}.river .face svg{width:18px;height:22px}.melds .face svg{width:16px;height:19px}.melds{position:absolute;bottom:108px;left:50%;transform:translateX(-50%);display:flex;gap:12px}.meld-group{display:flex;gap:2px}.melds .tile{width:22px;height:30px}.melds .tile .face{font-size:18px}.melds .tile .num,.melds .tile .suit{display:none}.table-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:12px}.status{display:flex;align-items:center;gap:10px;font-size:13px}.status-dot{width:8px;height:8px;flex:none;border-radius:50%;background:#6f8a66}.status small{display:block;color:var(--muted);font-size:11px}.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);border-radius:5px;padding:10px 17px;background:#fffdf6;color:var(--ink);font-size:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn.primary{background:var(--green);color:#f5f4e5;border-color:var(--green)}.btn.gold{background:#d9bd75;color:#253d29;border-color:#d9bd75}.btn.full{width:100%}.panel{border:1px solid var(--line);border-radius:7px;background:#f9f9f1;overflow:hidden;margin-bottom:16px}.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.panel-head h2{font:19px Georgia;margin:0}.panel-body{padding:20px}.panel p{font-size:12px;color:var(--muted);margin:0 0 15px}.label{display:block;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:7px;color:var(--muted)}input{width:100%;border:1px solid #d4d9ca;background:#fffdf7;border-radius:5px;padding:10px 12px;color:var(--ink);margin-bottom:12px;font-size:13px}.divider{display:flex;align-items:center;gap:12px;margin:17px 0;font-size:10px;letter-spacing:1px;color:#7f8b78}.divider:before,.divider:after{content:'';height:1px;background:var(--line);flex:1}.join-row{display:flex;gap:7px}.join-row input{min-width:0;margin:0;text-transform:uppercase;letter-spacing:2px}.join-row .btn{padding:8px 14px}.practice{background:none;border:0;border-top:1px solid var(--line);display:block;padding:16px 20px;width:100%;text-align:left;font-size:12px;color:var(--green)}.practice span{float:right}.note{font-size:11px;color:var(--muted);padding:0 4px;display:flex;gap:8px}.room-code{font:28px Georgia;letter-spacing:5px;margin-bottom:14px}.players-list{margin:14px 0}.player-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e2e4d8;font-size:12px}.player-row span:last-child{color:var(--muted);font-size:10px}.activity{padding:8px 20px 16px;max-height:180px;overflow:auto}.event{padding:10px 0;border-bottom:1px solid #e1e4d7;font-size:11px;color:var(--muted)}.event:first-child{color:var(--ink)}footer{display:flex;justify-content:space-between;gap:20px;margin-top:34px;font-size:10px;color:#7d8977;letter-spacing:.3px}.shortcut{color:#51674d}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:12px 20px;background:#162f25;color:#faf6e5;border-radius:6px;font-size:13px;box-shadow:0 5px 20px #0002;z-index:100;max-width:90vw}.toast:empty{display:none}dialog{border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);max-width:590px;padding:30px}dialog::backdrop{background:#132e25aa}dialog h2{font:28px Georgia;margin:0 0 15px}dialog p,dialog li{font-size:13px}dialog .close{float:right}.hidden{display:none!important}.countdown{font-size:11px;color:#8d7842}.watch-note{position:absolute;bottom:35px;left:8%;right:8%;text-align:center;font-size:12px;color:#d4dfc8}.badge{font-size:9px;padding:4px 7px;border:1px solid #c6cebb;border-radius:4px;color:#63725a}.busy{opacity:.65;pointer-events:none}
+@media(min-width:1350px){.table{height:630px}.tile{width:49px;height:70px}.tile .face{font-size:35px}.hand{bottom:33px}.seat.bottom{bottom:128px}}
+@media(max-width:1050px){.layout{grid-template-columns:minmax(0,1fr) 260px;gap:18px}.wrap{padding:25px 3%}.tile{width:34px;height:54px}.tile .face{font-size:27px}.hand{gap:3px}.table{height:620px}.header-right{gap:12px}}
+@media(max-width:760px){header{height:70px;padding:0 5%}.brand-name{font-size:23px}.live{display:none}.intro{margin-bottom:18px}h1{font-size:30px}.round-tag{font-size:10px;padding:6px 10px}.wrap{padding:23px 4%}.layout{grid-template-columns:1fr}.table{height:620px;border-width:6px;border-radius:20px}.hand{left:2%;right:2%;gap:2px;bottom:28px}.tile{width:6.3%;max-width:42px;min-width:0;height:55px;border-radius:4px;border-bottom-width:4px}.tile .face{font-size:clamp(19px,5.4vw,27px)}.hand .face svg{width:26px;height:30px;max-width:100%}.tile .suit{font-size:7px}.tile.drawn{margin-left:0}.seat.left{left:12px}.seat.right{right:12px}.seat.bottom{left:16px;bottom:110px}.center{top:43%;width:200px}.center h2{font-size:20px}.backs.top .back-logo{font-size:12px}.river{width:65%;top:55%;max-height:96px}.river .tile{width:23px;height:31px}.table-footer{align-items:flex-start;flex-direction:column;margin:15px 0 8px}.actions{justify-content:flex-start;min-height:40px}.panel-body{padding:17px 20px}.side{display:grid;grid-template-columns:1fr}.activity{max-height:130px}footer{margin-top:20px}.shortcut{display:none}.header-right .text-button{font-size:12px}.melds{bottom:105px}.intro p{font-size:12px}}
+/* Keep the latest 36 discards in three complete rows at every table width. */
+.river{display:grid;grid-template-columns:repeat(12,minmax(0,25px));justify-content:center;align-content:start;gap:4px;max-height:none;overflow:visible}
+.river .tile{width:100%;min-width:0;height:28px}.river .tile:disabled{opacity:1}.river .tile.last-discard{background:#ffe9a5;border-color:#9d7730;box-shadow:0 0 0 2px #d4b367}.river .tile.last-discard:after{content:"";position:absolute;top:-5px;right:-4px;width:7px;height:7px;background:#d4b367;border:1px solid #214c3e;border-radius:50%}
+.river .face svg{max-width:100%;width:16px;height:20px}
+.table.playing .center{top:43%}
+.table.playing .center-logo{font-size:30px;margin-bottom:0}
+.table.playing .center h2{font-size:20px}.backs.top .back-logo{font-size:12px}
+.table.playing .center .caption{margin-top:4px}
+.table.playing .center .wall{margin-top:8px;padding:4px 10px}
+.table.playing .seat.bottom{bottom:104px}
+@media(min-width:1350px){.river .tile{height:35px}.table.playing .seat.bottom{bottom:128px}}
+@media(max-width:1050px){.river .tile .face{font-size:16px}}
+@media(max-width:760px){.river{width:calc(100% - 112px);grid-template-columns:repeat(12,minmax(0,23px));gap:3px}.river .tile{height:26px}.river .tile .face{font-size:14px}.river .tile .num{font-size:6px;left:2px;top:1px}.river .face svg{width:14px;height:18px}}
+.river-zone{position:absolute;top:54%;left:50%;transform:translateX(-50%);width:70%}.river{position:relative;top:auto;left:auto;transform:none;width:100%}.river-pager{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px;min-height:24px;color:#d7e1c9;font-size:10px}.river-pager:empty{display:none}.river-pager button{border:1px solid #ffffff30;background:#ffffff0b;color:#f6efda;border-radius:4px;min-width:26px;min-height:24px;font-size:12px;padding:1px 6px}.river-pager button:disabled{opacity:.3}.river-pager .latest-page{font-size:10px}.river-pager .page-label{min-width:56px;text-align:center}
+@media(min-width:1350px){.river .tile{height:28px}}
+@media(max-width:760px){.river-zone{top:55%;width:calc(100% - 112px)}.river{width:100%;grid-template-columns:repeat(8,minmax(0,23px))}.opponent-rack.left{left:12px}.opponent-rack.right{right:12px}.seat.left .seat-name,.seat.right .seat-name{max-width:66px}}
+.public-table{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:11px 0;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;color:var(--ink)}.public-table:last-child{border-bottom:0}.public-table strong{display:block;font:16px Georgia;letter-spacing:1px}.public-table small{display:block;font-size:10px;color:var(--muted);margin-top:3px}.public-table .table-action{font-size:11px;font-weight:600;color:var(--green)}.tables-list{padding-top:6px;padding-bottom:6px;max-height:280px;overflow:auto}.tables-empty{padding:12px 0;margin:0!important}
+.backs.top .back{border-width:1px}.backs.top .back-logo{font-size:clamp(8px,1.7vw,17px)}
+@media(max-width:1050px){.table{height:700px}.table.playing .center{top:34%}.river-zone{top:44%}.hand{display:grid;grid-template-columns:repeat(7,44px);grid-auto-rows:64px;justify-content:safe center;align-items:start;gap:7px 3px;bottom:18px;height:168px;min-height:168px;padding:18px 2px 10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}.hand .tile{width:44px;min-width:44px;max-width:44px;height:64px}.hand .tile .face{font-size:32px}.hand .face svg{width:30px;height:36px}.table.playing .seat.bottom{bottom:194px}.melds{bottom:198px;width:calc(100% - 72px);justify-content:center;flex-wrap:wrap;gap:5px}}
+
+/* Playing controls belong to the felt table, including on touch screens. */
+.layout.in-game{grid-template-columns:minmax(0,1fr)}.layout.in-game .side{display:none}
+.table{height:calc(640px + var(--controls-height,120px))}.table-footer{position:absolute;inset:auto 0 0;margin:0;padding:14px 22px 10px;min-height:120px;background:#16392f;border-top:1px solid #ffffff25;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;z-index:4;color:#fff7dc}
+.table-footer .status{min-width:0}.table-footer .status small{color:#c2d2bd}.table-footer .status-dot{background:#d9bd75}.table-footer .actions{min-width:0;align-content:center}.table-footer .btn{min-height:44px}.table-tools{grid-column:1/-1;display:flex;justify-content:flex-end;align-items:center;gap:14px;font-size:10px;color:#b9ceba}.table-tools span{margin-right:auto}.table-tools .text-button{color:#e7e7cd;font-size:11px;padding:4px 8px;min-height:28px}
+.hand{bottom:calc(var(--controls-height,120px) + 26px)}.melds{bottom:calc(var(--controls-height,120px) + 104px)}.table.playing .seat.bottom,.seat.bottom{bottom:calc(var(--controls-height,120px) + 108px)}.table.playing .center{top:34%}.river-zone{top:45%}.watch-note{bottom:172px}.table.playing .center h2{font-size:22px}
+@media(min-width:1350px){.table{height:calc(660px + var(--controls-height,120px))}.hand{bottom:calc(var(--controls-height,120px) + 26px)}.table.playing .seat.bottom,.seat.bottom{bottom:calc(var(--controls-height,120px) + 122px)}.melds{bottom:calc(var(--controls-height,120px) + 112px)}}
+@media(max-width:1050px){.table{height:calc(708px + var(--controls-height,142px))}.hand{bottom:calc(var(--controls-height,142px) + 8px)}.table.playing .seat.bottom,.seat.bottom{bottom:calc(var(--controls-height,142px) + 184px)}.melds{bottom:calc(var(--controls-height,142px) + 194px)}.table.playing .center{top:27%}.river-zone{top:38%}.watch-note{bottom:260px}.table-footer{min-height:134px;gap:8px;padding:12px 16px 8px;grid-template-columns:1fr}.table-footer .actions{justify-content:flex-start;min-height:0}.table-footer .status{font-size:12px}.table-footer .status small{font-size:10px}.table-footer .btn{padding:8px 12px}.table-tools{gap:8px}.table-tools .text-button{font-size:10px}}
+@media(max-width:760px){.table-footer{padding:10px 12px 8px}.table-footer .actions{gap:6px}.table.playing .center h2{font-size:19px}.table-tools{flex-wrap:wrap}.seat.bottom{left:12px}.river-pager button{min-height:32px;min-width:32px}}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="bl" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<style id="jr-hub-game">@media (max-width:600px){#jr-hub{top:calc(84px + env(safe-area-inset-top,0px));bottom:auto}}</style>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"slug": "mahjong", "inputs": ["#name"], "keys": ["jade.name"], "max": 24, "icon": "\ud83c\udc04", "title": "Jade Room Mahjong", "invite": "room", "accent": "#7fe0b0", "multi": true};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<!-- JaRing invite gate v1 (jr-invite): opening an invite link (?room=CODE) shows only a name prompt when the room exists and joins it directly; a missing/expired room falls back to the main menu with a short notice. Game code calls JRInvite.run({...}); see /workspace/fixes-2026-10-23/README.md -->
+<style id="jr-invite-css">
+.jr-inv{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));background:rgba(14,16,24,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#1c1f2b;text-align:center;overflow:auto}
+.jr-inv[hidden],.jr-note[hidden]{display:none!important}
+.jr-inv *{box-sizing:border-box;letter-spacing:normal;text-transform:none}
+.jr-inv-card{width:100%;max-width:360px;margin:auto;background:#fffdf8;border-radius:18px;padding:22px 20px 18px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.jr-inv-kicker{margin:0;font-size:13px;font-weight:700;color:#6a6f82}
+.jr-inv-title{margin:2px 0 0;font-size:21px;line-height:1.2;font-weight:800;color:#1c1f2b}
+.jr-inv-code{display:inline-block;margin:10px 0 14px;padding:6px 12px 6px 16px;border:2px dashed #c9c2ad;border-radius:10px;background:#fff6d6;font:800 22px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:4px!important;color:#1c1f2b}
+.jr-inv-form{margin:0}
+.jr-inv-label{display:block;margin:0 0 6px;text-align:left;font-size:14px;font-weight:700;color:#3a3f52}
+.jr-inv-input{display:block;width:100%;min-height:48px;margin:0;padding:10px 14px;border:2px solid #c9ccd8;border-radius:12px;background:#fff;color:#1c1f2b;font-weight:600;font-size:16px;line-height:1.2;font-family:inherit;outline:none}
+.jr-inv-input:focus{border-color:var(--jr-inv-accent,#e8553b);box-shadow:0 0 0 3px rgba(232,85,59,.18)}
+.jr-inv-go{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin:12px 0 0;padding:10px 16px;border:0;border-radius:12px;background:var(--jr-inv-accent,#e8553b);color:var(--jr-inv-accent-ink,#fff);font-weight:800;font-size:16px;line-height:1;font-family:inherit;cursor:pointer}
+.jr-inv-go:disabled{opacity:.65;cursor:progress}
+.jr-inv-alt{margin:10px 0 0;padding:6px 8px;border:0;background:none;color:#555b70;font-weight:600;font-size:14px;line-height:1.2;font-family:inherit;text-decoration:underline;cursor:pointer}
+.jr-inv-err{min-height:1.3em;margin:8px 0 0;font-size:14px;font-weight:600;color:#c0262d}
+.jr-inv-wait{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0 6px;font-weight:600;color:#3a3f52}
+.jr-inv-spin{width:28px;height:28px;border:3px solid #e4e1d6;border-top-color:var(--jr-inv-accent,#e8553b);border-radius:50%;animation:jr-inv-spin .8s linear infinite}
+.jr-inv-go .jr-inv-spin{width:18px;height:18px;border-width:2px;border-color:rgba(255,255,255,.45);border-top-color:#fff}
+@keyframes jr-inv-spin{to{transform:rotate(360deg)}}
+.jr-note{position:fixed;z-index:2147482500;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:flex-start;gap:10px;box-sizing:border-box;width:max-content;max-width:min(94vw,520px);margin:0;padding:11px 12px 11px 16px;border-radius:14px;background:#2b2433;color:#fff;font:600 14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.jr-note-x{flex:none;margin:-4px -4px -4px 0;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-weight:700;font-size:18px;line-height:1;font-family:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.jr-inv-spin{animation-duration:2s}}
+</style>
+<script id="jr-invite-js">
+window.JRInvite = (function () {
+  'use strict';
+  var TXT = {
+    id: { checking: 'Memeriksa room\u2026', kicker: 'Kamu diundang main', title: 'Gabung ke room', nameLabel: 'Nama kamu', namePh: 'Tulis namamu', join: 'Gabung', joining: 'Masuk\u2026', menu: 'Ke menu utama', nameErr: 'Isi nama dulu ya.', missing: 'Room {code} tidak ditemukan atau sudah berakhir. Buat room baru atau cari room lain di menu ini.', failed: 'Tidak bisa masuk ke room {code}: {msg}', offline: 'Tautan undangan hanya bisa dipakai di situs jadidaring.com. Kamu tetap bisa main mode latihan.', close: 'Tutup' },
+    en: { checking: 'Checking the room\u2026', kicker: 'You are invited', title: 'Join the room', nameLabel: 'Your name', namePh: 'Type your name', join: 'Join', joining: 'Joining\u2026', menu: 'Go to main menu', nameErr: 'Please enter your name.', missing: 'Room {code} was not found or has ended. Create a new room or pick another one from this menu.', failed: 'Could not join room {code}: {msg}', offline: 'Invite links only work on jadidaring.com. You can still play practice mode.', close: 'Close' }
+  };
+  function fmt(s, v) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return v && v[k] !== undefined ? v[k] : m; }); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function getLS(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function setLS(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  /** '' = no invite in the URL, '!' = a malformed code, otherwise the 6-character room code */
+  function code(param) {
+    var v = ''; try { v = new URLSearchParams(location.search).get(param || 'room') || ''; } catch (e) { v = ''; }
+    v = v.trim().toUpperCase(); return /^[A-Z2-9]{6}$/.test(v) ? v : (v ? '!' : '');
+  }
+  function strip(param) {
+    try { var u = new URL(location.href); if (!u.searchParams.has(param || 'room')) return; u.searchParams.delete(param || 'room'); history.replaceState(history.state, '', u.pathname + u.search + u.hash); } catch (e) { /* ignore */ }
+  }
+  /** Read-only existence check on /api/game: GET rooms/{code} with a placeholder token answers 404 when the room
+      does not exist and 403 ("not a member") when it does (GameRoomService::show looks the room up before the player). */
+  function probe(c) {
+    if (!/^[A-Z2-9]{6}$/.test(c || '')) return Promise.resolve('missing');
+    return fetch('/api/game/rooms/' + encodeURIComponent(c), { headers: { Accept: 'application/json', Authorization: 'Bearer jr-invite-check' }, credentials: 'same-origin', cache: 'no-store' })
+      .then(function (r) { return r.status === 403 || r.ok ? 'exists' : (r.status === 404 || r.status === 422) ? 'missing' : 'unknown'; }, function () { return 'unknown'; });
+  }
+  var noteTimer = 0;
+  function notice(msg, o) {
+    o = o || {}; var T = TXT[o.lang] || TXT.id, el = document.getElementById('jr-note');
+    if (!el) { el = document.createElement('div'); el.id = 'jr-note'; el.className = 'jr-note'; el.setAttribute('role', 'alert'); document.body.appendChild(el); }
+    el.innerHTML = '<span>' + esc(msg) + '</span><button type="button" class="jr-note-x" aria-label="' + esc(T.close) + '">\u00d7</button>';
+    el.hidden = false; el.querySelector('button').onclick = function () { el.hidden = true; };
+    clearTimeout(noteTimer); noteTimer = setTimeout(function () { el.hidden = true; }, o.ms || 12000);
+  }
+  /**
+   * o.code       room code from code()
+   * o.check(c)   -> Promise<'exists'|'missing'|'unknown'|'offline'|'session'|{fallback:msg}> (default: probe)
+   * o.join(name) -> Promise<{ok:true} | {ok:false, missing?:true, retry?:true, message?:string}>
+   * o.fallback(msg) shows the main menu (msg = notice text, '' when the user chose "main menu")
+   * o.nameKey, o.nameMax (24), o.lang ('id'|'en'), o.accent, o.param ('room')
+   */
+  function run(o) {
+    var T = TXT[o.lang] || TXT.id, param = o.param || 'room', c = o.code, prevOverflow = document.documentElement.style.overflow, done = false;
+    var root = document.createElement('div'); root.className = 'jr-inv'; root.id = 'jr-invite'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'jr-inv-title');
+    if (o.accent) root.style.setProperty('--jr-inv-accent', o.accent);
+    if (o.accentInk) root.style.setProperty('--jr-inv-accent-ink', o.accentInk);
+    root.innerHTML = '<div class="jr-inv-card"><p class="jr-inv-kicker">' + esc(o.gameName || T.kicker) + '</p><h2 class="jr-inv-title" id="jr-inv-title">' + esc(T.title) + '</h2><div class="jr-inv-code">' + esc(c === '!' ? '------' : c) + '</div>' +
+      '<div class="jr-inv-wait" aria-live="polite"><span class="jr-inv-spin" aria-hidden="true"></span><span>' + esc(T.checking) + '</span></div>' +
+      '<form class="jr-inv-form" hidden novalidate><label class="jr-inv-label" for="jr-inv-name">' + esc(T.nameLabel) + '</label><input class="jr-inv-input" id="jr-inv-name" type="text" maxlength="' + (o.nameMax || 24) + '" autocomplete="off" enterkeyhint="go" placeholder="JadiDaring">' +
+      '<p class="jr-inv-err" role="alert"></p><button class="jr-inv-go" type="submit">' + esc(T.join) + '</button></form>' +
+      '<button class="jr-inv-alt" type="button">' + esc(T.menu) + '</button></div>';
+    document.body.appendChild(root); document.documentElement.style.overflow = 'hidden';
+    var form = root.querySelector('form'), input = root.querySelector('input'), err = root.querySelector('.jr-inv-err'), go = root.querySelector('.jr-inv-go'), wait = root.querySelector('.jr-inv-wait');
+    var resolve; var result = new Promise(function (r) { resolve = r; });
+    function close(how, msg) {
+      if (done) return; done = true; root.remove(); document.documentElement.style.overflow = prevOverflow; strip(param);
+      if (how === 'fallback') { if (msg) notice(msg, o); try { o.fallback && o.fallback(msg || ''); } catch (e) { /* ignore */ } }
+      resolve(how);
+    }
+    root.querySelector('.jr-inv-alt').onclick = function () { close('fallback', ''); };
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') close('fallback', ''); });
+    form.onsubmit = function (e) {
+      e.preventDefault(); if (go.disabled) return;
+      var name = input.value.replace(/\s+/g, ' ').trim().slice(0, o.nameMax || 24);
+      if (!name || name.length < (o.nameMin || 1)) { err.textContent = T.nameErr; input.focus(); return; }
+      err.textContent = ''; go.disabled = true; input.disabled = true; go.innerHTML = '<span class="jr-inv-spin" aria-hidden="true"></span>' + esc(T.joining);
+      if (o.nameKey) setLS(o.nameKey, name);
+      Promise.resolve().then(function () { return o.join(name); }).then(function (r) { return r || { ok: false, retry: true }; }, function (e) { return { ok: false, retry: true, message: e && e.message }; }).then(function (r) {
+        if (done) return;
+        if (r.ok) { close('joined'); return; }
+        if (r.retry) { go.disabled = false; input.disabled = false; go.textContent = T.join; err.textContent = r.message || ''; return; }
+        close('fallback', r.missing ? fmt(T.missing, { code: c }) : fmt(T.failed, { code: c, msg: r.message || '' }));
+      });
+    };
+    Promise.resolve().then(function () { return c === '!' ? 'missing' : (o.check ? o.check(c) : probe(c)); }).then(null, function () { return 'unknown'; }).then(function (st) {
+      if (done) return;
+      if (st && typeof st === 'object' && st.fallback) { close('fallback', st.fallback); return; }
+      if (st === 'session') { close('session'); return; }
+      if (st === 'offline') { close('fallback', T.offline); return; }
+      if (st === 'missing') { close('fallback', fmt(T.missing, { code: c === '!' ? '' : c }).replace('  ', ' ')); return; }
+      wait.hidden = true; form.hidden = false; input.value = ''; /* t367u: never prefill (placeholder JadiDaring) */
+      try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+    });
+    return result;
+  }
+  return { code: code, strip: strip, probe: probe, notice: notice, run: run, text: TXT };
+})();
+</script>
+<!-- /jr-invite -->
+<header><div class="brand"><div class="mark" aria-hidden="true">&#x767C;</div><div><div class="brand-name">jade room</div><div class="eyebrow">A seat at the table</div></div></div><div class="header-right"><span class="live" id="connection">Ready to play</span><button class="text-button" id="rulesBtn">How to play &#x2197;</button></div></header>
+<main class="wrap"><div class="intro"><div><h1>A little luck. A good hand.</h1><p>Gather your friends, find a table, or take a moment to practice.</p></div><span class="round-tag" id="roundTag">FOUR WINDS &#xB7; 136 TILES</span></div>
+<div class="layout"><section class="game" aria-label="Mahjong table"><div class="table" id="table"><div class="table-watermark" aria-hidden="true">&#x767C;</div><div id="seats"></div><div id="backs"></div><div class="center"><div class="center-logo" aria-hidden="true">&#x6771;</div><h2 id="tableTitle">Your table is waiting</h2><div class="caption" id="tableCaption">Make yourself at home</div><div class="wall" id="wallCount">&#x25C8; &nbsp; A new round awaits</div></div><div class="river-zone"><div class="river" id="river" aria-label="Discarded tiles"></div><nav id="riverPager" class="river-pager" aria-label="Discard history pages"></nav></div><div class="melds" id="melds" aria-label="Your exposed melds"></div><div class="hand" id="hand" aria-label="Your hand"></div><div id="watchNote" class="watch-note hidden"></div><div class="table-footer"><div class="status" role="status" aria-live="polite"><span class="status-dot"></span><div><span id="status">Every good game starts with a seat.</span><small id="statusSub">Choose a table or play a practice round.</small></div></div><div class="actions" id="actions"></div><div class="table-tools"><span id="tableRoomLabel"></span><button id="tableInviteBtn" class="text-button hidden">Invite &#x2197;</button><button id="tableLeaveBtn" class="text-button hidden">Leave table</button></div></div></div></section>
+<aside class="side"><section class="panel" id="lobbyPanel"><div class="panel-head"><h2>Take a seat</h2><span class="badge">PLAY TOGETHER</span></div><div class="panel-body"><p>Two to four players. One table. Plenty of possibilities.</p><label class="label" for="name">Your name</label><input id="name" maxlength="24" placeholder="What should we call you?" value="Guest" autocomplete="nickname"><button id="matchBtn" class="btn primary full">Find a table <span>&#x2197;</span></button><p style="margin:9px 0 17px;font-size:10px">Match with others, or watch a round and join next.</p><button id="createBtn" class="btn full">&#xFF0B; Create a private room</button><div class="divider">OR JOIN FRIENDS</div><label class="label" for="code">Room code</label><div class="join-row"><input id="code" maxlength="6" placeholder="ABCDEF" autocomplete="off"><button id="joinBtn" class="btn">Join</button></div></div><button id="practiceBtn" class="practice">Practice with three bots <span>&#x2192;</span></button></section>
+<section class="panel" id="tablesPanel"><div class="panel-head"><h2>Open tables</h2><span class="badge" id="tablesCount">&#x2026;</span></div><div class="panel-body tables-list" id="tablesList"><p class="tables-empty">Finding public tables&#x2026;</p></div></section>
+<section class="panel"><div class="panel-head"><h2>At the table</h2><span style="color:#7e9077">&#x25F7;</span></div><div class="activity" id="activity"><div class="event">Welcome to Jade Room.</div><div class="event">A classic game, a little slower living.</div></div></section><div class="note"><span>&#x25C7;</span><span>Simple classic rules. No money, no stakes.<br>Just a good game of mahjong.</span></div></aside></div>
+<footer><span>JADE ROOM &nbsp; / &nbsp; MAHJONG, TOGETHER.</span><span class="shortcut">Gold tile = new draw &#xB7; Enter to discard &#xB7; Arrow keys to move</span><span>A good game, together.</span></footer></main>
+<dialog id="rules"><button class="text-button close" id="closeRules" aria-label="Close rules">&#x2715;</button><h2>A good hand starts here.</h2><p>Two to four players take turns drawing and discarding tiles. The host can start with the people at the table, or fill empty seats with bots. Empty seats are skipped when bots are off. Make <strong>four melds and a pair</strong>, or <strong>seven distinct pairs</strong>, to declare Mahjong.</p><ul><li><strong>Chow:</strong> three consecutive tiles in the same suit. You may claim only from the player immediately before you.</li><li><strong>Pung:</strong> three identical tiles. Claim a discard from any player.</li><li><strong>Kong:</strong> four identical tiles. Claim a discard or declare a concealed Kong, then draw a replacement.</li><li><strong>Mahjong:</strong> claim a winning discard or win on your own draw. Win claims outrank Pung/Kong, which outrank Chow. Equal claims go to the closest player clockwise.</li></ul><p>Claims have a 30-second window. Your turn has a 120-second limit; inactive players automatically discard. The round ends when someone wins or the wall runs out.</p><p><strong>Matchmaking:</strong> join a public waiting table first. Otherwise spectate a playing table and queue for the next round. Queued spectators take bot or vacant seats when the host starts the next round. Private rooms are only found by their invitation code.</p><p>The latest unclaimed discard has a gold outline. Your newest drawn tile is highlighted in gold and automatically sorted into your hand. Its highlight clears after your discard.</p><p>Use the arrows below the center tiles to browse earlier discards. Latest returns to the newest page. Opponents&#x2019; exposed melds appear as tile faces beside their concealed hand.</p><p>This is a casual classic variant: no flowers, minimum fan, scoring, added Kongs, robbing Kongs, or multi-winner claims. Each new round rotates the dealer to the next occupied seat.</p><p id="setupText">Open this HTML for offline practice. On your Jadidaring game domain, online rooms use the existing Laravel API and Reverb connection. Database credentials stay in Laravel. The host runs the game and can see all hands. Keep the host tab open; reconnecting the host resumes a paused table.</p><button class="btn primary" id="gotIt">Got it. Let&#x2019;s play.</button></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script id="engine" type="text/plain">
+export const WINDS=['East','South','West','North'];
+export const LABELS=['\u4e00\u842c','\u4e8c\u842c','\u4e09\u842c','\u56db\u842c','\u4e94\u842c','\u516d\u842c','\u4e03\u842c','\u516b\u842c','\u4e5d\u842c','1 Bamboo','2 Bamboo','3 Bamboo','4 Bamboo','5 Bamboo','6 Bamboo','7 Bamboo','8 Bamboo','9 Bamboo','1 Dot','2 Dots','3 Dots','4 Dots','5 Dots','6 Dots','7 Dots','8 Dots','9 Dots','East wind','South wind','West wind','North wind','Red dragon','Green dragon','White dragon'];
+export function isWin(hand,melds=0){
+ if(hand.length!==14-melds*3)return false;const c=Array(34).fill(0);for(const t of hand){if(!Number.isInteger(t)||t<0||t>33)return false;c[t]++;}
+ if(melds===0&&c.filter(n=>n===2).length===7)return true;
+ function sets(a,left){if(!left)return a.every(n=>!n);const t=a.findIndex(n=>n>0);if(t<0)return false;if(a[t]>=3){a[t]-=3;if(sets(a,left-1)){a[t]+=3;return true}a[t]+=3;}if(t<27&&t%9<=6&&a[t+1]&&a[t+2]){a[t]--;a[t+1]--;a[t+2]--;if(sets(a,left-1)){a[t]++;a[t+1]++;a[t+2]++;return true}a[t]++;a[t+1]++;a[t+2]++;}return false;}
+ for(let i=0;i<34;i++)if(c[i]>=2){c[i]-=2;const ok=sets(c,4-melds);c[i]+=2;if(ok)return true;}return false;
+}
+export function log(s,text){s.events.unshift(text);s.events=s.events.slice(0,24)}
+export function lobby(code,name,key,isPublic=false){return {code,public:isPublic,phase:'lobby',host:key,round:0,dealer:0,players:[{name,key,bot:false,hand:[],melds:[],discards:[]},null,null,null],watchers:[],events:['Welcome, '+name+'. Your table is ready.'],wall:[],turn:0,due:0,river:[],winner:null};}
+function wall(){const a=Array.from({length:136},(_,i)=>i%34);for(let i=a.length-1;i>0;i--){const r=new Uint32Array(1);crypto.getRandomValues(r);const j=r[0]%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a;}
+export function nextSeat(s,from){for(let step=1;step<=4;step++){const seat=(from+step+4)%4;if(s.players[seat])return seat;}return -1;}
+function claimComplete(s){return s.players.every((p,i)=>!p||i===s.claim.from||Object.hasOwn(s.claim.choices,i));}
+export function start(s,seat,bots=true,now=Date.now()){
+ if(s.players[seat]?.key!==s.host&&!(seat===-1&&s.watchers.some(w=>w.key===s.host)))throw Error('Only the host can start a round.');if(!['lobby','ended'].includes(s.phase))throw Error('This round is still playing.');
+ if(!bots&&s.players.filter(p=>p&&!p.bot).length+s.watchers.length<2)throw Error('At least two players are required without bots.');
+ for(let i=0;i<4;i++)if((!s.players[i]||s.players[i].bot)&&s.watchers.length){const w=s.watchers.shift();s.players[i]={name:w.name,key:w.key,bot:false,hand:[],melds:[],discards:[]};log(s,w.name+' took a seat.');}
+ for(let i=0;i<4;i++){if(!bots&&s.players[i]?.bot)s.players[i]=null;if(!s.players[i]&&bots)s.players[i]={name:['Willow','River','Cedar','Bamboo'][i],key:'bot-'+i,bot:true};}
+ s.botsEnabled=bots;s.dealer=s.round?nextSeat(s,s.dealer):s.players.findIndex(Boolean);s.round++;s.phase='discard';s.wall=wall();s.river=[];s.winner=null;s.claim=null;
+ for(const p of s.players){if(!p)continue;p.hand=s.wall.splice(0,13).sort((a,b)=>a-b);p.melds=[];p.discards=[];p.drawn=null;}s.turn=s.dealer;s.players[s.turn].drawn=s.wall.pop();s.players[s.turn].hand.push(s.players[s.turn].drawn);s.players[s.turn].hand.sort((a,b)=>a-b);s.due=now+(s.players[s.turn].bot?900:120000);log(s,'Round '+s.round+' begins with '+s.players.filter(Boolean).length+' players. '+s.players[s.turn].name+' is the dealer.');
+}
+export function options(s,seat){
+ if(s.phase!=='claim'||seat===s.claim.from||!s.players[seat])return [];const p=s.players[seat],t=s.claim.tile,h=p.hand,n=h.filter(x=>x===t).length,out=[];
+ if(isWin([...h,t],p.melds.length))out.push({type:'win',tiles:[]});if(n>=3&&s.wall.length)out.push({type:'kong',tiles:[t,t,t]});if(n>=2)out.push({type:'pung',tiles:[t,t]});
+ if(seat===nextSeat(s,s.claim.from)&&t<27)for(let a=t-2;a<=t;a++)if(a>=0&&Math.floor(a/9)===Math.floor(t/9)&&a%9<=6){const need=[a,a+1,a+2];need.splice(need.indexOf(t),1);if(need.every(x=>h.includes(x)))out.push({type:'chow',tiles:need});}return out;
+}
+function remove(h,t){const n=h.indexOf(t);if(n<0)throw Error('Tile is not in your hand.');h.splice(n,1)}
+function end(s,seat,self){s.phase='ended';s.winner=seat;s.selfDraw=self;s.due=0;log(s,seat===null?'The wall is empty. This round is a draw.':s.players[seat].name+' declared Mahjong'+(self?' by self draw!':'!'));}
+function draw(s,seat,now){if(!s.wall.length){end(s,null,false);return;}s.turn=seat;s.phase='discard';const p=s.players[seat];p.drawn=s.wall.pop();p.hand.push(p.drawn);p.hand.sort((a,b)=>a-b);s.due=now+(p.bot?900:120000);}
+export function resolve(s,now){
+ const c=s.claim,claims=Object.entries(c.choices).filter(([i,v])=>s.players[+i]&&v.type!=='pass').map(([i,v])=>({seat:+i,...v}));const rank={win:3,kong:2,pung:2,chow:1};claims.sort((a,b)=>rank[b.type]-rank[a.type]||((a.seat-c.from+4)%4)-((b.seat-c.from+4)%4));
+ const chosen=claims[0];if(!chosen){s.claim=null;draw(s,nextSeat(s,c.from),now);return;}
+ const p=s.players[chosen.seat];s.river[s.river.length-1].claimed=true;s.players[c.from]?.discards.pop();if(chosen.type==='win'){p.hand.push(c.tile);s.claim=null;end(s,chosen.seat,false);return;}
+ for(const t of chosen.tiles)remove(p.hand,t);p.hand.sort((a,b)=>a-b);p.melds.push({type:chosen.type,tiles:[...chosen.tiles,c.tile].sort((a,b)=>a-b),from:c.from});p.drawn=null;s.turn=chosen.seat;s.phase='discard';s.claim=null;log(s,p.name+' claimed '+chosen.type+'.');if(chosen.type==='kong')draw(s,chosen.seat,now);else s.due=now+(p.bot?900:120000);
+}
+export function move(s,seat,a,now=Date.now()){
+ if(s.phase==='ended'||s.phase==='lobby')throw Error('The round is not playing.');const p=s.players[seat];if(!p)throw Error('Spectators cannot play.');
+ if(s.phase==='claim'){
+ if(seat===s.claim.from)throw Error('You cannot claim your own discard.');if(Object.hasOwn(s.claim.choices,seat))throw Error('Your response is already recorded.');
+ const op=options(s,seat).find(o=>o.type===a.type&&JSON.stringify(o.tiles)===JSON.stringify(a.tiles||[]));if(a.type!=='pass'&&!op)throw Error('That claim is not available.');s.claim.choices[seat]=op||{type:'pass'};if(claimComplete(s))resolve(s,now);return;
+ }
+ if(seat!==s.turn)throw Error('It is not your turn.');
+ if(a.type==='win'){if(!isWin(p.hand,p.melds.length))throw Error('This hand is not Mahjong yet.');end(s,seat,true);return;}
+ if(a.type==='kong'){if(!s.wall.length||p.hand.filter(t=>t===a.tile).length!==4)throw Error('A concealed Kong needs four identical tiles and a replacement tile.');for(let i=0;i<4;i++)remove(p.hand,a.tile);p.melds.push({type:'kong',tiles:Array(4).fill(a.tile),concealed:true});log(s,p.name+' declared a concealed Kong.');draw(s,seat,now);return;}
+ if(a.type!=='discard')throw Error('Choose a tile to discard.');remove(p.hand,a.tile);p.hand.sort((a,b)=>a-b);p.drawn=null;p.discards.push(a.tile);s.river.push({seat,tile:a.tile,claimed:false});log(s,p.name+' discarded '+LABELS[a.tile]+'.');s.phase='claim';s.claim={tile:a.tile,from:seat,choices:{}};s.due=now+30000;
+ for(let i=0;i<4;i++)if(i!==seat&&s.players[i]){const ops=options(s,i);if(!ops.length)s.claim.choices[i]={type:'pass'};else if(s.players[i].bot)s.claim.choices[i]=ops.find(o=>o.type==='win')||ops.find(o=>o.type==='pung')||ops.find(o=>o.type==='kong')||{type:'pass'};}
+ if(claimComplete(s))resolve(s,now);
+}
+export function botDiscard(hand){const c=Array(34).fill(0);for(const t of hand)c[t]++;let worst=-Infinity,tile=hand[0];for(const t of hand){let cost=0;if(c[t]>=2)cost-=5;if(t<27){for(const d of [-2,-1,1,2])if(t+d>=0&&t+d<27&&Math.floor((t+d)/9)===Math.floor(t/9)&&c[t+d])cost-=Math.abs(d)===1?2:1;}else cost+=1;if(cost>worst){worst=cost;tile=t;}}return tile;}
+export function tick(s,now=Date.now()){
+ if(s.phase==='claim'&&now>=s.due){resolve(s,now);return true;}
+ if(s.phase==='discard'&&now>=s.due){const p=s.players[s.turn];if(p.bot&&isWin(p.hand,p.melds.length))move(s,s.turn,{type:'win'},now);else move(s,s.turn,{type:'discard',tile:p.bot?botDiscard(p.hand):(p.drawn??p.hand[p.hand.length-1])},now);return true;}return false;
+}
+export function view(s,seat,now=Date.now()){
+ const p=s.players[seat];return {code:s.code,public:s.public,botsEnabled:s.botsEnabled!==false,phase:s.phase,round:s.round,dealer:s.dealer,turn:s.turn,me:seat,host:!!p&&p.key===s.host,remaining:s.wall.length,due:s.due,serverTime:now,river:s.river,events:s.events,winner:s.winner,selfDraw:s.selfDraw,spectators:s.watchers.length,players:s.players.map((p,i)=>p?{name:p.name,bot:p.bot,count:p.hand.length,melds:p.melds,discards:p.discards,...(i===seat||s.phase==='ended'?{hand:p.hand,drawn:p.drawn}:{} )}:null),claim:s.claim?{tile:s.claim.tile,from:s.claim.from,responded:Object.hasOwn(s.claim.choices,seat)}:null,options:options(s,seat),canWin:s.phase==='discard'&&seat===s.turn&&!!p&&isWin(p.hand,p.melds.length),kongs:s.phase==='discard'&&seat===s.turn&&s.wall.length?p.hand.filter((t,i,h)=>h.indexOf(t)===i&&h.filter(x=>x===t).length===4):[]};
+}
+export function discardPageData(river,page=null,size=36){
+ const visible=river.filter(r=>!r.claimed),pageCount=Math.max(1,Math.ceil(visible.length/size)),latestPage=pageCount-1;
+ const current=page===null?latestPage:Math.max(0,Math.min(latestPage,page));
+ return {page:current,pageCount,latestPage,tiles:visible.slice(current*size,(current+1)*size),latest:river.length&&!river[river.length-1].claimed?river[river.length-1]:null};
+}
+export function join(s,name,key,now=Date.now()){
+ if(s.players.some(p=>p?.key===key)||s.watchers.some(w=>w.key===key))return;
+ if(!s.host)s.host=key;const i=s.players.findIndex(p=>!p);if(s.phase==='lobby'&&i>=0){s.players[i]={name,key,bot:false,hand:[],melds:[],discards:[]};log(s,name+' joined the table.');}
+ else{if(s.watchers.length>=32)throw Error('This spectator queue is full. Try another room.');s.watchers.push({name,key,joined:now});log(s,name+' is watching and queued for the next round.');}
+}
+export function leave(s,key,now=Date.now()){
+ s.watchers=s.watchers.filter(w=>w.key!==key);const i=s.players.findIndex(p=>p?.key===key);if(i<0){if(s.host===key)s.host=s.players.find(p=>p&&!p.bot)?.key||s.watchers[0]?.key||null;return;}
+ const name=s.players[i].name;
+ if(s.phase==='lobby'||s.phase==='ended')s.players[i]=null;
+ else if(s.botsEnabled===false){
+  const wasTurn=s.phase==='discard'&&s.turn===i;s.players[i]=null;if(s.claim)delete s.claim.choices[i];
+  if(s.players.filter(Boolean).length<2)end(s,null,false);
+  else if(s.phase==='claim'&&claimComplete(s))resolve(s,now);
+  else if(wasTurn)draw(s,nextSeat(s,i),now);
+ }else{s.players[i].bot=true;s.players[i].key='bot-'+i;s.players[i].name=name+' (bot)';if(s.phase==='discard'&&s.turn===i)s.due=now+900;if(s.phase==='claim'&&i!==s.claim.from&&!Object.hasOwn(s.claim.choices,i)){const ops=options(s,i);s.claim.choices[i]=ops.find(o=>o.type==='win')||ops.find(o=>o.type==='pung')||{type:'pass'};}}
+ if(s.host===key){const next=s.players.find(p=>p&&!p.bot);if(next)s.host=next.key;else if(s.watchers.length)s.host=s.watchers[0].key;else s.host=null;}log(s,name+' left the table.');
+}
+</script>
+<script id="transport" type="text/plain">
+export function gameSubdomain(hostname) {
+ return /^([a-z0-9-]+)\.jadidaring\.(?:com|test)$/i.exec(hostname)?.[1].toLowerCase()||null;
+}
+export class TableConnection {
+ constructor({location=globalThis.location,fetch=globalThis.fetch,Socket=globalThis.WebSocket,storage=null,onUpdate=()=>{},onConnection=()=>{}}={}) {
+  this.location=location;this.fetch=fetch.bind(globalThis);this.Socket=Socket;this.storage=storage;this.onUpdate=onUpdate;this.onConnection=onConnection;
+  this.allowed=/^https?:$/.test(location.protocol)&&!!gameSubdomain(location.hostname);this.config=null;this.code=null;this.token=null;this.version=null;this.socket=null;this.channel=null;this.ready=false;this.stopped=false;this.retry=1000;
+  try{const s=JSON.parse(storage?.getItem('jade.laravel.session')||'null');if(s&&s.origin===location.origin&&/^[A-Z2-9]{6}$/.test(s.code)&&typeof s.token==='string'){this.code=s.code;this.token=s.token;}}catch{}
+ }
+ save(){try{if(this.code&&this.token)this.storage?.setItem('jade.laravel.session',JSON.stringify({origin:this.location.origin,code:this.code,token:this.token}));else this.storage?.removeItem('jade.laravel.session');}catch{}}
+ async request(path,{body,authenticated=true}={}) {
+  if(!this.allowed)throw Error('Online play is available on your Jadidaring game domain. Practice works here.');
+  const headers={'Accept':'application/json','Content-Type':'application/json'};if(authenticated&&this.token)headers.Authorization='Bearer '+this.token;
+  let response;try{response=await this.fetch('/api/game/'+path,{method:body===undefined?'GET':'POST',headers,credentials:'same-origin',cache:'no-store',...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(20000)});}catch{throw Error('Cannot reach your Laravel game server. Check your connection and try again.');}
+  let data;try{data=await response.json();}catch{throw Error('The Laravel game API returned an invalid response.');}
+  if(!response.ok){const error=Error(response.status===429?'The game server is busy. Updates will resume shortly.':data.error||data.message||'The table is unavailable.');error.status=response.status;if(response.status===429)this.backoffUntil=Date.now()+Math.max(5,Number(response.headers?.get('Retry-After'))||10)*1000;throw error;}return data;
+ }
+ async start(){
+  if(this.config){if(this.stopped){this.stopped=false;this.openSocket();}return this.config;}if(this.starting)return this.starting;
+  this.starting=(async()=>{const c=await this.request('config',{authenticated:false}),w=c.websocket,sub=gameSubdomain(this.location.hostname),prefix='game.'+sub;
+   if(c.game!==sub||c.database?.shared!==true||c.database?.isolatedBy!=='subdomain'||!w||w.channelPrefix!==prefix||w.lobbyChannel!==prefix||w.roomChannel!==prefix+'.{code}'||typeof w.event!=='string')throw Error('The game server configuration does not match this subdomain.');
+   if(!w.enabled)throw Error('Online play is currently unavailable. You can still practice.');
+   const url=new URL(w.url);if(!['ws:','wss:'].includes(url.protocol)||(this.location.protocol==='https:'&&url.protocol!=='wss:'))throw Error('The game server websocket URL is invalid.');
+   this.config=c;this.stopped=false;this.openSocket();return c;
+  })();try{return await this.starting;}finally{this.starting=null;}
+ }
+ desiredChannel(){return this.code?this.config.websocket.roomChannel.replace('{code}',this.code):this.config.websocket.lobbyChannel;}
+ subscribe(){
+  if(!this.ready||this.socket?.readyState!==1)return;const next=this.desiredChannel();if(next===this.channel)return;
+  if(this.channel)this.socket.send(JSON.stringify({event:'pusher:unsubscribe',data:{channel:this.channel}}));this.channel=next;this.subscribed=false;this.socket.send(JSON.stringify({event:'pusher:subscribe',data:{channel:next}}));
+ }
+ openSocket(){
+  if(this.stopped||!this.config||!this.Socket)return;clearTimeout(this.reconnectTimer);const ws=this.socket=new this.Socket(this.config.websocket.url);this.ready=false;this.channel=null;this.subscribed=false;
+  ws.onmessage=event=>{if(ws!==this.socket)return;this.lastMessage=Date.now();let frame,data;try{frame=JSON.parse(event.data);data=typeof frame.data==='string'?JSON.parse(frame.data):frame.data;}catch{return;}
+   if(frame.event==='pusher:connection_established'){this.ready=true;this.retry=1000;this.subscribe();clearInterval(this.heartbeat);this.heartbeat=setInterval(()=>{if(Date.now()-this.lastMessage>60000){ws.close();return;}if(ws.readyState===1)ws.send(JSON.stringify({event:'pusher:ping',data:{}}));},30000);}
+   if(frame.event==='pusher:ping'&&ws.readyState===1)ws.send(JSON.stringify({event:'pusher:pong',data:{}}));
+   if(frame.event==='pusher_internal:subscription_succeeded'&&frame.channel===this.channel){this.subscribed=true;this.onConnection(true);this.onUpdate();}
+   if(frame.event===this.config.websocket.event&&frame.channel===this.channel&&(!this.code||data?.code===this.code)&&(!this.code||data.version>(this.version??0)))this.onUpdate(data);
+  };
+  ws.onerror=()=>{if(ws.readyState<2)ws.close();};ws.onclose=()=>{if(ws!==this.socket)return;this.ready=false;this.subscribed=false;this.channel=null;clearInterval(this.heartbeat);this.onConnection(false);if(!this.stopped){this.reconnectTimer=setTimeout(()=>this.openSocket(),this.retry);this.retry=Math.min(15000,this.retry*2);}};
+ }
+ adopt(data){if(data&&!data.unchanged&&(!this.latest||this.latest.code!==data.code||data.version>=this.latest.version)){this.latest=data;this.version=data.version;}return data;}
+ async enter(mode,{displayName,code,privateState={},initialState}={}) {
+  await this.start();
+  if(this.code&&this.token){if(mode==='join'&&code===this.code)return {...await this.read({full:true}),playerToken:this.token};await this.leave();}
+  const common={displayName:displayName||'Guest'},create={...common,maxPlayers:4,state:initialState,private:privateState};let data;
+  if(mode==='create')data=await this.request('rooms',{body:{...create,visibility:'private'},authenticated:false});
+  else if(mode==='watch')data=await this.request('rooms/'+encodeURIComponent(code)+'/watch',{body:common,authenticated:false});
+  else if(mode==='match'){
+   const list=await this.request('rooms',{authenticated:false}),waiting=list.rooms.some(t=>t.status==='waiting'&&t.seated<t.maxPlayers);
+   const playing=list.rooms.filter(t=>t.status==='playing').sort((a,b)=>String(a.updatedAt).localeCompare(String(b.updatedAt)));
+   if(!waiting)for(const table of playing){try{data=await this.request('rooms/'+table.code+'/watch',{body:common,authenticated:false});break;}catch(e){if(e.status!==409)throw e;}}
+   if(!data)data=await this.request('rooms/match',{body:create,authenticated:false});
+  }else {try{data=await this.request('rooms/join',{body:{...common,code,private:privateState},authenticated:false});}catch(e){if(e.status!==409)throw e;data=await this.request('rooms/'+encodeURIComponent(code)+'/watch',{body:common,authenticated:false});}}
+  if(typeof data.playerToken!=='string'||!/^[A-Z2-9]{6}$/.test(data.code))throw Error('The server did not issue a room session.');
+  this.code=data.code;this.token=data.playerToken;this.latest=null;this.adopt(data);this.save();this.subscribe();return data;
+ }
+ async read({full=false}={}){const code=this.code;if(!code)return null;const data=await this.request('rooms/'+code+(full||this.version===null?'':'?since='+this.version));if(code===this.code)this.adopt(data);return data;}
+ async write(type,build){
+  for(let attempt=0;attempt<2;attempt++){
+   const latest=this.latest||await this.read({full:true}),body=await build(latest);if(!body)return latest;
+   try{return this.adopt(await this.request('rooms/'+this.code+'/actions',{body:{...body,type,expectedVersion:latest.version}}));}
+   catch(e){if(e.status!==409||attempt)throw e;await this.read({full:true});}
+  }
+ }
+
+ async leave(){if(this.code&&this.token)await this.request('rooms/'+this.code+'/leave',{body:{}});this.forget();}
+ forget(){this.latest=null;this.code=null;this.token=null;this.version=null;this.save();this.subscribe();}
+ stop(){this.stopped=true;clearTimeout(this.reconnectTimer);clearInterval(this.heartbeat);this.socket?.close();}
+}
+</script>
+<script id="hosted" type="text/plain">
+export const GAME='jade-mahjong';
+export const SCHEMA=2;
+const copy=value=>JSON.parse(JSON.stringify(value));
+export function newTableState(){return {game:GAME,schema:SCHEMA,revision:0,hostId:null,table:null,keys:{},inbox:{},views:{},receipts:{},hostSeenAt:0};}
+export function supportedTable(value){return value?.game===GAME&&value.schema===SCHEMA;}
+const bytesToText=bytes=>btoa(String.fromCharCode(...new Uint8Array(bytes)));
+const textToBytes=text=>Uint8Array.from(atob(text),c=>c.charCodeAt(0));
+export async function newIdentity(){
+ if(!globalThis.crypto?.subtle)throw Error('Online play needs HTTPS for private hands. Offline practice is ready.');
+ const pair=await crypto.subtle.generateKey({name:'ECDH',namedCurve:'P-256'},true,['deriveKey']);
+ return {publicKey:await crypto.subtle.exportKey('jwk',pair.publicKey),privateKey:await crypto.subtle.exportKey('jwk',pair.privateKey)};
+}
+export class PrivateMessages {
+ constructor(identity){this.identity=identity;this.cache=new Map();}
+ async key(publicKey){
+  const tag=JSON.stringify(publicKey);if(this.cache.has(tag))return this.cache.get(tag);
+  const pending=(async()=>{const mine=await crypto.subtle.importKey('jwk',this.identity.privateKey,{name:'ECDH',namedCurve:'P-256'},false,['deriveKey']),theirs=await crypto.subtle.importKey('jwk',publicKey,{name:'ECDH',namedCurve:'P-256'},false,[]);return crypto.subtle.deriveKey({name:'ECDH',public:theirs},mine,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);})();
+  this.cache.set(tag,pending);return pending;
+ }
+ async seal(publicKey,value,context){const iv=crypto.getRandomValues(new Uint8Array(12)),key=await this.key(publicKey),cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:new TextEncoder().encode(context)},key,new TextEncoder().encode(JSON.stringify(value)));return {iv:bytesToText(iv),ciphertext:bytesToText(cipher)};}
+ async open(publicKey,box,context){if(!box||typeof box.iv!=='string'||typeof box.ciphertext!=='string')throw Error('Private message is unavailable.');const key=await this.key(publicKey),plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:textToBytes(box.iv),additionalData:new TextEncoder().encode(context)},key,textToBytes(box.ciphertext));return JSON.parse(new TextDecoder().decode(plain));}
+}
+export class HostedTable {
+ constructor(net,engine,{now=()=>Date.now(),onNotice=()=>{}}={}){this.net=net;this.E=engine;this.now=now;this.onNotice=onNotice;this.tail=Promise.resolve();this.pending=null;this.view=null;this.data=null;this.noticed=null;}
+ serial(work){const next=this.tail.then(work);this.tail=next.catch(()=>{});return next;}
+ get isHost(){return !!this.data&&this.data.state.hostId===this.data.playerId&&!this.data.state.closed&&this.data.status!=='closed';}
+ get needsPulse(){return this.isHost&&(!this.data.state.table||this.now()-this.data.state.hostSeenAt>=12000||(this.data.state.table.due&&this.now()>=this.data.state.table.due));}
+ context(from,to,kind,id){return this.net.location.origin+'|'+this.net.code+'|'+from+'|'+to+'|'+kind+'|'+id;}
+ async identityFor(data){
+  const identity=data.private?.jade?.identity;
+  if(!this.identity||this.roomCode!==data.code){this.identity=identity||await newIdentity();this.roomCode=data.code;this.messages=new PrivateMessages(this.identity);this.pending=null;this.noticed=null;}
+  return this.identity;
+ }
+ vault(data){const stored=data.private?.jade||{};return {...copy(stored),identity:this.identity};}
+ remember(data){if(data&&!data.unchanged&&(!this.data||this.data.code!==data.code||data.version>=this.data.version))this.data=data;return this.data;}
+ async sync(data){return this.serial(()=>this.receive(data));}
+ async receive(incoming){
+  let data=this.remember(incoming);if(!data)return null;
+  if(!supportedTable(data.state))throw Error('This table uses another Mahjong version. Create a new room.');
+  await this.identityFor(data);
+  if(!this.pending&&data.state.inbox?.[data.playerId])this.pending=data.state.inbox[data.playerId].id;
+  if(data.status==='closed'||data.state.closed){this.view=await this.decode(data);return this.view;}
+  if(data.state.hostId&&!data.players.some(p=>p.id===data.state.hostId)&&!data.state.handoff){data=await this.net.write('jade.closed',fresh=>fresh.players.some(p=>p.id===fresh.state.hostId)?null:{state:{...fresh.state,closed:true},status:'closed',payload:{}});this.remember(data);this.view=await this.decode(data);return this.view;}
+  const key=data.state.keys?.[data.playerId];
+  if(JSON.stringify(key)!==JSON.stringify(this.identity.publicKey)){
+   data=await this.net.write('jade.ready',fresh=>({state:{...fresh.state,keys:{...fresh.state.keys,[fresh.playerId]:this.identity.publicKey}},private:{jade:this.vault(fresh)},payload:{}}));this.remember(data);
+  }
+  const initialHost=data.players.find(p=>p.host&&!p.spectator)?.id;
+  if(data.state.hostId===data.playerId||(!data.state.hostId&&initialHost===data.playerId)){
+   data=await this.coordinate();this.remember(data);
+  }
+  this.view=await this.decode(this.data);return this.view;
+ }
+ cleanView(game,id,now){
+  const seat=game.players.findIndex(p=>p?.key===String(id)),view=this.E.view(game,seat,now);
+  view.players=view.players.map((p,i)=>{if(!p)return null;const {hand,drawn,...publicPlayer}=p;return i===seat?{...publicPlayer,hand,drawn}:publicPlayer;});
+  view.host=game.host===String(id);view.queuePosition=game.watchers.findIndex(w=>w.key===String(id))+1;return view;
+ }
+ reconcile(game,data,now){
+  let changed=false;const active=data.players.filter(p=>!(data.state.departing||[]).includes(p.id)),ids=new Set(active.map(p=>String(p.id)));
+  for(const player of [...game.players.filter(p=>p&&!p.bot),...game.watchers])if(!ids.has(player.key)){this.E.leave(game,player.key,now);changed=true;}
+  for(const member of active){const key=String(member.id);if(game.players.some(p=>p?.key===key)||game.watchers.some(p=>p.key===key))continue;
+   if(member.spectator&&game.phase==='lobby')game.watchers.push({key,name:member.displayName,joined:now});else this.E.join(game,member.displayName,key,now);changed=true;
+  }
+  game.host=String(data.state.hostId||data.playerId);return changed;
+ }
+ async coordinate(force=false,localAction=null){
+  const initial=this.data,me=initial.playerId;
+  if(initial.state.hostId&&initial.state.hostId!==me)return initial;
+  const work=await this.net.write('jade.snapshot',async data=>{
+   if(data.status==='closed'||data.state.closed)return null;
+   if(data.state.hostId&&data.state.hostId!==me)return null;
+   const envelope=copy(data.state),vault=this.vault(data),now=this.now();for(const field of ['keys','inbox','views','receipts'])envelope[field]={...envelope[field]};let game=vault.engine?copy(vault.engine):null,changed=force;
+   if(envelope.handoff?.to===me){const transfer=envelope.handoff;const restored=await this.messages.open(envelope.keys[transfer.from],transfer.box,this.context(transfer.from,me,'handoff',transfer.id));game=restored.engine;vault.processed=restored.processed;vault.notices=restored.notices;changed=true;}
+   if(!game){const host=data.players.find(p=>p.id===me);game=this.E.lobby(data.code,host.displayName,String(me),data.visibility==='public');changed=true;}
+   envelope.hostId=me;data={...data,state:envelope};changed=this.reconcile(game,data,now)||changed;
+   vault.processed={...vault.processed};vault.notices={...vault.notices};
+   // Expired claims and bots use the same rules as offline practice.
+   if(this.E.tick(game,now))changed=true;
+   const commands=Object.entries(envelope.inbox||{}).map(([id,request])=>({id:Number(id),request}));
+   if(localAction)commands.push({id:me,request:localAction});
+   for(const {id,request} of commands){
+    if(!data.players.some(p=>p.id===id)||vault.processed[id]===request.id)continue;
+    let error=null;
+    try{
+     const command=request.local||await this.messages.open(envelope.keys[id],request.box,this.context(id,me,'move',request.id));
+     const context=command.context;if(!context||context.round!==game.round||context.phase!==game.phase||context.turn!==game.turn||context.riverLength!==game.river.length)throw Error('The turn changed. Choose your move again.');
+     const next=copy(game),seat=next.players.findIndex(p=>p?.key===String(id));
+     if(command.action.type==='start'){if(String(id)!==next.host)throw Error('Only the host can start a round.');this.E.start(next,seat,command.action.bots!==false,now);}else this.E.move(next,seat,command.action,now);
+     game=next;
+    }catch(e){error=e.name==='OperationError'?'The host changed or the move could not be read. Please choose your move again.':e.message||'That move is unavailable.';}
+    vault.processed[id]=request.id;vault.notices[id]={id:request.id,error};delete envelope.inbox[id];envelope.receipts[id]=request.id;changed=true;
+   }
+   for(const member of data.players)if(!envelope.views[member.id]&&envelope.keys[member.id])changed=true;
+   if(!changed&&now-envelope.hostSeenAt<12000)return null;
+   const revision=(envelope.revision||0)+1,views={};
+   for(const member of data.players){const publicKey=envelope.keys[member.id];if(!publicKey)continue;const view=this.cleanView(game,member.id,now),mine={me:view.me,host:view.host,hand:view.players[view.me]?.hand,drawn:view.players[view.me]?.drawn,options:view.options,canWin:view.canWin,kongs:view.kongs,queuePosition:view.queuePosition,responded:!!view.claim?.responded};views[member.id]=await this.messages.seal(publicKey,{mine,response:vault.notices[member.id]||null},this.context(me,member.id,'view',revision));}
+   const publicView=this.cleanView(game,-1,now);publicView.me=-1;publicView.host=false;
+   const liveIds=new Set(data.players.map(p=>String(p.id)));for(const map of [envelope.keys,envelope.inbox,envelope.receipts,vault.processed,vault.notices])for(const id of Object.keys(map))if(!liveIds.has(id))delete map[id];
+   vault.engine=game;envelope.table=publicView;envelope.views=views;envelope.revision=revision;envelope.hostSeenAt=now;delete envelope.handoff;
+   return {state:envelope,private:{jade:vault},status:game.phase==='lobby'?'waiting':'playing',payload:{}};
+  });
+  this.remember(work);return work;
+ }
+ async decode(data){
+  const envelope=data.state,host=envelope.hostId,box=envelope.views?.[data.playerId];let view;
+  if(box&&envelope.keys?.[host]){
+   const decoded=await this.messages.open(envelope.keys[host],box,this.context(host,data.playerId,'view',envelope.revision));const {hand,drawn,responded,...mine}=decoded.mine;view={...copy(envelope.table),...mine};view.players=view.players.map((p,i)=>p&&i===view.me?{...p,hand:hand||[],drawn:drawn??null}:p);if(view.claim)view.claim.responded=!!responded;
+   if(decoded.response?.id===this.pending){this.pending=null;if(decoded.response.error&&this.noticed!==decoded.response.id){this.noticed=decoded.response.id;this.onNotice(decoded.response.error);}}
+  }else if(envelope.table){view=copy(envelope.table);view.me=-1;view.host=host===data.playerId;view.awaitingHand=true;}
+  else {const game=this.E.lobby(data.code,'Host',String(host),data.visibility==='public');game.players=[null,null,null,null];view=this.E.view(game,-1,this.now());view.host=false;view.awaitingHand=true;}
+  return {...view,code:data.code,version:data.version,public:data.visibility==='public',closed:data.status==='closed'||!!envelope.closed,pending:!!this.pending,hostId:host,hostSeenAt:envelope.hostSeenAt,serverTime:this.now()};
+ }
+ async action(action,context){return this.serial(async()=>{
+  if(this.pending)throw Error('Waiting for the host to process your previous move.');
+  const id=crypto.randomUUID(),command={action,context:{round:context.round,phase:context.phase,turn:context.turn,riverLength:context.river?.length||0}};this.pending=id;
+  try{
+   if(this.isHost){await this.coordinate(false,{id,local:command});}
+   else {
+    await this.net.write('jade.move',async data=>{const host=data.state.hostId,key=data.state.keys?.[host];if(!host||!key)throw Error('Waiting for the host to connect.');if(data.state.inbox?.[data.playerId])throw Error('The host is still processing your previous move.');const box=await this.messages.seal(key,command,this.context(data.playerId,host,'move',id));return {state:{...data.state,inbox:{...data.state.inbox,[data.playerId]:{id,box}}},private:{jade:{...this.vault(data),view:this.view}},payload:{}};});this.remember(this.net.latest);
+   }
+   this.view=await this.decode(this.data);return this.view;
+  }catch(e){this.pending=null;throw e;}
+ });}
+ async pulse(){return this.serial(async()=>{if(this.needsPulse){await this.coordinate();this.view=await this.decode(this.data);}return this.view;});}
+ async leave(){return this.serial(async()=>{
+  if(this.isHost){
+   await this.net.write('jade.handoff',async data=>{
+    const envelope=copy(data.state),vault=this.vault(data),successor=data.players.find(p=>p.id!==data.playerId&&!p.spectator&&envelope.keys[p.id]);
+    if(!successor)return {state:{...envelope,closed:true},status:'closed',payload:{}};
+    const game=copy(vault.engine);this.E.leave(game,String(data.playerId),this.now());game.host=String(successor.id);const id=crypto.randomUUID();
+    const box=await this.messages.seal(envelope.keys[successor.id],{engine:game,processed:vault.processed||{},notices:vault.notices||{}},this.context(data.playerId,successor.id,'handoff',id));
+    return {state:{...envelope,hostId:successor.id,hostSeenAt:0,views:{},departing:[...(envelope.departing||[]),data.playerId],handoff:{id,from:data.playerId,to:successor.id,box}},payload:{}};
+   });
+  }
+  await this.net.leave();this.data=null;this.view=null;this.pending=null;this.identity=null;
+ });}
+}
+</script>
+<script type="module">
+const source=document.getElementById('engine').textContent;
+const E=await import(URL.createObjectURL(new Blob([source],{type:'text/javascript'})));
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const transportSource=$('transport').textContent,transportURL=URL.createObjectURL(new Blob([transportSource],{type:'text/javascript'}));
+const {TableConnection}=await import(transportURL);URL.revokeObjectURL(transportURL);
+const hostedURL=URL.createObjectURL(new Blob([$('hosted').textContent],{type:'text/javascript'}));
+const {HostedTable,newTableState,newIdentity}=await import(hostedURL);URL.revokeObjectURL(hostedURL);
+let state=null,local=null,selected=-1,busy=false,room=null,skew=0,discardPage=null,discardContext='',roomLoading=false,wakeup=false,lastSync=0;
+let storage=null;try{storage=sessionStorage;localStorage.removeItem('jade.session');$('name').value=localStorage.getItem('jade.name')||'Guest';}catch{}
+const net=new TableConnection({storage,onUpdate:handleUpdate,onConnection:connected=>{if(room)$('connection').textContent=connected?'Connected to table':'Reconnecting \u00b7 HTTP updates active';}});
+const online=new HostedTable(net,E,{onNotice:message=>toast(message)});
+function remember(){try{localStorage.setItem('jade.name',$('name').value.trim());}catch{}}
+let toastTimer;function toast(s){$('toast').textContent=s;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').textContent='',5000);}
+function suitFace(t){
+ const n=t%9+1,layouts=[[[15,18]],[[15,8],[15,28]],[[7,7],[15,18],[23,29]],[[7,8],[23,8],[7,28],[23,28]],[[7,7],[23,7],[15,18],[7,29],[23,29]],[[7,7],[23,7],[7,18],[23,18],[7,29],[23,29]],[[15,4],[7,14],[23,14],[7,23],[23,23],[7,32],[23,32]],[[7,5],[23,5],[7,14],[23,14],[7,23],[23,23],[7,32],[23,32]],[[6,6],[15,6],[24,6],[6,18],[15,18],[24,18],[6,30],[15,30],[24,30]]];
+ const pts=layouts[n-1];let inner='';
+ if(t>=18)inner=pts.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${n===1?9:3.8}" fill="none" stroke="${i===Math.floor(n/2)?'#a54436':'#305778'}" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${n===1?4:1}" fill="${i===Math.floor(n/2)?'#a54436':'#305778'}"/>`).join('');
+ else inner=pts.map(([x,y],i)=>`<path d="M${x},${y-4}v8 M${x-2},${y-3}h4 M${x-2},${y+3}h4" fill="none" stroke="${n===5&&i===2?'#a54436':'#3a6746'}" stroke-width="2.2" stroke-linecap="round"/>`).join('');
+ if(t===9)inner='<path d="M15 31V7M15 14L5 9M15 21L24 13M15 28L7 23" stroke="#356444" stroke-width="2.5" fill="none"/><path d="M5 9Q7 3 13 8M24 13Q27 6 19 10M7 23Q2 16 11 20" fill="#568056"/>';
+ return `<svg viewBox="0 0 30 36" aria-hidden="true">${inner}</svg>`;
+}
+function tile(t,{index=-1,small=false,disabled=false,drawn=false,latest=false}={}){
+ const suit=t<9?'chars':t<18?'bamboo':t<27?'dots':t===31?'red':'honor',n=t%9+1,face=t<9?['\u4e00','\u4e8c','\u4e09','\u56db','\u4e94','\u516d','\u4e03','\u516b','\u4e5d'][t]:t<18?['\u2667','\u2161','\u2162','\u2163','\u2164','\u2165','\u2166','\u2167','\u2168'][t-9]:t<27?['\u25cf','\u2809','\u2234','\u281b','\u2059','\u283f','\u2837','\u28ff','\u2059'][t-18]:['\u6771','\u5357','\u897f','\u5317','\u4e2d','\u767c','\u25af'][t-27];
+ return `<button class="tile ${suit} ${index>=0&&index===selected?'selected':''} ${drawn?'drawn':''} ${latest?'last-discard':''}" ${disabled||small?'disabled':''} ${index>=0?'data-index="'+index+'"':''} aria-label="${esc(E.LABELS[t])}${drawn?', newly drawn':''}${latest?', latest discard':''}${index>=0?', select to discard':''}" ${index>=0?'aria-pressed="'+(index===selected)+'"':''}><span class="num">${t<27?n:''}</span><span class="face">${t>=9&&t<27?suitFace(t):face}</span>${small?'':'<span class="suit">'+(t<9?'\u842c':t<18?'BAM':t<27?'DOT':'')+'</span>'}</button>`;
+}
+function opponentRack(p,place){
+ const backs=Array.from({length:p.count},()=>'<span class="back"><span class="back-logo" aria-hidden="true">\u767c</span></span>').join('');
+ const melds=(p.melds||[]).map(m=>'<span class="meld-group '+m.type+'" role="group" aria-label="'+esc(m.type)+'">'+m.tiles.map(t=>tile(t,{small:true})).join('')+'</span>').join('');
+ return '<div class="opponent-rack '+place+'" data-seat="'+place+'"><div class="backs '+place+'" aria-label="'+esc(p.name)+': '+p.count+' concealed tiles">'+backs+'</div><div class="opponent-open" aria-label="'+esc(p.name)+': exposed melds">'+melds+'</div></div>';
+}
+async function accept(data){
+ if(!data||data.unchanged||data.code!==room||(state&&!local&&data.version<state.version))return;
+ const next=await online.sync(data);if(!next||data.code!==room)return;state=next;skew=0;selected=-1;lastSync=Date.now();render();
+}
+function handleUpdate(data){if(data?.state&&data.code===room){wakeup=true;if(!busy)refreshRoom();return;}wakeup=true;if(busy)return;if(room)refreshRoom();else refreshTables();}
+async function refreshRoom(full=false){
+ if(!room||local||roomLoading||busy||Date.now()<(net.backoffUntil||0))return;roomLoading=true;const code=room;wakeup=false;
+ try{const next=await net.read({full});if(room===code){await accept(next);lastSync=Date.now();$('connection').textContent=net.subscribed?'Connected to table':'Connected \u00b7 HTTP updates';}}
+ catch(e){if([401,403,404].includes(e.status)){net.forget();room=null;state=null;render();toast('Your table session ended. Join again to continue.');}else $('connection').textContent='Reconnecting\u2026';}
+ finally{roomLoading=false;if(wakeup&&room)setTimeout(()=>refreshRoom(),0);}
+}
+let lastRunError=null,quietRun=false;
+async function run(fn){if(busy)return;busy=true;document.body.classList.add('busy');lastRunError=null;try{await fn()}catch(e){lastRunError=e;if(!quietRun)toast(e.message)}finally{busy=false;document.body.classList.remove('busy');if(wakeup)handleUpdate();}}
+async function connect(mode){await run(async()=>{if(net.code&&!(mode==='join'&&net.code===$('code').value.trim().toUpperCase())){try{await online.sync(await net.read({full:true}));await online.leave();}catch(e){if(![401,403,404].includes(e.status))throw e;net.forget();}}const data=await net.enter(mode,{displayName:$('name').value.trim(),code:$('code').value.trim().toUpperCase(),privateState:{jade:{identity:await newIdentity()}},initialState:newTableState()});local=null;room=data.code;remember();state=null;await accept(data);});}
+function practice(){net.stop();local=E.lobby('SOLO',$('name').value.trim()||'You','you');E.start(local,0,true);room=null;state=E.view(local,0);selected=-1;remember();render();}
+function leavePractice(){local=null;state=null;selected=-1;render();if(net.allowed){net.stopped=false;net.openSocket();refreshTables();}}
+async function act(action){await run(async()=>{if(local){E.move(local,0,action);state=E.view(local,0);}else{try{state=await online.action(action,state);}catch(e){await accept(await net.read({full:true}));throw e;}}selected=-1;render();});}
+function button(text,fn,cls=''){const b=document.createElement('button');b.className='btn '+cls;b.textContent=text;b.addEventListener('click',fn);$('actions').append(b);return b;}
+function startButtons(s){const humans=Math.min(4,s.players.filter(p=>p&&!p.bot).length+(s.spectators||0)),start=button(humans>=2?'Start with '+humans+' players':'Start with players',()=>act({type:'start',bots:false}),'primary');start.disabled=humans<2;if(humans<4)button('Start with bots',()=>act({type:'start',bots:true}),humans<2?'primary':'');}
+function render(){
+ const s=state;document.querySelector('.layout').classList.toggle('in-game',!!s);$('tableLeaveBtn').classList.toggle('hidden',!s);$('tableInviteBtn').classList.toggle('hidden',!s||!!local);$('tableRoomLabel').textContent=local?'PRACTICE \u00b7 OFFLINE':s?(s.public?'PUBLIC':'PRIVATE')+' \u00b7 '+s.code+(s.spectators?' \u00b7 '+s.spectators+' watching':''):'';const playing=s&&s.phase!=='lobby';$('table').classList.toggle('playing',!!playing);$('lobbyPanel').classList.toggle('hidden',!!s&&!local);$('tablesPanel').classList.toggle('hidden',!!s&&!local);$('connection').textContent=local?'Offline practice':s?'Connected to table':'Ready to play';$('roundTag').textContent=s&&s.round?'ROUND '+s.round+' \u00b7 '+E.WINDS[s.dealer].toUpperCase()+' DEALER':'FOUR WINDS \u00b7 136 TILES';
+ const ps=s?.players||[{name:'You'},null,null,null],me=s?.me??0;const anchor=me>=0?me:0;const positions=['bottom','right','top','left'];$('seats').innerHTML='';$('backs').innerHTML='';
+ for(let pos=0;pos<4;pos++){const i=(anchor+pos)%4,p=ps[i],place=positions[pos];$('seats').innerHTML+=`<div class="seat ${place} ${s?.turn===i&&s?.phase==='discard'?'current':''}"><span class="avatar">${['\u6771','\u5357','\u897f','\u5317'][i]}</span><div><span class="seat-name" title="${esc(p?.name||'Open seat')}">${esc(p?.name||(s?'Open seat':'Waiting for a player'))}${s&&i===me?' \u00b7 You':''}</span><small>${E.WINDS[i]}${p?.bot?' \u00b7 BOT':''}</small></div></div>`;
+ if(pos>0&&playing&&p)$('backs').innerHTML+=opponentRack(p,place);}
+
+ const won=s?.phase==='ended';$('tableTitle').textContent=!s?'Your table is waiting':s.phase==='lobby'?'A few more friends':won?s.winner===null?'A peaceful draw':s.players[s.winner].name+' wins!':s.phase==='claim'?'A tile to consider':s.me===s.turn?'Your move':s.players[s.turn].name+'\u2019s turn';$('tableCaption').textContent=!s?'Make yourself at home':s.phase==='lobby'?'Invite friends or add bots':won?'Another round, another chance':s.me<0?'Spectating \u00b7 next round awaits':s.phase==='claim'?'Claim or let it pass':'Draw. Consider. Discard.';$('wallCount').textContent=playing?'\u25c8  '+s.remaining+' tiles in the wall':'\u25c8  A new round awaits';
+ const demo=[0,1,2,3,4,5,9,10,11,18,19,20,32,32];const hand=playing&&me>=0?s.players[me]?.hand||[]:!s?demo:[];
+ $('hand').innerHTML=hand.map((t,i)=>tile(t,{index:i,disabled:!playing||won||s?.closed||s?.pending||s?.awaitingHand||s?.phase!=='discard'||s?.turn!==me,drawn:playing&&s.players[me]?.drawn!=null&&i===hand.lastIndexOf(s.players[me].drawn)})).join('');
+ $('hand').querySelectorAll('[data-index]').forEach(b=>b.addEventListener('click',()=>{selected=+b.dataset.index;render();$('hand').querySelector('[data-index="'+selected+'"]')?.focus({preventScroll:true});}));
+ const context=s?s.code+':'+s.round+':'+!!local:'';if(context!==discardContext){discardPage=null;discardContext=context;}
+ const page=s?E.discardPageData(s.river||[],discardPage,matchMedia('(max-width:760px)').matches?24:36):null;
+ $('river').innerHTML=page?page.tiles.map(r=>tile(r.tile,{small:true,latest:r===page.latest})).join(''):'';
+ $('riverPager').innerHTML='';
+ if(page&&page.tiles.length){
+ function pageButton(label,action,disabled=false,cls=''){const b=document.createElement('button');b.className=cls;b.textContent=label;b.disabled=disabled;b.addEventListener('click',action);$('riverPager').append(b);return b;}
+ const previous=pageButton('\u2039',()=>{discardPage=page.page-1;render();},page.page===0);previous.setAttribute('aria-label','Previous discard page');
+ const label=document.createElement('span');label.className='page-label';label.textContent='Page '+(page.page+1)+' / '+page.pageCount;$('riverPager').append(label);
+ const next=pageButton('\u203a',()=>{discardPage=page.page+1===page.latestPage?null:page.page+1;render();},page.page===page.latestPage);next.setAttribute('aria-label','Next discard page');
+ if(discardPage!==null)pageButton('Latest',()=>{discardPage=null;render();},false,'latest-page');
+ }
+ $('melds').innerHTML=playing&&me>=0?(s.players[me]?.melds||[]).map(m=>'<span class="meld-group">'+m.tiles.map(t=>tile(t,{small:true})).join('')+'</span>').join(''):'';
+
+ $('watchNote').classList.toggle('hidden',!s||s.me>=0||s.awaitingHand);$('watchNote').textContent=s?.me<0?'You\u2019re watching \u00b7 Queue position '+(s.queuePosition||1)+' \u00b7 Your seat opens next round':'';
+ $('actions').innerHTML='';let status='Every good game starts with a seat.',sub='Choose a table or play a practice round.';
+ if(s){if(s.phase==='lobby'){status=s.host?'Your room is ready.':'Waiting for the host to start.';sub='Play with 2\u20134 people, or fill empty seats with bots.';if(s.host)startButtons(s);}
+ else if(won){status=s.winner===null?'The round ended in a draw.':s.players[s.winner].name+' completed a winning hand.';sub=s.host||local?'Start another round when you\u2019re ready.':'Waiting for the host to start the next round.';if(local)button('Play another round',()=>{E.start(local,0,true);state=E.view(local,0);render()},'primary');else if(s.host)startButtons(s);}
+ else if(s.awaitingHand){status='Waiting for the host to share your hand.';sub='Keep this table open while the private connection is prepared.';}
+ else if(me<0){status='Watching the table.';sub='You\u2019re queued for an available seat in the next round.';}
+ else if(s.phase==='claim'){const op=s.options||[];status=s.claim.responded?'Your response is recorded.':op.length?'You can claim this tile.':'Waiting for claims.';sub='Discard: '+E.LABELS[s.claim.tile]+' \u00b7 '+Math.max(0,Math.ceil((s.due-Date.now()-skew)/1000))+'s remaining';if(!s.claim.responded&&op.length){for(const o of op)button(o.type==='win'?'Mahjong!':o.type==='chow'?'Chow '+o.tiles.map(t=>t%9+1).join('\u00b7'):o.type[0].toUpperCase()+o.type.slice(1),()=>act(o),o.type==='win'?'gold':'');button('Pass',()=>act({type:'pass'}));}}
+ else if(s.turn===me){status='Your turn. Make it count.';sub='Select a tile, then discard. '+Math.max(0,Math.ceil((s.due-Date.now()-skew)/1000))+'s remaining';if(s.canWin)button('Mahjong!',()=>act({type:'win'}),'gold');for(const t of s.kongs||[])button('Kong '+E.LABELS[t],()=>act({type:'kong',tile:t}));button('Discard tile \u2192',()=>{if(selected<0){toast('Select a tile from your hand first.');return;}act({type:'discard',tile:hand[selected]})},'primary');$('actions').lastChild.disabled=selected<0;}
+ else{status=s.players[s.turn].name+' is considering their hand.';sub='Watch the discards for your next move.';}
+ }
+ if(s?.closed){status='This table has closed.';sub='Leave this table to find a new one.';$('actions').innerHTML='';}
+ else if(s?.pending){status='Your move has been sent to the host.';sub='Waiting for the host to update the table.';$('actions').querySelectorAll('button').forEach(b=>b.disabled=true);}
+ else if(s&&!local&&s.hostSeenAt&&Date.now()-s.hostSeenAt>25000){status='Waiting for the host to reconnect.';sub='The game resumes when the host returns.';}
+ if(s&&!local&&s.host&&!s.closed)sub+=' Keep this tab open while hosting.';
+ $('status').textContent=status;$('statusSub').textContent=sub;
+ $('activity').innerHTML=(s?.events||['Welcome to Jade Room.','A classic game, a little slower living.']).slice(0,7).map(x=>'<div class="event">'+esc(x)+'</div>').join('');
+
+}
+new ResizeObserver(entries=>{const height=Math.ceil(entries[0].target.getBoundingClientRect().height);$('table').style.setProperty('--controls-height',height+'px');}).observe(document.querySelector('.table-footer'));
+window.addEventListener('resize',()=>{if(state)render();});
+let tablesLoading=false;
+async function refreshTables(){
+ if(!net.allowed){$('tablesCount').textContent='OFFLINE';$('tablesList').innerHTML='<p class="tables-empty">Open this HTML on your Jadidaring game domain for online tables. Practice is ready here.</p>';return;}
+ if(tablesLoading||busy||document.hidden||state)return;tablesLoading=true;wakeup=false;
+ try{await net.start();if(local){net.stop();return;}const data=await net.request('rooms',{authenticated:false});if(!Array.isArray(data.rooms))throw Error('Invalid room list');$('tablesCount').textContent=(Number.isInteger(data.total)?data.total:data.rooms.length)+' OPEN';$('tablesList').innerHTML='';
+ if(!data.rooms.length)$('tablesList').innerHTML='<p class="tables-empty">No public tables yet. Find a table to open one.</p>';
+ for(const t of data.rooms){if(!/^[A-Z2-9]{6}$/.test(t.code))continue;const waiting=t.status==='waiting'&&t.seated<t.maxPlayers,status=t.status==='waiting'?'Waiting':'Playing',b=document.createElement('button');b.className='public-table';b.innerHTML='<span><strong>'+esc(t.code)+'</strong><small>'+status+' \u00b7 '+esc(t.seated)+' / '+esc(t.maxPlayers)+' players'+(t.bots?' \u00b7 '+esc(t.bots)+' bots':'')+(t.spectators?' \u00b7 '+esc(t.spectators)+' watching':'')+'</small></span><span class="table-action">'+(waiting?'Join \u2192':'Watch \u2192')+'</span>';b.setAttribute('aria-label',(waiting?'Join':'Watch')+' table '+t.code);b.addEventListener('click',()=>{$('code').value=t.code;connect(waiting?'join':'watch')});$('tablesList').append(b);}
+ }catch(e){$('tablesCount').textContent='\u2014';$('tablesList').textContent=e.message;}finally{tablesLoading=false;}
+}
+for(const id of ['createBtn','matchBtn','joinBtn'])$(id).disabled=!net.allowed;
+$('practiceBtn').onclick=practice;$('createBtn').onclick=()=>connect('create');$('matchBtn').onclick=()=>connect('match');$('joinBtn').onclick=()=>connect('join');$('code').onkeydown=e=>{if(e.key==='Enter'&&net.allowed)connect('join')};
+async function leaveTable(){if(local){leavePractice();return;}await run(async()=>{await online.leave();room=null;state=null;selected=-1;render();});refreshTables();}
+$('tableLeaveBtn').onclick=leaveTable;
+async function invite(){try{const u=new URL(location.href);u.searchParams.set('room',room);await navigator.clipboard.writeText(u.href);toast('Invitation copied. Send it to your friends.');}catch{toast('Room code: '+room)}}
+$('tableInviteBtn').onclick=invite;
+$('rulesBtn').onclick=()=>$('rules').showModal();$('closeRules').onclick=$('gotIt').onclick=()=>$('rules').close();
+document.addEventListener('keydown',e=>{if($('rules').open||['INPUT','TEXTAREA'].includes(document.activeElement.tagName)||!state||state.closed||state.pending||state.awaitingHand||state.me<0||state.turn!==state.me||state.phase!=='discard')return;const h=state.players[state.me].hand;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();selected=(selected+(e.key==='ArrowRight'?1:-1)+h.length)%h.length;render();$('hand').querySelector('[data-index="'+selected+'"]')?.focus({preventScroll:true});}if(e.key==='Enter'&&selected>=0&&!e.target.closest('#actions')){e.preventDefault();act({type:'discard',tile:h[selected]});}});
+// invite link (?room=CODE): name prompt only when the room exists, otherwise back to this menu with a notice (JRInvite gate)
+const requested=window.JRInvite?JRInvite.code('room'):'';
+render();
+function resumeSaved(){room=net.code;return run(async()=>{try{await net.start();await accept(await net.read({full:true}));}catch(e){room=null;net.forget();render();toast(e.message);}});}
+let resumed=null;
+if(net.code&&net.allowed&&(!requested||requested===net.code))resumed=resumeSaved();else refreshTables();
+if(requested)JRInvite.run({code:requested,lang:'id',gameName:'Jade Room \u00b7 Mahjong',nameKey:'jade.name',nameMax:24,accent:'#234f3d',
+ check:async c=>{if(!net.allowed)return 'offline';if(resumed){await resumed;if(room===c&&!local)return 'session';}return JRInvite.probe(c);},
+ join:async name=>{$('name').value=name;$('code').value=requested;quietRun=true;try{await connect('join');}finally{quietRun=false;}if(room===requested&&!local)return{ok:true};const e=lastRunError;if(!e)return{ok:false,retry:true};return{ok:false,missing:e.status===404||e.status===422,retry:!e.status||e.status===429||e.status>=500,message:e.message};},
+ fallback:()=>{$('code').value='';if(!room&&!local&&net.code&&net.allowed&&!resumed)resumed=resumeSaved();}});
+setInterval(()=>{if(!state&&!local)refreshTables();},10000);
+setInterval(()=>{
+ if(busy||(document.hidden&&!online.isHost))return;
+ if(local){if(E.tick(local)){state=E.view(local,0);selected=-1;render();}}
+ else if(room&&Date.now()>=(net.backoffUntil||0)){if(online.needsPulse&&!roomLoading){roomLoading=true;online.pulse().then(next=>{if(next&&room){state=next;render();}}).catch(e=>{$('connection').textContent=e.message;}).finally(()=>roomLoading=false);}else if(wakeup||!net.subscribed||Date.now()-lastSync>12000)refreshRoom();}
+ if(state&&!state.closed&&!state.pending&&!state.awaitingHand&&(state.phase==='claim'||state.phase==='discard')){const s=state,remain=Math.max(0,Math.ceil((s.due-Date.now()-skew)/1000));if(s.me>=0&&s.phase==='discard'&&s.turn===s.me)$('statusSub').textContent='Select a tile, then discard. '+remain+'s remaining';else if(s.phase==='claim'&&s.me>=0)$('statusSub').textContent='Discard: '+E.LABELS[s.claim.tile]+' \u00b7 '+remain+'s remaining';}
+},1000);
+window.addEventListener('pagehide',()=>net.stop());
+</script>
+</body></html>

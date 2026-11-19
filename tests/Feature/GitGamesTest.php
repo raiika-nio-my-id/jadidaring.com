@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman,explodingkitten,kehidupankonoha', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman,explodingkitten,kehidupankonoha,mahjong', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -99,10 +99,10 @@ class GitGamesTest extends TestCase
 
     public function test_other_games_keep_their_database_html(): void
     {
-        $this->publish('nadapiano', '<html><head></head><body>NADA-DB</body></html>');
+        $this->publish('contohgame', '<html><head></head><body>CONTOH-DB</body></html>');
 
-        $this->get(self::HOST.'/game/nadapiano')->assertOk()->assertSee('NADA-DB')->assertDontSee('data-game-frame', false);
-        $this->get(self::HOST.'/game/nadapiano/play')->assertNotFound();
+        $this->get(self::HOST.'/game/contohgame')->assertOk()->assertSee('CONTOH-DB')->assertDontSee('data-game-frame', false);
+        $this->get(self::HOST.'/game/contohgame/play')->assertNotFound();
     }
 
     public function test_old_bare_paths_redirect_to_the_game_page(): void
@@ -137,6 +137,7 @@ class GitGamesTest extends TestCase
             'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
             'coratcoret' => ['coratcoret', 'JDNG_CFG'],
             'anomaliminimarket' => ['anomaliminimarket', 'data-jd-account-name-lock'],
+            'mahjong' => ['mahjong', 'data-jd-account-name-lock'],
             'kehidupankonoha' => ['kehidupankonoha', 'data-jd-account-name-lock'],
             'explodingkitten' => ['explodingkitten', 'data-jd-account-name-lock'],
             'ulartangga' => ['ulartangga', 'data-jd-account-name-lock'],
