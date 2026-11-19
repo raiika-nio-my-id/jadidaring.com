@@ -959,7 +959,7 @@ body {
 .imp-sum { margin: 0 0 16px; } .imp-sum summary { cursor: pointer; font-weight: 800; } .imp-sum ul { margin: 10px 0 0; padding-left: 1.2rem; line-height: 1.7; overflow-wrap: anywhere; }
 @media (max-width: 700px) {
   .imp-bar { top: 74px; }
-  .imp-actions { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--clay-surface, #fff); box-shadow: 0 -6px 18px rgba(60, 40, 120, .25); flex-wrap: nowrap; }
+  .imp-actions { position: fixed; left: 0; right: 0; bottom: 68px; z-index: 30; padding: 10px 12px; background: var(--clay-surface, #fff); box-shadow: 0 -6px 18px rgba(60, 40, 120, .25); flex-wrap: nowrap; }
   .imp-actions .clay-btn { flex: 1 1 0; min-width: 0; padding-inline: 8px; font-size: .85rem; text-align: center; }
-  .imp-page { padding-bottom: 96px; }
+  .imp-page { padding-bottom: 170px; }
 }
