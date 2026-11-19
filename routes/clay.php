@@ -141,8 +141,8 @@ Route::get('/site.webmanifest', function () {
         'start_url' => '/',
         'scope' => '/',
         'display' => 'standalone',
-        'background_color' => '#f4ecff',
-        'theme_color' => '#f4ecff',
+        'background_color' => '#F7F2EC',
+        'theme_color' => '#F7F2EC',
         'icons' => [
             ['src' => '/web-app-manifest-192x192.png?v=2', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any maskable'],
             ['src' => '/web-app-manifest-512x512.png?v=2', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any maskable'],

@@ -49,11 +49,16 @@
     void el.offsetWidth;
     el.classList.add('is-on');
     document.documentElement.classList.add('jd-leaving');
-    safety = setTimeout(hide, 15000);
+    /* leaving a profile: the status bar drops the member colour at once */
+    var bar = document.querySelector('meta[name="theme-color"][data-fixed]');
+    if (bar && window.__defaultThemeColor) { bar.dataset.pageColor = bar.dataset.pageColor || bar.content; bar.setAttribute('content', window.__defaultThemeColor()); }
+    safety = setTimeout(function () { hide(); }, 15000);
   }
-  function hide() {
+  function hide(keepBar) {
     clearTimeout(safety);
     document.documentElement.classList.remove('jd-leaving');
+    var fixed = document.querySelector('meta[name="theme-color"][data-fixed]');
+    if (keepBar !== true && fixed && fixed.dataset.pageColor) { fixed.setAttribute('content', fixed.dataset.pageColor); }
     if (el) { el.remove(); el = null; }
   }
   document.addEventListener('click', function (e) {
@@ -63,6 +68,6 @@
     if (a.pathname === location.pathname && a.search === location.search) return;
     show(a.pathname);
   });
-  window.addEventListener('pageshow', hide);
-  window.addEventListener('pagehide', hide);
+  window.addEventListener('pageshow', function () { hide(); });
+  window.addEventListener('pagehide', function () { hide(true); });
 })();

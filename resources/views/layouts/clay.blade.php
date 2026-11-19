@@ -33,7 +33,11 @@
 
     <link rel="alternate" hreflang="id" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
     <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
-    <meta name="theme-color" content="#f4ecff">
+    @php
+        $__pfColor = str_contains($__env->yieldContent('bodyclass'), 'is-profile') && isset($config['theme']['bg']['color']) && is_string($config['theme']['bg']['color']) && preg_match('/^#[0-9a-fA-F]{6}$/', $config['theme']['bg']['color'])
+            ? $config['theme']['bg']['color'] : null;
+    @endphp
+    <meta name="theme-color" content="{{ $__pfColor ?? '#F7F2EC' }}"@if ($__pfColor) data-fixed="1"@endif>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Jadidaring">

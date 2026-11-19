@@ -19,7 +19,7 @@ class PwaTest extends TestCase
         $this->assertSame('/', $m['start_url']);
         $this->assertSame('/', $m['scope']);
         $this->assertSame('/', $m['id']);
-        $this->assertSame('#f4ecff', $m['theme_color']);
+        $this->assertSame('#F7F2EC', $m['theme_color']);
         $sizes = collect($m['icons'])->pluck('sizes')->all();
         $this->assertContains('192x192', $sizes);
         $this->assertContains('512x512', $sizes);

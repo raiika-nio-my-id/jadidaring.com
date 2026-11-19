@@ -873,6 +873,7 @@
     oldPf.className = newPf.className; oldPf.setAttribute('style', newPf.getAttribute('style') || '');
     var ob = oldPf.querySelector('.pf-bg'), nb = newPf.querySelector('.pf-bg');
     if (ob && nb) ob.setAttribute('style', nb.getAttribute('style') || '');
+    if (nb && nb.getAttribute('data-theme-color') && window.__setThemeColor) { ob.setAttribute('data-theme-color', nb.getAttribute('data-theme-color')); window.__setThemeColor(nb.getAttribute('data-theme-color'), true); }
     var oh = oldPf.querySelector('.pf-head'), nh = newPf.querySelector('.pf-head');
     if (oh && nh) {
       var oc = oh.cloneNode(true); Array.prototype.forEach.call(oc.querySelectorAll('.le-ubah'), function (x) { x.remove(); });
