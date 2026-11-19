@@ -1,0 +1,63 @@
+{
+  "map": {
+    "cols": 9,
+    "rows": 15,
+    "path": [[4, -1], [4, 1], [1, 1], [1, 4], [7, 4], [7, 7], [1, 7], [1, 10], [7, 10], [7, 12], [4, 12], [4, 15]],
+    "blocked": [[3, 14], [5, 14], [3, 0], [5, 0]]
+  },
+  "economy": {"startCoins": 150, "lives": 20, "coinSharePct": [100, 70, 60, 55], "monsterHpPct": [100, 160, 215, 270], "waveHpGrowthPct": 36, "waveBonusBase": 30, "waveBonusPerWave": 5, "noLeakBonusPct": 20, "earlyStartCoinsPerSecond": 1, "prepSeconds": 30, "breakSeconds": 20, "sellRefundPct": 70, "upgradeCostPct": [60, 100], "giveStep": 10, "comboBonusPct": 25, "barongCost": 400, "barongMaxSharePerPlayer": 300, "barongMinChip": 10, "maxLives": 30},
+  "towers": {
+    "ketapel": {"cost": 50, "range": [250, 270, 290], "dmg": [12, 19, 29], "cd": [12, 11, 10], "ground": true, "air": false},
+    "meriam": {"cost": 90, "range": [220, 235, 250], "dmg": [24, 38, 58], "cd": [36, 34, 32], "splash": 100, "ground": true, "air": false},
+    "sate": {"cost": 70, "range": [170, 185, 200], "slow": [40, 45, 50], "slowTicks": 30, "cd": [10, 10, 10], "ground": true, "air": false},
+    "kentongan": {"cost": 80, "range": [150, 160, 170], "buff": [20, 25, 30]},
+    "petasan": {"cost": 75, "range": [280, 295, 310], "dmg": [16, 25, 38], "cd": [14, 13, 12], "ground": true, "air": true, "airMulPct": 200},
+    "barong": {"cost": 400, "range": [300, 315, 330], "dmg": [60, 95, 140], "cd": [20, 19, 18], "ground": true, "air": true, "shared": true}
+  },
+  "monsters": {
+    "tuyul": {"hp": 38, "speed": 170, "reward": 3, "leak": 1, "steal": 10},
+    "pocong": {"hp": 90, "speed": 100, "reward": 5, "leak": 1, "hop": true},
+    "kuntilanak": {"hp": 72, "speed": 130, "reward": 7, "leak": 1, "fly": true},
+    "genderuwo": {"hp": 408, "speed": 60, "reward": 16, "leak": 3, "areaResistPct": 30},
+    "ratu": {"hp": 2640, "speed": 45, "reward": 120, "leak": 10, "boss": true, "summonTicks": 100, "summon": "tuyul"}
+  },
+  "waves": [
+    [{"k":"tuyul","n":8,"gap":22},{"k":"pocong","n":4,"gap":30,"delay":120}],
+    [{"k":"tuyul","n":10,"gap":18},{"k":"pocong","n":6,"gap":28,"delay":100}],
+    [{"k":"pocong","n":10,"gap":22},{"k":"tuyul","n":10,"gap":14,"delay":160}],
+    [{"k":"kuntilanak","n":6,"gap":30},{"k":"tuyul","n":12,"gap":14,"delay":40},{"k":"pocong","n":6,"gap":26,"delay":120}],
+    [{"k":"ratu","n":1,"delay":60},{"k":"tuyul","n":10,"gap":20},{"k":"pocong","n":8,"gap":30,"delay":80}],
+    [{"k":"genderuwo","n":3,"gap":70},{"k":"pocong","n":12,"gap":20,"delay":40},{"k":"kuntilanak","n":6,"gap":30,"delay":200}],
+    [{"k":"tuyul","n":20,"gap":10},{"k":"kuntilanak","n":10,"gap":24,"delay":100},{"k":"genderuwo","n":3,"gap":60,"delay":200}],
+    [{"k":"pocong","n":18,"gap":14},{"k":"genderuwo","n":5,"gap":50,"delay":60},{"k":"kuntilanak","n":8,"gap":24,"delay":260}],
+    [{"k":"kuntilanak","n":16,"gap":16},{"k":"tuyul","n":24,"gap":8,"delay":80},{"k":"genderuwo","n":4,"gap":60,"delay":160}],
+    [{"k":"ratu","n":1,"delay":40},{"k":"genderuwo","n":6,"gap":50,"delay":120},{"k":"kuntilanak","n":10,"gap":20,"delay":200}],
+    [{"k":"pocong","n":24,"gap":10},{"k":"genderuwo","n":6,"gap":40,"delay":60},{"k":"kuntilanak","n":12,"gap":18,"delay":200}],
+    [{"k":"tuyul","n":36,"gap":6},{"k":"kuntilanak","n":14,"gap":16,"delay":60},{"k":"genderuwo","n":8,"gap":36,"delay":160}],
+    [{"k":"genderuwo","n":12,"gap":30},{"k":"pocong","n":20,"gap":12,"delay":40},{"k":"kuntilanak","n":16,"gap":14,"delay":200}],
+    [{"k":"kuntilanak","n":24,"gap":10},{"k":"genderuwo","n":12,"gap":28,"delay":60},{"k":"tuyul","n":30,"gap":6,"delay":200}],
+    [{"k":"ratu","n":2,"gap":200,"delay":40},{"k":"genderuwo","n":10,"gap":34,"delay":100},{"k":"kuntilanak","n":16,"gap":14,"delay":160},{"k":"pocong","n":20,"gap":10,"delay":260}]
+  ],
+  "heroes": {
+    "dukun": {"cd": 600, "target": true, "r": 210, "freeze": 60, "bossFreezePct": 50},
+    "jawara": {"cd": 700, "target": true, "r": 230, "rage": 120, "ratePct": 100},
+    "juragan": {"cd": 900, "target": false, "coins": 20, "coinsPerWave": 4, "gold": 200, "goldPct": 50},
+    "pendekar": {"cd": 500, "target": true, "r": 130, "dmg": 160, "dmgPerWave": 45, "splash": 110, "splashPct": 40}
+  },
+  "combined": {"window": 60, "min": 2, "cd": 1400, "dmg": 60, "dmgPerWave": 25, "slow": 50, "slowTicks": 100},
+  "endless": { "offerTicks": 400, "templates": [11, 12, 13, 14], "hpPct": 16, "countPct": 6, "countMaxPct": 250, "bossEvery": 3, "bonusCap": { "rate": 24, "dmg": 24, "gold": 20 } },
+  "berkah": {
+    "voteTicks": 240,
+    "cards": {
+      "kopi": {"rate": 12, "max": 3},
+      "akik": {"dmg": 12, "max": 3},
+      "teropong": {"rng": 10, "max": 2},
+      "arisan": {"coins": 40, "max": 99},
+      "jamu": {"lives": 3, "max": 99},
+      "diskon": {"disc": 10, "max": 3},
+      "ronda": {"cdr": 20, "max": 2},
+      "kemenyan": {"slow": 10, "combo": 10, "max": 2},
+      "kembang": {"gold": 20, "max": 3}
+    }
+  }
+}

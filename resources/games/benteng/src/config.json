@@ -1,0 +1,558 @@
+{
+  "site": {
+    "name": "Benteng Kampung",
+    "tagline": "Tower defense gotong royong",
+    "themeColor": "#14532d"
+  },
+  "realtime": {
+    "hostHeartbeatSeconds": 10,
+    "hostStaleSeconds": 30,
+    "reconnectMaxSeconds": 15
+  },
+  "players": {
+    "colors": [
+      "#ef4444",
+      "#3b82f6",
+      "#22c55e",
+      "#f59e0b"
+    ]
+  },
+  "pings": [
+    {
+      "k": "tolong",
+      "icon": "🆘"
+    },
+    {
+      "k": "sini",
+      "icon": "📍"
+    },
+    {
+      "k": "awas",
+      "icon": "⚠️"
+    }
+  ],
+  "towers": {
+    "ketapel": {
+      "name": "Ketapel",
+      "text": "Murah dan cepat. Andalan awal untuk hantu darat.",
+      "role": "Murah & cepat, andalan awal"
+    },
+    "meriam": {
+      "name": "Meriam Bambu",
+      "text": "Dentuman yang mengenai area, cocok untuk rombongan. Tidak bisa menembak hantu terbang.",
+      "role": "Lambat tapi meledak kena banyak"
+    },
+    "sate": {
+      "name": "Tungku Sate",
+      "text": "Asap sate memperlambat hantu darat. Kalau Sate-mu memperlambat hantu, menara teman mendapat bonus +25% serangan.",
+      "role": "Asapnya memperlambat hantu"
+    },
+    "kentongan": {
+      "name": "Kentongan",
+      "text": "Tidak menyerang, tapi membuat menara di sekitarnya menembak lebih cepat.",
+      "role": "Pendukung: menara dekat menembak lebih cepat"
+    },
+    "petasan": {
+      "name": "Petasan",
+      "text": "Bisa mengenai hantu darat dan udara, dengan serangan dua kali lipat ke kuntilanak.",
+      "role": "Pemburu hantu terbang"
+    },
+    "barong": {
+      "name": "Barong",
+      "text": "Penjaga raksasa. Dibangun patungan 400 koin dari minimal 2 pemain (maks. 300 per orang). Saat solo, langsung dibeli.",
+      "role": "Raksasa patungan tim, kena semua"
+    }
+  },
+  "monsters": {
+    "tuyul": {
+      "name": "Tuyul",
+      "text": "Cepat dan licik. Kalau lolos ke benteng, ia mencuri koin dari setiap pemain.",
+      "tip": "Kecil & cepat, mencuri koin kalau lolos"
+    },
+    "pocong": {
+      "name": "Pocong",
+      "text": "Bergerak sambil melompat: diam sebentar, lalu meloncat cepat ke depan.",
+      "tip": "Melompat-lompat, cukup kuat"
+    },
+    "kuntilanak": {
+      "name": "Kuntilanak",
+      "text": "Terbang. Hanya Petasan dan Barong yang bisa mengenainya.",
+      "tip": "Terbang — cuma kena Petasan & Barong"
+    },
+    "genderuwo": {
+      "name": "Genderuwo",
+      "text": "Lambat dan sangat tebal, juga tahan terhadap serangan area.",
+      "tip": "Tebal, tahan ledakan area"
+    },
+    "ratu": {
+      "name": "Ratu Kuntilanak",
+      "text": "Bos di gelombang 5, 10, dan 15. Sambil berjalan ia memanggil tuyul.",
+      "tip": "Bos! Memanggil tuyul, kerahkan skill"
+    }
+  },
+  "rules": [
+    {
+      "title": "Bangun di mana saja",
+      "text": "Tidak ada zona: siapa pun boleh membangun di petak kosong mana pun, siapa cepat dia dapat. Cincin warna di bawah menara menunjukkan pemiliknya. Teman boleh menaikkan level menaramu, hanya pemilik yang bisa menjual."
+    },
+    {
+      "title": "Pilih hero",
+      "text": "Di lobi tiap pemain memilih hero dengan skill aktif ber-cooldown: Dukun membekukan, Jawara mengamuk, Juragan membagi rezeki, Pendekar menendang hantu terkuat. Skill hanya bisa dipakai saat gelombang berjalan."
+    },
+    {
+      "title": "Skill Gabungan",
+      "text": "Tekan Skill Gabungan bersama minimal 1 teman dalam jendela 3 detik: hujan petasan menghantam semua hantu sekaligus. Sendirian tidak jalan. Makin banyak yang ikut, makin besar damage-nya."
+    },
+    {
+      "title": "Kartu Berkah",
+      "text": "Setelah tiap gelombang muncul 3 kartu bonus acak. Semua memilih, suara terbanyak menang. Kalau seri atau waktu habis, kartu diundi dengan hasil yang sama di semua layar. Main sendiri langsung pilih."
+    },
+    {
+      "title": "Koin dibagi rata",
+      "text": "Setiap hantu yang mati memberi koin yang sama ke semua pemain, siapa pun pembunuhnya. Bonus gelombang dan bonus mulai cepat juga dibagi rata. Ketuk nama teman untuk kirim koin, atau tekan Minta Koin."
+    },
+    {
+      "title": "Ngobrol cepat",
+      "text": "Pakai chat cepat (Bantu sini!, Bos datang!, …), emoji, dan tombol 📍 Tanda lalu ketuk petak. Pesan muncul sebagai gelembung di kursor pengirim. Kursor teman terlihat di peta."
+    },
+    {
+      "title": "Combo & Patungan Barong",
+      "text": "Hantu yang diperlambat Tungku Sate milik teman kena +25% serangan dari menaramu. Barong seharga 400 koin dibangun patungan minimal 2 orang."
+    },
+    {
+      "title": "Tahan 15 gelombang",
+      "text": "Benteng punya 20 nyawa bersama. Siap bersama mempercepat gelombang dan memberi bonus koin. Tahan sampai gelombang 15 untuk menang."
+    }
+  ],
+  "text": {
+    "skip": "Langsung ke isi",
+    "navPlay": "Main",
+    "navRules": "Cara main",
+    "navBoard": "Papan skor",
+    "heroEyebrow": "Tower defense gotong royong · 1–4 pemain",
+    "heroTitle": "Jaga kampung bareng-bareng, jangan sampai hantu tembus benteng",
+    "heroText": "Hantu kampung datang dari hutan dan berbaris ke benteng. Pilih hero, bangun ketapel, meriam bambu, dan tungku sate di mana saja, ngobrol pakai chat cepat, tekan Skill Gabungan bareng teman, lalu pilih kartu berkah tiap habis gelombang.",
+    "heroCtaOnline": "Main bareng teman",
+    "heroCtaPractice": "Latihan sendiri",
+    "fact1": "15 gelombang, bos di gelombang 5, 10, dan 15",
+    "fact2": "Koin kill dibagi rata, jadi tidak perlu rebutan",
+    "fact3": "4 hero dengan skill + Skill Gabungan untuk tim",
+    "heroArtLabel": "Ilustrasi peta Benteng Kampung dengan menara dan hantu",
+    "onlineTitle": "Main online (kerja sama)",
+    "onlineText": "Buat room lalu bagikan tautannya. 2–4 pemain satu tim, bebas membangun di mana saja, pilih hero di lobi, dan voting kartu berkah bersama. Teman yang telat masuk bisa ikut menonton.",
+    "nameLabel": "Nama kamu",
+    "namePh": "mis. JadiDaring",
+    "maxLabel": "Maks. pemain",
+    "createPrivate": "Buat room privat",
+    "createPublic": "Buat room publik",
+    "quickMatch": "Cari tim cepat",
+    "codeLabel": "Kode room",
+    "codePh": "6 huruf",
+    "join": "Gabung",
+    "watch": "Tonton",
+    "roomsTitle": "Room publik",
+    "roomsRefresh": "Muat ulang",
+    "roomsEmpty": "Belum ada room publik. Buat satu, nanti orang lain bisa gabung.",
+    "roomWaiting": "Menunggu pemain",
+    "roomPlaying": "Sedang main",
+    "roomSeats": "{n}/{max} pemain",
+    "practiceTitle": "Latihan sendiri",
+    "practiceText": "Main solo tanpa internet. Bisa dijeda dan dipercepat 2×. Skor masuk papan skor solo di perangkat ini.",
+    "practiceStart": "Mulai latihan",
+    "lbTitle": "Papan skor",
+    "lbSolo": "Solo",
+    "lb2": "2 pemain",
+    "lb3": "3 pemain",
+    "lb4": "4 pemain",
+    "lbN": "{n} pemain",
+    "lbTitleN": "Papan skor · {n}",
+    "lbEmpty": "Belum ada skor. Ayo main dulu!",
+    "lbLocal": "Papan skor tersimpan di perangkat ini saja (10 teratas per jumlah pemain).",
+    "lbWin": "menang",
+    "lbWave": "gugur di gelombang {w}",
+    "rulesTitle": "Cara main",
+    "rulesLead": "Satu benteng, satu tim. Semua pemain berbagi 20 nyawa benteng, tapi koin dipegang masing-masing.",
+    "towersTitle": "Menara",
+    "monstersTitle": "Hantu",
+    "bossTag": "BOS",
+    "costShared": "patungan 🪙{n}",
+    "monStats": "Nyawa {hp} · hadiah {r} koin · bocor −{l} nyawa",
+    "econTitle": "Koin per jumlah pemain",
+    "econText": "Koin kill dan bonus gelombang dibagi rata ke semua pemain yang masih ada. Total koin tim lebih besar daripada solo, tapi hantunya juga lebih kuat, jadi tim tetap harus kompak.",
+    "econPlayers": "Pemain",
+    "econCoins": "Koin per orang",
+    "econTeam": "Total tim",
+    "econHp": "Nyawa hantu",
+    "footerNote": "Tower defense kerja sama untuk 1–4 pemain.",
+    "connOffline": "Offline",
+    "connOnline": "Online",
+    "connReconnecting": "Menyambung ulang…",
+    "connConnecting": "Menyambung…",
+    "connSyncing": "Menyelaraskan…",
+    "onlineChecking": "Memeriksa server game…",
+    "onlineReady": "",
+    "errOffline": "Mode online hanya tersedia di situs jadidaring.com. Mode latihan tetap bisa dimainkan.",
+    "errDisabled": "Mode online sedang dimatikan. Coba lagi nanti atau main latihan dulu.",
+    "errMismatch": "Server game tidak cocok dengan halaman ini. Coba muat ulang.",
+    "errNetwork": "Koneksi ke server terputus. Coba lagi sebentar lagi.",
+    "errBusy": "Server sedang sibuk. Coba lagi dalam {n} detik.",
+    "errName": "Isi nama dulu ya.",
+    "errCode": "Kode room terdiri dari 6 huruf/angka.",
+    "errNotFound": "Room tidak ditemukan atau sudah berakhir.",
+    "errFull": "Room sudah penuh.",
+    "errNotOpen": "Permainan di room ini sudah dimulai.",
+    "errMember": "Kamu sudah tidak terdaftar di room ini.",
+    "errGeneric": "Terjadi kesalahan: {m}",
+    "errFew": "Butuh minimal 2 pemain untuk mulai.",
+    "errLate": "Aksi terlambat, coba lagi.",
+    "errBudget": "Terlalu banyak aksi, tunggu sebentar.",
+    "errSlow": "Pelan-pelan, tunggu sebentar sebelum memberi tanda lagi.",
+    "why_player": "Kamu bukan pemain di permainan ini.",
+    "why_bad": "Aksi tidak valid.",
+    "why_over": "Permainan sudah selesai.",
+    "why_gone": "Kamu sedang dianggap keluar. Tunggu sampai tersambung lagi.",
+    "why_cell": "Petak ini tidak bisa dibangun.",
+    "why_taken": "Petak ini sudah terisi.",
+    "why_shared": "Barong dibangun patungan bersama teman.",
+    "why_coins": "Koin kamu belum cukup.",
+    "why_owner": "Ini menara milik teman.",
+    "why_max": "Menara sudah level maksimal.",
+    "why_solo": "Patungan butuh minimal 2 pemain.",
+    "why_amount": "Jumlah koin tidak valid.",
+    "why_target": "Pemain tujuan tidak tersedia.",
+    "why_phase": "Hanya bisa saat persiapan.",
+    "hudLives": "Nyawa benteng",
+    "hudScore": "Skor",
+    "hudCoins": "Koin kamu",
+    "hudWave": "{w}/{n}",
+    "pause": "Jeda",
+    "resume": "Lanjut",
+    "speed": "Kecepatan",
+    "exit": "Keluar",
+    "close": "Tutup",
+    "paused": "Dijeda",
+    "backHome": "Ke menu utama",
+    "playAgain": "Main lagi",
+    "youShort": "(kamu)",
+    "youName": "Kamu",
+    "goneShort": "keluar",
+    "giveTo": "Kirim koin ke {name}",
+    "buildTitle": "Bangun menara",
+    "buildHint": "Pilih menara. Ketuk lagi untuk membangun.",
+    "buildBtn": "Bangun · 🪙{n}",
+    "patungan": "Patungan",
+    "foundTitle": "Mulai patungan Barong",
+    "foundText": "Barong butuh 🪙{n} dari minimal 2 pemain. Pilih setoran awal kamu.",
+    "fdTitle": "Patungan Barong",
+    "fdBy": "Setoran: {list}",
+    "fdNeedOther": "butuh setoran teman",
+    "max": "maks",
+    "unfound": "Batalkan",
+    "lvl": "Lv {n}",
+    "maxLvl": "Level maksimal",
+    "upBtn": "Tingkatkan · 🪙{n}",
+    "sellBtn": "Jual · +🪙{n}",
+    "notYours": "Milik teman",
+    "stRange": "jangkauan {n}",
+    "stDmg": "serang {n}",
+    "stAir": "(×{n} ke hantu terbang)",
+    "stRate": "{n}×/detik",
+    "stSlow": "perlambat {n}%",
+    "stBuff": "menara dekat +{n}% cepat",
+    "stSplash": "kena area",
+    "stBoth": "darat + udara",
+    "stGround": "darat saja",
+    "giveTitle": "Kirim koin ke {name}",
+    "giveText": "Koin langsung pindah ke teman. Tidak bisa dibatalkan.",
+    "pingTitle": "Beri tanda di peta",
+    "ping_tolong": "Tolong!",
+    "ping_sini": "Bangun di sini",
+    "ping_awas": "Awas!",
+    "thisWave": "Gelombang ini:",
+    "nextWave": "Berikutnya:",
+    "prepTitle": "Persiapan · {t}",
+    "breakTitle": "Istirahat · {t}",
+    "waveTitle": "Gelombang {w} · {n} hantu tersisa",
+    "readyBtn": "Siap! ({a}/{b})",
+    "readyDone": "Menunggu teman ({a}/{b})",
+    "startNow": "Mulai sekarang (+🪙{n})",
+    "hintSolo": "Seret menara ke petak rumput. Mulai lebih cepat dapat bonus koin.",
+    "hintWave": "Tekan tombol hero untuk skill. Ketuk menara untuk naik level atau jual.",
+    "hintWaveMulti": "Tekan tombol hero untuk skill. Skill Gabungan butuh 2+ pemain dalam 3 detik.",
+    "spectating": "Kamu sedang menonton.",
+    "youGone": "Koneksi kamu sempat putus. Begitu tersambung lagi, kamu kembali main (koin mulai dari 0).",
+    "bannerWave": "Gelombang {w}!",
+    "bannerBoss": "Gelombang {w}: Ratu Kuntilanak datang!",
+    "bannerWaveEnd": "Gelombang selesai · +🪙{n}",
+    "bannerClean": "Bersih tanpa bocor! · +🪙{n}",
+    "bannerBarong": "Barong berdiri!",
+    "toastStolen": "Tuyul mencuri {n} koin!",
+    "toastEarly": "Mulai cepat: +🪙{n} per orang",
+    "toastGot": "{name} mengirim 🪙{n} ke kamu",
+    "toastGave": "🪙{n} terkirim ke {name}",
+    "toastChip": "{name} patungan 🪙{n} untuk Barong",
+    "toastFound": "{name} mulai patungan Barong. Ketuk untuk ikut!",
+    "toastGone": "{name} terputus. Koinnya dibagi ke tim.",
+    "toastYouGone": "Kamu dianggap keluar.",
+    "toastBack": "{name} kembali!",
+    "winTitle": "Benteng selamat! 🎉",
+    "winText": "Semua gelombang tertahan dengan {lives} nyawa tersisa.",
+    "loseTitle": "Benteng jebol…",
+    "loseText": "Hantu menembus benteng di gelombang {w}.",
+    "resScore": "skor",
+    "resWave": "gelombang",
+    "resKills": "hantu",
+    "resLives": "nyawa",
+    "loading": "Memuat room…",
+    "closedTitle": "Room ditutup",
+    "closedText": "Room ini sudah berakhir.",
+    "startingIn": "Mulai dalam",
+    "startingHint": "Bebas bangun di mana saja: siapa cepat dia dapat. Cincin warna = pemilik menara.",
+    "rematch": "Main lagi (room sama)",
+    "rematchWait": "Menunggu host memulai lagi…",
+    "finalising": "Menyimpan hasil…",
+    "lobbyTitle": "Ruang tunggu",
+    "lobbyInvite": "Bagikan kode atau tautan ini ke teman:",
+    "copyInvite": "Salin tautan undangan",
+    "copied": "Tautan undangan disalin!",
+    "copyFail": "Tidak bisa menyalin. Kode room: {code}",
+    "shareText": "Ayo jaga Benteng Kampung bareng!",
+    "youBadge": "kamu",
+    "hostBadge": "host",
+    "lobbyCount": "{n}/{max} pemain",
+    "spectatorsCount": "{n} penonton",
+    "lobbyEcon": "Untuk {n} pemain: koin per orang {c}% dari solo, nyawa hantu {h}%.",
+    "start": "Mulai permainan",
+    "lobbyNeed": "Tunggu {n} pemain lagi.",
+    "lobbyWaitHost": "Menunggu host memulai…",
+    "nowWatching": "Permainan sudah berjalan, kamu masuk sebagai penonton.",
+    "exitConfirm": "Keluar dari permainan? Koinmu akan dibagikan ke tim.",
+    "exitConfirmPractice": "Keluar dari latihan? Progres tidak disimpan.",
+    "heroP1": "Ana",
+    "heroP2": "Budi",
+    "mapLabel": "Peta permainan. Ketuk petak untuk membangun menara.",
+    "hintBuild": "Seret menara ke peta (di mana saja). Ketuk nama teman untuk kirim koin.",
+    "why_wave": "Skill hanya bisa dipakai saat gelombang berjalan.",
+    "why_cooldown": "Skill masih cooldown.",
+    "why_joined": "Kamu sudah ikut. Tunggu teman menekan juga!",
+    "why_novote": "Voting sudah selesai.",
+    "heroPick": "Pilih hero",
+    "heroPickText": "Tiap hero punya skill aktif ber-cooldown. Bisa ganti sebelum mulai.",
+    "heroPickSolo": "Pilih hero untuk latihan",
+    "heroTaken": "dipilih {names}",
+    "heroChange": "Ganti hero",
+    "skillBtn": "Skill",
+    "skillReady": "Siap!",
+    "skillAim": "Ketuk peta: sasaran {skill}",
+    "skillAimHint": "Lingkaran menunjukkan area. Ketuk ✕ untuk batal.",
+    "skillCast": "{name}: {skill}!",
+    "skillWaitWave": "Skill aktif saat gelombang",
+    "gabBtn": "Gabungan",
+    "gabJoin": "Gabung! {n}/{m}",
+    "gabOpen": "{name} memulai Skill Gabungan! Tekan dalam 3 detik!",
+    "gabFire": "SERANGAN GOTONG ROYONG! {n} pemain",
+    "gabFizzle": "Skill Gabungan gagal: tidak ada yang ikut menekan.",
+    "gabSolo": "Butuh 2+ pemain",
+    "voteTitle": "Kartu Berkah: pilih satu",
+    "voteHint": "Suara terbanyak menang · seri/habis waktu → diundi (sama di semua layar)",
+    "voteHintSolo": "Pilih satu bonus untuk gelombang berikutnya",
+    "voteYou": "pilihanmu",
+    "voteWon": "Berkah: {name}!",
+    "voteTie": "Seri! Diundi: {name}",
+    "berkahActive": "Berkah aktif",
+    "chatTitle": "Chat cepat",
+    "pingBtn": "Tanda",
+    "pingPickHint": "Pilih jenis tanda, lalu ketuk petak di peta.",
+    "askBtn": "Minta koin",
+    "askSent": "Permintaan koin terkirim ke tim.",
+    "askFrom": "{name} minta koin",
+    "askSend": "Kirim {n}",
+    "askLog": "minta koin 🪙",
+    "chatMore": "Chat",
+    "soundOn": "Suara nyala",
+    "soundOff": "Suara mati",
+    "tipBuild": "Seret menara dari baki ke petak rumput, atau ketuk menaranya lalu ketuk petak.",
+    "tipSkill": "Gelombang mulai! Tekan tombol hero di bawah peta untuk skill {skill}.",
+    "tipChat": "Buka 💬 Chat untuk ngobrol, atau pakai 📍 Tanda. Kursor teman kelihatan di peta.",
+    "tipGab": "Skill Gabungan: tekan bareng teman dalam 3 detik untuk hujan petasan ke semua hantu!",
+    "tipVote": "Pilih satu kartu berkah. Suara terbanyak menang.",
+    "tipOk": "Oke",
+    "lobbyHero": "hero: {name}",
+    "bannerBossCome": "⚠️ RATU KUNTILANAK DATANG!",
+    "errBusyCur": "",
+    "demoLabel": "Demo",
+    "errSlowTalk": "Pelan-pelan, tunggu sebentar sebelum kirim lagi.",
+    "trayTitle": "Menara: seret ke peta",
+    "placeHint": "Ketuk petak hijau di peta, atau seret menaranya",
+    "placeTitle": "Pasang {name}",
+    "cardDrop": "Lepas di petak ini",
+    "cardOff": "Seret ke petak rumput di peta",
+    "cardBad": "Tidak bisa di sini: {why}",
+    "stDmgL": "Damage per tembakan",
+    "stRateL": "Tembakan per detik",
+    "stRngL": "Jangkauan (petak)",
+    "stSlowL": "Memperlambat hantu",
+    "stBuffL": "Mempercepat menara di sekitar",
+    "spSplash": "Ledakan area",
+    "spAir": "Anti-terbang ×{n}",
+    "spBoth": "Kena darat & terbang",
+    "spGround": "Darat saja",
+    "spShared": "Patungan tim",
+    "spNoShot": "Tidak menembak",
+    "upTo": "⬆ Upgrade 🪙{n}",
+    "sellFor": "Jual +🪙{n}",
+    "costTag": "🪙{n}",
+    "chatRoom": "Chat tim",
+    "chatPh": "Tulis pesan… (maks 120)",
+    "chatSend": "Kirim",
+    "chatEmpty": "Belum ada pesan. Sapa timmu!",
+    "chatSpectator": "Penonton hanya bisa membaca chat",
+    "chatBtn": "Chat",
+    "chatOpenBtn": "💬 Chat tim",
+    "errSlowSay": "Pelan-pelan ya, tunggu sebentar sebelum kirim lagi.",
+    "chatHide": "Sembunyikan chat",
+    "endlessTitle": "Menang! 15 gelombang aman",
+    "endlessText": "Lanjut ke Endless? Hantu makin kuat tiap gelombang dan tidak ada Kartu Berkah lagi. Seberapa jauh kalian bertahan?",
+    "endlessGo": "♾️ Lanjut Endless",
+    "endlessStop": "Selesai",
+    "endlessVoteHint": "Suara terbanyak menang · {t} dtk",
+    "endlessAuto": "Otomatis selesai dalam {t} dtk",
+    "hudEndless": "Endless {w}",
+    "bannerEndless": "Endless {w} · HP ×{m}",
+    "bannerEndlessBoss": "Endless {w}: Ratu datang! HP ×{m}",
+    "bannerEndlessStart": "Mode Endless! Tanpa berkah, makin berat tiap gelombang",
+    "endlessOverTitle": "Endless selesai!",
+    "endlessOverText": "Kalian bertahan sampai gelombang {w}.",
+    "endlessOverSolo": "Kamu bertahan sampai gelombang {w}.",
+    "lbEndless": "Endless",
+    "lbWaves": "15 gelombang",
+    "lbEndlessWave": "gelombang {w}",
+    "lbTitleX": "Rekor Endless · {n}",
+    "resBest": "gelombang tertinggi",
+    "tutStep": "{a}/{b}",
+    "tutSkip": "Lewati",
+    "tut1": "Seret Ketapel ke petak yang berkedip",
+    "tut1b": "(atau ketuk Ketapel, lalu ketuk petaknya)",
+    "tut2": "Hantu lewat jalur ini menuju benteng. Tekan Mulai!",
+    "tut3a": "Ketuk menaramu",
+    "tut3b": "Tekan Upgrade biar makin kuat",
+    "tut4a": "Pakai skill hero sekarang!",
+    "tut4b": "Ketuk di dekat hantu",
+    "tut5": "Mantap! Kamu sudah bisa. Bangun terus dan tahan 15 gelombang!",
+    "tutOk": "Siap!",
+    "tutReplay": "🎓 Main tutorial",
+    "startTut": "Mulai",
+    "newMonster": "Hantu baru:"
+  },
+  "heroes": {
+    "dukun": {
+      "name": "Dukun",
+      "skill": "Mantra Beku",
+      "text": "Bekukan semua hantu di area sasaran selama 3 detik (bos 1,5 detik).",
+      "color": "#7c3aed",
+      "line": "❄️ Bekukan hantu di area"
+    },
+    "jawara": {
+      "name": "Jawara",
+      "skill": "Amukan",
+      "text": "Menara di sekitar sasaran menyerang 2× lebih cepat selama 6 detik.",
+      "color": "#dc2626",
+      "line": "⚡ Menara dekat menembak 2× cepat"
+    },
+    "juragan": {
+      "name": "Juragan",
+      "skill": "Rezeki Nomplok",
+      "text": "Bonus koin untuk seluruh tim + koin kill +50% selama 10 detik.",
+      "color": "#d97706",
+      "line": "🪙 Hujan koin untuk tim"
+    },
+    "pendekar": {
+      "name": "Pendekar",
+      "skill": "Tendangan Maut",
+      "text": "Hantam hantu terkuat di sasaran (besar) + kena juga yang di sekitarnya.",
+      "color": "#0f766e",
+      "line": "💥 Tebasan besar di satu titik"
+    }
+  },
+  "combined": {
+    "name": "Skill Gabungan",
+    "full": "Serangan Gotong Royong",
+    "text": "Tekan bareng teman dalam 3 detik: hujan petasan menghantam SEMUA hantu dan memperlambat mereka. Makin banyak yang ikut, makin dahsyat."
+  },
+  "berkah": {
+    "kopi": {
+      "icon": "☕",
+      "name": "Kopi Tubruk",
+      "text": "Semua menara +12% kecepatan serang"
+    },
+    "akik": {
+      "icon": "💎",
+      "name": "Batu Akik",
+      "text": "Semua serangan +12% damage"
+    },
+    "teropong": {
+      "icon": "🔭",
+      "name": "Teropong Bambu",
+      "text": "Jangkauan menara +10%"
+    },
+    "arisan": {
+      "icon": "💰",
+      "name": "Arisan",
+      "text": "Langsung 40 koin (dibagi rata)"
+    },
+    "jamu": {
+      "icon": "🌿",
+      "name": "Jamu Kuat",
+      "text": "+3 nyawa benteng"
+    },
+    "diskon": {
+      "icon": "🏷️",
+      "name": "Diskon Pasar",
+      "text": "Harga menara baru −10%"
+    },
+    "ronda": {
+      "icon": "🌙",
+      "name": "Ronda Malam",
+      "text": "Cooldown skill hero −20%"
+    },
+    "kemenyan": {
+      "icon": "🔥",
+      "name": "Asap Kemenyan",
+      "text": "Sate memperlambat +10%, Combo +10%"
+    },
+    "kembang": {
+      "icon": "🌸",
+      "name": "Kembang Tujuh Rupa",
+      "text": "Koin kill +20%"
+    }
+  },
+  "chat": [
+    {
+      "k": "bantu",
+      "text": "Bantu sini!"
+    },
+    {
+      "k": "sate",
+      "text": "Aku pasang Sate"
+    },
+    {
+      "k": "bos",
+      "text": "Bos datang!"
+    },
+    {
+      "k": "simpan",
+      "text": "Simpan koin"
+    },
+    {
+      "k": "siap",
+      "text": "Siap!"
+    }
+  ],
+  "emojis": [
+    "👍",
+    "😂",
+    "😱",
+    "🔥",
+    "🙏"
+  ]
+}

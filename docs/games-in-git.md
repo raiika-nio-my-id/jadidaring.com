@@ -75,7 +75,7 @@ exported first (no admin GET endpoint exists yet).
 | 31 | `gamelanhero` | database | no local copy: export the database html first | no | no |
 | 32 | `pedangsihir` | database | local build, verified = live (`index.html`) | yes | yes |
 | 33 | `gelembung` | database | local build, verified = live (`index.html`) | yes | yes |
-| 34 | `benteng` | database | local build, verified = live (`index.html`) | yes | yes |
+| 34 | `benteng` | in git | local build, verified = live (`index.html`) | yes | yes |
 | 35 | `ulartangga` | database | local build, verified = live (`index.html`) | yes | yes |
 | 36 | `mahjong-master` | database | no local copy: export the database html first | yes | yes |
 | 37 | `explodingkitten` | database | no local copy: export the database html first | yes | yes |
