@@ -14,7 +14,7 @@ class ProfileConfig
 {
     public const FONTS = ['Nunito', 'Baloo 2', 'Poppins', 'Inter', 'Lora', 'Playfair Display', 'Pacifico', 'Space Grotesk', 'Comic Neue', 'Press Start 2P'];
 
-    public const WIDGETS = ['about', 'status', 'gallery', 'links', 'counter', 'music', 'friends', 'quote', 'youtube', 'custom_html'];
+    public const WIDGETS = ['about', 'status', 'gallery', 'links', 'counter', 'music', 'friends', 'quote', 'youtube', 'spotify', 'custom_html'];
 
     public const PATTERNS = ['none', 'dots', 'grid', 'stripes'];
 
@@ -106,7 +106,7 @@ class ProfileConfig
                 continue;
             }
             $type = $w['type'];
-            if (isset($seen[$type]) && ! in_array($type, ['quote', 'youtube', 'links'], true)) {
+            if (isset($seen[$type]) && ! in_array($type, ['quote', 'youtube', 'spotify', 'links'], true)) {
                 continue;
             }
             if ($type === 'custom_html' && ! $hasHtml) {
@@ -165,9 +165,36 @@ class ProfileConfig
             if ($id === '') {
                 $o['id'] = '';
             }
+        } elseif ($type === 'spotify') {
+            $sp = self::spotify(trim((string) ($w['url'] ?? '')) !== '' ? (string) $w['url'] : (isset($w['kind'], $w['id']) && is_scalar($w['kind']) && is_scalar($w['id']) ? 'https://open.spotify.com/'.$w['kind'].'/'.$w['id'] : (string) ($w['id'] ?? '')));
+            $o['kind'] = $sp['kind'] ?? '';
+            $o['id'] = $sp['id'] ?? '';
+            $o['compact'] = $o['kind'] === 'track' && ! empty($w['compact']);
         }
 
         return $o;
+    }
+
+    /**
+     * Strict Spotify parser. Accepts an open.spotify.com link (optionally /embed/ and /intl-xx/) or a pasted embed iframe.
+     * Nothing else (other hosts, javascript:, odd ids) is accepted.
+     *
+     * @return array{kind: string, id: string}|null
+     */
+    public static function spotify(string $v): ?array
+    {
+        $v = trim($v);
+        if (stripos($v, '<iframe') !== false) {
+            if (preg_match('/\ssrc\s*=\s*(?:"([^"]*)"|\'([^\']*)\')/i', $v, $m) !== 1) {
+                return null;
+            }
+            $v = trim(html_entity_decode($m[1] !== '' ? $m[1] : ($m[2] ?? ''), ENT_QUOTES));
+        }
+        if (preg_match('~^https://open\.spotify\.com/(?:intl-[a-z]{2,5}/)?(?:embed/)?(track|album|playlist|episode|show|artist)/([A-Za-z0-9]{22})(?:[?#/][^\s]*)?$~', $v, $m) === 1) {
+            return ['kind' => $m[1], 'id' => $m[2]];
+        }
+
+        return null;
     }
 
     public static function youtubeId(string $v): string

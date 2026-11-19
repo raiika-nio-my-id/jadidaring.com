@@ -10,6 +10,7 @@
             <span class="pf-bar-note">Buka generator prompt; JSON profilmu saat ini ikut terisi di prompt.</span>
         </div>
         @if (session('status'))<div class="pf-alert pf-alert--ok" role="status">{{ session('status') }}</div>@endif
+        @if (session('warn'))<div class="pf-alert pf-alert--warn" role="status"><strong>Perhatian</strong><ul>@foreach ((array) session('warn') as $wn)<li>{{ $wn }}</li>@endforeach</ul></div>@endif
         @if ($errors->any())
             <div class="pf-alert pf-alert--err" role="alert"><strong>Ada yang perlu diperbaiki</strong><ul>@foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
         @endif
@@ -91,6 +92,7 @@
                 <label for="w_quote">Kutipan</label><textarea class="clay-input" id="w_quote" name="w_quote" rows="2" maxlength="300"></textarea>
                 <label for="w_quote_author">Penulis kutipan</label><input class="clay-input" id="w_quote_author" name="w_quote_author" maxlength="60">
                 <label for="w_youtube">Video YouTube (tautan atau ID)</label><input class="clay-input" id="w_youtube" name="w_youtube" inputmode="url">
+                <label for="w_spotify">Spotify (tempel link atau kode embed Spotify)</label><input class="clay-input" id="w_spotify" name="w_spotify" inputmode="url" placeholder="https://open.spotify.com/track/...">
                 <label for="ch">Widget HTML kustom (opsional, maks. 300 KB, tampil di kotak terisolasi)</label>
                 <textarea class="clay-input" id="ch" name="custom_html" rows="6" spellcheck="false">{{ old('custom_html', $customHtml) }}</textarea>
                 <label for="cf">atau unggah file .html</label><input class="clay-input" id="cf" type="file" name="file" accept=".html,.htm,.txt">

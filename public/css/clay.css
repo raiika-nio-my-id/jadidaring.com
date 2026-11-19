@@ -963,3 +963,6 @@ body {
   .imp-actions .clay-btn { flex: 1 1 0; min-width: 0; padding-inline: 8px; font-size: .85rem; text-align: center; }
   .imp-page { padding-bottom: 170px; }
 }
+
+.pf-alert--warn { background: #fff3cd; color: #5c4400; border-left-color: #e0a800; }
+.pf-sp iframe { display: block; width: 100%; border: 0; }

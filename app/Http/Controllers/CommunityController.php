@@ -8,6 +8,7 @@ use App\Models\MemberPageDraft;
 use App\Models\MemberPageComment;
 use App\Models\User;
 use App\Services\MemberFrameToken;
+use App\Services\EmbedExtractor;
 use App\Services\MemberPageSanitizer;
 use App\Services\ProfileConfig;
 use App\Services\ProfilePayload;
@@ -164,8 +165,8 @@ class CommunityController extends Controller
         }
 
         try {
-            $clean = trim($html) !== '' ? MemberPageSanitizer::clean($html) : '';
-            $configOut = $isProfile ? $this->normalizeConfig($configIn, $clean) : null;
+            [$clean, $extra, $notices] = $this->prepareHtml(is_string($html) ? $html : '');
+            $configOut = $isProfile ? $this->normalizeConfig($configIn, $clean, $extra) : null;
         } catch (ValidationException $e) {
             return response()->json(['error' => collect($e->errors())->flatten()->first()], 422, $cors);
         }
@@ -190,7 +191,7 @@ class CommunityController extends Controller
             return response()->json(['error' => 'Kunci sudah dipakai.'], 401, $cors);
         }
 
-        return response()->json(['ok' => true, 'status' => 'draft', 'review_url' => 'https://'.TenantPath::host().'/komunitas/halamanku', 'message' => 'Draft tersimpan. Buka review_url (masuk sebagai pemilik) untuk meninjau, lalu Terbitkan atau Batal.'], 201, $cors);
+        return response()->json(['ok' => true, 'status' => 'draft', 'review_url' => 'https://'.TenantPath::host().'/komunitas/halamanku', 'notices' => $notices ?? [], 'message' => 'Draft tersimpan. Buka review_url (masuk sebagai pemilik) untuk meninjau, lalu Terbitkan atau Batal.'], 201, $cors);
     }
 
     /** GET never writes: renders a validated preview of the link's payload; every value is auto-fixed, never a dead end. */
@@ -352,20 +353,71 @@ class CommunityController extends Controller
             $raw = (string) file_get_contents($request->file('file')->getRealPath());
         }
 
-        $clean = trim($raw) !== '' ? MemberPageSanitizer::clean($raw) : '';
-        $config = $this->normalizeConfig($data['config'] ?? null, $clean);
+        [$clean, $extra, $notices] = $this->prepareHtml($raw);
+        $config = $this->normalizeConfig($data['config'] ?? null, $clean, $extra);
 
         MemberPageDraft::query()->updateOrCreate(
             ['user_id' => $user->id],
             ['title' => $this->titleFor($data['title'] ?? '', $user), 'html' => $clean, 'source' => 'paste', 'config' => $config],
         );
 
-        return redirect('/komunitas/halamanku')->with('status', 'Draft siap ditinjau. Belum tayang sampai kamu menekan Terbitkan.');
+        $back = redirect('/komunitas/halamanku')->with('status', 'Draft siap ditinjau. Belum tayang sampai kamu menekan Terbitkan.');
+
+        return $notices !== [] ? $back->with('warn', $notices) : $back;
     }
 
     /** @return array<string, mixed>|null null keeps the legacy wrapper (old full page as one Custom HTML widget) */
-    private function normalizeConfig(mixed $config, string $html): ?array
+    /**
+     * Moves Spotify/YouTube iframes out of the HTML into widgets, then sanitizes what is left.
+     *
+     * @return array{0: string, 1: list<array<string, mixed>>, 2: list<string>}
+     */
+    private function prepareHtml(string $raw): array
     {
+        if (trim($raw) === '') {
+            return ['', [], []];
+        }
+        $x = EmbedExtractor::extract($raw);
+        $rest = $x['html'];
+        $hasContent = preg_match('/<\s*(html|body|div|section|main|h[1-6]|p|span|a|ul|img|style|script)\b/i', $rest) === 1
+            && trim(strip_tags(preg_replace('~<(style|script)\b.*?</\1>~is', '', $rest) ?? $rest)) !== '' || preg_match('/<\s*(img|canvas|svg|video|audio)\b/i', $rest) === 1;
+        if ($x['widgets'] !== [] && ! $hasContent) {
+            return ['', $x['widgets'], $x['notices']];
+        }
+
+        return [MemberPageSanitizer::clean($rest), $x['widgets'], $x['notices']];
+    }
+
+    /**
+     * @param list<array<string, mixed>> $extra widgets converted from embeds, inserted where the Custom HTML widget sits
+     * @return array<string, mixed>|null
+     */
+    private function normalizeConfig(mixed $config, string $html, array $extra = []): ?array
+    {
+        if ($extra !== [] && ($config === null || $config === '')) {
+            $config = $html !== '' ? ProfileConfig::defaults() : ProfileConfig::defaults();
+            $config['widgets'] = array_values(array_filter($config['widgets'], fn ($w) => $w['type'] !== 'custom_html'));
+            if ($html !== '') {
+                $config['widgets'][] = ['type' => 'custom_html'];
+            }
+        }
+        if ($extra !== []) {
+            $data = is_array($config) ? $config : json_decode((string) $config, true);
+            if (is_array($data)) {
+                $ws = is_array($data['widgets'] ?? null) ? array_values($data['widgets']) : [];
+                $pos = null;
+                foreach ($ws as $i => $w) {
+                    if (is_array($w) && ($w['type'] ?? '') === 'custom_html') {
+                        $pos = $i;
+                        break;
+                    }
+                }
+                $drop = $html === '' && $pos !== null ? 1 : 0;
+                array_splice($ws, $pos ?? count($ws), $drop, $extra);
+                $data['widgets'] = $ws;
+                $config = $data;
+            }
+        }
         if ($config === null || $config === '') {
             return $html !== '' ? null : ProfileConfig::defaults();
         }

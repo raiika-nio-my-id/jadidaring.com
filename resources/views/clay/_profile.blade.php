@@ -6,7 +6,7 @@
     $widgets = $config['widgets'];
     $p = $config['profile'];
     $hasHtml = trim((string) ($customHtml ?? '')) !== '';
-    $sectionTitles = ['about' => 'Tentang aku', 'status' => 'Status', 'gallery' => 'Galeri', 'links' => 'Tautan', 'counter' => 'Pengunjung', 'music' => 'Musik', 'friends' => 'Top teman', 'quote' => 'Kutipan', 'youtube' => 'Video', 'custom_html' => 'Halaman kustom'];
+    $sectionTitles = ['about' => 'Tentang aku', 'status' => 'Status', 'gallery' => 'Galeri', 'links' => 'Tautan', 'counter' => 'Pengunjung', 'music' => 'Musik', 'friends' => 'Top teman', 'quote' => 'Kutipan', 'youtube' => 'Video', 'spotify' => 'Spotify', 'custom_html' => 'Halaman kustom'];
 @endphp
 @unless (in_array($font, $selfFonts, true))
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $font) }}:wght@400;700&amp;display=swap">
@@ -31,7 +31,7 @@
             @foreach ($widgets as $w)
                 @php
                     $type = $w['type'];
-                    $wide = in_array($type, ['gallery', 'youtube', 'custom_html'], true);
+                    $wide = in_array($type, ['gallery', 'youtube', 'spotify', 'custom_html'], true);
                     if ($type === 'custom_html' && ! $hasHtml) { continue; }
                 @endphp
                 <section class="pf-card pf-w pf-w--{{ $type }} {{ $wide ? 'pf-w--wide' : '' }}" aria-label="{{ $w['title'] ?? $sectionTitles[$type] }}">
@@ -71,6 +71,11 @@
                             @if (($w['id'] ?? '') !== '')
                                 <div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/{{ $w['id'] }}" title="Video YouTube" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
                             @else<p class="pf-muted">Video belum diatur.</p>@endif
+                            @break
+                        @case('spotify')
+                            @if (($w['id'] ?? '') !== '')
+                                <div class="pf-sp"><iframe src="https://open.spotify.com/embed/{{ $w['kind'] }}/{{ $w['id'] }}" title="Pemutar Spotify" width="100%" height="{{ ! empty($w['compact']) ? 152 : 352 }}" style="border:0;border-radius:12px" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-popups allow-presentation" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+                            @else<p class="pf-muted">Spotify belum diatur.</p>@endif
                             @break
                         @case('custom_html')
                             @if (! empty($frameSrc))

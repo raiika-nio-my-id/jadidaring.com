@@ -4,7 +4,7 @@
   var live = document.getElementById('pf-live');
   var cfgField = document.getElementById('pf-config');
   var TYPES = JSON.parse(form.dataset.types);
-  var LABELS = { about: 'Tentang aku', status: 'Status', gallery: 'Galeri', links: 'Tautan', counter: 'Penghitung pengunjung', music: 'Pemutar musik', friends: 'Top teman', quote: 'Kutipan', youtube: 'Video YouTube', custom_html: 'Widget HTML kustom' };
+  var LABELS = { about: 'Tentang aku', status: 'Status', gallery: 'Galeri', links: 'Tautan', counter: 'Penghitung pengunjung', music: 'Pemutar musik', friends: 'Top teman', quote: 'Kutipan', youtube: 'Video YouTube', spotify: 'Spotify', custom_html: 'Widget HTML kustom' };
   var DEFAULT_ON = ['status', 'about', 'counter', 'links'];
   var order = TYPES.slice();
   var enabled = {};
@@ -39,6 +39,7 @@
       if (t === 'friends') w.items = lines('w_friends').map(function (u) { return { username: u.replace(/^@/, '') }; });
       if (t === 'quote') { w.text = form.elements.w_quote.value; w.author = form.elements.w_quote_author.value; }
       if (t === 'youtube') w.id = form.elements.w_youtube.value;
+      if (t === 'spotify') w.url = form.elements.w_spotify.value;
       c.widgets.push(w);
     });
     return c;
@@ -78,6 +79,7 @@
       if (w.type === 'friends') form.elements.w_friends.value = (w.items || []).map(function (i) { return i.username; }).join('\n');
       if (w.type === 'quote') { form.elements.w_quote.value = w.text || ''; form.elements.w_quote_author.value = w.author || ''; }
       if (w.type === 'youtube') form.elements.w_youtube.value = w.id || '';
+      if (w.type === 'spotify') form.elements.w_spotify.value = w.id ? 'https://open.spotify.com/' + w.kind + '/' + w.id : '';
     });
     TYPES.forEach(function (t) { if (next.indexOf(t) < 0) next.push(t); });
     order = next;
