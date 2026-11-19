@@ -134,7 +134,7 @@ services:
     container_name: singlepage-nginx
     restart: unless-stopped
     labels:
-      jadidaring.nginx-config: "microcache-2026-11-19"
+      jadidaring.nginx-config: "microcache-2026-11-19b-nohead"
     mem_limit: 32m
     memswap_limit: 32m
     cpus: 0.05
