@@ -114,3 +114,31 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/akun/hapus', [AuthController::class, 'deleteAccount'])->middleware('throttle:5,60')->name('member.account.delete');
     Route::post('/akun/email', [AuthController::class, 'updateEmail'])->middleware(['throttle:email-change'])->name('member.account.email');
 });
+
+// PWA: manifest and service worker are served by Laravel so the Content-Type and cache headers are exact.
+Route::get('/site.webmanifest', function () {
+    return response()->json([
+        'id' => '/',
+        'name' => 'Jadidaring',
+        'short_name' => 'Jadidaring',
+        'description' => 'Game gratis online, berita terkini, dan komunitas Indonesia.',
+        'lang' => 'id',
+        'start_url' => '/',
+        'scope' => '/',
+        'display' => 'standalone',
+        'background_color' => '#f4ecff',
+        'theme_color' => '#f4ecff',
+        'icons' => [
+            ['src' => '/web-app-manifest-192x192.png?v=2', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any maskable'],
+            ['src' => '/web-app-manifest-512x512.png?v=2', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any maskable'],
+        ],
+    ], 200, ['Content-Type' => 'application/manifest+json', 'Cache-Control' => 'public, max-age=3600'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+})->name('pwa.manifest');
+
+Route::get('/sw.js', function () {
+    return response()->file(resource_path('pwa/sw.js'), [
+        'Content-Type' => 'application/javascript; charset=utf-8',
+        'Cache-Control' => 'no-cache, max-age=0',
+        'Service-Worker-Allowed' => '/',
+    ]);
+})->name('pwa.sw');

@@ -51,7 +51,7 @@ class FaviconTest extends TestCase
 
     public function test_manifest_is_valid_json_with_existing_icons_and_robots_does_not_block_icons(): void
     {
-        $manifest = json_decode((string) file_get_contents(public_path('site.webmanifest')), true, flags: JSON_THROW_ON_ERROR);
+        $manifest = $this->get('http://jadidaring.test/site.webmanifest')->assertOk()->json();
         $this->assertNotEmpty($manifest['icons']);
         foreach ($manifest['icons'] as $icon) {
             $this->assertFileExists(public_path(ltrim(strtok($icon["src"], "?"), "/")));

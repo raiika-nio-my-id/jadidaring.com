@@ -34,6 +34,9 @@
     <link rel="alternate" hreflang="id" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
     <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
     <meta name="theme-color" content="#f4ecff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Jadidaring">
     <link rel="alternate" type="application/rss+xml" title="Berita Jadidaring" href="/berita/rss.xml">
     <script type="application/ld+json">{!! json_encode([chr(64).'context' => 'https://schema.org', chr(64).'graph' => [
         ['@type' => 'WebSite', '@id' => 'https://jadidaring.com/#website', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/', 'inLanguage' => 'id-ID',
@@ -143,6 +146,9 @@
     </nav>
 
     @include('partials.ga4-consent')
+    @unless (str_starts_with(request()->getHost(), 'admin.'))
+        <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){});});}</script>
+    @endunless
     <script src="{{ \App\Support\AssetUrl::to('js/theme.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/local-time.js') }}" defer></script>
 </body>
