@@ -64,9 +64,9 @@ exported first (no admin GET endpoint exists yet).
 | 20 | `mudikmacet` | in git (b740120) | local build, verified = live (`index.deploy.html`) | no | no |
 | 21 | `gasingarena` | in git (0d92d48) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 22 | `dapurpadang3d` | in git (851e0a9) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 23 | `dapurpadang` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 23 | `dapurpadang` | in git (cb4b5e8) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 24 | `skalateman` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 25 | `duelular` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 25 | `duelular` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 26 | `sambungcoret` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 27 | `lanjutkata` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 28 | `nadapiano` | database | no local copy: export the database html first | no | no |

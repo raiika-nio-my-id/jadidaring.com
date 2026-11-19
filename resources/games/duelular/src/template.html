@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Duel Ular · Game Ular Kotak Santai Multiplayer 2–8 Pemain (Indonesia & English)</title>
+<meta name="description" content="Duel Ular: game ular kotak santai (cozy) multiplayer untuk 2–8 pemain. Maju kotak demi kotak, sprint, belok di detik terakhir sebelum tembok, makan buah, ambil power-up ngebut, perlambat dan magnet. Bisa latihan sendiri lawan bot.">
+<meta name="theme-color" content="#f6efe3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Duel Ular">
+<meta property="og:description" content="Game ular santai multiplayer 2–8 pemain. Siapa paling panjang dan bertahan terakhir?">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="duelUlar">
+  <!-- ============ HOME ============ -->
+  <div id="home" class="screen">
+    <header class="top wrap">
+      <span class="brand"><span class="logo" aria-hidden="true"></span><span><strong>Duel Ular</strong><small data-t="tagline"></small></span></span>
+      <div class="topbtns">
+        <button type="button" class="chip" id="muteBtn" aria-label="Suara"></button>
+        <div class="langsw" role="group" aria-label="Bahasa / Language"><button type="button" class="lb" data-lang="id">ID</button><button type="button" class="lb" data-lang="en">EN</button></div>
+      </div>
+    </header>
+    <section class="hero wrap">
+      <h1 class="neon-title" aria-label="Duel Ular"><span>DUEL</span> <span class="pink">ULAR</span></h1>
+      <p class="lead" data-t="lead"></p>
+      <canvas id="heroCv" width="600" height="120" aria-hidden="true"></canvas>
+    </section>
+    <section class="wrap grid">
+      <article class="card">
+        <h2 data-t="youTitle"></h2>
+        <label class="field"><span><span data-t="name"></span> <em class="gm-badge" id="gmNickBadge">(GM)</em></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+        <h3 data-t="practiceTitle"></h3>
+        <p class="muted small" data-t="practiceSub"></p>
+        <div class="row"><span class="lbl" data-t="bots"></span><div class="seg" id="botSeg" role="radiogroup"><button type="button" data-v="0">0</button><button type="button" data-v="1">1</button><button type="button" data-v="3">3</button><button type="button" data-v="5">5</button><button type="button" data-v="7">7</button></div></div>
+        <div class="row"><span class="lbl" data-t="duration"></span><span class="unl" data-t="unlimited"></span></div>
+        <div class="row"><button type="button" class="btn green big" id="practiceBtn" data-t="practiceGo"></button></div>
+      </article>
+      <article class="card">
+        <h2 data-t="onlineTitle"></h2>
+        <p class="note small" id="onlineNote" hidden></p>
+        <div class="row"><span class="lbl" data-t="maxPlayers"></span><div class="seg" id="maxSeg" role="radiogroup"><button type="button" data-v="2">2</button><button type="button" data-v="4">4</button><button type="button" data-v="6">6</button><button type="button" data-v="8">8</button></div></div>
+        <div class="row wrapbtns"><button type="button" class="btn pink online-btn" id="createPub" data-t="createPub"></button><button type="button" class="btn cyan online-btn" id="createPriv" data-t="createPriv"></button></div>
+        <div class="row"><button type="button" class="btn ghost online-btn" id="matchBtn" data-t="match"></button></div>
+        <form class="row joinrow" id="joinForm"><input type="text" id="codeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" data-tp="codePh" aria-label="Kode room"><button type="submit" class="btn yellow online-btn" id="joinBtn" data-t="join"></button></form>
+      </article>
+      <article class="card howto">
+        <h2 data-t="howTitle"></h2>
+        <ul class="how" id="howList"></ul>
+        <div class="legend" id="legend"></div>
+      </article>
+    </section>
+    <section class="wrap"><div class="card gm-card" id="gmRooms" aria-labelledby="gmTitle" hidden>
+      <div class="gm-top"><h2 id="gmTitle" data-t="gmTitle"></h2><button type="button" class="btn ghost small" id="gmRefresh" data-t="gmRefresh"></button></div>
+      <p class="muted small" id="gmNote" role="status" aria-live="polite"></p>
+      <ul class="gm-list" id="gmList"></ul>
+    </div></section>
+    <footer class="wrap foot small muted" data-t="foot"></footer>
+  </div>
+
+  <!-- ============ LOBBY ============ -->
+  <div id="lobby" class="screen" hidden>
+    <div class="wrap narrow">
+      <div class="card">
+        <div class="lobby-head">
+          <div><p class="kicker" data-t="roomCode"></p><div class="code" id="roomCode">------</div></div>
+          <div class="row wrapbtns"><button type="button" class="btn cyan" id="inviteBtn" data-t="invite"></button><button type="button" class="btn ghost" id="lobbyLeave" data-t="leave"></button></div>
+        </div>
+        <p class="muted small" id="lobbyVis"></p>
+        <h3><span data-t="players"></span> <span id="pCount" class="muted"></span></h3>
+        <ul class="plist" id="pList"></ul>
+        <div id="hostBox">
+          <div class="row"><span class="lbl" data-t="duration"></span><span class="unl" data-t="unlimited"></span></div>
+          <div class="row"><button type="button" class="btn green big" id="startBtn" data-t="start"></button></div>
+        </div>
+        <p class="muted center" id="lobbyWait"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GAME ============ -->
+  <div id="game" class="screen" hidden>
+    <div class="hud">
+      <button type="button" class="chip" id="exitBtn" data-t="exit"></button>
+      <div class="hud-mid"><span class="timer" id="timer">0:00</span><span class="mylen" id="myLen"></span><span class="fx" id="myFx"></span></div>
+      <div class="hud-r"><button type="button" class="chip" id="pauseBtn" data-t="pause" hidden></button><button type="button" class="chip" id="muteBtn2" aria-label="Suara"></button></div>
+    </div>
+    <div class="arena">
+      <div class="boardwrap" id="boardWrap"><canvas id="board" aria-label="Arena ular"></canvas><div class="overlay" id="overlay" hidden></div></div>
+      <aside class="side"><ol class="score" id="scoreList"></ol><p class="muted small" id="netInfo"></p></aside>
+    </div>
+    <div class="ctrls">
+      <div class="dpad" id="dpad" aria-label="Arah">
+        <button type="button" data-d="0" class="du" aria-label="Atas"><span class="ar" aria-hidden="true">▲</span><kbd class="key" aria-hidden="true">W</kbd></button>
+        <button type="button" data-d="3" class="dl" aria-label="Kiri"><span class="ar" aria-hidden="true">◀</span><kbd class="key" aria-hidden="true">A</kbd></button>
+        <button type="button" data-d="1" class="dr" aria-label="Kanan"><span class="ar" aria-hidden="true">▶</span><kbd class="key" aria-hidden="true">D</kbd></button>
+        <button type="button" data-d="2" class="dd" aria-label="Bawah"><span class="ar" aria-hidden="true">▼</span><kbd class="key" aria-hidden="true">S</kbd></button>
+      </div>
+      <button type="button" class="sprint" id="sprintBtn" aria-label="Sprint"><span class="sp-ic" aria-hidden="true">💨</span><span class="sp-tx" data-t="sprint"></span><kbd class="key" aria-hidden="true" data-t="kSpace"></kbd><span class="sp-bar" aria-hidden="true"><i></i></span></button>
+    </div>
+  </div>
+
+  <!-- ============ END ============ -->
+  <div id="end" class="screen" hidden>
+    <div class="wrap narrow">
+      <div class="card center">
+        <p class="kicker" data-t="gameOver"></p>
+        <h2 id="endTitle"></h2>
+        <div class="podium" id="podium"></div>
+        <ol class="ranks" id="rankList"></ol>
+        <div class="row wrapbtns centerrow"><button type="button" class="btn green big" id="againBtn" data-t="again"></button><button type="button" class="btn cyan" id="toLobbyBtn" data-t="toLobby"></button><button type="button" class="btn ghost" id="endMenu" data-t="menu"></button></div>
+        <p class="muted small" id="endWait"></p>
+      </div>
+    </div>
+  </div>
+</main>
+<div id="toasts" aria-live="polite"></div>
+<script>
+/*GAME*/
+</script>
+<script>
+/*NET*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>
