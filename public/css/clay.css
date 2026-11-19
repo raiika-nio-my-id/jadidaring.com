@@ -711,7 +711,8 @@ body {
 .clay-auth__links a { color: var(--clay-focus); }
 .clay-social { display: flex; flex-direction: column; gap: 10px; align-items: stretch; margin-top: 18px; text-align: center; }
 .clay-social__label { color: var(--clay-ink-2); margin: 0; }
-.clay-social__telegram { display: flex; justify-content: center; }
+.clay-social__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.clay-social__msg { margin: 0; color: var(--clay-ink-2); font-size: .9rem; }
 .clay-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* News */

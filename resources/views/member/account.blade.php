@@ -15,8 +15,14 @@
             <form method="POST" action="{{ route('member.account.email') }}" class="clay-form">
                 @csrf
                 <label for="email">Email (untuk reset kata sandi)</label>
-                <input class="clay-input" id="email" type="email" name="email" value="{{ old('email', $user->email) }}" autocomplete="email">
-                <button class="clay-btn clay-btn--mint" type="submit">Simpan email</button>
+                <p class="news-meta">Emailmu saat ini: <strong>{{ $user->email ?? 'belum ada' }}</strong>. Email baru harus diverifikasi lewat tautan yang kami kirim.</p>
+                @if ($user->pending_email)<p class="clay-status" role="status">Menunggu verifikasi: <strong>{{ $user->pending_email }}</strong>. Cek kotak masuknya.</p>@endif
+                <input class="clay-input" id="email" type="email" name="email" value="{{ old('email') }}" placeholder="email@baru.com" autocomplete="email" required>
+                @if ($user->provider === null)
+                    <label for="email-password">Kata sandi saat ini</label>
+                    <input class="clay-input" id="email-password" type="password" name="current_password" autocomplete="current-password" required>
+                @endif
+                <button class="clay-btn clay-btn--mint" type="submit">Kirim tautan verifikasi</button>
             </form>
             <div class="clay-actions">
                 <form method="POST" action="{{ route('member.logout') }}" class="clay-form">

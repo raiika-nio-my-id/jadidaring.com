@@ -160,7 +160,7 @@ class MemberAuthTest extends TestCase
             ->assertOk()
             ->assertSee('/auth/google/redirect', false)
             ->assertSee('/auth/github/redirect', false)
-            ->assertSee('data-telegram-login="JadidaringBot"', false)
+            ->assertSee('data-bot-id="123"', false)->assertDontSee('abc', false)
             ->assertSee('http://jadidaring.test/auth/telegram/callback', false);
 
         $location = $this->get(self::HOST.'/auth/google/redirect')->assertRedirect()->headers->get('Location');
@@ -205,14 +205,13 @@ class MemberAuthTest extends TestCase
         $this->assertSame($user->id, SocialAuth::resolveUser('github', '77', null, 'x')->id);
     }
 
-    public function test_account_email_can_be_set_and_cleared(): void
+    public function test_account_email_is_only_set_after_verification(): void
     {
-        $user = User::factory()->member()->create(['email' => null]);
+        \Illuminate\Support\Facades\Notification::fake();
+        $user = User::factory()->member()->create(['email' => null, 'provider' => 'github', 'provider_id' => '9']);
 
         $this->actingAs($user)->post(self::HOST.'/akun/email', ['email' => 'Baru@Example.com'])->assertSessionHas('status');
-        $this->assertSame('baru@example.com', $user->fresh()->email);
-
-        $this->actingAs($user)->post(self::HOST.'/akun/email', ['email' => ''])->assertSessionHas('status');
         $this->assertNull($user->fresh()->email);
+        $this->assertSame('baru@example.com', $user->fresh()->pending_email);
     }
 }
