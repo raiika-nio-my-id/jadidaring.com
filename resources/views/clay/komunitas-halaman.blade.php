@@ -1,5 +1,7 @@
 @extends('layouts.clay')
 
+@section('bodyclass', 'is-profile')
+
 @section('content')
     <div class="member-page">
         <div class="pf-bar">
