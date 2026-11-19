@@ -75,9 +75,13 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-    outline: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
     box-shadow: var(--focus);
 }
+:focus:not(:focus-visible) { outline: none; }
+a:not([class]):focus-visible { border-radius: 6px; }
+html, a, button, input, select, textarea, label, summary { -webkit-tap-highlight-color: transparent; }
 
 .app-header {
     position: sticky;

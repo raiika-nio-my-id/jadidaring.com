@@ -88,10 +88,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:focus:not(:focus-visible) { outline: none; }
 :focus-visible {
   outline: 3px solid var(--clay-focus);
   outline-offset: 3px;
 }
+/* Plain text links have no radius; give them one so the ring is never a hard square. */
+a:not([class]):focus-visible, summary:focus-visible, label:focus-visible { border-radius: 8px; }
+/* Interactive wrappers: ring follows the element's own rounded corners. */
+button, [role="button"], a, summary, label, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+html { -webkit-tap-highlight-color: transparent; }
 
 @media (prefers-reduced-motion: reduce) {
   * {

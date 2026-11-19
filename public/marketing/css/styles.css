@@ -28,7 +28,9 @@ svg.brand__mark { max-width: none; }
 a { color: inherit; }
 button, a, select, label { cursor: pointer; }
 ::selection { background: var(--lime); color: var(--ink); }
+:focus:not(:focus-visible) { outline: none; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+html, a, button { -webkit-tap-highlight-color: transparent; }
 .sr-only {
   position: absolute;
   width: 1px;
