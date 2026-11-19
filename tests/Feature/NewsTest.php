@@ -112,6 +112,27 @@ class NewsTest extends TestCase
         $this->get(self::SITE.parse_url($res->json('article.url'), PHP_URL_PATH))->assertOk()->assertDontSee('<script>alert(1)', false);
     }
 
+    public function test_structured_body_renders_headings_bold_and_keypoints_safely(): void
+    {
+        $body = "Poin penting\n- Fakta **satu** penting\n- Fakta dua\n\nParagraf pembuka yang cukup panjang untuk lolos validasi. ".str_repeat('Kalimat isi. ', 15)."\n\n## Bagian Satu\n\nIsi dengan **angka 42** dan <b>x</b>.\n\n### Sub\n\n- a\n- b";
+        $res = $this->postJson(self::API.'/articles', $this->payload(['body' => $body]), $this->key())->assertCreated();
+        $this->assertArrayNotHasKey('warnings', $res->json());
+
+        $this->get(self::SITE.parse_url($res->json('article.url'), PHP_URL_PATH))->assertOk()
+            ->assertSee('<aside class="news-keypoints"', false)
+            ->assertSee('<h2 class="news-subhead">Bagian Satu</h2>', false)
+            ->assertSee('<h3 class="news-subhead news-subhead--3">Sub</h3>', false)
+            ->assertSee('<strong>angka 42</strong>', false)
+            ->assertDontSee('<b>x</b>', false);
+    }
+
+    public function test_plain_body_gets_format_warnings_and_full_list_returns_body(): void
+    {
+        $res = $this->postJson(self::API.'/articles', $this->payload(['body' => str_repeat('Teks polos. ', 30)]), $this->key())->assertCreated();
+        $this->assertCount(2, $res->json('warnings'));
+        $this->getJson(self::API.'/articles?full=1', $this->key())->assertOk()->assertJsonPath('articles.0.body', trim(str_repeat('Teks polos. ', 30)));
+    }
+
     public function test_drafts_and_hidden_articles_are_not_public_and_cache_refreshes(): void
     {
         $draft = $this->postJson(self::API.'/articles', $this->payload(['status' => 'draft']), $this->key())->assertCreated();

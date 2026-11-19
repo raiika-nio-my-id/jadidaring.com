@@ -84,7 +84,7 @@ class NewsController extends Controller
         ]);
         NewsCache::bump();
 
-        return response()->json(['article' => $this->present($article)], 201);
+        return response()->json(['article' => $this->present($article)] + self::formatWarnings($data['body']), 201);
     }
 
     public function update(Request $request, int $article): JsonResponse
@@ -137,8 +137,8 @@ class NewsController extends Controller
         $items = Article::query()
             ->when(in_array($status, Article::STATUSES, true), fn ($q) => $q->where('status', $status))
             ->orderBy('id')->limit(500)
-            ->get(['id', 'topic', 'slug', 'title', 'status', 'published_at', 'created_at'])
-            ->map(fn (Article $a): array => [
+            ->get(array_merge(['id', 'topic', 'slug', 'title', 'status', 'published_at', 'created_at'], $request->boolean('full') ? ['body', 'summary'] : []))
+            ->map(fn (Article $a): array => ($request->boolean('full') ? ['body' => $a->body, 'summary' => $a->summary] : []) + [
                 'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'status' => $a->status,
                 'published_at' => $a->published_at?->toIso8601String(), 'created_at' => $a->created_at?->toIso8601String(),
             ]);
@@ -198,6 +198,22 @@ class NewsController extends Controller
     private function uniqueSlug(string $seed): string
     {
         return \App\Services\NewsSlug::unique($seed);
+    }
+
+    /** Soft check: published bodies should have a key-points box and at least one "## " heading. */
+    private static function formatWarnings(string $body): array
+    {
+        $w = [];
+
+        if (! preg_match('/^## \S/m', $body)) {
+            $w[] = 'Body has no "## " section heading.';
+        }
+
+        if (! preg_match('/^Poin penting\s*\R- /mi', $body)) {
+            $w[] = 'Body has no "Poin penting" key-points box.';
+        }
+
+        return $w === [] ? [] : ['warnings' => $w];
     }
 
     /**

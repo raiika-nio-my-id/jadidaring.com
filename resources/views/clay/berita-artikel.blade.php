@@ -22,13 +22,7 @@
         <p class="news-lead">{{ $article['summary'] }}</p>
 
         <div class="clay-card news-body">
-            @foreach ($article['paragraphs'] as $p)
-                @if (str_starts_with($p, '## '))
-                    <h2 class="news-subhead">{{ trim(substr($p, 3)) }}</h2>
-                @else
-                    <p>{!! nl2br(e($p)) !!}</p>
-                @endif
-            @endforeach
+            {!! \App\Support\NewsBody::render($article['paragraphs']) !!}
         </div>
 
         <section class="clay-card clay-card--mint news-sources" aria-labelledby="sumber-h">
