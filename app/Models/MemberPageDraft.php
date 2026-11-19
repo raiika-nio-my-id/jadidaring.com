@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProfileConfig;
 use Illuminate\Database\Eloquent\Model;
 
 class MemberPageDraft extends Model
@@ -18,7 +19,7 @@ class MemberPageDraft extends Model
 
     public function profileConfig(): array
     {
-        return is_array($this->config) ? $this->config : \App\Services\ProfileConfig::legacy();
+        return is_array($this->config) ? ProfileConfig::validate($this->config, trim((string) $this->html) !== '') : ProfileConfig::legacy();
     }
 
     public function tokenId(): int

@@ -16,7 +16,16 @@ class ProfileConfig
 
     public const WIDGETS = ['about', 'status', 'gallery', 'links', 'counter', 'music', 'friends', 'quote', 'youtube', 'spotify', 'custom_html'];
 
-    public const PATTERNS = ['none', 'dots', 'grid', 'stripes'];
+    public const PATTERNS = ['none', 'dots', 'grid', 'stripes', 'checker', 'polka', 'diagonal', 'zigzag', 'waves', 'diamonds', 'plaid', 'hearts', 'stars', 'confetti'];
+
+    public const INKS = ['dark', 'light'];
+
+    /** id => [label, hotspot x, hotspot y] at 32px; PNGs live in public/kursor/{id}-{24|32|48}.png (drawn in-house). */
+    public const CURSORS = [
+        'panah' => ['Panah ungu', 2, 1], 'neon' => ['Panah neon', 3, 2], 'pixel' => ['Piksel 8-bit', 2, 2],
+        'hati' => ['Hati', 16, 16], 'bintang' => ['Bintang', 16, 16], 'cakar' => ['Cakar kucing', 16, 16],
+        'sakura' => ['Sakura', 16, 16], 'pedang' => ['Pedang', 2, 2], 'daun' => ['Daun', 3, 3],
+    ];
 
     public const BG_TYPES = ['color', 'gradient', 'image', 'pattern'];
 
@@ -51,7 +60,11 @@ class ProfileConfig
     /** @return array<string, string> */
     public static function patternLabels(): array
     {
-        return ['none' => 'Tanpa pola', 'dots' => 'Titik', 'grid' => 'Kotak', 'stripes' => 'Garis'];
+        return [
+            'none' => 'Tanpa pola', 'dots' => 'Titik', 'grid' => 'Kotak', 'stripes' => 'Garis miring', 'checker' => 'Catur',
+            'polka' => 'Polkadot', 'diagonal' => 'Anyaman', 'zigzag' => 'Zigzag', 'waves' => 'Ombak', 'diamonds' => 'Wajik',
+            'plaid' => 'Kotak-kotak', 'hearts' => 'Hati', 'stars' => 'Bintang', 'confetti' => 'Konfeti',
+        ];
     }
 
     /** @return array<string, string> inline CSS for the small swatches in the picker */
@@ -66,27 +79,84 @@ class ProfileConfig
         return $out;
     }
 
-    /** CSS background layer for a pattern id, or null for none. */
+    /** CSS background layer(s) for a pattern id (constants only, never member input), or null for none. */
     public static function patternLayer(string $id, string $ink): ?string
     {
+        $c = $ink === 'light' ? '255,255,255' : '0,0,0';
+        $k = $ink === 'light' ? 1.6 : 1.0;
+        $a = static fn (float $v): string => 'rgba('.$c.','.preg_replace('/^0\./', '.', rtrim(rtrim(number_format(min(.6, $v * $k), 3, '.', ''), '0'), '.')).')';
+        $svg = static function (string $body, int $size) use ($c, $k): string {
+            $svg = "<svg xmlns='http://www.w3.org/2000/svg' width='{$size}' height='{$size}' viewBox='0 0 {$size} {$size}'><g fill='rgba({$c},".(0.13 * $k).")'>{$body}</g></svg>";
+
+            return 'url("data:image/svg+xml,'.rawurlencode($svg)."\") 0 0/{$size}px {$size}px";
+        };
+
         return match ($id) {
-            'dots' => 'radial-gradient(rgba(0,0,0,.14) 1.5px,transparent 1.5px) 0 0/22px 22px',
-            'grid' => 'linear-gradient(rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px) 0 0/26px 26px',
-            'stripes' => 'repeating-linear-gradient(45deg,rgba(0,0,0,.07) 0 8px,transparent 8px 18px)',
+            'dots' => 'radial-gradient('.$a(.14).' 1.5px,transparent 1.5px) 0 0/22px 22px',
+            'grid' => 'linear-gradient('.$a(.08).' 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,'.$a(.08).' 1px,transparent 1px) 0 0/26px 26px',
+            'stripes' => 'repeating-linear-gradient(45deg,'.$a(.07).' 0 8px,transparent 8px 18px)',
+            'checker' => 'conic-gradient('.$a(.07).' 25%,transparent 0 50%,'.$a(.07).' 0 75%,transparent 0) 0 0/36px 36px',
+            'polka' => 'radial-gradient('.$a(.1).' 6px,transparent 6.5px) 0 0/40px 40px,radial-gradient('.$a(.1).' 6px,transparent 6.5px) 20px 20px/40px 40px',
+            'diagonal' => 'repeating-linear-gradient(45deg,'.$a(.06).' 0 2px,transparent 2px 14px),repeating-linear-gradient(-45deg,'.$a(.06).' 0 2px,transparent 2px 14px)',
+            'zigzag' => 'linear-gradient(135deg,'.$a(.08).' 25%,transparent 25%) -12px 0/24px 24px,linear-gradient(225deg,'.$a(.08).' 25%,transparent 25%) -12px 0/24px 24px,linear-gradient(315deg,'.$a(.08).' 25%,transparent 25%) 0 0/24px 24px,linear-gradient(45deg,'.$a(.08).' 25%,transparent 25%) 0 0/24px 24px',
+            'waves' => 'radial-gradient(circle at 50% 100%,transparent 9px,'.$a(.08).' 10px 12px,transparent 13px) 0 0/28px 14px',
+            'diamonds' => 'linear-gradient(45deg,transparent 46%,'.$a(.09).' 47% 53%,transparent 54%) 0 0/30px 30px,linear-gradient(-45deg,transparent 46%,'.$a(.09).' 47% 53%,transparent 54%) 0 0/30px 30px',
+            'plaid' => 'repeating-linear-gradient(0deg,'.$a(.06).' 0 10px,transparent 10px 40px),repeating-linear-gradient(90deg,'.$a(.06).' 0 10px,transparent 10px 40px),repeating-linear-gradient(0deg,'.$a(.04).' 0 2px,transparent 2px 20px),repeating-linear-gradient(90deg,'.$a(.04).' 0 2px,transparent 2px 20px)',
+            'hearts' => $svg("<path d='M16 25c-6-4.4-9-7.7-9-11a4.6 4.6 0 0 1 9-1.5A4.6 4.6 0 0 1 25 14c0 3.3-3 6.6-9 11z'/><path d='M40 47c-3-2.2-4.5-3.9-4.5-5.5a2.3 2.3 0 0 1 4.5-.8 2.3 2.3 0 0 1 4.5.8c0 1.6-1.5 3.3-4.5 5.5z'/>", 52),
+            'stars' => $svg("<path d='M14 4l2.6 6 6.4.6-4.9 4.3 1.5 6.3L14 17.9l-5.6 3.3 1.5-6.3L5 10.6l6.4-.6z'/><path d='M40 30l1.4 3.2 3.4.3-2.6 2.3.8 3.4-3-1.8-3 1.8.8-3.4-2.6-2.3 3.4-.3z'/>", 52),
+            'confetti' => $svg("<rect x='6' y='8' width='8' height='3' rx='1.5' transform='rotate(30 10 9.5)'/><rect x='34' y='12' width='8' height='3' rx='1.5' transform='rotate(-40 38 13.5)'/><circle cx='22' cy='30' r='2.2'/><rect x='10' y='40' width='7' height='3' rx='1.5' transform='rotate(-15 13.5 41.5)'/><circle cx='44' cy='42' r='1.8'/><rect x='26' y='4' width='3' height='3'/>", 52),
             default => null,
         };
     }
 
-    /** @return list<array<string, mixed>> */
+    /**
+     * One-click themes: fill background, colours, font, card and cursor (never profile text or widgets).
+     *
+     * @return list<array{id: string, label: string, hint: string, swatch: string, theme: array<string, mixed>}>
+     */
     public static function presets(): array
     {
-        return [];
+        $p = static fn (string $id, string $label, string $hint, array $bg, array $colors, string $font, array $card, string $cursor): array => [
+            'id' => $id, 'label' => $label, 'hint' => $hint,
+            'theme' => ['bg' => $bg + ['angle' => 135, 'image' => '', 'fixed' => true, 'overlay' => 0, 'ink' => 'dark', 'color2' => $bg['color']], 'colors' => $colors, 'font' => $font, 'card' => $card, 'cursor' => ['preset' => $cursor, 'url' => '', 'size' => 32]],
+        ];
+        $list = [
+            $p('retro', 'Retro Friendster', 'Biru langit, kotak-kotak, huruf jadul.', ['type' => 'gradient', 'color' => '#9ec9ff', 'color2' => '#e6f1ff', 'angle' => 180, 'pattern' => 'plaid'], ['text' => '#1d2b4f', 'accent' => '#ff6a00', 'card' => '#ffffff', 'link' => '#1a4fd6'], 'Comic Neue', ['radius' => 6, 'opacity' => 0.95, 'blur' => 0], 'pixel'),
+            $p('neon', 'Neon Malam', 'Gelap dengan cahaya neon.', ['type' => 'gradient', 'color' => '#0f0c29', 'color2' => '#302b63', 'angle' => 160, 'pattern' => 'grid', 'ink' => 'light'], ['text' => '#e8f9ff', 'accent' => '#22f3ff', 'card' => '#12102a', 'link' => '#ff5cf4'], 'Space Grotesk', ['radius' => 18, 'opacity' => 0.78, 'blur' => 10], 'neon'),
+            $p('pastel', 'Pastel', 'Lembut, manis, dan ceria.', ['type' => 'gradient', 'color' => '#fbc2eb', 'color2' => '#a6c1ee', 'pattern' => 'polka', 'ink' => 'light'], ['text' => '#3d2c5a', 'accent' => '#b25ad8', 'card' => '#fffaff', 'link' => '#7a3fc0'], 'Baloo 2', ['radius' => 28, 'opacity' => 0.86, 'blur' => 8], 'hati'),
+            $p('minimal', 'Minimal', 'Bersih, putih, tanpa hiasan.', ['type' => 'color', 'color' => '#f5f5f4', 'pattern' => 'none'], ['text' => '#1c1917', 'accent' => '#1c1917', 'card' => '#ffffff', 'link' => '#2563eb'], 'Inter', ['radius' => 12, 'opacity' => 1, 'blur' => 0], ''),
+            $p('gamer', 'Gamer', 'Hitam-hijau ala layar game.', ['type' => 'gradient', 'color' => '#050a05', 'color2' => '#0f2a14', 'angle' => 200, 'pattern' => 'diagonal', 'ink' => 'light'], ['text' => '#d7ffd9', 'accent' => '#39ff14', 'card' => '#0b140c', 'link' => '#7dff6a'], 'Press Start 2P', ['radius' => 0, 'opacity' => 0.9, 'blur' => 0], 'pedang'),
+            $p('anime', 'Anime', 'Sakura, merah muda, dan bintang.', ['type' => 'gradient', 'color' => '#ffe0ef', 'color2' => '#ffc2dc', 'angle' => 150, 'pattern' => 'stars'], ['text' => '#4a1d3a', 'accent' => '#ff4d8d', 'card' => '#fff5fa', 'link' => '#c2185b'], 'Nunito', ['radius' => 22, 'opacity' => 0.9, 'blur' => 6], 'sakura'),
+            $p('alam', 'Alam', 'Hijau segar ala hutan.', ['type' => 'gradient', 'color' => '#d7f5e3', 'color2' => '#a8e6c1', 'angle' => 170, 'pattern' => 'waves'], ['text' => '#14382a', 'accent' => '#2f9e6b', 'card' => '#fbfffc', 'link' => '#1f7a52'], 'Lora', ['radius' => 18, 'opacity' => 0.9, 'blur' => 4], 'daun'),
+            $p('senja', 'Senja', 'Jingga hangat matahari terbenam.', ['type' => 'gradient', 'color' => '#f6d365', 'color2' => '#fd6e6a', 'angle' => 160, 'pattern' => 'none'], ['text' => '#3b1d0f', 'accent' => '#d9480f', 'card' => '#fff8f0', 'link' => '#b02a37'], 'Playfair Display', ['radius' => 20, 'opacity' => 0.88, 'blur' => 8], 'bintang'),
+        ];
+        foreach ($list as &$item) {
+            $item['theme'] = self::validate(['theme' => $item['theme']])['theme'];
+            $item['swatch'] = 'background:'.self::bgLayers($item['theme']['bg']);
+        }
+
+        return $list;
     }
 
-    /** @return list<array{id: string, label: string}> */
+    /** @return list<array{id: string, label: string, src: string}> */
     public static function cursorPresets(): array
     {
-        return [];
+        $out = [];
+        foreach (self::CURSORS as $id => [$label]) {
+            $out[] = ['id' => $id, 'label' => $label, 'src' => '/kursor/'.$id.'-32.png'];
+        }
+
+        return $out;
+    }
+
+    /** https URL or one of our own upload references; nothing else. */
+    public static function image(mixed $v): string
+    {
+        if (is_string($v) && preg_match(ProfileImage::REF, trim($v)) === 1) {
+            return trim($v);
+        }
+
+        return self::url($v);
     }
 
     /** @return array<string, mixed> */
@@ -95,11 +165,11 @@ class ProfileConfig
         return [
             'profile' => ['tagline' => '', 'status' => '', 'about' => '', 'avatar' => ''],
             'theme' => [
-                'bg' => ['type' => 'gradient', 'color' => '#ede7ff', 'color2' => '#ffd9ec', 'angle' => 135, 'image' => '', 'pattern' => 'dots', 'fixed' => true, 'overlay' => 0],
+                'bg' => ['type' => 'gradient', 'color' => '#ede7ff', 'color2' => '#ffd9ec', 'angle' => 135, 'image' => '', 'pattern' => 'dots', 'fixed' => true, 'overlay' => 0, 'ink' => 'dark'],
                 'colors' => ['text' => '#2b2440', 'accent' => '#7c5cff', 'card' => '#ffffff', 'link' => '#5a3fa0'],
                 'font' => 'Nunito',
                 'card' => ['radius' => 24, 'opacity' => 0.88, 'blur' => 8],
-                'cursor' => ['url' => '', 'size' => 32],
+                'cursor' => ['url' => '', 'preset' => '', 'size' => 32],
             ],
             'music' => ['url' => '', 'title' => ''],
             'widgets' => [['type' => 'status'], ['type' => 'about'], ['type' => 'counter'], ['type' => 'links']],
@@ -135,7 +205,7 @@ class ProfileConfig
                 'tagline' => self::text($p['tagline'] ?? '', 80),
                 'status' => self::text($p['status'] ?? '', 140),
                 'about' => self::text($p['about'] ?? '', 1200, true),
-                'avatar' => self::url($p['avatar'] ?? ''),
+                'avatar' => self::image($p['avatar'] ?? ''),
             ],
             'theme' => [
                 'bg' => [
@@ -143,10 +213,11 @@ class ProfileConfig
                     'color' => self::color($bg['color'] ?? null, $d['theme']['bg']['color']),
                     'color2' => self::color($bg['color2'] ?? null, $d['theme']['bg']['color2']),
                     'angle' => self::num($bg['angle'] ?? null, 0, 360, 135),
-                    'image' => self::url($bg['image'] ?? ''),
+                    'image' => self::image($bg['image'] ?? ''),
                     'pattern' => self::enum($bg['pattern'] ?? null, self::PATTERNS, 'none'),
                     'fixed' => filter_var($bg['fixed'] ?? true, FILTER_VALIDATE_BOOLEAN),
                     'overlay' => self::num($bg['overlay'] ?? 0, 0, 0.8, 0),
+                    'ink' => self::enum($bg['ink'] ?? null, self::INKS, 'dark'),
                 ],
                 'colors' => [
                     'text' => self::color($co['text'] ?? null, $d['theme']['colors']['text']),
@@ -160,7 +231,11 @@ class ProfileConfig
                     'opacity' => self::num($cd['opacity'] ?? null, 0.3, 1, 0.88),
                     'blur' => (int) self::num($cd['blur'] ?? null, 0, 24, 8),
                 ],
-                'cursor' => ['url' => self::url($cu['url'] ?? ''), 'size' => (int) self::num($cu['size'] ?? null, 16, 48, 32)],
+                'cursor' => [
+                    'url' => self::image($cu['url'] ?? ''),
+                    'preset' => is_string($cu['preset'] ?? null) && isset(self::CURSORS[$cu['preset']]) ? $cu['preset'] : '',
+                    'size' => (int) self::num($cu['size'] ?? null, 16, 48, 32),
+                ],
             ],
             'music' => ['url' => self::url($m['url'] ?? ''), 'title' => self::text($m['title'] ?? '', 80)],
             'widgets' => [],
@@ -201,7 +276,7 @@ class ProfileConfig
         if ($type === 'gallery') {
             $o['items'] = [];
             foreach (array_slice(is_array($w['items'] ?? null) ? $w['items'] : [], 0, 12) as $it) {
-                $u = self::url(is_array($it) ? ($it['url'] ?? '') : '');
+                $u = self::image(is_array($it) ? ($it['url'] ?? '') : '');
                 if ($u !== '') {
                     $o['items'][] = ['url' => $u, 'caption' => self::text(is_array($it) ? ($it['caption'] ?? '') : '', 80)];
                 }
@@ -338,6 +413,29 @@ class ProfileConfig
         return self::validate($data, $hasHtml);
     }
 
+    /** @param array<string, mixed> $b validated theme.bg */
+    public static function bgLayers(array $b): string
+    {
+        $layers = [];
+        if ($b['overlay'] > 0) {
+            $layers[] = sprintf('linear-gradient(rgba(0,0,0,%s),rgba(0,0,0,%s))', $b['overlay'], $b['overlay']);
+        }
+        if ($b['pattern'] !== 'none' && $b['type'] !== 'image') {
+            $layers[] = (string) self::patternLayer($b['pattern'], $b['ink'] ?? 'dark');
+        }
+        if ($b['type'] === 'image' && $b['image'] !== '') {
+            $layers[] = 'url("'.$b['image'].'") center/cover no-repeat';
+            $layers[] = $b['color'];
+        } elseif ($b['type'] === 'gradient') {
+            $layers[] = sprintf('linear-gradient(%ddeg,%s,%s)', $b['angle'], $b['color'], $b['color2']);
+        } else {
+            $layers[] = $b['color'];
+        }
+
+        // A colour layer must be last; background shorthand with multiple layers.
+        return implode(',', $layers);
+    }
+
     /** @return array{vars: string, bg: string, font: string, cursor: string} inline-CSS strings built only from validated values */
     public static function css(array $c): array
     {
@@ -350,28 +448,17 @@ class ProfileConfig
             $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
         );
 
-        $b = $t['bg'];
-        $layers = [];
-        if ($b['overlay'] > 0) {
-            $layers[] = sprintf('linear-gradient(rgba(0,0,0,%s),rgba(0,0,0,%s))', $b['overlay'], $b['overlay']);
-        }
-        if ($b['pattern'] !== 'none' && in_array($b['type'], ['pattern', 'gradient', 'color'], true)) {
-            $layers[] = (string) self::patternLayer($b['pattern'], 'dark');
-        }
-        if ($b['type'] === 'image' && $b['image'] !== '') {
-            $layers[] = 'url("'.$b['image'].'") center/cover no-repeat';
-            $layers[] = $b['color'];
-        } elseif ($b['type'] === 'gradient') {
-            $layers[] = sprintf('linear-gradient(%ddeg,%s,%s)', $b['angle'], $b['color'], $b['color2']);
-        } else {
-            $layers[] = $b['color'];
-        }
-        // A colour layer must be last; background shorthand with multiple layers.
-        $bg = 'background:'.implode(',', $layers).';';
+        $bg = 'background:'.self::bgLayers($t['bg']).';';
 
         $cursor = '';
-        if ($t['cursor']['url'] !== '') {
-            $cursor = 'cursor:url("'.$t['cursor']['url'].'") 0 0,auto;';
+        $cu = $t['cursor'];
+        $size = $cu['size'] <= 26 ? 24 : ($cu['size'] >= 40 ? 48 : 32);
+        if ($cu['url'] !== '') {
+            $u = preg_match(ProfileImage::REF, $cu['url']) === 1 ? (string) preg_replace('/-c\d\d\.png$/', '-c'.$size.'.png', $cu['url']) : $cu['url'];
+            $cursor = 'cursor:url("'.$u.'") 0 0,auto;';
+        } elseif ($cu['preset'] !== '') {
+            [, $hx, $hy] = self::CURSORS[$cu['preset']];
+            $cursor = sprintf('cursor:url("/kursor/%s-%d.png") %d %d,auto;', $cu['preset'], $size, (int) round($hx * $size / 32), (int) round($hy * $size / 32));
         }
 
         return ['vars' => $vars, 'bg' => $bg, 'font' => $t['font'], 'cursor' => $cursor];

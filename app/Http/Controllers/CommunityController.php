@@ -11,6 +11,7 @@ use App\Services\EmbedExtractor;
 use App\Services\MemberFrameToken;
 use App\Services\MemberPageSanitizer;
 use App\Services\ProfileConfig;
+use App\Services\ProfileImage;
 use App\Services\ProfilePayload;
 use App\Services\TenantPath;
 use App\Support\Ga4;
@@ -21,6 +22,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CommunityController extends Controller
 {
@@ -115,6 +117,43 @@ class CommunityController extends Controller
         $sandbox = (string) config('singlepage.sandbox_domain');
 
         return ($sandbox !== '' ? $request->getScheme().'://'.$sandbox.'/'.$user->username : '/u/'.$user->username.'/konten').'?t='.MemberFrameToken::mint($page->id);
+    }
+
+    /** Upload an image for the profile (rate limited by route). Returns the reference to put in the config. */
+    public function uploadImage(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'kind' => ['required', 'in:'.implode(',', ProfileImage::KINDS)],
+            'image' => ['required', 'file', 'max:5120', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'],
+        ], [
+            'image.max' => 'Ukuran gambar maksimal 5 MB.',
+            'image.mimetypes' => 'Format harus JPG, PNG, WebP, atau GIF (SVG tidak didukung).',
+            'image.required' => 'Pilih gambar dulu.',
+        ]);
+
+        try {
+            $ref = ProfileImage::store($request->user()->id, $data['kind'], (string) file_get_contents($request->file('image')->getRealPath()));
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
+
+        return response()->json(['ok' => true, 'url' => $ref], 201, ['Cache-Control' => 'no-store']);
+    }
+
+    public function profileImage(Request $request, int $user, string $file): BinaryFileResponse
+    {
+        $path = ProfileImage::file($user, $file);
+        abort_if($path === null, 404);
+        $response = new BinaryFileResponse($path, 200, [
+            'Content-Type' => str_ends_with($file, '.png') ? 'image/png' : 'image/webp',
+            'X-Content-Type-Options' => 'nosniff',
+            'Content-Security-Policy' => "default-src 'none'; sandbox",
+            'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
+        $response->setAutoEtag();
+        $response->isNotModified($request);
+
+        return $response;
     }
 
     /** The previous form editor, kept reachable as a fallback while the live editor rolls out. */

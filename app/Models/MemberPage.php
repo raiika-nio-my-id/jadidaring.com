@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProfileConfig;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,10 +21,11 @@ class MemberPage extends Model
     public function profileConfig(): array
     {
         if (is_array($this->config)) {
-            return $this->config;
+            // Re-validated on read so configs saved before newer fields existed always have every key.
+            return ProfileConfig::validate($this->config, trim((string) $this->html) !== '');
         }
 
-        return trim((string) $this->html) !== '' ? \App\Services\ProfileConfig::legacy() : \App\Services\ProfileConfig::defaults();
+        return trim((string) $this->html) !== '' ? ProfileConfig::legacy() : ProfileConfig::defaults();
     }
 
     public function user(): BelongsTo

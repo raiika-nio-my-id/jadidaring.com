@@ -5,10 +5,11 @@ namespace App\Providers;
 use App\Models\CompanyProfile;
 use App\Models\User;
 use App\Policies\CompanyProfilePolicy;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -48,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             Config::set('app.name', 'Jadidaring'); // mail layout header/footer
             $minutes = (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire', 60);
 
-            return (new \Illuminate\Notifications\Messages\MailMessage)
+            return (new MailMessage)
                 ->subject('Atur ulang kata sandi Jadidaring')
                 ->greeting('Halo!')
                 ->line('Kami menerima permintaan untuk mengatur ulang kata sandi akun Jadidaring kamu.')
@@ -67,7 +68,11 @@ class AppServiceProvider extends ServiceProvider
         // Named, per-member limiters (separate counters; unnamed throttles share one key per user).
         RateLimiter::for('email-change', fn (Request $request) => [Limit::perHour(5)->by('email-change:'.($request->user()?->id ?? $request->ip())), Limit::perMinute(2)->by('email-change-m:'.($request->user()?->id ?? $request->ip()))]);
         RateLimiter::for('profile-save', fn (Request $request) => Limit::perMinute(30)->by('profile-save:'.($request->user()?->id ?? $request->ip())));
-        RateLimiter::for('profile-preview', fn (Request $request) => Limit::perMinute(120)->by('profile-preview:'.($request->user()?->id ?? $request->ip())));
+        RateLimiter::for('profile-upload', fn (Request $request) => [
+            Limit::perMinute(8)->by('profile-upload-m:'.($request->user()?->id ?? $request->ip())),
+            Limit::perHour(60)->by('profile-upload-h:'.($request->user()?->id ?? $request->ip())),
+        ]);
+        RateLimiter::for('profile-preview', fn (Request $request) => Limit::perMinute(240)->by('profile-preview:'.($request->user()?->id ?? $request->ip())));
 
         RateLimiter::for('admin-api', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());

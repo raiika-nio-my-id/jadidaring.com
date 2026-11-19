@@ -45,6 +45,7 @@ $cached(Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('cl
 $cached(Route::get('/feed', [FeedController::class, 'rss']));
 $cached(Route::get('/news-sitemap.xml', [FeedController::class, 'newsSitemap'])->name('clay.newssitemap'));
 Route::get('/og-home.webp', [NewsImageController::class, 'home'])->withoutMiddleware($guestCache)->name('clay.home.og');
+Route::get('/gambar-profil/{user}/{file}', [CommunityController::class, 'profileImage'])->whereNumber('user')->where('file', '[a-f0-9]{20}(\.webp|-c(24|32|48)\.png)')->withoutMiddleware($guestCache)->name('community.image');
 Route::get('/gambar-berita/{id}-{width}.webp', [NewsImageController::class, 'show'])->whereNumber(['id', 'width'])->withoutMiddleware($guestCache)->name('clay.berita.gambar');
 foreach (['tentang' => 'tentang', 'kebijakan-redaksi' => 'redaksi', 'kebijakan-privasi' => 'privasi'] as $path => $page) {
     $cached(Route::get('/'.$path, [PageController::class, $page])->name('clay.page.'.$page));
@@ -79,6 +80,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/keluar', [AuthController::class, 'logout'])->name('member.logout');
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
     Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
+    Route::post('/komunitas/halamanku/gambar', [CommunityController::class, 'uploadImage'])->middleware('throttle:profile-upload')->name('community.upload');
     Route::get('/komunitas/halamanku/klasik', [CommunityController::class, 'editClassic'])->name('community.edit.classic');
     Route::get('/komunitas/halamanku/import', [CommunityController::class, 'importForm'])->middleware('throttle:profile-preview')->name('community.import');
     Route::post('/komunitas/buat/simpan', [CommunityController::class, 'promptSave'])->middleware('throttle:profile-preview')->name('community.prompt.save');
