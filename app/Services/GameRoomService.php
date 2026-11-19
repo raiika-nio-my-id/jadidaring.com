@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\UserRole;
 use App\Events\GameRoomInput;
 use App\Events\GameRoomUpdated;
 use App\Exceptions\GameRoomException;
 use App\Models\CompanyProfile;
 use App\Models\GamePlayer;
 use App\Models\GameRoom;
-use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -98,6 +99,12 @@ class GameRoomService
     }
 
     private ?int $actorId = null;
+
+    private function actorIsAdmin(): bool
+    {
+        return $this->actorId !== null
+            && User::query()->whereKey($this->actorId)->where('role', UserRole::Admin)->exists();
+    }
 
     /** Link players seated by the following calls to this account (null for guests). */
     public function actingAs(?int $userId): static
@@ -388,13 +395,19 @@ class GameRoomService
      * @param  array<string, mixed>  $input
      * @return array<string, mixed>
      */
-    public function claimGameMaster(CompanyProfile $profile, string $code, string $token, array $input): array
+    /**
+     * Game master is the logged-in admin account. No shared key: the typed
+     * code (if an old client still sends one) is ignored.
+     *
+     * @return array<string, mixed>
+     */
+    public function claimGameMaster(CompanyProfile $profile, string $code, string $token, bool $isAdmin): array
     {
-        $data = $this->validate($input, [
-            'code' => ['required', 'string', 'max:128'],
-        ]);
+        if (! $isAdmin) {
+            throw new GameRoomException('Hanya akun admin yang bisa jadi gamemaster.', 403);
+        }
 
-        return $this->transaction(function () use ($profile, $code, $token, $data): array {
+        return $this->transaction(function () use ($profile, $code, $token): array {
             $room = $this->lockRoom($profile, $this->code($code));
             $player = $this->player($room, $token);
 
@@ -402,16 +415,7 @@ class GameRoomService
                 throw new GameRoomException('This room is closed.');
             }
 
-            if (! $this->matchesGameMasterSecret($data['code'])) {
-                throw new GameRoomException('Invalid game master code.', 403);
-            }
-
             if (! $player->is_gamemaster) {
-                $room->players()
-                    ->where('id', '!=', $player->id)
-                    ->where('is_gamemaster', true)
-                    ->update(['is_gamemaster' => false]);
-
                 $player->forceFill(['is_gamemaster' => true])->save();
                 $this->record($room, $profile, $player, 'gamemaster', []);
             }
@@ -420,28 +424,10 @@ class GameRoomService
         });
     }
 
+    /** GM powers (private lobbies) belong to the logged-in admin session only; ?gm= and X-Game-Master are ignored. */
     public function isGameMaster(Request $request): bool
     {
-        foreach ([$request->query('gm'), $request->header('X-Game-Master')] as $candidate) {
-            if ($this->matchesGameMasterSecret(is_string($candidate) ? $candidate : null)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function matchesGameMasterSecret(?string $candidate): bool
-    {
-        $secret = Setting::gamemasterSecret();
-
-        if ($secret === '' || $candidate === null) {
-            return false;
-        }
-
-        $candidate = trim($candidate);
-
-        return $candidate !== '' && hash_equals($secret, $candidate);
+        return MembersOnlyGames::user()?->isAdmin() === true;
     }
 
     /**
@@ -531,7 +517,7 @@ class GameRoomService
             'token_hash' => hash('sha256', $token),
             'is_host' => $host,
             'is_spectator' => $spectator,
-            'is_gamemaster' => false,
+            'is_gamemaster' => $this->actorIsAdmin(),
             'private_state' => $private,
         ]);
 

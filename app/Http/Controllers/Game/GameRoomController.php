@@ -115,7 +115,7 @@ class GameRoomController extends Controller
             $this->profile($request, $tenant),
             $code,
             $this->rooms->token($request),
-            $request->all(),
+            MembersOnlyGames::user()?->isAdmin() === true,
         ));
     }
 

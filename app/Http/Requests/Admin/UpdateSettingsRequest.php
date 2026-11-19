@@ -23,7 +23,6 @@ class UpdateSettingsRequest extends FormRequest
     {
         return [
             'reserved_subdomains' => ['nullable', 'string'],
-            'gamemaster_secret' => ['nullable', 'string', 'max:128'],
         ];
     }
 
@@ -36,17 +35,7 @@ class UpdateSettingsRequest extends FormRequest
                     $validator->errors()->add('reserved_subdomains', "Invalid reserved subdomain: {$line}. {$message}");
                 });
             }
-
-            $secret = (string) $this->input('gamemaster_secret', '');
-            if ($secret !== '' && trim($secret) === '') {
-                $validator->errors()->add('gamemaster_secret', 'The gamemaster secret cannot be only whitespace.');
-            }
         });
-    }
-
-    public function gamemasterSecret(): string
-    {
-        return trim((string) $this->input('gamemaster_secret', ''));
     }
 
     /**

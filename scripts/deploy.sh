@@ -866,8 +866,6 @@ ensure_env_line() {
 
 rebuild_caches() {
     local container="$1" strict="${2:-1}" skip_views="${3:-0}"
-    ensure_env_line "GAME_GAMEMASTER_SECRET" "gamemasterjd" \
-        "# transitional legacy value (already public in old game clients) - rotate it"
     log "Rebuilding framework caches in $container"
     if ! docker exec "$container" php artisan config:cache; then
         if [ "$strict" -eq 1 ]; then

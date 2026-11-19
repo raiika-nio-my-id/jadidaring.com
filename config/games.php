@@ -58,25 +58,10 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Gamemaster secret
-    |--------------------------------------------------------------------------
-    |
-    | Typed-code path (preferred): a seated player POSTs the code to
-    | /api/game/rooms/{code}/gamemaster. The server compares with
-    | Setting::gamemasterSecret() and never returns the secret.
-    |
-    | Transitional/deprecated: GET /api/game/rooms?gm= or X-Game-Master still
-    | lists private rooms for the same tenant. Live clients still send a
-    | hardcoded key (currently gamemasterjd, rolling toward gmjd1212). Prefer
-    | the typed-code claim going forward; do not add this value to describe
-    | or public config.
-    |
-    | Admin Settings can store a non-empty override in the settings table.
-    | This env value is the fallback when that override is empty or unset.
-    |
+    | Game master = the logged-in admin account (session). There is no shared
+    | GM key any more: ?gm= / X-Game-Master are ignored and the typed claim
+    | POST /api/game/rooms/{code}/gamemaster only succeeds for admins.
+    | GAME_GAMEMASTER_SECRET in .env is unused.
     */
-
-    'gamemaster_secret' => (string) env('GAME_GAMEMASTER_SECRET', ''),
 
 ];

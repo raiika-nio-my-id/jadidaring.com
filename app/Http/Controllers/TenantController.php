@@ -36,7 +36,7 @@ class TenantController extends Controller
             $html = $catalog->apply($html, $request);
         }
 
-        $html = TenantPath::rewriteHtml($html, $profile->subdomain);
+        $html = TenantPath::rewriteHtml(\App\Services\GameMasterKey::scrub((string) $html), $profile->subdomain);
         $html = $profile->hide_footer
             ? $html
             : $legalInjector->inject($html, $this->termsUrl($request, $profile));
@@ -77,7 +77,7 @@ class TenantController extends Controller
 
         abort_unless($profile instanceof CompanyProfile, 404);
 
-        $html = TenantPath::rewriteHtml((string) $profile->html, $profile->subdomain);
+        $html = TenantPath::rewriteHtml(\App\Services\GameMasterKey::scrub((string) $profile->html), $profile->subdomain);
         $html = $profile->hide_footer
             ? $html
             : $legalInjector->inject($html, TenantPath::gameTermsUrl($request, $profile->subdomain));
