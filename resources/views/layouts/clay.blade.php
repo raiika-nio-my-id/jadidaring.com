@@ -60,6 +60,10 @@
     @unless (str_contains($__env->yieldContent('bodyclass'), 'is-game-page') || str_contains($__env->yieldContent('bodyclass'), 'is-embed'))
     <link rel="stylesheet" href="{{ \App\Support\AssetUrl::to('css/jd-vt.css') }}">
     @endunless
+    @if (str_contains($__env->yieldContent('bodyclass'), 'is-game-page'))
+        {{-- Game pages keep no skeleton/nav JS, but must still opt in: a page that opts out makes the opted-in /game list abort its transition with an uncaught "ViewTransition opt-in disabled". --}}
+        <style>@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}::view-transition-group(root){animation-duration:.18s}::view-transition-old(root),::view-transition-new(root){animation-duration:.18s;animation-timing-function:ease-in-out}}</style>
+    @endif
 </head>
 <body class="{{ trim($__env->yieldContent('bodyclass')) }}">
     <header class="clay-header">
