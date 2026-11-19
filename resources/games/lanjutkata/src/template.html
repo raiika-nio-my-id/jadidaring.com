@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: site texts (Indonesian + English), avatars and links live in this JSON ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<title>Lanjut Kata · Game Sambung Kata 2–8 Pemain (Indonesia & English)</title>
+<meta name="description" content="Lanjut Kata: game sambung kata online 2–8 pemain. Mode huruf terakhir atau suku kata terakhir, timer tiap giliran, skor seru, bisa latihan lawan bot. Bahasa Indonesia & English.">
+<meta name="theme-color" content="#4b1d78">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lanjut Kata">
+<meta property="og:description" content="Sambung kata bareng teman: huruf terakhir atau suku kata terakhir, timer, skor, animasi meriah.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<a class="skip" href="#main" data-t="skip">Lewati ke konten</a>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<main id="main" tabindex="-1">
+  <!-- ============ HOME ============ -->
+  <div id="home" class="screen">
+    <header class="site-header">
+      <div class="wrap hdr">
+        <span class="brand"><span class="brand-mark" aria-hidden="true">🔤</span><span><strong data-c="site.name">Lanjut Kata</strong><small data-t="tagline"></small></span></span>
+        <div class="langsw" role="group" aria-label="Bahasa / Language"><button type="button" class="lb" data-lang="id">ID</button><button type="button" class="lb" data-lang="en">EN</button></div>
+      </div>
+    </header>
+    <section class="hero wrap" aria-labelledby="heroTitle">
+      <div class="tiles" id="heroTiles" aria-hidden="true"></div>
+      <p class="kicker" data-t="heroKicker"></p>
+      <h1 id="heroTitle" data-t="heroTitle"></h1>
+      <p class="lead" data-t="heroSub"></p>
+      <ul class="facts" id="facts"></ul>
+    </section>
+    <section class="wrap play-grid" id="mainkan">
+      <article class="card">
+        <h2 data-t="setupTitle"></h2>
+        <label class="field"><span data-t="name"></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+        <p class="field-label" data-t="avatar"></p>
+        <div class="av-pick" id="avPick" role="radiogroup"></div>
+      </article>
+      <article class="card">
+        <h2 data-t="playTitle"></h2>
+        <div class="practice">
+          <div class="row"><button type="button" class="btn yellow big" id="practiceBtn" data-t="practice"></button></div>
+          <div class="row sm"><span class="muted" data-t="bots"></span><div class="seg" id="botCount" role="radiogroup"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button></div></div>
+          <p class="muted small" data-t="practiceSub"></p>
+        </div>
+        <h3 data-t="onlineTitle"></h3>
+        <div class="row">
+          <button type="button" class="btn primary online-btn" id="createPrivate" data-t="createPrivate" disabled></button>
+          <button type="button" class="btn teal online-btn" id="quickMatch" data-t="quickMatch" disabled></button>
+        </div>
+        <form class="row" id="joinForm" autocomplete="off">
+          <label class="field grow"><span data-t="codeLabel"></span><input type="text" id="codeInput" maxlength="6" autocapitalize="characters" spellcheck="false" data-tp="codePh"></label>
+          <button type="submit" class="btn ghost online-btn" id="joinBtn" data-t="join" disabled></button>
+        </form>
+        <p class="note" id="onlineNote" role="status" aria-live="polite"></p>
+      </article>
+    </section>
+    <section class="wrap card how" id="cara" aria-labelledby="howTitle">
+      <h2 id="howTitle" data-t="howTitle"></h2>
+      <ol class="steps" id="howList"></ol>
+      <h3 data-t="modesTitle"></h3>
+      <div class="modes">
+        <div class="mode-card"><b data-t="modeHuruf"></b><p data-th="modeHurufDesc"></p></div>
+        <div class="mode-card"><b data-t="modeSuku"></b><p data-th="modeSukuDesc"></p></div>
+      </div>
+      <p class="muted small" data-t="sukuNote"></p>
+      <h3 data-t="scoringTitle"></h3>
+      <ul class="scoring" id="scoreList"></ul>
+    </section>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p><strong data-c="site.name">Lanjut Kata</strong> · <span data-t="footerNote"></span></p>
+        <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ LOBBY ============ -->
+  <div id="lobby" class="screen" hidden>
+    <div class="wrap lobby-wrap">
+      <div class="lobby-top">
+        <button type="button" class="icon-btn" id="lobbyExit" aria-label="Keluar">✕</button>
+        <h2 data-t="lobbyTitle"></h2>
+        <span class="conn" id="conn" role="status" aria-live="polite"></span>
+      </div>
+      <div class="card code-card" id="codeCard">
+        <div><small data-t="roomCode"></small><b class="code" id="roomCode"></b></div>
+        <button type="button" class="btn primary" id="inviteBtn" data-t="invite"></button>
+      </div>
+      <div class="card">
+        <h3><span data-t="players"></span> <small id="pCount"></small></h3>
+        <ul class="plist" id="plist"></ul>
+        <button type="button" class="btn ghost small" id="addBot" data-t="addBot"></button>
+      </div>
+      <div class="card">
+        <h3 data-t="settings"></h3>
+        <div class="setting"><span data-t="mode"></span><div class="seg" data-k="mode"><button type="button" data-v="huruf" data-t="modeHuruf"></button><button type="button" data-v="suku" data-t="modeSuku"></button></div></div>
+        <div class="setting"><span data-t="timer"></span><div class="seg" data-k="timer"><button type="button" data-v="10">10</button><button type="button" data-v="15">15</button><button type="button" data-v="20">20</button></div></div>
+        <div class="setting"><span data-t="turns"></span><div class="seg" data-k="turns"><button type="button" data-v="3">3</button><button type="button" data-v="5">5</button><button type="button" data-v="7">7</button><button type="button" data-v="10">10</button><button type="button" data-v="0" class="inf" data-t="turnsInf"></button></div></div>
+        <p class="muted small set-note" id="turnsNote" data-t="turnsInfNote" hidden></p>
+        <div class="setting"><span data-t="wordLang"></span><div class="seg" data-k="lang"><button type="button" data-v="id" data-t="lang_id"></button><button type="button" data-v="en" data-t="lang_en"></button><button type="button" data-v="mix" data-t="lang_mix"></button></div></div>
+        <div class="setting"><span data-t="strict"></span><div class="seg" data-k="strict"><button type="button" data-v="0" data-t="strictRetry"></button><button type="button" data-v="1" data-t="strictPass"></button></div></div>
+      </div>
+      <div class="start-row">
+        <p class="note" id="lobbyNote" aria-live="polite"></p>
+        <button type="button" class="btn yellow big" id="startBtn" data-t="start"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PLAY ============ -->
+  <div id="play" class="screen play" hidden>
+    <div class="topbar">
+      <button type="button" class="icon-btn" id="playExit" aria-label="Keluar">✕</button>
+      <b class="pill" id="roundPill"></b>
+      <b class="pill" id="usedPill"></b>
+      <span class="grow"></span>
+      <b class="pill code-pill" id="codePill"></b>
+      <button type="button" class="icon-btn" id="muteBtn" aria-label="Matikan suara">🔊</button>
+    </div>
+    <div class="side">
+      <ul class="pstrip" id="pstrip"></ul>
+    </div>
+    <div class="mainp">
+      <div class="ribbon-wrap"><ol class="ribbon" id="ribbon" aria-live="polite"></ol></div>
+      <div class="stage" id="stage">
+        <p class="turn-label" id="turnLabel"></p>
+        <div class="req-card" id="reqCard">
+          <div class="ring" aria-hidden="true"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="44"/><circle class="arc" id="ringArc" cx="50" cy="50" r="44"/></svg><b id="ringNum">15</b></div>
+          <div class="req-box">
+            <small id="reqHint" data-t="startWith"></small>
+            <div class="req" id="reqTiles"></div>
+            <small class="relaxed" id="relaxedTag" hidden data-t="relaxed"></small>
+          </div>
+        </div>
+      </div>
+      <form class="dock" id="wordForm" autocomplete="off">
+        <div class="inrow">
+          <span class="pre" id="prePart"></span>
+          <input type="text" id="wordInput" maxlength="24" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="send" aria-label="Kata">
+          <button type="submit" class="btn primary send" id="sendBtn" data-t="send"></button>
+        </div>
+        <div class="msgrow"><p class="msg" id="msg" aria-live="assertive"></p><button type="button" class="btn tiny ghost" id="passBtn" data-t="pass"></button></div>
+      </form>
+    </div>
+    <div class="count" id="countOv" hidden aria-live="assertive"><b id="countNum">3</b></div>
+  </div>
+</main>
+
+<div class="ov" id="results" hidden role="dialog" aria-modal="true" aria-labelledby="resTitle">
+  <div class="res-card">
+    <h2 id="resTitle" data-t="resultsTitle"></h2>
+    <p class="res-win" id="resWin"></p>
+    <div class="podium" id="podium"></div>
+    <ol class="rank" id="rankList"></ol>
+    <p class="muted" id="bestLine"></p>
+    <div class="row center"><button type="button" class="btn yellow big" id="rematchBtn" data-t="rematch"></button><button type="button" class="btn ghost" id="resMenu" data-t="menu"></button></div>
+    <p class="note" id="resNote"></p>
+  </div>
+</div>
+<canvas class="fx" id="fx" aria-hidden="true"></canvas>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<div class="flyer" id="flyer" aria-hidden="true"></div>
+
+<script type="application/json" id="lk-words">
+/*WORDS*/
+</script>
+<script id="lk-rules">
+/*RULES*/
+</script>
+<script id="lk-net">
+/*NET*/
+</script>
+<script id="lk-app">
+/*APP*/
+</script>
+</body>
+</html>
