@@ -26,11 +26,8 @@ account (`users.name`, changed only at `/akun`).
 - Server: `GameRoomController::payload()` replaces `displayName` with the account name on create, join, match
   and watch; `GameScoreService` stores scores under the account. Never trust a typed name.
 - Client: `PlayerNameBridge` injects `window.__JD_ME = {in, name, login}` in front of every game that has a name
-  gate. Games with their own gate (Langit Bersama, Drawquarium) read it directly: the name field is read-only and shows
-  the account name; the gate keeps only avatar/language. Games with the shared gate (`JDNG_CFG`) get
-  `public/js/account-name.js` from `GitGames::frame()`, right after the bridge: every field in `JDNG_CFG.inputs`
-  and the invite gate is filled with the account name and read-only, and `JDNG_CFG.keys` are overwritten.
-  Old per-game nicknames in `localStorage` are ignored.
+  gate. Git games read it directly: the name field is read-only and shows the account name; the gate keeps only
+  avatar/language. Old per-game nicknames in `localStorage` are ignored.
 - Guests (not logged in): they can open, watch and try the game under the name **Tamu**. Anything that saves
   (rooms, drawings, chat, scores) gets 401 from the server and the shared "Masuk dulu ya" prompt opens
   (`GAME_MEMBERS_ONLY=*`, commit e3bddfb). The gate shows a "Masuk" link instead of a name field.
@@ -47,8 +44,8 @@ exported first (no admin GET endpoint exists yet).
 |---|---|---|---|---|---|
 | 1 | `langitbersama` | in git (pilot 822b191; account name lock 2026-11-20) | repo | yes, account name | yes |
 | 2 | `drawquarium` | in git (50a0ece) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 3 | `coratcoret` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 4 | `anomaliminimarket` | database | local build, verified = live (`index.deploy.html`) | yes | no |
+| 3 | `coratcoret` | in git (fab7dfb) | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 4 | `anomaliminimarket` | in git | local build, verified = live (`index.deploy.html`) | yes | no |
 | 5 | `bajajdrift` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 6 | `rebutbendera` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 7 | `ogohogoharak` | database | local build, verified = live (`index.deploy.html`) | yes | yes |

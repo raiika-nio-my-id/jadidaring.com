@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="screen-orientation" content="landscape">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Anomali Mini Market · Cek KTP, Tangkap Hantu di Kasir Minimarket (Game Horor Gratis)</title>
+<meta name="description" content="Anomali Mini Market: jadi kasir minimarket malam. Restok rak, cek KTP & anomali pelanggan (jangan2 hantu!), terima bayar tunai+kembalian atau QRIS. Game horor puzzle 2.5D gratis di HP tanpa download.">
+<meta name="theme-color" content="#1a1520">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Anomali Mini Market · kasir vs hantu">
+<meta property="og:description" content="Restok, cek KTP, tangkap anomali, bayar tunai/QRIS. Mode Latihan, Shift Biasa, Malam Anomali.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="anomaliminimarket">
+  <div id="rotateGate" class="rotate-gate" hidden>
+    <div class="rotate-card">
+      <div class="rotate-ico" aria-hidden="true">📱↻</div>
+      <h2>Putar HP ke landscape</h2>
+      <p>Anomali Mini Market dimainkan horizontal — kayak pegang stik. Putar perangkatmu lalu lanjut main.</p>
+    </div>
+  </div>
+
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span class="chip hero-chip">🏪 Horor kasir · 2.5D</span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">SHIFT MALAM · MINIMARKET</p><h1>ANOMALI <span>MINI MARKET</span></h1><p class="slogan">Cek KTP dulu — jangan sampai hantu bayar!</p></div>
+    </div>
+    <div class="panel home-panel">
+      <label class="name-row"><span>Nama kasir</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="modes">
+        <button class="mode big" id="playBtn"><i>🧾</i><span><b>Shift Biasa</b><small id="playSub">32 pelanggan · 4 babak · ~15 menit</small></span></button>
+        <button class="mode" id="nightBtn"><i>🌑</i><b>Malam Anomali</b><small id="nightSub">🔒 Selesaikan Shift Biasa dulu</small></button>
+        <button class="mode" id="easyBtn"><i>🌙</i><b>Latihan</b><small>Anomali jelas + tips</small></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Tutorial</b><small>9 pelajaran terpandu · ±3–5 menit</small></button>
+        <button class="mode" id="bestBtn" disabled><i>🏆</i><b id="bestTitle">Rekor</b><small id="bestSub">Belum main</small></button>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Joystick kiri</b> gerak di toko (tampak 45° dari atas). <b>Tombol kanan</b>: Restok / Periksa / Bayar.</li>
+          <li>Isi rak kosong lewat <b>📦 Restok</b>. Dekati pelanggan lalu tekan <b>🔍 Periksa</b> — atau ketuk pelanggannya, kasir jalan sendiri lalu membuka panel inspeksi.</li>
+          <li>Bandingkan sapaan <b>"Saya Pak/Bu …"</b> dengan <b>KTP</b> (nama, tgl lahir, JK, status, foto), lalu cek tiap baris bukti: kaki, bayangan, mata, pantulan, suhu, jam, uang, keranjang.</li>
+          <li>Tandai anomali (bonus skor) lalu <b>Loloskan</b> (manusia → bayar) atau <b>Tolak (Hantu)</b>. Salah tolak manusia = reputasi turun; hantu lolos = takut naik.</li>
+          <li>Bayar: <b>tunai</b> (susun kembalian pas, ada Rp500; uang palsu → <b>Tolak uang</b>) atau <b>QRIS</b> (Harus bayar = Diterima → Konfirmasi; beda → <b>Nominal salah</b>).</li>
+          <li>Shift = <b>4 babak</b> (Buka → Ramai → Anomali Spike → Tutup) sampai <b>06:00 Subuh</b>. Restok rak di jeda babak. <b>Lingkaran sabar</b> di samping nama habis → manusia pergi (reputasi turun), hantu menghilang (takut naik).</li>
+        </ol>
+        <p class="muted keys"><kbd>WASD</kbd> gerak · <kbd>E</kbd> periksa · <kbd>R</kbd> restok · <kbd>Spasi</kbd> aksi · <kbd>P</kbd> jeda · <kbd>M</kbd> suara</p>
+      </div>
+      <details class="card gloss-card"><summary>📖 Panduan <span id="glossN">26</span> anomali + cerita rakyat</summary><dl class="gloss" id="glossHome"></dl></details>
+      <div class="card ends"><h2>🕯️ Akhir shift <small id="endCount">0/5</small></h2><ul class="end-list" id="endList"></ul></div>
+      <p class="foot muted">Fiksi urban legend minimarket. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+
+  <section id="wardGallery" class="screen" hidden>
+    <div class="wg-bar">
+      <div><p class="kicker">ART-P0.3 · LEMARI</p><h2>Wardrobe Biasa</h2><p class="muted" id="wgSub">seed Biasa · dressShift</p></div>
+      <button type="button" class="btn ghost" id="wgClose">Menu</button>
+    </div>
+    <div class="wg-cover" id="wgCover" aria-label="Cakupan slot"></div>
+    <p class="fg-note" id="fgNote" hidden>🪙 Barang di rak hilang sendiri…</p>
+    <canvas id="wgCv" width="1280" height="820"></canvas>
+    <div class="fg-acts" id="fgActs" hidden>
+      <button type="button" class="btn small" id="fgInsp">🔍 Periksa</button>
+      <button type="button" class="btn small" id="fgPay">💳 Bayar</button>
+      <button type="button" class="btn small" id="fgSteal">🪙 Demo theft</button>
+    </div>
+  </section>
+  <div class="pause" id="tutOffer" hidden><div class="sheet offer-sheet">
+    <p class="kicker dark">BARU PERTAMA JAGA SHIFT?</p><h2>Coba Tutorial dulu?</h2>
+    <p>Tutorial = <b>9 pelajaran</b> terpandu, ±3–5 menit: gerak, restok, inspeksi, tunai, tolak hantu, meter, QRIS, nominal salah, gender KTP. Shift Biasa = 32 pelanggan dalam 4 babak, tanpa panduan.</p>
+    <div class="row end-btns"><button class="btn green" id="offerTut">🎓 Tutorial (9 pelajaran)</button><button class="btn" id="offerSkip">🧾 Langsung Shift Biasa</button><button class="btn ghost" id="offerCancel">Batal</button></div>
+  </div></div>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top">
+      <button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="hud" id="hud">
+        <span class="pill mode-pill" id="modeHud">Shift Biasa</span>
+        <span class="pill" id="clockHud">22:00</span>
+        <span class="pill score" title="Skor">⭐ <b id="scoreHud">0</b></span>
+        <span class="pill money" title="Omzet">💰 <b id="moneyHud">Rp0</b></span>
+        <span class="pill" id="queueHud">0 antri</span>
+        <span class="pill stock-pill" id="stockHud">📦 8/8</span>
+      </div>
+      <div class="hud-r">
+        <button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button>
+        <button class="icon-btn" id="pauseBtn" aria-label="Jeda">⏸</button>
+      </div>
+    </div>
+    <div class="bars">
+      <div class="bar-row fear" id="fearRow"><span>TAKUT</span><i><b id="fearFill"></b><em class="mark" style="left:70%"></em></i><small id="fearVal">0</small></div>
+      <div class="bar-row rep" id="repRow"><span>REPUTASI</span><i><b id="repFill"></b><em class="mark" style="left:30%"></em></i><small id="repVal">100</small></div>
+      <div class="bar-row stock" id="stockRow"><span>STOK</span><i><b id="stockFill"></b><em class="mark" style="left:55%"></em></i><small id="stockVal">8/8</small></div>
+      <p class="bar-legend">Takut 100 = kabur · Reputasi 0 = tutup</p>
+    </div>
+    <div class="phase-tag" id="phaseTag">Antrian</div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="fx-banner" id="fxBanner" hidden></div>
+    <div class="lesson-bar" id="lessonBar" hidden><p id="lessonText"></p><button type="button" class="btn small" id="lessonBtn">Lewati</button></div>
+
+    <!-- Gamepad layout: left stick, right actions -->
+    <div class="stick" id="stickZone" aria-label="Joystick gerak"><div class="knob" id="stickKnob"></div></div>
+    <div class="act-pad" id="actPad">
+      <button type="button" class="act" id="restockBtn"><span>📦</span><small>Restok</small></button>
+      <button type="button" class="act primary" id="inspectBtn"><span>🔍</span><small>Periksa</small></button>
+      <button type="button" class="act" id="payBtn"><span>💳</span><small>Bayar</small></button>
+      <button type="button" class="act ghost" id="interactBtn"><span>✋</span><small>Aksi</small></button>
+    </div>
+
+    <div class="panel-sheet" id="inspectSheet" hidden>
+      <div class="sheet inspect-sheet">
+        <header class="sheet-h">
+          <div><p class="kicker dark" id="inspKick">PELANGGAN</p><h2 id="inspName">—</h2><p class="says" id="inspSays">“…”</p></div>
+          <button class="icon-btn dark" id="inspClose" aria-label="Tutup">✕</button>
+        </header>
+        <p class="sheet-coach" hidden></p>
+        <div class="insp-grid">
+          <div class="ktp" id="ktpCard">
+            <div class="ktp-h">KTP · REPUBLIK INDONESIA</div>
+            <div class="ktp-body">
+              <canvas id="ktpFace" width="72" height="90"></canvas>
+              <dl id="ktpFields"></dl>
+            </div>
+          </div>
+          <div class="insp-view"><canvas id="custCv" width="200" height="220"></canvas></div>
+          <ul class="evid" id="evidList"></ul>
+        </div>
+        <p class="basket-line" id="basketLine">Keranjang: —</p>
+        <p class="chip-head">Tandai anomali (catatan, +15/benar saat Tolak) · <button type="button" class="link-btn" id="glossBtn">📖 Arti tiap anomali</button></p>
+        <dl class="gloss" id="glossInsp" hidden></dl>
+        <div class="chip-row" id="anomalyChips"></div>
+        <p class="sheet-msg" id="inspMsg" hidden></p>
+        <div class="decide-bar">
+          <p class="decide-help">✓ Loloskan = manusia, lanjut bayar · ✖ Tolak = hantu (salah tolak manusia: reputasi −18)</p>
+          <div class="row end-btns insp-acts">
+            <button class="btn green" id="passBtn">✓ Loloskan</button>
+            <button class="btn danger" id="rejectBtn">✖ Tolak (Hantu)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-sheet" id="paySheet" hidden>
+      <div class="sheet pay-sheet">
+        <header class="sheet-h"><div><p class="kicker dark">PEMBAYARAN</p><h2 id="payTitle">Tunai</h2></div><button class="btn ghost back-btn" id="payBack">← Cek lagi</button><button class="icon-btn dark" id="payClose" aria-label="Kembali ke inspeksi">✕</button></header>
+        <p class="sheet-coach" hidden></p>
+        <p class="sheet-msg" id="payMsg" hidden></p>
+        <p class="pay-total">Harus bayar <b id="payTotal">Rp0</b></p>
+        <div id="cashUI">
+          <div class="tender"><span class="tl">Uang diterima</span><span id="payBillArt" class="cash note" aria-hidden="true"></span><p>Pelanggan kasih <b id="payBill">Rp0</b> <span id="payBillNote"></span>. Kembalian yang benar: <b id="payNeed">Rp0</b></p></div>
+          <div class="change-row" id="changeBtns"></div>
+          <p class="pay-given">Kembalian kamu: <b id="payGiven">Rp0</b></p>
+          <div class="row end-btns"><button class="btn" id="changeClear">↺ Reset</button><button class="btn danger" id="cashReject">Tolak uang (palsu)</button><button class="btn green" id="changeOk">Serahkan kembalian</button></div>
+        </div>
+        <div id="qrisUI" hidden>
+          <div class="edc" id="edcBox">
+            <div class="edc-top"><span class="edc-brand">MINI MARKET 24 JAM · EDC</span><span class="edc-led wait" id="edcLed" aria-hidden="true"></span></div>
+            <div class="edc-screen">
+              <div class="qris-grid" id="qrisGrid" aria-hidden="true"></div>
+              <div class="qris-cmp"><p>Harus bayar<b id="qrisNeed">Rp0</b></p><p>Diterima EDC<b id="qrisAmt">Rp0</b></p></div>
+            </div>
+            <p class="edc-hint">📲 Tempel / Scan QRIS · Sama → Konfirmasi. Beda → Nominal salah.</p>
+            <div class="edc-keys" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i class="g"></i><i class="r"></i></div>
+          </div>
+          <div class="row end-btns"><button class="btn danger" id="qrisWrong">Nominal salah</button><button class="btn green" id="qrisOk">✓ Konfirmasi QRIS</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-sheet" id="restockSheet" hidden>
+      <div class="sheet restock-sheet">
+        <header class="sheet-h"><div><p class="kicker dark">RESTOK RAK</p><h2 id="restockTitle">Isi slot kosong</h2></div><button class="icon-btn dark" id="restockClose" aria-label="Tutup">✕</button></header>
+        <p class="sheet-coach" hidden></p>
+        <p class="muted" id="restockHint">1 · Pilih produk (terpilih: <b id="restockSel">—</b>) · 2 · Ketuk slot kosong ＋ di rak depanmu.</p>
+        <p class="sheet-msg" id="restockMsg" hidden></p>
+        <div class="tray" id="productTray" role="group" aria-label="Pilih produk (8)"></div>
+        <div class="shelf-map" id="shelfMap"></div>
+        <div class="row end-btns"><button class="btn green" id="restockDone">Selesai restok</button></div>
+      </div>
+    </div>
+
+    <div class="pause" id="pause" hidden><div class="sheet"><h2 id="pauseTitle">Jeda</h2><div class="row end-btns"><button class="btn green" id="resumeBtn">▶ Lanjut</button><button class="btn ghost" id="quitBtn">Menu</button></div></div></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">HASIL SHIFT</p><h2 id="resTitle">Selesai</h2><p class="sub" id="resSub"></p>
+      <p class="res-end" id="resEnd" hidden></p>
+      <div class="res-big"><b id="resScore">0</b><small id="resBest"></small></div>
+      <ul class="res-stats" id="resStats"></ul>
+      <div class="lb"><h3>Rekor di HP ini</h3><ol class="lb-list" id="lbList"></ol></div>
+      <p class="res-note" id="resNote" hidden></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Shift lagi</button><button class="btn" id="retryTutBtn" hidden>🎓 Ulangi tutorial</button><button class="btn" id="shareBtn">📤 Pamer</button><button class="btn ghost" id="resMenu">Menu</button></div>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>
