@@ -42,8 +42,7 @@
         ['@type' => 'Organization', '@id' => 'https://jadidaring.com/#org', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/',
             'logo' => ['@type' => 'ImageObject', 'url' => 'https://jadidaring.com/marketing/images/logo-512.png', 'width' => 512, 'height' => 512]],
     ]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="{{ \App\Support\AssetUrl::to('marketing/images/favicon.svg') }}" type="image/svg+xml">
+    @include('partials.favicons')
 
     <link rel="preload" as="font" type="font/woff2" href="{{ \App\Support\AssetUrl::to('fonts/nunito-latin.woff2') }}" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="{{ \App\Support\AssetUrl::to('fonts/baloo2-latin.woff2') }}" crossorigin>

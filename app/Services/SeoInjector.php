@@ -19,9 +19,7 @@ class SeoInjector
         }
 
         if (! $this->hasFaviconLink($html)) {
-            $tags .= '<link rel="icon" href="/favicon.ico" sizes="any">'."\n";
-            $tags .= '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'."\n";
-            $tags .= '<link rel="apple-touch-icon" href="/apple-touch-icon.png">'."\n";
+            $tags .= trim(view('partials.favicons')->render())."\n";
         }
 
         if ($ogImageUrl !== null && ! $this->hasOgImage($html)) {

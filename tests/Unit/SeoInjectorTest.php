@@ -23,9 +23,9 @@ class SeoInjectorTest extends TestCase
 
         $result = $this->injector()->inject($html, 'https://game.jadidaring.com/');
 
-        $this->assertStringContainsString('<link rel="icon" href="/favicon.ico" sizes="any">', $result);
-        $this->assertStringContainsString('<link rel="icon" href="/favicon.svg" type="image/svg+xml">', $result);
-        $this->assertStringContainsString('<link rel="apple-touch-icon" href="/apple-touch-icon.png">', $result);
+        $this->assertStringContainsString('<link rel="icon" href="/favicon.ico" sizes="48x48">', $result);
+        $this->assertStringContainsString('<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">', $result);
+        $this->assertStringContainsString('<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">', $result);
     }
 
     public function test_it_does_not_inject_canonical_when_already_present(): void
