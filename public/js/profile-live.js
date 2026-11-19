@@ -679,7 +679,8 @@
       if (sec.querySelector(':scope > .le-ubah')) return;
       var key = sec.dataset.edit;
       var name = key.indexOf('w:') === 0 ? label((cfg.widgets[+key.slice(2)] || {}).type) : (key === 'head' ? 'profil' : (key === 'layout' ? 'susunan kotak' : 'komentar'));
-      var u = h('button', { type: 'button', cls: 'le-ubah', 'aria-label': 'Ubah ' + name, 'data-ubah': key, text: key === 'layout' ? '⇔ Susunan kotak' : (sec.hasAttribute('data-fixed') ? '🔒 Kotak tetap · Ubah' : '✎ Ubah') });
+      var u = h('button', { type: 'button', cls: 'le-ubah', 'aria-label': 'Ubah ' + name, 'data-ubah': key, title: sec.hasAttribute('data-fixed') ? 'Kotak tetap: isinya bisa diubah, kotaknya tidak bisa dihapus' : null });
+      u.innerHTML = (key === 'layout' ? '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M2 3h12v3H2zm0 5h5v5H2zm7 0h5v5H9z"/></svg><span>Susunan kotak</span>' : '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M11.3 1.7a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.1.8.8-3.1zM10.4 3 3.3 10.1l-.4 1.5 1.5-.4L11.5 4.1z"/></svg><span>' + (sec.hasAttribute('data-fixed') ? 'Ubah · tetap' : 'Ubah') + '</span>');
       sec.appendChild(u);
     });
     Array.prototype.forEach.call(stage.querySelectorAll('.pf-grid > [data-edit^="w:"]'), function (sec) {

@@ -245,3 +245,32 @@ html.le-aim-lock { overflow: hidden; }
 .le-st__pf .pf-card h2 { margin: 0 0 4px; font-size: 13px; text-transform: none; letter-spacing: 0; }
 .le-st__pf .pf-card i { display: block; height: 4px; margin-top: 3px; border-radius: 2px; background: currentColor; opacity: .35; }
 .le-st__pf .pf-card i + i { width: 60%; }
+
+/* ---------- Edit actions: one compact cluster per card (Ubah pill + grip), same style family ---------- */
+.le-stage, .le-wall { --le-btn: 40px; --le-btn-bg: rgba(30, 24, 52, .78); --le-btn-fg: #fff; }
+@media (pointer: coarse) { .le-stage, .le-wall { --le-btn: 44px; } }
+body .le-stage [data-edit] > .le-ubah, body .le-wall > .le-ubah, body .le-stage .pf-grid > [data-edit^="w:"] > .le-ubah {
+  top: 8px; right: 8px; bottom: auto; min-height: var(--le-btn); min-width: var(--le-btn); padding: 0 14px 0 12px; display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid rgba(255,255,255,.28); border-radius: 999px; background: var(--le-btn-bg); color: var(--le-btn-fg); font: 800 .8rem/1 var(--font-body);
+  box-shadow: 0 2px 10px rgba(0,0,0,.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; transform: none;
+}
+body .le-stage .pf-grid > [data-edit^="w:"] > .le-ubah { right: calc(8px + var(--le-btn) + 6px); }
+body .le-stage .pf-grid[data-edit] > .le-ubah { top: auto; bottom: 10px; right: 12px; }
+.le-ubah svg { flex: none; }
+.le-ubah:hover { background: rgba(60, 44, 110, .92); }
+.le-ubah:focus-visible { outline: 3px solid #fff; outline-offset: 0; box-shadow: 0 0 0 5px #5b3fa6; }
+body:not(.le-peek) .le-stage [data-edit]:hover > .le-ubah, body:not(.le-peek) .le-wall:hover > .le-ubah, .le-sel > .le-ubah { opacity: 1; }
+@media (pointer: coarse) { body .le-stage [data-edit] > .le-ubah, body .le-wall > .le-ubah, body .le-stage .pf-grid > [data-edit^="w:"] > .le-ubah { opacity: 1; } body .le-stage .pf-grid[data-edit]:not(.le-sel) > .le-ubah { opacity: .96; } }
+body .le-stage .le-drag {
+  top: 8px; right: 8px; width: var(--le-btn); height: var(--le-btn); border-radius: 999px; border: 1px solid rgba(255,255,255,.28);
+  background: var(--le-btn-bg); color: var(--le-btn-fg); box-shadow: 0 2px 10px rgba(0,0,0,.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+body .le-stage .le-drag:hover { background: rgba(60, 44, 110, .92); }
+.le-stage .le-drag svg { width: 12px; height: 18px; }
+@media (hover: none) { body .le-stage .le-drag { opacity: 1; width: var(--le-btn); height: var(--le-btn); } }
+.le-drag:focus-visible { outline: 3px solid #fff; outline-offset: 0; box-shadow: 0 0 0 5px #5b3fa6; }
+/* keep titles clear of the cluster on touch screens (it is always visible there) */
+@media (pointer: coarse) {
+  .le-stage .pf-grid > [data-edit^="w:"] > h2:first-of-type { padding-right: calc(var(--le-btn) * 2 + 26px); min-height: var(--le-btn); }
+  .le-stage .pf-head[data-edit="head"] { padding-top: calc(var(--le-btn) + 18px); }
+}
