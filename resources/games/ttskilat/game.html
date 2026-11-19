@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>TTS Kilat &#xB7; Teka Teki Silang Online Gratis, TTS Harian &amp; Buat TTS Sendiri</title>
+<meta name="description" content="TTS Kilat: main teka teki silang online gratis dalam bahasa Indonesia. Ada TTS Harian baru setiap hari, 105 TTS bertema kuliner Nusantara, fauna, geografi, budaya, sekolah dan sains, plus bantuan huruf kalau buntu dan pembuat TTS (TTS maker) untuk dibagikan lewat link. Langsung main di HP atau laptop, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#1d3557">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TTS Kilat &#xB7; teka teki silang online">
+<meta property="og:description" content="TTS Harian baru setiap hari dan 105 TTS bertema Indonesia. Gratis di browser, tanpa iklan.">
+<style>
+:root{--bg:#14213d;--bg2:#1d3557;--ink:#16202e;--paper:#fffaf0;--line:#283b5c;--acc:#ffb703;--acc2:#fb8500;--sel:#ffe08a;--word:#cfe3ff;--ok:#2a9d8f;--okbg:#c9f2e6;--bad:#e63946;--rev:#f1e3ff;--txt:#f4f1ea;--mut:#a9b6cc;--r:14px;--cell:36px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 50% -10%,#2b4a7e 0%,var(--bg) 60%) fixed,var(--bg);color:var(--txt);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{overscroll-behavior:none}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.screen{min-height:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:10px 16px;border:0;border-radius:12px;background:#2a3f66;color:var(--txt);font-weight:700;box-shadow:0 3px 0 #0e1a30;transition:transform .08s,filter .15s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #0e1a30}
+.btn:hover{filter:brightness(1.1)}
+.btn.primary{background:linear-gradient(180deg,#ffc53d,var(--acc2));color:#2b1600;box-shadow:0 3px 0 #a14d00}
+.btn.big{width:100%;min-height:56px;font-size:1.15rem}
+.btn.sq{width:46px;padding:0}
+.btn small{font-weight:500;opacity:.8}
+/* home */
+#home{display:flex;flex-direction:column;align-items:center;padding:24px 16px 0}
+.home-card{width:100%;max-width:420px;display:flex;flex-direction:column;gap:12px;align-items:stretch;text-align:center;padding-top:28px}
+.logo{display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:2px}
+.ltiles{display:flex;gap:6px}
+.ltiles b{display:grid;place-items:center;width:62px;height:62px;background:var(--paper);color:var(--ink);font-size:2.4rem;font-weight:900;border-radius:8px;box-shadow:0 4px 0 #b9ab8f,inset 0 0 0 2px #d9ccb0;animation:pop .5s backwards}
+.ltiles b:nth-child(2){animation-delay:.08s;background:var(--sel)}.ltiles b:nth-child(3){animation-delay:.16s}
+.l2{font-size:1.9rem;font-weight:900;letter-spacing:.32em;color:var(--acc);text-shadow:0 2px 0 #7a3c00;margin-left:.3em}
+@keyframes pop{from{transform:scale(.3) rotate(-12deg);opacity:0}}
+.tagline{margin:0 0 4px;color:var(--mut)}
+.daily-card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:14px 16px;border:2px solid #ffd166;border-radius:16px;background:linear-gradient(135deg,#ffd166 0%,#ffb703 55%,#fb8500 100%);color:#2b1600;text-align:left;box-shadow:0 4px 0 #a14d00,0 10px 24px #0006}
+.daily-card:active{transform:translateY(2px)}
+.dc-top{display:flex;width:100%;justify-content:space-between;font-weight:800;font-size:.85rem;letter-spacing:.06em}
+.dc-date{font-size:1.35rem;font-weight:900}
+.dc-sub{font-size:.9rem;opacity:.85}
+.daily-card.done{background:linear-gradient(135deg,#9be7c4,#2a9d8f);border-color:#9be7c4;box-shadow:0 4px 0 #17665d,0 10px 24px #0006;color:#062a24}
+.row3{display:flex;gap:8px}.row3 .btn:not(.sq){flex:1;padding:10px 6px}
+.stat-line{margin:0;color:var(--mut);font-size:.9rem;min-height:1.3em}
+.seo{max-width:680px;margin:48px auto 0;padding:0 4px;color:#c7d0de;font-size:.95rem}
+.seo h2{color:var(--txt);font-size:1.25rem}.seo h3{color:var(--acc);font-size:1.02rem;margin:20px 0 4px}
+.site-footer{width:100%;max-width:680px;margin:32px auto 0;padding:18px 4px 84px;border-top:1px solid #ffffff1f;color:var(--mut);font-size:.85rem;text-align:center}
+.site-footer a{color:var(--acc)}
+/* packs */
+.panel{max-width:720px;margin:0 auto;padding:14px 14px 40px}
+.phead{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:2;padding:8px 0;background:var(--bg)}
+.phead h2{flex:1;margin:0;font-size:1.25rem}
+.ptot{font-weight:800;color:var(--acc)}
+.pack{margin:12px 0 18px;padding:14px;border-radius:var(--r);background:#ffffff0d;border:1px solid #ffffff14}
+.pack h3{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center}.pack h3 .pc{margin-left:auto;font-size:.85rem;color:var(--acc)}
+.pack p{margin:2px 0 10px;color:var(--mut);font-size:.85rem}
+.lvls{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.lv{position:relative;aspect-ratio:1;border:0;border-radius:10px;background:var(--paper);color:var(--ink);font-weight:900;font-size:1.1rem;box-shadow:0 3px 0 #b9ab8f;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.lv small{font-size:.62rem;letter-spacing:-.05em;color:#c98a00}
+.lv.lock{background:#2a3f66;color:#5d7196;box-shadow:0 3px 0 #0e1a30;cursor:not-allowed}
+.lv.next{background:var(--sel);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{box-shadow:0 3px 0 #b9ab8f,0 0 0 5px #ffb70355}}
+/* play */
+#play{height:100%;display:flex;flex-direction:column;overflow:hidden;padding:max(6px,env(safe-area-inset-top)) 8px 0}
+.hud{display:flex;align-items:center;gap:8px;min-height:48px}
+.htitle{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15}
+.htitle b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htitle span{font-size:.8rem;color:var(--mut)}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;padding:6px 10px;border-radius:10px;background:#0e1a30}
+.tools{display:flex;gap:6px;align-items:center;padding:4px 0 6px}
+.tbtn{border:0;border-radius:999px;padding:7px 12px;background:#2a3f66;font-weight:700;font-size:.88rem;box-shadow:0 2px 0 #0e1a30}
+.tbtn:active{transform:translateY(1px)}
+.prog{margin-left:auto;font-size:.85rem;font-weight:700;color:var(--mut)}
+.board{flex:1;min-height:0;display:flex;gap:16px;justify-content:center;align-items:center}
+.gridwrap{flex:0 1 auto;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;height:100%}
+#grid{display:grid;gap:0;background:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.c{position:relative;width:var(--cell);height:var(--cell);margin:-1px 0 0 -1px}
+.c.on{background:var(--paper);border:2px solid var(--line);color:var(--ink);display:grid;place-items:center;font-weight:800;font-size:calc(var(--cell)*.56);text-transform:uppercase;cursor:pointer;transition:background .12s}
+.c.on.w{background:var(--word)}
+.c.on.cur{background:var(--sel);box-shadow:inset 0 0 0 3px var(--acc2);z-index:1}
+.c.on.ok{background:var(--okbg);color:#0d5249}
+.c.on.ok.w{background:#b6ead9}.c.on.ok.cur{background:#ffe9a6}
+.c.on.rev{color:#7b2cbf}
+.c.on.bad{color:var(--bad);background:#ffd9dc}
+.c.on.bad::after{content:"";position:absolute;inset:auto 18% 12% 18%;height:2px;background:var(--bad);transform:rotate(-12deg)}
+.c .n{position:absolute;top:1px;left:2px;font-size:max(8px,calc(var(--cell)*.27));font-weight:700;line-height:1;color:#536079}
+.c.flash{animation:flash .5s}
+@keyframes flash{40%{transform:scale(1.14);background:#9be7c4}}
+.c.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.clues{display:none;width:300px;max-height:100%;overflow:auto;padding:4px 10px 10px;background:#ffffff0a;border-radius:var(--r);font-size:.92rem}
+.clues h3{margin:10px 0 4px;color:var(--acc);font-size:.95rem}
+.clues ol{list-style:none;margin:0;padding:0}
+.clues li{display:flex;gap:6px;padding:5px 8px;border-radius:8px;cursor:pointer}
+.clues li b{min-width:1.6em;color:var(--mut)}
+.clues li.act{background:#ffe08a;color:var(--ink)}.clues li.act b{color:var(--ink)}
+.clues li.done{text-decoration:line-through;opacity:.5}
+.cluebar{display:flex;align-items:stretch;gap:6px;margin:8px 0 6px;min-height:56px}
+.cbn{width:42px;border:0;border-radius:12px;background:#2a3f66;font-size:1.6rem;font-weight:700}
+.cbt{flex:1;border:0;border-radius:12px;background:#cfe3ff;color:var(--ink);text-align:left;padding:8px 12px;font-size:1rem;line-height:1.25;display:flex;align-items:center;gap:8px}
+.cbt .d{flex:none;font-size:.72rem;font-weight:800;padding:3px 7px;border-radius:6px;background:var(--bg2);color:#fff}
+.kb{display:flex;flex-direction:column;gap:6px;padding:2px 0 max(8px,env(safe-area-inset-bottom));user-select:none;-webkit-user-select:none}
+.kr{display:flex;gap:5px;justify-content:center}
+.k{flex:1;max-width:44px;height:48px;border:0;border-radius:8px;background:#e8eef8;color:var(--ink);font-weight:800;font-size:1.15rem;box-shadow:0 2px 0 #8a99b3;touch-action:manipulation}
+.k:active,.k.down{background:var(--acc);transform:translateY(1px)}
+.k.wide{max-width:66px;flex:1.5;font-size:1rem;background:#b9c6dc}
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;background:#0b1326cc;backdrop-filter:blur(3px)}
+.ocard{width:100%;max-width:400px;max-height:100%;overflow:auto;padding:22px 20px;border-radius:20px;background:linear-gradient(180deg,#24406b,#182d4f);box-shadow:0 20px 50px #0009;text-align:center;animation:rise .25s}
+@keyframes rise{from{transform:translateY(20px);opacity:0}}
+.ocard h2{margin:0 0 8px}
+.stars{font-size:2.4rem;letter-spacing:.1em;margin:4px 0}
+.stars .off{filter:grayscale(1) brightness(.5)}
+.stars span{display:inline-block;animation:pop .4s backwards}.stars span:nth-child(2){animation-delay:.15s}.stars span:nth-child(3){animation-delay:.3s}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.rstats div{padding:8px 4px;border-radius:12px;background:#0e1a3080}.rstats b{display:block;font-size:1.25rem}.rstats span{font-size:.75rem;color:var(--mut)}
+.obtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}.obtns .btn{flex:1;min-width:110px}
+.small{font-size:.88rem;color:var(--mut);margin:4px 0}
+.frow{display:flex;gap:8px;margin-top:8px}
+.frow input{flex:1;min-width:0;height:46px;padding:0 12px;border-radius:12px;border:2px solid #3b5583;background:#0e1a30;color:var(--txt);font:inherit}
+.frow input::placeholder{color:#7f8aa0}
+.lbform{margin-top:6px;padding:10px;border-radius:12px;background:#0e1a3066}
+.lblist{text-align:left;margin:10px 0;padding:0;list-style:none;max-height:44vh;overflow:auto}
+.lblist li{display:flex;gap:10px;padding:7px 10px;border-radius:10px}.lblist li:nth-child(odd){background:#ffffff0a}
+.lblist li b{width:1.8em;color:var(--acc)}.lblist li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lblist li i{font-style:normal;font-weight:800}
+.mine{font-size:.9rem;color:var(--mut)}
+.how ol{text-align:left;padding-left:20px;margin:6px 0}.how li{margin:6px 0}.how .g{color:#7ee2b8}
+#toasts{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
+.toast{padding:8px 14px;border-radius:999px;background:#0e1a30f0;font-weight:700;font-size:.92rem;box-shadow:0 6px 18px #0007;animation:rise .2s}
+.toast.good{background:#1f7a6ef0}.toast.bad{background:#a4252ff0}
+/* desktop: clue lists, no on-screen keyboard */
+@media (min-width:820px) and (min-height:560px){.clues{display:block}.kb.auto{display:none}#play{padding:12px 20px 0}.board{gap:24px}}
+@media (pointer:fine) and (min-width:820px){.kb.auto{display:none}}
+/* phone landscape: grid left, keyboard right */
+@media (max-height:500px) and (orientation:landscape){
+  #play{display:grid;grid-template-columns:1fr minmax(300px,46%);grid-template-rows:auto auto 1fr auto;column-gap:10px;padding:4px max(8px,env(safe-area-inset-right)) 0 max(8px,env(safe-area-inset-left))}
+  .hud{grid-column:1/-1;min-height:40px}.tools{grid-column:2;grid-row:2;padding:0}
+  .board{grid-column:1;grid-row:2/5}.cluebar{grid-column:2;grid-row:3;margin:4px 0;min-height:48px;align-self:start}.kb{grid-column:2;grid-row:4;gap:4px}
+  .k{height:38px;font-size:1rem}.clues{display:none}.btn.sq,.btn{min-height:40px}
+}
+
+.row2{display:flex;gap:8px;margin-top:8px}.row2 .btn{flex:1;padding:10px 6px}
+#maker .panel{padding-bottom:60px}
+.mk-intro{margin:2px 0 12px}
+.mk-meta{display:grid;grid-template-columns:1fr 40%;gap:8px;margin-bottom:10px}
+.mk-head{display:grid;grid-template-columns:36% 1fr 40px;gap:6px;font-size:.78rem;color:var(--mut);font-weight:700;padding:0 2px 4px}
+.mkr{display:grid;grid-template-columns:36% 1fr 40px;gap:6px;margin-bottom:6px}
+#maker input{min-width:0;height:44px;padding:0 10px;border-radius:10px;border:2px solid #3b5583;background:#0e1a30;color:var(--txt);font:inherit}
+#maker input::placeholder{color:#7f8aa0}#maker input.ans{text-transform:uppercase;font-weight:800;letter-spacing:.04em}
+#maker input.err{border-color:var(--bad)}
+.mkr .del{height:44px;border:0;border-radius:10px;background:#ffffff12;color:var(--mut);font-size:1.1rem}
+.mk-act{display:flex;gap:8px;margin:8px 0 12px}.mk-act .btn{flex:1}
+.mk-out{margin:14px 0;padding:14px;border-radius:var(--r);background:#ffffff0d;border:1px solid #ffffff1f}.mk-out p{margin:0 0 6px}
+.archlist{list-style:none;padding:0;margin:10px 0;text-align:left}
+.archlist button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:46px;margin:0 0 6px;padding:8px 12px;border:0;border-radius:12px;background:#ffffff12;color:var(--txt);font:inherit;font-weight:700}
+.archlist button span{font-weight:500;color:var(--mut);font-size:.88rem}.archlist button.ok span{color:var(--acc)}
+
+.row2 .btn{font-size:.92rem}
+.kamuslist{list-style:none;padding:0;margin:10px 0;text-align:left;max-height:46vh;overflow:auto}
+.kamuslist li{padding:8px 10px;border-radius:10px;background:#ffffff0d;margin-bottom:6px;font-size:.9rem;color:var(--mut)}
+.kamuslist li b{display:block;color:var(--acc);letter-spacing:.06em;font-size:1rem}
+.kamuslist li.none{background:none;text-align:center}
+.coach{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--coachB,240px));z-index:30;max-width:min(92vw,380px);padding:10px 14px;border-radius:14px;background:#ffb703;color:#2b1600;font-weight:800;font-size:.95rem;text-align:center;box-shadow:0 8px 24px #0008;animation:bob 1.2s ease-in-out infinite;pointer-events:none}
+.coach::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-8px;border:8px solid transparent;border-bottom:0;border-top-color:#ffb703}
+@keyframes bob{50%{transform:translate(-50%,-5px)}}
+.seo-tts{width:100%;border-collapse:collapse;margin:8px 0 10px;font-size:.92rem}.seo-tts th,.seo-tts td{text-align:left;padding:6px 8px;border-bottom:1px solid #ffffff1a}.seo-tts td:last-child{font-weight:800;letter-spacing:.05em;color:var(--acc)}
+.btn:focus-visible,.k:focus-visible,.tbtn:focus-visible,.lv:focus-visible,input:focus-visible{outline:3px solid #8ecae6;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+.who-line{margin:-4px 0 2px;text-align:center}
+.linkbtn{background:none;border:0;color:var(--mut);font:inherit;font-size:.92rem;cursor:pointer;padding:4px 8px;border-radius:8px}
+.linkbtn u{color:var(--acc);font-weight:700;text-underline-offset:3px}.linkbtn:hover{background:#ffffff0d}
+.wholist li.none{justify-content:center;color:var(--mut);background:none}
+.wholist li.me{outline:2px solid var(--acc);background:#ffffff14}
+.wholist li i{font-weight:600;color:var(--mut);font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="bl" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"inputs": ["#nameIn", "#nameIn2"], "keys": [], "max": 15, "icon": "\ud83e\udde9", "title": "TTS Kilat", "sub": "Namamu dipakai di daftar selesai TTS Harian & papan rekor.", "accent": "#ffcf3f", "slug": "ttskilat"};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><div class="ltiles"><b>T</b><b>T</b><b>S</b></div><span class="l2">KILAT</span></div>
+    <h1 class="sr-only">TTS Kilat: teka teki silang online</h1>
+    <p class="tagline">Teka teki silang Indonesia yang selesai sekali duduk. Buntu? Minta huruf, jangan googling.</p>
+    <button type="button" class="daily-card" id="dailyBtn">
+      <span class="dc-top"><span class="dc-tag">&#x1F4C5; TTS HARIAN</span><span id="dailyStreak" class="dc-streak"></span></span>
+      <span class="dc-date" id="dailyDate"></span>
+      <span class="dc-sub" id="dailySub">Satu TTS baru tiap hari, sama untuk semua pemain</span>
+    </button>
+    <p class="who-line" id="whoLine" hidden><button type="button" class="linkbtn" id="whoBtn"><span id="whoCnt">&#x1F465; Daftar yang sudah selesai hari ini</span> <u>lihat</u></button></p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">&#x25B6;</span> <span id="playLbl">Main TTS</span></button>
+    <div class="row3">
+      <button type="button" class="btn" id="packBtn"><span aria-hidden="true">&#x1F9E9;</span> Paket</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">&#x2753;</span> Cara main</button>
+      <button type="button" class="btn" id="lbBtn"><span aria-hidden="true">&#x1F3C6;</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">&#x1F50A;</button>
+    </div>
+    <div class="row2">
+      <button type="button" class="btn" id="makeBtn"><span aria-hidden="true">&#x270F;&#xFE0F;</span> Buat TTS</button>
+      <button type="button" class="btn" id="archBtn"><span aria-hidden="true">&#x1F4C5;</span> Arsip</button>
+      <button type="button" class="btn" id="kamusBtn"><span aria-hidden="true">&#x1F50E;</span> Kamus TTS</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+  </div>
+  <section class="seo">
+    <h2>Teka teki silang online bahasa Indonesia</h2>
+    <p>TTS Kilat adalah game teka teki silang (TTS) online gratis yang bisa langsung dimainkan di browser HP atau laptop. Isi kotak mendatar dan menurun sesuai pertanyaan. Setiap kata yang benar langsung berubah hijau, jadi kamu tahu sedang di jalur yang benar. Satu TTS berisi 6 sampai 11 kata, cukup untuk mengisi waktu menunggu atau istirahat sebentar.</p>
+    <h3>Buntu? Tidak perlu cari jawaban TTS di Google</h3>
+    <p>Banyak orang mencari "jawaban TTS" saat terjebak di satu pertanyaan. Di TTS Kilat, bantuan sudah ada di dalam game: buka satu huruf, buka satu kata, atau cek kotak yang salah. Bintang memang berkurang kalau pakai bantuan, tapi TTS tetap bisa diselesaikan.</p>
+    <h3>TTS Harian, sama untuk semua pemain</h3>
+    <p>Setiap hari ada satu TTS Harian baru yang sama untuk semua orang di Indonesia (berganti tengah malam WITA). Selesaikan setiap hari untuk menjaga streak &#x1F525;, lalu bagikan hasilmu ke WhatsApp tanpa membocorkan jawaban.</p>
+    <h3>TTS pintar dengan 7 tema</h3>
+    <p>Ada 105 TTS dalam 7 paket: Campur Sari, Kuliner Nusantara (rendang, pempek, rempah-rempah), Fauna, Alam &amp; Geografi, Budaya Indonesia, Sekolah &amp; Sains, dan Sehari-hari. Mulai dari yang mudah untuk anak SD sampai yang bikin mikir untuk orang dewasa. Kumpulkan Poin TTS dan masuk papan rekor.</p>
+    <h3>Contoh soal TTS dan jawabannya</h3>
+    <table class="seo-tts"><thead><tr><th>Pertanyaan TTS</th><th>Jawaban</th></tr></thead><tbody>
+      <tr><td>Masakan daging bersantan dan rempah khas Minang (7)</td><td>RENDANG</td></tr>
+      <tr><td>Olahan ikan dan sagu khas Palembang (6)</td><td>PEMPEK</td></tr>
+      <tr><td>Alat musik bambu dari Jawa Barat yang digoyang (8)</td><td>ANGKLUNG</td></tr>
+      <tr><td>Kerbau kerdil khas Sulawesi (4)</td><td>ANOA</td></tr>
+      <tr><td>Nasi berbentuk kerucut untuk syukuran (7)</td><td>TUMPENG</td></tr>
+      <tr><td>Rumah adat Papua berbentuk bulat (5)</td><td>HONAI</td></tr>
+      <tr><td>Gunung tertinggi di Pulau Jawa (6)</td><td>SEMERU</td></tr>
+      <tr><td>Tempat sungai bertemu laut (5)</td><td>MUARA</td></tr>
+    </tbody></table>
+    <p>Lebih dari 500 kata dan pertanyaan TTS bahasa Indonesia bisa dicari lewat <b>&#x1F50E; Kamus TTS</b>: ketik kata kunci pertanyaan atau pola huruf seperti <b>R?ND?NG</b>.</p>
+    <h3>Buat TTS sendiri online, gratis</h3>
+    <p>Mau membuat teka teki silang untuk kelas, kuis kantor, atau ulang tahun teman? Buka <b>Buat TTS</b>, tulis jawaban dan pertanyaannya, lalu TTS Kilat menyusun kotak mendatar dan menurun secara otomatis. Bagikan link-nya lewat WhatsApp, temanmu bisa langsung main tanpa download. Cocok untuk guru yang mencari TTS maker bahasa Indonesia.</p>
+    <h3>Nyaman di HP</h3>
+    <p>TTS Kilat memakai keyboard sendiri di layar, jadi keyboard HP tidak menutupi kotak TTS. Ketuk kotak untuk memilih, ketuk lagi untuk ganti arah mendatar atau menurun. Di laptop, langsung ketik, pakai panah untuk pindah, dan Tab untuk pertanyaan berikutnya. Tanpa download dan tanpa iklan.</p>
+  </section>
+  <footer class="site-footer"><p><strong>TTS Kilat</strong> &#xB7; teka teki silang gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<section id="packs" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="packsBack" aria-label="Kembali">&#x2190;</button><h2>Pilih TTS</h2><span class="ptot" id="packsStars"></span></div>
+    <div id="packList"></div>
+  </div>
+</section>
+
+<section id="maker" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="makerBack" aria-label="Kembali">&#x2190;</button><h2>&#x270F;&#xFE0F; Buat TTS sendiri</h2></div>
+    <p class="small mk-intro">Tulis kata dan pertanyaannya, kotak TTS disusun otomatis. Kirim link-nya ke teman, kelas, atau grup WhatsApp. Gratis, tanpa daftar.</p>
+    <div class="mk-meta"><input id="mkTitle" maxlength="40" placeholder="Judul, mis. TTS Kelas 5B" aria-label="Judul TTS"><input id="mkAuthor" maxlength="20" placeholder="JadiDaring" aria-label="Nama pembuat" data-jd-account-name></div>
+    <div class="mk-head" aria-hidden="true"><span>Jawaban</span><span>Pertanyaan</span></div>
+    <div id="mkRows"></div>
+    <div class="mk-act"><button type="button" class="btn" id="mkAdd">&#xFF0B; Tambah kata</button><button type="button" class="btn" id="mkEx">&#x1F3B2; Isi contoh</button></div>
+    <button type="button" class="btn big primary" id="mkBuild">&#x1F9E9; Susun TTS</button>
+    <div id="mkOut" class="mk-out" hidden>
+      <p id="mkMsg"></p>
+      <div class="obtns"><button type="button" class="btn primary" id="mkPlay">&#x25B6; Coba main</button><button type="button" class="btn" id="mkShare">&#x1F4E4; Bagikan link</button></div>
+    </div>
+    <p class="small">Tips: 6&#x2013;12 kata yang punya huruf sama (A, I, E, N, R) paling mudah disilangkan. Jawaban hanya huruf A&#x2013;Z, tanpa spasi.</p>
+  </div>
+</section>
+
+<section id="play" class="screen" hidden>
+  <div class="hud">
+    <button type="button" class="btn sq" id="playBack" aria-label="Kembali">&#x2190;</button>
+    <div class="htitle"><b id="pzTitle"></b><span id="pzSub"></span></div>
+    <span class="timer" id="timer">0:00</span>
+  </div>
+  <div class="tools">
+    <button type="button" class="tbtn" id="hintLetter"><span aria-hidden="true">&#x1F4A1;</span> Huruf</button>
+    <button type="button" class="tbtn" id="hintWord"><span aria-hidden="true">&#x1F4D6;</span> Kata</button>
+    <button type="button" class="tbtn" id="checkBtn"><span aria-hidden="true">&#x2714;</span> Cek</button>
+    <span class="prog" id="prog"></span>
+  </div>
+  <div class="board">
+    <div class="gridwrap" id="gridWrap"><div id="grid" role="grid" aria-label="Kotak TTS"></div></div>
+    <aside class="clues" id="clueLists" aria-label="Daftar pertanyaan"><h3>Mendatar</h3><ol id="clA"></ol><h3>Menurun</h3><ol id="clD"></ol></aside>
+  </div>
+  <div class="cluebar" id="clueBar">
+    <button type="button" class="cbn" id="cluePrev" aria-label="Pertanyaan sebelumnya">&#x2039;</button>
+    <button type="button" class="cbt" id="clueText" aria-live="polite"></button>
+    <button type="button" class="cbn" id="clueNext" aria-label="Pertanyaan berikutnya">&#x203A;</button>
+  </div>
+  <div class="kb" id="kb" aria-label="Keyboard"></div>
+  <div class="coach" id="coach" hidden role="status"></div>
+</section>
+
+<div class="overlay" id="result" hidden>
+  <div class="ocard">
+    <h2 id="resTitle">Selesai!</h2>
+    <div class="stars" id="resStars"></div>
+    <div class="rstats" id="resStats"></div>
+    <div id="lbForm" class="lbform" hidden>
+      <p class="small" id="lbFormTxt"></p>
+      <div class="frow"><input id="nameIn" maxlength="15" placeholder="JadiDaring" autocomplete="off" aria-label="Nama"><button type="button" class="btn primary" id="sendBtn">Kirim</button></div>
+    </div>
+    <div class="obtns">
+      <button type="button" class="btn primary" id="nextBtn">Lanjut &#x25B6;</button>
+      <button type="button" class="btn" id="shareBtn" hidden>&#x1F4E4; Bagikan</button>
+      <button type="button" class="btn" id="whoFromRes" hidden>&#x1F465; Daftar hari ini</button>
+      <button type="button" class="btn" id="resHome">&#x1F3E0; Menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="lb" hidden>
+  <div class="ocard">
+    <h2>&#x1F3C6; Rekor Poin TTS</h2>
+    <p class="small">Total Poin TTS dari semua TTS yang kamu selesaikan.</p>
+    <ol id="lbList" class="lblist"></ol>
+    <div class="mine" id="lbMine"></div>
+    <div class="frow" id="lbSendRow"><input id="nameIn2" maxlength="15" placeholder="JadiDaring" autocomplete="off" aria-label="Nama"><button type="button" class="btn primary" id="sendBtn2">Kirim poinku</button></div>
+    <div class="obtns"><button type="button" class="btn" id="lbClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="who" hidden>
+  <div class="ocard">
+    <h2>&#x2705; Sudah selesai TTS Harian</h2>
+    <p class="small" id="whoDate"></p>
+    <ol id="whoList" class="lblist wholist"></ol>
+    <div class="mine" id="whoMine"></div>
+    <div class="obtns"><button type="button" class="btn primary" id="whoPlay">&#x1F4C5; Main TTS Harian</button><button type="button" class="btn" id="whoClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="how" hidden>
+  <div class="ocard how">
+    <h2>Cara main</h2>
+    <ol>
+      <li><b>Ketuk kotak</b> untuk memilih. Ketuk lagi untuk ganti arah <b>mendatar &#x2194; menurun</b>.</li>
+      <li>Baca pertanyaan di bar bawah, lalu ketik jawabannya. Kata yang benar langsung <b class="g">hijau</b>.</li>
+      <li>Buntu? <b>&#x1F4A1; Huruf</b> membuka satu kotak, <b>&#x1F4D6; Kata</b> membuka satu kata, <b>&#x2714; Cek</b> menandai huruf yang salah.</li>
+      <li>&#x2B50;&#x2B50;&#x2B50; = tanpa bantuan dan tanpa cek. Makin cepat, makin banyak Poin TTS.</li>
+      <li>Laptop: ketik langsung, panah untuk pindah, <b>Tab</b> untuk pertanyaan berikutnya, <b>Spasi</b> ganti arah.</li>
+    </ol>
+    <div class="obtns"><button type="button" class="btn primary" id="howClose">Siap!</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="arch" hidden>
+  <div class="ocard">
+    <h2>&#x1F4C5; Arsip TTS Harian</h2>
+    <p class="small">Ketinggalan? Main TTS Harian 7 hari terakhir. Streak &#x1F525; hanya dari TTS hari ini.</p>
+    <ul id="archList" class="archlist"></ul>
+    <div class="obtns"><button type="button" class="btn" id="archClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="kamus" hidden>
+  <div class="ocard kamus">
+    <h2>&#x1F50E; Kamus TTS</h2>
+    <p class="small">Cari jawaban dari kata kunci pertanyaan, atau pola huruf: tulis <b>?</b> untuk huruf yang belum tahu, mis. <b>R?ND?NG</b>.</p>
+    <div class="frow"><input id="kamusIn" maxlength="40" placeholder="mis. rempah atau ?A?I" autocomplete="off" spellcheck="false" aria-label="Kata kunci atau pola"></div>
+    <ul id="kamusList" class="kamuslist" aria-live="polite"></ul>
+    <div class="obtns"><button type="button" class="btn" id="kamusClose">Tutup</button></div>
+  </div>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+<script>
+/* generated by tools/mkbank.js from data/bank.txt */
+(function (root) { root.TTSBank = [["NASI","Makanan pokok dari beras yang ditanak","M",1],["SOTO","Kuah berempah berisi ayam atau daging, khas Lamongan atau Betawi","M",1],["SATE","Potongan daging ditusuk lalu dibakar","M",1],["BAKSO","Bola daging disajikan dengan kuah dan mi","M",1],["RENDANG","Masakan daging bersantan dan rempah khas Minang","M",1],["TEMPE","Makanan dari kedelai yang difermentasi","M",1],["TAHU","Makanan dari sari kedelai yang digumpalkan","M",1],["SAMBAL","Ulekan cabai pedas pendamping makan","M",1],["KERUPUK","Camilan renyah yang digoreng, sering dari tapioka","M",1],["GUDEG","Masakan nangka muda manis khas Yogyakarta","M",2],["PEMPEK","Olahan ikan dan sagu khas Palembang, dimakan dengan cuko","M",2],["PAPEDA","Bubur sagu khas Maluku dan Papua","M",2],["RAWON","Sup daging berkuah hitam karena kluwek","M",2],["KLUWEK","Biji hitam pemberi warna pada rawon","M",3],["GADO","___-gado, sayuran rebus bersiram bumbu kacang","M",1],["PECEL","Sayur rebus bersiram sambal kacang khas Madiun","M",2],["SERABI","Kue dari tepung beras dimasak di tungku tanah liat","M",2],["KLEPON","Kue bola hijau berisi gula merah dan bertabur kelapa","M",2],["ONDE","___-onde, bola ketan bertabur wijen","M",2],["LONTONG","Nasi yang dimasak dalam daun pisang hingga padat","M",1],["KETUPAT","Nasi dalam anyaman janur, khas Lebaran","M",1],["OPOR","Masakan ayam berkuah santan kuning","M",1],["SAYUR","Makanan dari daun, batang, atau buah tanaman","M",1],["BUBUR","Nasi yang dimasak dengan banyak air hingga lembek","M",1],["MARTABAK","Kue lebar manis atau telur yang dijual malam hari","M",1],["SEBLAK","Kerupuk basah pedas khas Bandung","M",1],["CIRENG","Aci digoreng, jajanan Sunda","M",2],["CILOK","Aci dicolok, bola kenyal bersaus kacang","M",2],["BATAGOR","Bakso tahu goreng khas Bandung","M",2],["SIOMAY","Kukusan ikan dengan bumbu kacang","M",1],["KOLAK","Hidangan pisang dan ubi berkuah santan gula merah","M",1],["DODOL","Penganan legit dari ketan dan gula, khas Garut","M",2],["JAMU","Minuman tradisional dari rempah dan tumbuhan","M",1],["TEH","Minuman dari seduhan daun yang dikeringkan","M",1],["KOPI","Minuman hitam dari biji yang disangrai","M",1],["SUSU","Cairan putih bergizi dari sapi atau kambing","M",1],["GULA","Pemanis dari tebu atau aren","M",1],["GARAM","Bumbu asin dari air laut","M",1],["MADU","Cairan manis buatan lebah","M",1],["JAHE","Rimpang pedas hangat untuk wedang","M",1],["KUNYIT","Rimpang kuning pewarna masakan","M",1],["LENGKUAS","Rimpang yang juga disebut laos","M",2],["SERAI","Batang harum untuk bumbu dan pengusir nyamuk","M",2],["CENGKIH","Rempah dari kuncup bunga kering, asli Maluku","M",2],["PALA","Rempah dari Banda yang dulu diburu bangsa Eropa","M",2],["LADA","Rempah yang juga disebut merica","M",2],["KAYUMANIS","Kulit kayu harum untuk kue dan minuman","M",3],["DURIAN","Buah berduri, dijuluki raja buah","M",1],["MANGGA","Buah berdaging kuning, ada jenis harum manis","M",1],["RAMBUTAN","Buah merah berambut","M",1],["SALAK","Buah bersisik seperti kulit ular","M",1],["PISANG","Buah panjang kuning, ada jenis raja dan ambon","M",1],["NANAS","Buah bermahkota dengan kulit bersisik","M",1],["JERUK","Buah berkulit oranye kaya vitamin C","M",1],["PEPAYA","Buah oranye yang baik untuk pencernaan","M",1],["MANGGIS","Buah ungu, dijuluki ratu buah","M",2],["SIRSAK","Buah hijau berduri lunak, juga disebut nangka belanda","M",2],["JAMBU","Buah, ada jenis biji, air, dan kristal","M",1],["KELAPA","Buah dengan air segar dan daging putih","M",1],["ALPUKAT","Buah hijau berlemak baik untuk jus","M",1],["SEMANGKA","Buah besar hijau, merah dan berair di dalamnya","M",1],["APEL","Buah merah atau hijau, terkenal dari Malang","M",1],["ANGGUR","Buah kecil bergerombol, bahan kismis","M",1],["TOMAT","Buah merah untuk sambal dan saus","M",1],["CABAI","Buah pedas bahan sambal","M",1],["BAWANG","Umbi bumbu dasar, ada merah dan putih","M",1],["WORTEL","Umbi oranye yang baik untuk mata","M",1],["KANGKUNG","Sayuran air yang sering ditumis","M",1],["BAYAM","Sayuran hijau kaya zat besi","M",1],["TERONG","Sayuran ungu panjang","M",1],["JAGUNG","Tanaman berbiji kuning, bisa dibakar","M",1],["SINGKONG","Umbi bahan tapioka dan tape","M",1],["UBI","Umbi manis, ada yang ungu","M",1],["SAGU","Tepung dari batang pohon rumbia","M",2],["TAPE","Singkong atau ketan yang difermentasi","M",2],["ROTI","Makanan dari adonan tepung yang dipanggang","M",1],["MIE","Makanan panjang dari adonan tepung","M",1],["TELUR","Hasil dari ayam yang bisa didadar","M",1],["KECAP","Saus hitam manis dari kedelai","M",1],["TERASI","Bumbu udang fermentasi beraroma tajam","M",2],["KUCING","Hewan peliharaan yang suka mengeong","H",1],["ANJING","Hewan setia penjaga rumah yang menggonggong","H",1],["GAJAH","Hewan besar berbelalai","H",1],["HARIMAU","Kucing besar loreng, ada jenis Sumatra","H",1],["KOMODO","Kadal raksasa dari Nusa Tenggara Timur","H",1],["ORANGUTAN","Kera besar berambut merah dari Kalimantan","H",2],["BADAK","Hewan bercula, ada jenis Jawa di Ujung Kulon","H",1],["ANOA","Kerbau kerdil khas Sulawesi","H",2],["TARSIUS","Primata mungil bermata besar dari Sulawesi","H",3],["BEKANTAN","Monyet berhidung panjang dari Kalimantan","H",3],["JALAK","Burung, ada jenis Bali yang putih","H",2],["MERAK","Burung berbulu ekor indah seperti kipas","H",1],["ELANG","Burung pemangsa, ada jenis Jawa","H",1],["GARUDA","Burung lambang negara Indonesia","H",1],["KAKATUA","Burung jambul, pandai meniru suara","H",2],["BEBEK","Unggas yang suka berenang, bersuara kwek","H",1],["AYAM","Unggas yang berkokok di pagi hari","H",1],["SAPI","Hewan ternak penghasil susu","H",1],["KAMBING","Hewan ternak berjenggot, mengembik","H",1],["KERBAU","Hewan pembajak sawah","H",1],["KUDA","Hewan tunggangan yang meringkik","H",1],["KELINCI","Hewan bertelinga panjang suka wortel","H",1],["TIKUS","Hewan pengerat musuh kucing","H",1],["ULAR","Hewan melata tanpa kaki","H",1],["BUAYA","Reptil besar penghuni sungai, bermoncong panjang","H",1],["KURA","___-kura, reptil bertempurung","H",1],["PENYU","Reptil laut bertempurung yang bertelur di pantai","H",1],["KATAK","Hewan amfibi yang melompat dan berbunyi kwak","H",1],["IKAN","Hewan air bernapas dengan insang","H",1],["HIU","Ikan besar bergigi tajam","H",1],["PAUS","Mamalia laut terbesar","H",1],["LUMBA","___-lumba, mamalia laut yang cerdas","H",1],["CUMI","___-cumi, hewan laut bertinta","H",1],["UDANG","Hewan air berkulit keras dan bengkok","H",1],["KEPITING","Hewan bercapit yang berjalan menyamping","H",1],["KERANG","Hewan bercangkang dua, ada yang berisi mutiara","H",1],["LEBAH","Serangga penghasil madu","H",1],["SEMUT","Serangga kecil yang hidup berkoloni","H",1],["NYAMUK","Serangga penghisap darah","H",1],["KUPU","___-kupu, serangga bersayap indah","H",1],["CICAK","Reptil kecil di dinding rumah","H",1],["TOKEK","Reptil yang bersuara seperti namanya","H",2],["KELELAWAR","Mamalia terbang di malam hari","H",1],["MONYET","Hewan primata berekor yang lincah","H",1],["RUSA","Hewan bertanduk bercabang","H",1],["BERUANG","Hewan besar berbulu, ada jenis madu","H",1],["SINGA","Raja hutan berambut surai","H",1],["JERAPAH","Hewan berleher paling panjang","H",1],["ZEBRA","Kuda belang hitam putih","H",1],["UNTA","Hewan gurun berpunuk","H",1],["LANDAK","Hewan berduri tajam","H",2],["BELUT","Ikan licin mirip ular di sawah","H",2],["LELE","Ikan berkumis yang sering dipecel","H",1],["GURAMI","Ikan air tawar, enak digoreng atau dibakar","H",2],["TONGKOL","Ikan laut kerabat tuna","H",2],["GUNUNG","Daratan yang menjulang tinggi","G",1],["BUKIT","Gunung kecil","G",1],["PANTAI","Tepi laut berpasir","G",1],["LAUT","Perairan asin yang luas","G",1],["SUNGAI","Aliran air dari hulu ke hilir","G",1],["DANAU","Genangan air luas di daratan, contohnya Toba","G",1],["PULAU","Daratan yang dikelilingi air","G",1],["SELAT","Laut sempit di antara dua pulau","G",1],["TELUK","Laut yang menjorok ke daratan","G",1],["TANJUNG","Daratan yang menjorok ke laut","G",1],["LEMBAH","Dataran rendah di antara gunung","G",2],["GURUN","Padang pasir yang sangat kering","G",1],["HUTAN","Kawasan yang ditumbuhi banyak pohon","G",1],["SAWAH","Lahan basah untuk menanam padi","G",1],["LADANG","Lahan kering untuk bercocok tanam","G",2],["KAWAH","Lubang di puncak gunung api","G",2],["LAHAR","Aliran material vulkanik dari gunung api","G",2],["MAGMA","Batuan cair panas di dalam bumi","G",2],["GEMPA","Getaran bumi","G",1],["BANJIR","Air meluap menggenangi daratan","G",1],["HUJAN","Air yang turun dari awan","G",1],["AWAN","Kumpulan uap air di langit","G",1],["PELANGI","Lengkung warna-warni setelah hujan","G",1],["PETIR","Kilat yang menyambar disertai guruh","G",1],["ANGIN","Udara yang bergerak","G",1],["MATAHARI","Bintang pusat tata surya","G",1],["BULAN","Satelit alami bumi","G",1],["BINTANG","Benda langit yang berkelip di malam hari","G",1],["BUMI","Planet tempat kita tinggal","G",1],["MARS","Planet merah","G",1],["JUPITER","Planet terbesar di tata surya","G",2],["SATURNUS","Planet bercincin","G",2],["KOMET","Benda langit berekor","G",2],["JAWA","Pulau terpadat di Indonesia","G",1],["BALI","Pulau Dewata","G",1],["SUMATRA","Pulau tempat Danau Toba","G",1],["PAPUA","Pulau di ujung timur Indonesia","G",1],["LOMBOK","Pulau tempat Gunung Rinjani","G",2],["BORNEO","Nama lain pulau Kalimantan","G",2],["MALUKU","Kepulauan rempah-rempah","G",2],["JAKARTA","Kota terbesar di Indonesia, dulu bernama Batavia","G",1],["NUSANTARA","Nama lain kepulauan Indonesia, juga nama IKN","G",2],["BANDUNG","Kota Kembang","G",1],["MEDAN","Ibu kota Sumatra Utara","G",1],["SURABAYA","Kota Pahlawan","G",1],["PADANG","Kota asal rendang","G",1],["MAKASSAR","Kota pelabuhan di Sulawesi Selatan","G",2],["AMBON","Ibu kota Maluku, kota musik","G",2],["BROMO","Gunung api di Jawa Timur, terkenal dengan lautan pasirnya","G",2],["MERAPI","Gunung api paling aktif di dekat Yogyakarta","G",2],["RINJANI","Gunung tertinggi di Lombok","G",2],["TOBA","Danau vulkanik terbesar di dunia, di Sumatra Utara","G",1],["MAHAKAM","Sungai besar di Kalimantan Timur","G",3],["MUSI","Sungai yang membelah Palembang","G",2],["BENGAWAN","Sungai besar, ada yang bernama Solo","G",2],["RUMAH","Bangunan tempat tinggal","B",1],["PINTU","Tempat keluar masuk ruangan","B",1],["JENDELA","Lubang di dinding untuk cahaya dan udara","B",1],["ATAP","Penutup bagian atas rumah","B",1],["LANTAI","Alas ruangan tempat berpijak","B",1],["DINDING","Sekat pembatas ruangan","B",1],["KURSI","Tempat duduk","B",1],["MEJA","Perabot berkaki untuk menaruh barang","B",1],["LEMARI","Tempat menyimpan pakaian","B",1],["KASUR","Alas tidur yang empuk","B",1],["BANTAL","Alas kepala saat tidur","B",1],["SELIMUT","Kain penghangat badan saat tidur","B",1],["SAPU","Alat untuk membersihkan lantai","B",1],["EMBER","Wadah air bertangkai","B",1],["PIRING","Wadah datar untuk makan","B",1],["GELAS","Wadah untuk minum","B",1],["SENDOK","Alat makan untuk menyuap","B",1],["GARPU","Alat makan bergigi","B",1],["PISAU","Alat tajam untuk memotong","B",1],["PANCI","Wadah untuk merebus","B",1],["WAJAN","Wadah cekung untuk menggoreng","B",1],["KOMPOR","Alat untuk memasak dengan api","B",1],["ULEKAN","Batu penghalus sambal, pasangan cobek","B",2],["COBEK","Wadah batu untuk mengulek sambal","B",2],["LAMPU","Alat penerang","B",1],["KIPAS","Alat untuk mengalirkan angin","B",1],["CERMIN","Kaca untuk berkaca","B",1],["SISIR","Alat untuk merapikan rambut","B",1],["HANDUK","Kain untuk mengeringkan badan","B",1],["SABUN","Pembersih badan yang berbusa","B",1],["JAM","Alat penunjuk waktu","B",1],["KUNCI","Alat untuk membuka gembok","B",1],["GEMBOK","Kunci gantung","B",2],["PAYUNG","Pelindung dari hujan dan panas","B",1],["TAS","Wadah untuk membawa barang","B",1],["SEPATU","Alas kaki yang menutupi kaki","B",1],["SANDAL","Alas kaki terbuka","B",1],["TOPI","Penutup kepala","B",1],["BAJU","Pakaian penutup badan","B",1],["CELANA","Pakaian penutup kaki","B",1],["SARUNG","Kain yang dijahit melingkar, dipakai untuk salat","B",1],["BATIK","Kain bermotif khas Indonesia, warisan UNESCO","K",1],["KEBAYA","Busana tradisional wanita","K",1],["PECI","Penutup kepala hitam khas Indonesia","K",1],["BLANGKON","Penutup kepala pria Jawa","K",2],["ULOS","Kain tenun khas Batak","K",2],["SONGKET","Kain tenun bersulam benang emas","K",2],["KERIS","Senjata tradisional Jawa berkelok","K",1],["RENCONG","Senjata tradisional Aceh","K",2],["MANDAU","Senjata tradisional Dayak","K",2],["KUJANG","Senjata tradisional Sunda","K",2],["WAYANG","Pertunjukan boneka kulit dengan dalang","K",1],["DALANG","Pemain wayang","K",1],["GAMELAN","Orkestra tradisional Jawa dan Bali","K",1],["ANGKLUNG","Alat musik bambu yang digoyang, khas Sunda","K",1],["SASANDO","Alat musik petik dari daun lontar, khas Rote","K",2],["KENDANG","Alat musik pukul berbentuk tabung","K",2],["SULING","Alat musik tiup dari bambu","K",1],["GONG","Alat musik pukul bundar besar","K",1],["TIFA","Alat musik pukul khas Papua dan Maluku","K",2],["REOG","Kesenian bertopeng singa besar dari Ponorogo","K",2],["JAIPONG","Tarian dari Jawa Barat","K",2],["SAMAN","Tari seribu tangan dari Aceh","K",2],["KECAK","Tarian Bali dengan paduan suara cak","K",2],["PENDET","Tari penyambutan dari Bali","K",3],["TORTOR","Tari tradisional Batak","K",3],["PANTUN","Puisi lama bersampiran dan berisi","K",1],["SYAIR","Puisi lama tiap bait empat baris berakhiran sama","K",2],["GURINDAM","Puisi lama dua baris berisi nasihat","K",3],["DONGENG","Cerita rakyat untuk anak-anak","K",1],["CANDI","Bangunan kuno, contohnya Borobudur","K",1],["BOROBUDUR","Candi Buddha terbesar di dunia","K",2],["PRAMBANAN","Candi Hindu di Yogyakarta","K",2],["KERATON","Istana raja","K",2],["LEBARAN","Hari raya setelah puasa","K",1],["MUDIK","Pulang kampung menjelang Lebaran","K",1],["NYEPI","Hari raya Hindu yang hening di Bali","K",2],["IMLEK","Tahun baru Tionghoa","K",1],["WAISAK","Hari raya umat Buddha","K",2],["NATAL","Hari raya umat Kristiani pada 25 Desember","K",1],["SEKATEN","Perayaan Maulid di Keraton Yogyakarta dan Solo","K",3],["GOTONG","___ royong, bekerja bersama-sama","K",1],["ARISAN","Kumpulan uang yang diundi bergiliran","K",1],["KENDURI","Selamatan atau makan bersama untuk doa","K",2],["MERDEKA","Bebas dari penjajahan","K",1],["PANCASILA","Dasar negara Indonesia","K",1],["SUMPAH","___ Pemuda, ikrar 28 Oktober 1928","K",1],["PAHLAWAN","Pejuang yang gagah berani","K",1],["BENDERA","Kain lambang negara, Merah Putih","K",1],["RUPIAH","Mata uang Indonesia","K",1],["KEPALA","Bagian tubuh paling atas","T",1],["RAMBUT","Tumbuh di kepala","T",1],["MATA","Indra penglihatan","T",1],["TELINGA","Indra pendengaran","T",1],["HIDUNG","Indra penciuman","T",1],["LIDAH","Indra pengecap","T",1],["KULIT","Indra peraba","T",1],["GIGI","Alat pengunyah di mulut","T",1],["BIBIR","Bagian tepi mulut","T",1],["LEHER","Penghubung kepala dan badan","T",1],["BAHU","Pundak","T",1],["TANGAN","Anggota badan untuk memegang","T",1],["JARI","Ada lima di setiap tangan","T",1],["KAKI","Anggota badan untuk berjalan","T",1],["LUTUT","Sendi di tengah kaki","T",1],["PERUT","Bagian badan tempat lambung","T",1],["JANTUNG","Organ pemompa darah","T",1],["PARU","___-paru, organ pernapasan","T",1],["GINJAL","Organ penyaring darah dan penghasil urine","T",2],["OTAK","Pusat saraf di dalam kepala","T",1],["TULANG","Kerangka penyangga tubuh","T",1],["DARAH","Cairan merah yang mengalir di pembuluh","T",1],["DOKTER","Orang yang mengobati pasien","T",1],["PERAWAT","Tenaga kesehatan pendamping dokter","T",1],["OBAT","Penyembuh penyakit","T",1],["DEMAM","Suhu badan naik karena sakit","T",1],["BATUK","Mengeluarkan udara keras dari tenggorokan","T",1],["PILEK","Hidung meler karena flu","T",1],["VAKSIN","Suntikan pembentuk kekebalan","T",1],["TIDUR","Istirahat dengan memejamkan mata","T",1],["SEKOLAH","Tempat belajar","S",1],["GURU","Pengajar di sekolah","S",1],["MURID","Orang yang belajar di sekolah","S",1],["BUKU","Lembaran kertas berjilid untuk dibaca","S",1],["PENSIL","Alat tulis dari grafit","S",1],["PENA","Alat tulis bertinta","S",1],["PENGHAPUS","Alat untuk menghilangkan tulisan pensil","S",1],["PENGGARIS","Alat untuk membuat garis lurus","S",1],["PAPAN","___ tulis di depan kelas","S",1],["KAPUR","Alat tulis putih di papan hitam","S",1],["KELAS","Ruang belajar","S",1],["UJIAN","Tes untuk mengukur kemampuan","S",1],["RAPOR","Buku laporan nilai siswa","S",1],["LIBUR","Hari tidak masuk sekolah","S",1],["PETA","Gambar permukaan bumi pada bidang datar","S",1],["GLOBE","Tiruan bola bumi","S",2],["ATOM","Partikel terkecil penyusun unsur","S",2],["OKSIGEN","Gas yang kita hirup untuk bernapas","S",1],["KARBON","Unsur penyusun arang dan intan","S",2],["MAGNET","Benda yang menarik besi","S",1],["LISTRIK","Energi yang mengalir di kabel","S",1],["ENERGI","Kemampuan untuk melakukan kerja","S",1],["GAYA","Tarikan atau dorongan","S",1],["MASSA","Banyaknya zat dalam benda, satuannya kilogram","S",2],["SUHU","Ukuran panas atau dinginnya benda","S",1],["LENSA","Kaca pembias cahaya pada kacamata","S",2],["SEL","Unit terkecil makhluk hidup","S",1],["DAUN","Bagian tumbuhan tempat fotosintesis","S",1],["AKAR","Bagian tumbuhan di dalam tanah","S",1],["BATANG","Bagian tumbuhan penopang daun","S",1],["BUNGA","Bagian tumbuhan yang indah dan harum","S",1],["BIJI","Bakal tanaman baru di dalam buah","S",1],["POHON","Tumbuhan berbatang kayu yang tinggi","S",1],["RUMPUT","Tumbuhan pendek penutup tanah","S",1],["BAMBU","Tumbuhan beruas untuk anyaman","S",1],["ANGKA","Lambang bilangan","S",1],["TAMBAH","Operasi hitung dengan tanda plus","S",1],["KURANG","Operasi hitung dengan tanda minus","S",1],["KALI","Operasi hitung dengan tanda \u00d7","S",1],["BAGI","Operasi hitung dengan tanda \u00f7","S",1],["SEGITIGA","Bangun datar bersisi tiga","S",1],["PERSEGI","Bangun datar bersisi empat sama panjang","S",1],["LINGKARAN","Bangun datar bulat","S",1],["KUBUS","Bangun ruang bersisi enam persegi","S",1],["BOLA","Bangun ruang bulat sempurna","S",1],["PRISMA","Bangun ruang dengan alas dan tutup sama","S",2],["SUDUT","Pertemuan dua garis, diukur dalam derajat","S",1],["DERAJAT","Satuan sudut atau suhu","S",2],["METER","Satuan panjang","S",1],["LITER","Satuan volume","S",1],["GRAM","Satuan berat yang kecil","S",1],["DETIK","Satuan waktu terkecil sehari-hari","S",1],["MENIT","Enam puluh detik","S",1],["MINGGU","Tujuh hari","S",1],["TAHUN","Dua belas bulan","S",1],["SEPAKBOLA","Olahraga paling populer, 11 lawan 11","O",1],["GAWANG","Tempat mencetak gol","O",1],["WASIT","Pemimpin pertandingan","O",1],["PELATIH","Orang yang melatih tim","O",1],["RAKET","Alat pemukul pada tenis dan bulu tangkis","O",1],["KOK","Bola bulu pada bulu tangkis","O",1],["VOLI","Olahraga memukul bola melewati net","O",1],["BASKET","Olahraga memasukkan bola ke ring","O",1],["RENANG","Olahraga di kolam","O",1],["LARI","Olahraga bergerak cepat dengan kaki","O",1],["SILAT","Seni bela diri asli Indonesia","O",1],["CATUR","Permainan papan dengan raja dan menteri","O",1],["SEPAK","___ takraw, bermain bola rotan dengan kaki","O",2],["KARATE","Bela diri dari Jepang","O",1],["JUDO","Bela diri bantingan dari Jepang","O",2],["TINJU","Olahraga adu pukul","O",1],["SENAM","Olahraga gerakan tubuh berirama","O",1],["MEDALI","Penghargaan juara, emas, perak, perunggu","O",1],["PIALA","Trofi kemenangan","O",1],["JUARA","Pemenang lomba","O",1],["GOL","Bola masuk gawang","O",1],["SKOR","Angka hasil pertandingan","O",1],["LOMBA","Pertandingan untuk mencari juara","O",1],["MOBIL","Kendaraan beroda empat","X",1],["MOTOR","Kendaraan beroda dua bermesin","X",1],["SEPEDA","Kendaraan dikayuh","X",1],["BECAK","Kendaraan roda tiga dikayuh, membawa penumpang","X",1],["BAJAJ","Kendaraan roda tiga khas Jakarta","X",2],["ANGKOT","Angkutan kota","X",1],["BUS","Kendaraan umum besar","X",1],["KERETA","Kendaraan di atas rel","X",1],["KAPAL","Kendaraan di laut","X",1],["PERAHU","Kendaraan air kecil","X",1],["PESAWAT","Kendaraan di udara","X",1],["DELMAN","Kereta kuda","X",1],["OJEK","Angkutan sepeda motor berbayar, kini bisa dipesan lewat aplikasi","X",1],["TRUK","Kendaraan pengangkut barang","X",1],["HALTE","Tempat menunggu bus","X",1],["STASIUN","Tempat naik turun kereta","X",1],["BANDARA","Tempat naik turun pesawat","X",1],["PELABUHAN","Tempat kapal bersandar","X",2],["JALAN","Jalur untuk kendaraan","X",1],["JEMBATAN","Penghubung di atas sungai","X",1],["TOL","Jalan berbayar","X",1],["MACET","Lalu lintas tersendat","X",1],["HELM","Pelindung kepala saat naik motor","X",1],["RODA","Bagian kendaraan yang berputar","X",1],["BENSIN","Bahan bakar kendaraan","X",1],["PETANI","Orang yang bercocok tanam","U",1],["NELAYAN","Orang yang mencari ikan di laut","U",1],["POLISI","Penjaga keamanan dan lalu lintas","U",1],["TENTARA","Prajurit penjaga negara","U",1],["PILOT","Pengemudi pesawat","U",1],["MASINIS","Pengemudi kereta api","U",2],["KOKI","Juru masak","U",1],["PENJAHIT","Orang yang membuat pakaian","U",1],["PEDAGANG","Orang yang berjualan","U",1],["PASAR","Tempat jual beli","U",1],["WARUNG","Toko kecil di pinggir jalan","U",1],["UANG","Alat tukar untuk membeli","U",1],["HARGA","Nilai barang dalam uang","U",1],["DISKON","Potongan harga","U",1],["TELEPON","Alat untuk berbicara jarak jauh","U",1],["INTERNET","Jaringan komputer dunia","U",1],["KOMPUTER","Mesin pengolah data","U",1],["LAPTOP","Komputer jinjing","U",1],["GAME","Permainan di komputer atau HP","U",1],["VIDEO","Rekaman gambar bergerak","U",1],["FOTO","Gambar hasil kamera","U",1],["KAMERA","Alat untuk memotret","U",1],["RADIO","Alat untuk mendengar siaran suara","U",1],["BERITA","Kabar terbaru","U",1],["SURAT","Pesan tertulis yang dikirim","U",1],["PAGI","Waktu matahari terbit","U",1],["SIANG","Waktu tengah hari","U",1],["SORE","Waktu menjelang malam","U",1],["MALAM","Waktu gelap setelah matahari terbenam","U",1],["SENIN","Hari pertama dalam minggu kerja","U",1],["KAMIS","Hari sebelum Jumat","U",1],["JUMAT","Hari salat berjamaah bagi umat Islam","U",1],["SABTU","Hari sebelum Minggu","U",1],["MERAH","Warna darah","U",1],["PUTIH","Warna salju","U",1],["HITAM","Warna arang","U",1],["HIJAU","Warna daun","U",1],["BIRU","Warna langit cerah","U",1],["KUNING","Warna kunyit","U",1],["UNGU","Warna terong","U",1],["SENANG","Perasaan gembira","U",1],["SEDIH","Perasaan duka","U",1],["MARAH","Perasaan kesal yang meledak","U",1],["TAKUT","Perasaan ngeri","U",1],["MALU","Perasaan tersipu","U",1],["RINDU","Ingin sekali bertemu","U",1],["CINTA","Rasa sayang yang dalam","U",1],["TEMAN","Kawan","U",1],["KELUARGA","Ayah, ibu, dan anak","U",1],["AYAH","Orang tua laki-laki","U",1],["IBU","Orang tua perempuan","U",1],["KAKAK","Saudara yang lebih tua","U",1],["ADIK","Saudara yang lebih muda","U",1],["NENEK","Ibu dari ayah atau ibu","U",1],["KAKEK","Ayah dari ayah atau ibu","U",1],["PAMAN","Saudara laki-laki orang tua","U",1],["BIBI","Saudara perempuan orang tua","U",1],["SEPUPU","Anak paman atau bibi","U",1],["BESAR","Lawan kata kecil","U",1],["KECIL","Lawan kata besar","U",1],["TINGGI","Lawan kata rendah","U",1],["PANJANG","Lawan kata pendek","U",1],["CEPAT","Lawan kata lambat","U",1],["LAMBAT","Lawan kata cepat","U",1],["PANAS","Lawan kata dingin","U",1],["DINGIN","Lawan kata panas","U",1],["TERANG","Lawan kata gelap","U",1],["GELAP","Lawan kata terang","U",1],["BARU","Lawan kata lama","U",1],["MAHAL","Lawan kata murah","U",1],["MURAH","Lawan kata mahal","U",1],["RAJIN","Lawan kata malas","U",1],["PINTAR","Lawan kata bodoh","U",1],["JUJUR","Berkata apa adanya, tidak bohong","U",1],["SABAR","Tahan menghadapi cobaan","U",1],["RAMAH","Baik hati dan suka menyapa","U",1],["TARI","Gerak tubuh berirama diiringi musik","K",1],["LENONG","Teater rakyat Betawi yang penuh lawakan","K",2],["KETOPRAK","Drama tradisional Jawa dengan cerita sejarah","K",2],["LUDRUK","Teater rakyat khas Jawa Timur","K",3],["RONGGENG","Penari perempuan dalam tari pergaulan tradisional","K",3],["TOPENG","Penutup wajah dalam tari tradisional","K",1],["SINDEN","Penyanyi perempuan pengiring gamelan","K",2],["KOLINTANG","Alat musik pukul dari kayu khas Minahasa","K",2],["RABAB","Alat musik gesek tradisional bersenar","K",3],["CALUNG","Alat musik bambu khas Sunda yang dipukul","K",3],["TENUN","Kain yang dibuat dengan alat tradisional","K",2],["LURIK","Kain tenun bergaris khas Jawa","K",3],["TUMPENG","Nasi berbentuk kerucut untuk syukuran","K",1],["SELAMATAN","Acara doa bersama tanda syukur","K",2],["KARAPAN","Lomba adu cepat sapi khas Madura","K",2],["PECALANG","Petugas keamanan adat di Bali","K",3],["BEDUK","Gendang besar di masjid","K",1],["OGOHOGOH","Boneka raksasa yang diarak sebelum Nyepi","K",3],["TABOT","Upacara tradisional khas Bengkulu","K",3],["RUMAHADAT","Bangunan tradisional khas suatu suku","K",2],["HONAI","Rumah adat Papua berbentuk bulat","K",2],["TONGKONAN","Rumah adat Toraja beratap melengkung","K",3],["JOGLO","Rumah adat Jawa beratap tinggi di tengah","K",2],["DELTA","Endapan di muara sungai berbentuk segitiga","G",3],["MUARA","Tempat sungai bertemu laut","G",2],["TEBING","Dinding tanah atau batu yang curam","G",2],["SABANA","Padang rumput luas dengan sedikit pohon","G",3],["SEMERU","Gunung tertinggi di Pulau Jawa","G",2],["KASUARI","Burung besar tak bisa terbang dari Papua","H",2],["PESUT","Lumba-lumba air tawar di Sungai Mahakam","H",3],["DUGONG","Mamalia laut pemakan lamun","H",3],["KANCIL","Hewan kecil cerdik dalam dongeng","H",1],["MALEO","Burung Sulawesi yang bertelur di pasir panas","H",3],["LUWAK","Hewan malam yang terkenal dengan kopinya","H",2],["KUPUKUPU","Serangga bersayap indah, dulunya ulat","H",1]]; })(typeof window !== 'undefined' ? window : globalThis);
+/* TTS Kilat: crossword generator + puzzle state (pure logic, no DOM). window.TTSSim */
+(function (root) {
+'use strict';
+const BANK = root.TTSBank;
+function rng(seed) { let s = (seed >>> 0) || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+function hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+const PACKS = [
+  { id: 'campur', n: 'Campur Sari', cats: '', icon: '\ud83c\udfb2', d: 'Semua tema dicampur' },
+  { id: 'kuliner', n: 'Kuliner Nusantara', cats: 'M', icon: '\ud83c\udf5b', d: 'Makanan, buah, rempah' },
+  { id: 'fauna', n: 'Fauna', cats: 'H', icon: '\ud83d\udc18', d: 'Hewan Indonesia & dunia' },
+  { id: 'alam', n: 'Alam & Geografi', cats: 'G', icon: '\ud83c\udf0b', d: 'Gunung, pulau, kota, langit' },
+  { id: 'budaya', n: 'Budaya Indonesia', cats: 'K', icon: '\ud83c\udfad', d: 'Tari, musik, kain, hari raya' },
+  { id: 'sekolah', n: 'Sekolah & Sains', cats: 'ST', icon: '\ud83d\udd2c', d: 'IPA, matematika, tubuh' },
+  { id: 'harian', n: 'Sehari-hari', cats: 'BUXO', icon: '\ud83c\udfe0', d: 'Rumah, keluarga, kendaraan, olahraga' }
+];
+const PER_PACK = 15;
+function levelSpec(pi, li) {
+  const P = PACKS[pi];
+  return { seed: hash('pack:' + P.id + ':' + li), cats: P.cats, count: 6 + Math.floor(li / 2), maxDiff: li < 4 ? 1 : li < 8 ? 2 : 3, maxW: li < 6 ? 9 : 10, maxH: li < 6 ? 9 : 11 };
+}
+function dailySpec(dateKey) { return { seed: hash('harian:' + dateKey), cats: '', count: 10, maxDiff: 2, maxW: 10, maxH: 11 }; }
+
+/** core generator: freeform crossword from a word list [[ans, clue], ...] */
+function build(list, o) {
+  const R = rng(o.seed), maxW = o.maxW || 10, maxH = o.maxH || 11, target = o.count || 10;
+  let best = null;
+  for (let attempt = 0; attempt < (o.tries || 24); attempt++) {
+    const pool = list.slice(); for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    const grid = new Map(), dirAt = new Map(), placed = []; let bx0 = 0, by0 = 0, bx1 = -1, by1 = -1;
+    const key = (x, y) => x + ',' + y;
+    const put = (w, x, y, d) => { const dx = d ? 0 : 1, dy = d ? 1 : 0; for (let k = 0; k < w[0].length; k++) { const kk = key(x + k * dx, y + k * dy); grid.set(kk, w[0][k]); dirAt.set(kk, (dirAt.get(kk) || 0) | (d ? 2 : 1)); } placed.push({ ans: w[0], clue: w[1], x, y, dir: d }); bx0 = Math.min(bx0, x); by0 = Math.min(by0, y); bx1 = Math.max(bx1, x + dx * (w[0].length - 1)); by1 = Math.max(by1, y + dy * (w[0].length - 1)); };
+    // first word: a mid-length one, across
+    let fi = pool.findIndex(w => w[0].length >= 5 && w[0].length <= Math.min(8, maxW)); if (fi < 0) fi = 0;
+    const first = pool.splice(fi, 1)[0]; bx1 = -1; put(first, 0, 0, attempt % 3 === 2 ? 1 : 0);
+    if (placed[0].dir === 1 && first[0].length > maxH) continue;
+    let progress = true;
+    while (placed.length < target && progress) {
+      progress = false; let cand = null;
+      for (let pi = 0; pi < pool.length && pi < 160; pi++) {
+        const w = pool[pi], a = w[0], L = a.length;
+        if (placed.some(p => p.ans === a)) continue;
+        for (const [kk, ch] of grid) {
+          for (let i = 0; i < L; i++) {
+            if (a[i] !== ch) continue; const [cx, cy] = kk.split(',').map(Number), used = dirAt.get(kk);
+            for (const d of [0, 1]) {
+              if (used & (d ? 2 : 1)) continue; const dx = d ? 0 : 1, dy = d ? 1 : 0, sx = cx - i * dx, sy = cy - i * dy, ex = sx + dx * (L - 1), ey = sy + dy * (L - 1);
+              const nx0 = Math.min(bx0, sx), ny0 = Math.min(by0, sy), nx1 = Math.max(bx1, ex), ny1 = Math.max(by1, ey);
+              if (nx1 - nx0 + 1 > maxW || ny1 - ny0 + 1 > maxH) continue;
+              if (grid.has(key(sx - dx, sy - dy)) || grid.has(key(ex + dx, ey + dy))) continue;
+              let ok = true, cross = 0;
+              for (let k = 0; k < L && ok; k++) {
+                const x = sx + k * dx, y = sy + k * dy, g = grid.get(key(x, y));
+                if (g) { if (g !== a[k] || (dirAt.get(key(x, y)) & (d ? 2 : 1))) ok = false; else cross++; }
+                else if (grid.has(key(x + dy, y + dx)) || grid.has(key(x - dy, y - dx))) ok = false;
+              }
+              if (!ok || !cross) continue;
+              const area = (nx1 - nx0 + 1) * (ny1 - ny0 + 1), sc = cross * 30 - area * 0.35 + L * 2 + R() * 12;
+              if (!cand || sc > cand.sc) cand = { w, sx, sy, d, sc, pi };
+            }
+          }
+        }
+        if (cand && pi > 40) break;
+      }
+      if (cand) { put(cand.w, cand.sx, cand.sy, cand.d); pool.splice(cand.pi, 1); progress = true; }
+    }
+    let crosses = 0; for (const v of dirAt.values()) if (v === 3) crosses++;
+    const q = placed.length * 100 + crosses * 8 - (bx1 - bx0 + 1) * (by1 - by0 + 1) * 0.2;
+    if (!best || q > best.q) best = { q, placed: placed.map(p => Object.assign({}, p)), bx0, by0, bx1, by1 };
+    if (placed.length >= target && attempt >= 3) break;
+  }
+  const W = best.bx1 - best.bx0 + 1, H = best.by1 - best.by0 + 1, sol = new Array(W * H).fill(null);
+  for (const p of best.placed) { p.x -= best.bx0; p.y -= best.by0; for (let k = 0; k < p.ans.length; k++) sol[(p.y + (p.dir ? k : 0)) * W + p.x + (p.dir ? 0 : k)] = p.ans[k]; }
+  // numbering in reading order
+  const starts = [...new Set(best.placed.map(p => p.y * W + p.x))].sort((a, b) => a - b), num = new Map(starts.map((s, i) => [s, i + 1]));
+  const words = best.placed.map(p => ({ num: num.get(p.y * W + p.x), dir: p.dir, x: p.x, y: p.y, ans: p.ans, clue: p.clue, cells: Array.from(p.ans, (_, k) => (p.y + (p.dir ? k : 0)) * W + p.x + (p.dir ? 0 : k)) }));
+  words.sort((a, b) => a.dir - b.dir || a.num - b.num);
+  const nums = new Array(W * H).fill(0); for (const [s, n] of num) nums[s] = n;
+  return { w: W, h: H, sol, nums, words, seed: o.seed };
+}
+function pickList(o) {
+  return BANK.filter(b => (!o.cats || o.cats.includes(b[2])) && b[3] <= (o.maxDiff || 3)).map(b => [b[0], b[1]]);
+}
+function generate(o) { return build(pickList(o), o); }
+
+/* ---------- play state ---------- */
+function start(pz) { return { pz, fill: pz.sol.map(c => c ? '' : null), rev: pz.sol.map(() => 0), bad: pz.sol.map(() => 0), hints: 0, checks: 0, t: 0, done: false, wordsDone: new Set() }; }
+function wordsAt(pz, idx) { return pz.words.filter(w => w.cells.includes(idx)); }
+function isWordFilled(st, w) { return w.cells.every(c => st.fill[c] === st.pz.sol[c]); }
+function setLetter(st, idx, ch) { if (st.done || st.pz.sol[idx] == null || st.rev[idx]) return false; st.fill[idx] = ch; st.bad[idx] = 0; return true; }
+function newlySolved(st) { const out = []; for (let i = 0; i < st.pz.words.length; i++) if (!st.wordsDone.has(i) && isWordFilled(st, st.pz.words[i])) { st.wordsDone.add(i); out.push(i); } return out; }
+function solved(st) { return st.pz.sol.every((c, i) => c == null || st.fill[i] === c); }
+function revealCell(st, idx) { if (st.pz.sol[idx] == null || st.rev[idx] || st.fill[idx] === st.pz.sol[idx]) return false; st.fill[idx] = st.pz.sol[idx]; st.rev[idx] = 1; st.bad[idx] = 0; st.hints++; return true; }
+function revealWord(st, w) { let n = 0; for (const c of w.cells) if (st.fill[c] !== st.pz.sol[c]) { st.fill[c] = st.pz.sol[c]; st.rev[c] = 1; st.bad[c] = 0; n++; } if (n) st.hints += Math.max(2, Math.ceil(n * 0.75)); return n; }
+function check(st) { let wrong = 0; st.pz.sol.forEach((c, i) => { if (c && st.fill[i] && st.fill[i] !== c) { st.bad[i] = 1; wrong++; } }); st.checks++; return wrong; }
+function stars(st) { return st.hints === 0 && st.checks === 0 ? 3 : st.hints <= 3 ? 2 : 1; }
+function points(st) { const letters = st.pz.sol.filter(Boolean).length, base = letters * 10, speed = Math.max(0, Math.round((letters * 9 - st.t) * 3)); return Math.max(letters * 2, base + speed - st.hints * 25 - st.checks * 10); }
+
+root.TTSSim = { PACKS, PER_PACK, levelSpec, dailySpec, generate, build, pickList, hash, rng, start, wordsAt, isWordFilled, setLetter, newlySolved, solved, revealCell, revealWord, check, stars, points };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* TTS Kilat: DOM rendering of grid, clue lists, on-screen keyboard. window.TTSRender */
+(function (root) {
+'use strict';
+const $ = id => document.getElementById(id);
+let pz = null, cells = [], liA = [], liD = [], onCell = null, onClue = null;
+const DIRN = ['Mendatar', 'Menurun'];
+function mount(p, h) {
+  pz = p; onCell = h.onCell; onClue = h.onClue;
+  const g = $('grid'); g.innerHTML = ''; g.style.gridTemplateColumns = `repeat(${pz.w}, var(--cell))`; cells = [];
+  for (let i = 0; i < pz.w * pz.h; i++) {
+    const d = document.createElement('div');
+    if (pz.sol[i]) { d.className = 'c on'; d.dataset.i = i; d.setAttribute('role', 'gridcell'); if (pz.nums[i]) { const n = document.createElement('span'); n.className = 'n'; n.textContent = pz.nums[i]; d.appendChild(n); } const t = document.createElement('span'); t.className = 't'; d.appendChild(t); }
+    else d.className = 'c';
+    g.appendChild(d); cells.push(d);
+  }
+  g.onpointerdown = e => { const c = e.target.closest('.c.on'); if (c) { e.preventDefault(); onCell(+c.dataset.i); } };
+  const mk = (ol, dir) => { const list = $(ol); list.innerHTML = ''; const out = []; pz.words.forEach((w, wi) => { if (w.dir !== dir) return; const li = document.createElement('li'); li.innerHTML = '<b></b><span></span>'; li.firstChild.textContent = w.num; li.lastChild.textContent = w.clue + ' (' + w.ans.length + ')'; li.onclick = () => onClue(wi); list.appendChild(li); out[wi] = li; }); return out; };
+  liA = mk('clA', 0); liD = mk('clD', 1);
+  fit();
+}
+function fit() {
+  if (!pz) return; const wrap = $('gridWrap'), board = wrap.parentElement, r = board.getBoundingClientRect(), cl = $('clueLists');
+  const side = cl && cl.offsetParent ? cl.getBoundingClientRect().width + 24 : 0;
+  const aw = Math.max(120, r.width - side) - 8, ah = Math.max(120, r.height) - 8;
+  const size = Math.max(22, Math.min(52, Math.floor(Math.min(aw / pz.w, ah / pz.h)) + 1));
+  document.documentElement.style.setProperty('--cell', size + 'px');
+}
+function update(st, cur, dir, wi) {
+  const w = pz.words[wi], inW = new Set(w ? w.cells : []), okSet = new Set();
+  st.wordsDone.forEach(k => pz.words[k].cells.forEach(c => okSet.add(c)));
+  for (let i = 0; i < cells.length; i++) {
+    if (!pz.sol[i]) continue; const d = cells[i];
+    d.lastChild.textContent = st.fill[i] || '';
+    d.classList.toggle('cur', i === cur); d.setAttribute('aria-selected', i === cur ? 'true' : 'false'); d.classList.toggle('w', inW.has(i)); d.classList.toggle('ok', okSet.has(i));
+    d.classList.toggle('rev', !!st.rev[i]); d.classList.toggle('bad', !!st.bad[i]);
+    d.setAttribute('aria-label', (pz.nums[i] ? pz.nums[i] + ' ' : '') + (st.fill[i] || 'kosong'));
+  }
+  const tag = w ? `<span class="d">${w.num} ${DIRN[w.dir]}</span>` : '';
+  $('clueText').innerHTML = tag + '<span class="q"></span>'; if (w) $('clueText').lastChild.textContent = w.clue + ' (' + w.ans.length + ')';
+  pz.words.forEach((x, k) => { const li = (x.dir ? liD : liA)[k]; if (!li) return; li.classList.toggle('act', k === wi); li.classList.toggle('done', st.wordsDone.has(k)); });
+  const act = (w && (w.dir ? liD : liA)[wi]); if (act && act.offsetParent) act.scrollIntoView({ block: 'nearest' });
+}
+function flash(idxs, cls) { idxs.forEach((c, k) => { const d = cells[c]; if (!d) return; d.classList.remove(cls); void d.offsetWidth; d.style.animationDelay = (k * 40) + 'ms'; d.classList.add(cls); setTimeout(() => { d.classList.remove(cls); d.style.animationDelay = ''; }, 600 + k * 40); }); }
+function keyboard(onKey) {
+  const kb = $('kb'); kb.innerHTML = '';
+  ['QWERTYUIOP', 'ASDFGHJKL', '\u2194ZXCVBNM\u232b'].forEach(row => { const r = document.createElement('div'); r.className = 'kr'; for (const ch of row) { const b = document.createElement('button'); b.type = 'button'; b.className = 'k' + (ch === '\u232b' || ch === '\u2194' ? ' wide' : ''); b.textContent = ch; b.dataset.k = ch === '\u232b' ? 'BS' : ch === '\u2194' ? 'DIR' : ch; b.setAttribute('aria-label', ch === '\u232b' ? 'Hapus' : ch === '\u2194' ? 'Ganti arah' : ch); r.appendChild(b); } kb.appendChild(r); });
+  kb.onpointerdown = e => { const b = e.target.closest('.k'); if (!b) return; e.preventDefault(); b.classList.add('down'); setTimeout(() => b.classList.remove('down'), 110); onKey(b.dataset.k); };
+}
+root.TTSRender = { mount, fit, update, flash, keyboard };
+})(window);
+</script>
+<script>
+/* TTS Kilat: screens, input, save, leaderboard */
+(function () {
+'use strict';
+const S = window.TTSSim, R = window.TTSRender, $ = id => document.getElementById(id);
+const KEY = 'ttskilat.v1', SITE = 'https://ttskilat.jadidaring.com/';
+const BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+let save = load();
+function load() { try { const s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({ v: 1, stars: {}, best: {}, pts: 0, solved: 0, daily: {}, streak: 0, lastDaily: '', name: '', mute: false, cur: null, lastPack: 0, seenHow: false }, s); } catch (e) { return { v: 1, stars: {}, best: {}, pts: 0, solved: 0, daily: {}, streak: 0, lastDaily: '', name: '', mute: false, cur: null, lastPack: 0, seenHow: false }; } }
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(save)); } catch (e) {} }
+const witaKey = (off = 0) => new Date(Date.now() + 8 * 3600e3 + off * 864e5).toISOString().slice(0, 10);
+const niceDate = k => { const [y, m, d] = k.split('-').map(Number); return d + ' ' + BULAN[m - 1] + ' ' + y; };
+const fmt = t => Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
+function toast(msg, cls) { const d = document.createElement('div'); d.className = 'toast ' + (cls || ''); d.textContent = msg; $('toasts').appendChild(d); setTimeout(() => d.remove(), 2200); }
+/* ---------- sound ---------- */
+let ac = null;
+function tone(f, d = 0.06, type = 'triangle', v = 0.05, delay = 0) { if (save.mute) return; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime + delay; o.type = type; o.frequency.value = f; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + 0.02); } catch (e) {} }
+const sfx = { key: () => tone(660, 0.035, 'square', 0.02), word: () => { tone(660, 0.1); tone(880, 0.12, 'triangle', 0.05, 0.08); }, win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.18, 'triangle', 0.06, i * 0.1)), hint: () => tone(440, 0.12, 'sine', 0.05), bad: () => tone(180, 0.15, 'sawtooth', 0.03) };
+/* ---------- screens ---------- */
+function show(id) { for (const s of ['home', 'packs', 'play', 'maker']) $(s).hidden = s !== id; document.documentElement.classList.toggle('jr-hub-off', id === 'play' || id === 'maker'); if (id !== 'play') stopTimer(); window.scrollTo(0, 0); }
+function packStars(pi) { return (save.stars[S.PACKS[pi].id] || []).reduce((a, b) => a + (b || 0), 0); }
+function unlocked(pi, li) { return li === 0 || (save.stars[S.PACKS[pi].id] || [])[li - 1] > 0; }
+function nextLevel(pi) { const a = save.stars[S.PACKS[pi].id] || []; for (let li = 0; li < S.PER_PACK; li++) if (!a[li]) return li; return -1; }
+function homeRefresh() {
+  const k = witaKey(), d = save.daily[k], st = streakNow();
+  $('dailyDate').textContent = niceDate(k);
+  $('dailyStreak').textContent = st ? '\ud83d\udd25 ' + st + ' hari' : '';
+  $('dailyBtn').classList.toggle('done', !!d); whoPeek();
+  $('dailySub').textContent = d ? `Selesai ${'\u2b50'.repeat(d.s)} \u00b7 ${fmt(d.t)} \u00b7 besok ada TTS baru` : (save.cur && save.cur.key === 'd:' + k ? 'Lanjutkan TTS hari ini' : 'Satu TTS baru tiap hari, sama untuk semua pemain');
+  const pi = save.lastPack || 0, li = nextLevel(pi);
+  $('playLbl').textContent = save.solved ? (li >= 0 ? `Lanjut: ${S.PACKS[pi].n} #${li + 1}` : 'Pilih paket TTS') : 'Main TTS';
+  const total = S.PACKS.reduce((a, _, i) => a + packStars(i), 0);
+  $('statLine').textContent = save.solved ? `${save.solved} TTS selesai \u00b7 \u2b50 ${total} \u00b7 ${save.pts.toLocaleString('id-ID')} Poin TTS` : (S.PACKS.length * S.PER_PACK) + ' TTS + 1 TTS Harian baru tiap hari';
+  $('muteBtn').textContent = save.mute ? '\ud83d\udd07' : '\ud83d\udd0a';
+}
+function streakNow() { return save.lastDaily === witaKey() || save.lastDaily === witaKey(-1) ? save.streak : 0; }
+function packsRefresh() {
+  const box = $('packList'); box.innerHTML = '';
+  S.PACKS.forEach((P, pi) => {
+    const sec = document.createElement('section'); sec.className = 'pack'; const nx = nextLevel(pi);
+    sec.innerHTML = `<h3><span aria-hidden="true">${P.icon}</span> ${P.n}<span class="pc">\u2b50 ${packStars(pi)}/${S.PER_PACK * 3}</span></h3><p>${P.d}</p><div class="lvls"></div>`;
+    const g = sec.querySelector('.lvls');
+    for (let li = 0; li < S.PER_PACK; li++) {
+      const b = document.createElement('button'); b.type = 'button'; const s = (save.stars[P.id] || [])[li] || 0, un = unlocked(pi, li);
+      b.className = 'lv' + (un ? '' : ' lock') + (un && li === nx ? ' next' : ''); b.innerHTML = un ? `${li + 1}<small>${s ? '\u2605'.repeat(s) : ''}</small>` : '\ud83d\udd12';
+      b.setAttribute('aria-label', `${P.n} TTS ${li + 1}` + (un ? (s ? `, ${s} bintang` : '') : ', terkunci'));
+      b.onclick = () => un ? openLevel(pi, li) : toast('Selesaikan TTS sebelumnya dulu \ud83d\udd12');
+      g.appendChild(b);
+    }
+    box.appendChild(sec);
+  });
+  $('packsStars').textContent = '\u2b50 ' + S.PACKS.reduce((a, _, i) => a + packStars(i), 0);
+}
+/* ---------- play ---------- */
+let G = null; // {kind, pi, li, key, pz, st, cur, dir}
+function openDaily(k) { k = typeof k === 'string' ? k : witaKey(); begin({ kind: 'd', key: 'd:' + k, date: k, title: k === witaKey() ? 'TTS Harian' : '\ud83d\udcc5 Arsip Harian', sub: niceDate(k), pz: S.generate(S.dailySpec(k)) }); }
+function openLevel(pi, li) { save.lastPack = pi; persist(); begin({ kind: 'p', pi, li, key: 'p:' + S.PACKS[pi].id + ':' + li, title: S.PACKS[pi].icon + ' ' + S.PACKS[pi].n, sub: 'TTS ' + (li + 1) + ' dari ' + S.PER_PACK, pz: S.generate(S.levelSpec(pi, li)) }); }
+function begin(g) {
+  G = g; G.st = S.start(g.pz);
+  const c = save.cur; if (c && c.key === g.key && c.fill && c.fill.length === g.pz.sol.length && (!c.sol || c.sol === g.pz.sol.map(x => x || '.').join(''))) { G.st.fill = c.fill; G.st.rev = c.rev; G.st.hints = c.hints; G.st.checks = c.checks; G.st.t = c.t; S.newlySolved(G.st); }
+  G.dir = g.pz.words[0].dir; G.cur = g.pz.words[0].cells[0];
+  $('pzTitle').textContent = g.title; $('pzSub').textContent = g.sub;
+  show('play'); R.mount(g.pz, { onCell, onClue: wi => { focusWord(wi); draw(); } });
+  if (location.hash !== '#main') history.pushState({ p: 1 }, '', '#main');
+  jumpUnsolved(-1); draw(); startTimer(); requestAnimationFrame(R.fit);
+  coachStep(save.coach ? 9 : 0);
+  if (!save.seenHow) { save.seenHow = true; persist(); $('how').hidden = false; }
+}
+const curWordIdx = () => { const ws = G.pz.words; let i = ws.findIndex(w => w.dir === G.dir && w.cells.includes(G.cur)); if (i < 0) { i = ws.findIndex(w => w.cells.includes(G.cur)); if (i >= 0) G.dir = ws[i].dir; } return i; };
+const locked = i => [...G.st.wordsDone].some(k => G.pz.words[k].cells.includes(i));
+function draw() { const wi = curWordIdx(); R.update(G.st, G.cur, G.dir, wi); const done = G.st.wordsDone.size; $('prog').textContent = done + '/' + G.pz.words.length + ' kata'; $('timer').textContent = fmt(G.st.t); $('hintLetter').innerHTML = '<span aria-hidden="true">\ud83d\udca1</span> Huruf'; }
+function focusWord(wi) { const w = G.pz.words[wi]; G.dir = w.dir; G.cur = w.cells.find(c => !G.st.fill[c]) ?? w.cells[0]; }
+function jumpUnsolved(from) { const ws = G.pz.words, n = ws.length; for (let k = 1; k <= n; k++) { const wi = (from + k + n) % n; if (!G.st.wordsDone.has(wi) && ws[wi].cells.some(c => G.st.fill[c] !== G.pz.sol[c])) { focusWord(wi); return true; } } return false; }
+function onCell(i) { if (G.st.done) return; if (i === G.cur) { const other = G.pz.words.find(w => w.dir !== G.dir && w.cells.includes(i)); if (other) G.dir = other.dir; } else { G.cur = i; if (!G.pz.words.some(w => w.dir === G.dir && w.cells.includes(i))) G.dir = 1 - G.dir; } draw(); }
+function step(delta) { const w = G.pz.words[curWordIdx()]; const k = w.cells.indexOf(G.cur); const nk = k + delta; if (nk >= 0 && nk < w.cells.length) G.cur = w.cells[nk]; }
+function afterChange() {
+  const fresh = S.newlySolved(G.st);
+  if (fresh.length) { sfx.word(); fresh.forEach(wi => R.flash(G.pz.words[wi].cells, 'flash')); if (coachAt === 1) coachStep(2); }
+  if (S.solved(G.st)) { draw(); return finish(); }
+  const wi = curWordIdx(), w = G.pz.words[wi];
+  if (fresh.includes(wi)) { jumpUnsolved(wi); }
+  else if (w && w.cells.every(c => G.st.fill[c]) && !G.st.wordsDone.has(wi) && G.cur === w.cells[w.cells.length - 1]) { R.flash(w.cells, 'shake'); sfx.bad(); toast('Hmm, ada huruf yang belum pas \ud83e\udd14'); }
+  else if (G.pz.sol.every((c, i) => !c || G.st.fill[i])) toast('Semua terisi tapi ada yang salah. Coba \u2714 Cek');
+  saveCur(); draw();
+}
+function typeLetter(ch) {
+  if (!G || G.st.done) return; let wi = curWordIdx(); const w = G.pz.words[wi];
+  // skip locked cells forward
+  let k = w.cells.indexOf(G.cur); while (locked(G.cur) && k < w.cells.length - 1) { k++; G.cur = w.cells[k]; }
+  if (locked(G.cur)) { jumpUnsolved(wi); draw(); return typeLetter(ch); }
+  S.setLetter(G.st, G.cur, ch); sfx.key();
+  // advance to next non-locked cell in word
+  while (k < w.cells.length - 1) { k++; if (!locked(w.cells[k]) && !G.st.rev[w.cells[k]]) { G.cur = w.cells[k]; break; } if (k === w.cells.length - 1) break; }
+  afterChange();
+}
+function backspace() {
+  if (!G || G.st.done) return;
+  if (G.st.fill[G.cur] && !locked(G.cur) && !G.st.rev[G.cur]) { G.st.fill[G.cur] = ''; G.st.bad[G.cur] = 0; }
+  else { const w = G.pz.words[curWordIdx()]; let k = w.cells.indexOf(G.cur); while (k > 0) { k--; const c = w.cells[k]; if (!locked(c) && !G.st.rev[c]) { G.cur = c; G.st.fill[c] = ''; G.st.bad[c] = 0; break; } } }
+  saveCur(); draw();
+}
+function moveArrow(dx, dy) { G.dir = dx ? 0 : 1; let x = G.cur % G.pz.w, y = Math.floor(G.cur / G.pz.w); for (;;) { x += dx; y += dy; if (x < 0 || y < 0 || x >= G.pz.w || y >= G.pz.h) break; const i = y * G.pz.w + x; if (G.pz.sol[i]) { G.cur = i; break; } } draw(); }
+function nextWord(delta) { const n = G.pz.words.length; let wi = curWordIdx(); for (let k = 0; k < n; k++) { wi = (wi + delta + n) % n; if (!G.st.wordsDone.has(wi)) break; } focusWord(wi); draw(); }
+function onKey(k) {
+  if (!G || $('play').hidden) return;
+  if (k === 'BS') backspace(); else if (k === 'DIR') { onCell(G.cur); } else if (/^[A-Z]$/.test(k)) typeLetter(k);
+}
+function hintLetter() {
+  if (G.st.done) return; let i = G.cur; if (G.st.fill[i] === G.pz.sol[i]) { const w = G.pz.words[curWordIdx()]; i = w.cells.find(c => G.st.fill[c] !== G.pz.sol[c]); if (i == null) { jumpUnsolved(curWordIdx()); i = G.cur; } }
+  if (S.revealCell(G.st, i)) { sfx.hint(); R.flash([i], 'flash'); G.cur = i; step(1); afterChange(); }
+}
+function hintWord() { if (G.st.done) return; const wi = curWordIdx(); if (S.revealWord(G.st, G.pz.words[wi])) { sfx.hint(); afterChange(); } }
+function doCheck() { if (G.st.done) return; const n = S.check(G.st); if (n) { sfx.bad(); toast(n + ' huruf salah ditandai merah', 'bad'); } else toast(G.st.fill.some(Boolean) ? 'Sejauh ini benar semua \ud83d\udc4d' : 'Isi dulu beberapa huruf', 'good'); draw(); saveCur(); }
+let timerId = 0;
+function startTimer() { stopTimer(); timerId = setInterval(() => { if (!G || G.st.done || document.hidden || $('play').hidden || !$('how').hidden) return; G.st.t++; $('timer').textContent = fmt(G.st.t); if (G.st.t % 5 === 0) saveCur(); }, 1000); }
+function stopTimer() { clearInterval(timerId); }
+function saveCur() { if (!G || G.st.done) return; save.cur = { key: G.key, sol: G.pz.sol.map(x => x || '.').join(''), fill: G.st.fill, rev: G.st.rev, hints: G.st.hints, checks: G.st.checks, t: G.st.t }; persist(); }
+/* ---------- finish ---------- */
+let lastShare = '';
+function finish() {
+  const st = G.st; st.done = true; stopTimer(); const s = S.stars(st), p = S.points(st); let gain = 0, title = 'TTS selesai!';
+  if (save.cur && save.cur.key === G.key) save.cur = null;
+  if (G.kind === 'p') {
+    const id = S.PACKS[G.pi].id; save.stars[id] = save.stars[id] || []; const first = !save.stars[id][G.li];
+    save.stars[id][G.li] = Math.max(save.stars[id][G.li] || 0, s); const prev = save.best[G.key] || 0; gain = Math.max(0, p - prev); save.best[G.key] = Math.max(prev, p); if (first) save.solved++;
+  } else if (G.kind === 'c') { title = 'TTS teman selesai!'; save.made = save.made || {}; if (!save.made[G.key]) { save.made[G.key] = 1; save.solved++; }
+  } else {
+    if (!save.daily[G.date]) { gain = p; save.daily[G.date] = { s, t: st.t, h: st.hints, p }; save.solved++; if (G.date === witaKey()) { save.streak = save.lastDaily === witaKey(-1) ? save.streak + 1 : (save.lastDaily === G.date ? save.streak : 1); save.lastDaily = G.date; } title = 'TTS Harian beres!'; } else title = 'Sudah selesai hari ini';
+  }
+  save.pts += gain; persist(); sfx.win();
+  $('resTitle').textContent = title;
+  $('resStars').innerHTML = [1, 2, 3].map(k => `<span class="${k <= s ? '' : 'off'}">\u2b50</span>`).join('');
+  $('resStats').innerHTML = `<div><b>${fmt(st.t)}</b><span>waktu</span></div><div><b>${st.hints}</b><span>bantuan</span></div>${G.kind === 'c' ? `<div><b>${G.pz.words.length}</b><span>kata</span></div>` : `<div><b>+${gain}</b><span>Poin TTS</span></div>`}`;
+  const dToday = G.kind === 'd' && G.date === witaKey(); RES_DAILY = dToday;
+  $('lbFormTxt').textContent = dToday ? (save.whoSent === G.date ? `Namamu sudah ada di daftar yang selesai hari ini \u2705` : `Tulis namamu biar masuk daftar yang sudah menyelesaikan TTS Harian hari ini (Poin TTS ${save.pts.toLocaleString('id-ID')} ikut terkirim ke papan rekor).`) : `Total Poin TTS-mu ${save.pts.toLocaleString('id-ID')}. Kirim ke papan rekor?`;
+  $('sendBtn').textContent = dToday ? 'Masuk daftar' : 'Kirim'; $('nameIn').closest('.frow').hidden = dToday && save.whoSent === G.date; $('whoFromRes').hidden = !dToday;
+  $('lbForm').hidden = !save.pts && !dToday; $('nameIn').value = (window.JDNG && JDNG.name) || '';
+  const isD = G.kind === 'd', isC = G.kind === 'c'; $('shareBtn').hidden = false;
+  const nx = isD ? -1 : (G.li + 1 < S.PER_PACK ? G.li + 1 : -1);
+  $('nextBtn').textContent = isC ? '\u270f\ufe0f Buat TTS-mu' : isD ? 'Main TTS lain \u25b6' : nx >= 0 ? `TTS ${nx + 1} \u25b6` : 'Paket lain \u25b6';
+  $('nextBtn').onclick = () => { $('result').hidden = true; if (isC) return openMaker(); if (!isD && nx >= 0) openLevel(G.pi, nx); else { packsRefresh(); show('packs'); } };
+  const rows = G.pz.words.map(w => w.cells.some(c => st.rev[c]) ? '\ud83d\udfe8' : '\ud83d\udfe9').join('');
+  if (isC) lastShare = `Aku menyelesaikan TTS "${G.ctitle}" ${'\u2b50'.repeat(s)} \u23f1 ${fmt(st.t)} \ud83d\udca1${st.hints}\n${rows}\nCoba juga: ${G.link}`;
+  else if (!isD) lastShare = `TTS Kilat \u00b7 ${S.PACKS[G.pi].n} #${G.li + 1}\n${'\u2b50'.repeat(s)} \u23f1 ${fmt(st.t)} \ud83d\udca1${st.hints}\n${rows}\n${SITE}`;
+  if (isD) { const rows = G.pz.words.map(w => w.cells.some(c => st.rev[c]) ? '\ud83d\udfe8' : '\ud83d\udfe9').join(''); lastShare = `TTS Kilat Harian ${niceDate(G.date)}\n${'\u2b50'.repeat(s)} \u23f1 ${fmt(st.t)} \ud83d\udca1${st.hints}${streakNow() > 1 ? ' \ud83d\udd25' + streakNow() : ''}\n${rows}\n${SITE}`; }
+  setTimeout(() => { $('result').hidden = false; }, 650);
+}
+async function share() { try { if (navigator.share) { await navigator.share({ text: lastShare }); return; } } catch (e) { if (e && e.name === 'AbortError') return; } try { await navigator.clipboard.writeText(lastShare); toast('Hasil disalin, tempel di WhatsApp \ud83d\udccb', 'good'); } catch (e) { prompt('Salin hasilmu:', lastShare); } }
+/* ---------- leaderboard ---------- */
+async function lbOpen() {
+  $('lb').hidden = false; $('lbList').innerHTML = '<li>Memuat\u2026</li>'; $('nameIn2').value = (window.JDNG && JDNG.name) || '';
+  $('lbMine').textContent = save.pts ? `Poin TTS-mu: ${save.pts.toLocaleString('id-ID')}` : 'Selesaikan TTS untuk dapat Poin TTS.'; $('lbSendRow').hidden = !save.pts;
+  try { const L = bestPerName(await scoresGet(true)).slice(0, 20);
+    $('lbList').innerHTML = L.length ? '' : '<li>Belum ada rekor. Jadilah yang pertama!</li>';
+    L.forEach((e, i) => { const li = document.createElement('li'); li.innerHTML = '<b></b><span></span><i></i>'; li.children[0].textContent = i + 1; li.children[1].textContent = e.nm; li.children[2].textContent = Number(e.score || 0).toLocaleString('id-ID'); $('lbList').appendChild(li); });
+  } catch (e) { $('lbList').innerHTML = '<li>Papan rekor belum bisa dimuat. Coba lagi nanti.</li>'; }
+}
+// Names: 1-16 chars, letters/digits + space ._'- (server rule). A trailing "." marks a "finished today's TTS Harian" entry
+// (one shared /api/game/scores board per subdomain, so the daily list rides on it; see README "Daftar selesai hari ini").
+const cleanName = v => String(v || '').replace(/[^\p{L}\p{N} '\-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 15);
+const MARK = '.';
+let scCache = null, scAt = 0, RES_DAILY = false;
+async function scoresGet(fresh) {
+  if (!fresh && scCache && Date.now() - scAt < 30000) return scCache;
+  const r = await fetch('/api/game/scores?limit=50', { headers: { Accept: 'application/json' }, cache: 'no-store' }); if (!r.ok) throw Error(r.status);
+  const d = await r.json(); scCache = (Array.isArray(d.scores) ? d.scores : []).map(e => { const raw = String(e.name || e.player_name || '?'); return { nm: raw.replace(/\.+$/, '') || '?', daily: raw.endsWith(MARK), score: Number(e.score || 0), at: Date.parse(e.created_at || '') || 0 }; }); scAt = Date.now(); return scCache;
+}
+function bestPerName(L) { const m = new Map(); L.forEach(e => { const k = e.nm.toLowerCase(), o = m.get(k); if (!o || e.score > o.score) m.set(k, e); }); return [...m.values()].sort((a, b) => b.score - a.score); }
+const witaOf = ms => new Date(ms + 8 * 3600e3).toISOString();
+function todayDone(L) { const k = witaKey(), m = new Map(); L.filter(e => e.daily && e.at && witaOf(e.at).slice(0, 10) === k).sort((a, b) => a.at - b.at).forEach(e => { const n = e.nm.toLowerCase(); if (!m.has(n)) m.set(n, e); }); return [...m.values()]; }
+async function send(inp, after) {
+  const name = cleanName(inp.value); if (!name) { toast('Isi nama dulu ya', 'bad'); inp.focus(); return; }
+  const daily = inp.id === 'nameIn' && RES_DAILY && save.daily[witaKey()]; if (!save.pts && !daily) return;
+  try { const r = await fetch('/api/game/scores', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ name: daily ? name + MARK : name, score: save.pts }) }); if (!r.ok) throw Error(r.status);
+    scCache = null; if (daily) { save.whoSent = witaKey(); save.whoName = name; persist(); toast('Namamu masuk daftar hari ini! \u2705', 'good'); } else toast('Terkirim ke papan rekor! \ud83c\udfc6', 'good'); inp.value = ''; after && after(); }
+  catch (e) { toast('Gagal mengirim, coba lagi', 'bad'); }
+}
+/* ---------- daftar yang sudah selesai TTS Harian hari ini (shared) ---------- */
+let peekT = 0;
+async function whoPeek() {
+  const el = $('whoLine'); if (Date.now() - peekT < 20000 && el.dataset.n) return; peekT = Date.now();
+  try { const n = todayDone(await scoresGet()).length; el.dataset.n = n; $('whoCnt').textContent = n ? `\ud83d\udc65 ${n} orang sudah selesai hari ini` : '\ud83d\udc65 Belum ada yang selesai hari ini'; el.hidden = false; }
+  catch (e) { el.hidden = !save.daily[witaKey()]; $('whoCnt').textContent = '\ud83d\udc65 Daftar yang sudah selesai hari ini'; }
+}
+async function whoOpen() {
+  const k = witaKey(), mine = save.daily[k], ul = $('whoList'); $('whoDate').textContent = niceDate(k) + ' (WITA)';
+  $('who').hidden = false; ul.innerHTML = '<li class="none">Memuat\u2026</li>';
+  $('whoPlay').hidden = !!mine; $('whoMine').textContent = mine ? (save.whoSent === k ? `Kamu selesai ${'\u2b50'.repeat(mine.s)} \u00b7 ${fmt(mine.t)}` : `Kamu sudah selesai ${'\u2b50'.repeat(mine.s)} tapi belum masuk daftar. Kirim nama dari layar hasil TTS Harian.`) : 'Kamu belum menyelesaikan TTS Harian hari ini.';
+  try {
+    const L = todayDone(await scoresGet(true)); ul.innerHTML = '';
+    if (!L.length) ul.innerHTML = '<li class="none">Belum ada yang masuk daftar. Jadilah yang pertama! \ud83c\udfc1</li>';
+    L.forEach((e, i) => { const li = document.createElement('li'); li.innerHTML = '<b></b><span></span><i></i>'; li.children[0].textContent = i === 0 ? '\ud83e\udd47' : i === 1 ? '\ud83e\udd48' : i === 2 ? '\ud83e\udd49' : i + 1; li.children[1].textContent = e.nm; li.children[2].textContent = witaOf(e.at).slice(11, 16); if (save.whoSent === k && save.whoName && e.nm.toLowerCase() === save.whoName.toLowerCase()) li.className = 'me'; ul.appendChild(li); });
+    $('whoLine').dataset.n = L.length; $('whoCnt').textContent = L.length ? `\ud83d\udc65 ${L.length} orang sudah selesai hari ini` : '\ud83d\udc65 Belum ada yang selesai hari ini';
+  } catch (e) { ul.innerHTML = '<li class="none">Daftar belum bisa dimuat (perlu koneksi). Coba lagi nanti.</li>'; }
+}
+/* ---------- first-play coach ---------- */
+let coachAt = 9, coachT = 0;
+function coachPos() { const cb = $('clueBar').getBoundingClientRect(); document.documentElement.style.setProperty('--coachB', Math.round(innerHeight - cb.top + 10) + 'px'); }
+function coachStep(n) {
+  clearTimeout(coachT); coachAt = n; const el = $('coach');
+  if (n >= 9 || !G) { el.hidden = true; return; }
+  const touch = matchMedia('(pointer:coarse)').matches;
+  el.textContent = n === 0 || n === 1 ? (touch ? '\ud83d\udc47 Baca pertanyaannya, lalu ketik jawabannya di keyboard' : '\ud83d\udc47 Baca pertanyaannya, lalu langsung ketik jawabannya') : '\ud83d\udfe9 Benar! Kotak hijau terkunci. Lanjut pertanyaan berikutnya, atau ketuk kotak mana saja';
+  coachPos(); el.hidden = false;
+  if (n === 0) coachAt = 1;
+  if (n === 2) coachT = setTimeout(() => { save.coach = 1; persist(); coachStep(9); }, 4200);
+}
+/* ---------- kamus (clue / pattern lookup) ---------- */
+const BANK = window.TTSBank || [];
+function kamusSearch(q) {
+  q = q.trim(); const ul = $('kamusList'); ul.innerHTML = ''; if (q.length < 2) { ul.innerHTML = '<li class="none">Ketik minimal 2 huruf</li>'; return; }
+  let res;
+  if (/^[A-Za-z?_.*]+$/.test(q) && /[?_.*]/.test(q)) { const re = new RegExp('^' + q.toUpperCase().replace(/[?_.*]/g, '.') + '$'); res = BANK.filter(b => re.test(b[0])); }
+  else { const words = q.toLowerCase().split(/\s+/).filter(Boolean), up = q.toUpperCase().replace(/[^A-Z]/g, ''); res = BANK.filter(b => words.every(w => b[1].toLowerCase().includes(w)) || (up.length >= 3 && b[0].startsWith(up))); }
+  if (!res.length) { ul.innerHTML = '<li class="none">Belum ketemu. Coba kata kunci lain \ud83d\ude42</li>'; return; }
+  res.slice(0, 40).forEach(b => { const li = document.createElement('li'); li.innerHTML = '<b></b><span></span>'; li.firstChild.textContent = b[0] + ' (' + b[0].length + ')'; li.lastChild.textContent = b[1]; ul.appendChild(li); });
+  if (res.length > 40) { const li = document.createElement('li'); li.className = 'none'; li.textContent = '+' + (res.length - 40) + ' lagi, perjelas kata kuncinya'; ul.appendChild(li); }
+}
+function kamusOpen() { $('kamus').hidden = false; $('kamusIn').value = ''; kamusSearch(''); setTimeout(() => $('kamusIn').focus(), 50); }
+/* ---------- archive ---------- */
+function archOpen() {
+  const ul = $('archList'); ul.innerHTML = '';
+  for (let off = 0; off >= -6; off--) {
+    const k = witaKey(off), d = save.daily[k], li = document.createElement('li'), b = document.createElement('button'); b.type = 'button';
+    b.className = d ? 'ok' : ''; b.innerHTML = '<b></b><span></span>'; b.firstChild.textContent = (off === 0 ? 'Hari ini \u00b7 ' : off === -1 ? 'Kemarin \u00b7 ' : '') + niceDate(k);
+    b.lastChild.textContent = d ? '\u2b50'.repeat(d.s) + ' ' + fmt(d.t) : (save.cur && save.cur.key === 'd:' + k ? 'lanjutkan' : 'belum');
+    b.onclick = () => { $('arch').hidden = true; openDaily(k); }; li.appendChild(b); ul.appendChild(li);
+  }
+  $('arch').hidden = false;
+}
+/* ---------- maker (custom TTS + share link) ---------- */
+const MK_MAX = 16, MK_MIN = 3;
+const EXAMPLE = [['MERDEKA', 'Bebas dari penjajahan'], ['BENDERA', 'Kain berwarna yang dikibarkan saat upacara'], ['GARUDA', 'Lambang negara Indonesia'], ['PANCASILA', 'Dasar negara dengan lima sila'], ['UPACARA', 'Kegiatan tiap Senin pagi di sekolah'], ['MONAS', 'Tugu tinggi ikon Jakarta'], ['RAKYAT', 'Seluruh penduduk suatu negara'], ['PAHLAWAN', 'Orang yang berjasa membela bangsa']];
+const cleanAns = v => String(v || '').toUpperCase().replace(/[^A-Z]/g, '');
+function b64e(str) { const b = new TextEncoder().encode(str); let bin = ''; b.forEach(x => bin += String.fromCharCode(x)); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function b64d(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const bin = atob(s), b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); return new TextDecoder().decode(b); }
+function mkRow(a = '', c = '') {
+  const r = document.createElement('div'); r.className = 'mkr';
+  r.innerHTML = '<input class="ans" maxlength="14" autocapitalize="characters" autocomplete="off" spellcheck="false" aria-label="Jawaban"><input class="clue" maxlength="90" autocomplete="off" aria-label="Pertanyaan"><button type="button" class="del" aria-label="Hapus baris">\u2715</button>';
+  const [ia, ic] = r.querySelectorAll('input'); ia.value = a; ic.value = c; ia.placeholder = 'KUCING'; ic.placeholder = 'Hewan yang suka mengeong';
+  ia.oninput = () => { const v = cleanAns(ia.value); if (v !== ia.value) ia.value = v; ia.classList.remove('err'); mkDraft(); }; ic.oninput = () => { ic.classList.remove('err'); mkDraft(); };
+  r.querySelector('.del').onclick = () => { r.remove(); if ($('mkRows').children.length < MK_MIN) mkRow(); mkDraft(); };
+  $('mkRows').appendChild(r); return r;
+}
+function mkRead() { return [...$('mkRows').children].map(r => { const [a, c] = r.querySelectorAll('input'); return [cleanAns(a.value), c.value.trim(), a, c]; }); }
+function mkDraft() { save.draft = { t: $('mkTitle').value, a: $('mkAuthor').value, w: mkRead().map(x => [x[0], x[1]]) }; persist(); $('mkOut').hidden = true; }
+function openMaker() {
+  show('maker'); if (location.hash !== '#buat') history.replaceState(null, '', '#buat');
+  if (!$('mkRows').children.length) { const d = save.draft; $('mkTitle').value = d ? d.t || '' : ''; $('mkAuthor').value = d ? d.a || '' : ((window.JDNG && JDNG.name) || save.name || ''); const w = d && d.w && d.w.length ? d.w : []; w.forEach(x => mkRow(x[0], x[1])); while ($('mkRows').children.length < 6) mkRow(); }
+  $('mkOut').hidden = true;
+}
+function customPuzzle(data) { const list = data.w.map(x => [cleanAns(x[0]), String(x[1] || '').slice(0, 90)]).filter(x => x[0].length >= 2 && x[1]); return S.build(list, { seed: S.hash(JSON.stringify(list)), count: list.length, maxW: 13, maxH: 13, tries: 60 }); }
+let mkData = null, mkPz = null;
+function mkBuild() {
+  const rows = mkRead(), seen = new Set(), list = []; let bad = 0;
+  rows.forEach(([a, c, ia, ic]) => { if (!a && !c) return; if (a.length < 2 || a.length > 13 || seen.has(a)) { ia.classList.add('err'); bad++; return; } if (!c) { ic.classList.add('err'); bad++; return; } seen.add(a); list.push([a, c]); });
+  if (bad) return toast(bad + ' baris perlu dicek (jawaban 2\u201313 huruf, tidak dobel, pertanyaan diisi)', 'bad');
+  if (list.length < MK_MIN) return toast('Isi minimal ' + MK_MIN + ' kata dulu ya', 'bad');
+  if (list.length > MK_MAX) return toast('Maksimal ' + MK_MAX + ' kata', 'bad');
+  mkData = { v: 1, t: $('mkTitle').value.trim().slice(0, 40), a: $('mkAuthor').value.trim().slice(0, 20), w: list };
+  mkPz = customPuzzle(mkData); const inA = new Set(mkPz.words.map(w => w.ans)), miss = list.filter(x => !inA.has(x[0])).map(x => x[0]);
+  rows.forEach(([a, , ia]) => ia.classList.toggle('err', miss.includes(a)));
+  mkData.w = list.filter(x => inA.has(x[0]));
+  $('mkMsg').textContent = miss.length ? `TTS jadi dengan ${mkPz.words.length} kata (${mkPz.w}\u00d7${mkPz.h}). Tidak bisa disilangkan: ${miss.join(', ')}. Ganti kata itu atau tetap bagikan tanpa kata tersebut.` : `TTS jadi! ${mkPz.words.length} kata, kotak ${mkPz.w}\u00d7${mkPz.h}. Coba main dulu atau langsung bagikan link-nya.`;
+  $('mkOut').hidden = false; sfx.word(); $('mkOut').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+const mkLink = d => SITE + '#tts=' + b64e(JSON.stringify(d));
+async function shareLink(text, url) { try { if (navigator.share) { await navigator.share({ text, url }); return; } } catch (e) { if (e && e.name === 'AbortError') return; } try { await navigator.clipboard.writeText(text + '\n' + url); toast('Link disalin, tempel di WhatsApp \ud83d\udccb', 'good'); } catch (e) { prompt('Salin link ini:', url); } }
+function openCustom(d, fromLink) {
+  const pz = customPuzzle(d); if (!pz || pz.words.length < 2) { toast('Link TTS ini rusak \ud83d\ude15', 'bad'); return goHome(); }
+  const link = mkLink(d), t = d.t || 'TTS buatan teman';
+  begin({ kind: 'c', key: 'c:' + S.hash(link), title: '\u270f\ufe0f ' + t, sub: d.a ? 'dibuat oleh ' + d.a : (fromLink ? 'TTS kiriman teman' : 'TTS buatanmu'), pz, ctitle: t, link, fromLink });
+}
+function readHashTTS() { const m = location.hash.match(/^#tts=([A-Za-z0-9_-]+)/); if (!m) return null; try { const d = JSON.parse(b64d(m[1])); if (d && Array.isArray(d.w) && d.w.length >= 2) return d; } catch (e) {} return null; }
+/* ---------- wiring ---------- */
+function goHome() { coachStep(9); G && saveCur(); $('result').hidden = true; homeRefresh(); show('home'); }
+$('dailyBtn').onclick = openDaily;
+$('playBtn').onclick = () => { if (!save.solved && !save.cur) return openLevel(0, 0); const pi = save.lastPack || 0, li = nextLevel(pi); if (li >= 0) openLevel(pi, li); else { packsRefresh(); show('packs'); } };
+$('packBtn').onclick = () => { packsRefresh(); show('packs'); };
+$('packsBack').onclick = goHome;
+$('playBack').onclick = () => { if (location.hash === '#main') history.back(); else goHome(); };
+window.addEventListener('popstate', () => { if (!$('play').hidden) goHome(); });
+$('howBtn').onclick = () => { $('how').hidden = false; }; $('howClose').onclick = () => { $('how').hidden = true; };
+$('lbBtn').onclick = lbOpen; $('lbClose').onclick = () => { $('lb').hidden = true; };
+$('sendBtn').onclick = () => send($('nameIn'), () => { if (RES_DAILY) { $('nameIn').closest('.frow').hidden = true; $('lbFormTxt').textContent = 'Namamu sudah ada di daftar yang selesai hari ini \u2705'; } else $('lbForm').hidden = true; });
+$('whoBtn').onclick = whoOpen; $('whoFromRes').onclick = whoOpen; $('whoClose').onclick = () => { $('who').hidden = true; }; $('whoPlay').onclick = () => { $('who').hidden = true; $('result').hidden = true; openDaily(); };
+$('sendBtn2').onclick = () => send($('nameIn2'), lbOpen);
+$('muteBtn').onclick = () => { save.mute = !save.mute; persist(); homeRefresh(); };
+$('resHome').onclick = () => { if (location.hash === '#main') history.back(); else goHome(); };
+$('shareBtn').onclick = share;
+$('kamusBtn').onclick = kamusOpen; $('kamusClose').onclick = () => { $('kamus').hidden = true; }; $('kamusIn').oninput = e => kamusSearch(e.target.value);
+$('archBtn').onclick = archOpen; $('archClose').onclick = () => { $('arch').hidden = true; };
+$('makeBtn').onclick = openMaker; $('makerBack').onclick = () => { history.replaceState(null, '', location.pathname); goHome(); };
+$('mkAdd').onclick = () => { if ($('mkRows').children.length >= MK_MAX) return toast('Maksimal ' + MK_MAX + ' kata', 'bad'); mkRow().querySelector('input').focus(); };
+$('mkEx').onclick = () => { $('mkRows').innerHTML = ''; EXAMPLE.forEach(x => mkRow(x[0], x[1])); if (!$('mkTitle').value) $('mkTitle').value = 'TTS Hari Kemerdekaan'; mkDraft(); };
+$('mkTitle').oninput = mkDraft; $('mkAuthor').oninput = mkDraft;
+$('mkBuild').onclick = mkBuild;
+$('mkPlay').onclick = () => { if (mkData) openCustom(mkData, false); };
+$('mkShare').onclick = () => { if (mkData) shareLink(`Coba TTS buatanku${mkData.t ? ' "' + mkData.t + '"' : ''} di TTS Kilat (${mkData.w.length} kata) \u270f\ufe0f`, mkLink(mkData)); };
+$('hintLetter').onclick = hintLetter; $('hintWord').onclick = hintWord; $('checkBtn').onclick = doCheck;
+$('cluePrev').onclick = () => nextWord(-1); $('clueNext').onclick = () => nextWord(1); $('clueText').onclick = () => onCell(G.cur);
+R.keyboard(onKey); $('kb').classList.add('auto');
+document.addEventListener('keydown', e => {
+  if (!G || $('play').hidden || !$('result').hidden || !$('how').hidden || e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  const k = e.key;
+  if (/^[a-zA-Z]$/.test(k)) { typeLetter(k.toUpperCase()); e.preventDefault(); }
+  else if (k === 'Backspace' || k === 'Delete') { backspace(); e.preventDefault(); }
+  else if (k === 'ArrowLeft') { moveArrow(-1, 0); e.preventDefault(); } else if (k === 'ArrowRight') { moveArrow(1, 0); e.preventDefault(); }
+  else if (k === 'ArrowUp') { moveArrow(0, -1); e.preventDefault(); } else if (k === 'ArrowDown') { moveArrow(0, 1); e.preventDefault(); }
+  else if (k === 'Tab' || k === 'Enter') { nextWord(e.shiftKey ? -1 : 1); e.preventDefault(); }
+  else if (k === ' ') { onCell(G.cur); e.preventDefault(); }
+});
+window.addEventListener('resize', () => { R.fit(); if (!$('coach').hidden) coachPos(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveCur(); });
+window.TTSApp = { get G() { return G; }, get save() { return save; }, whoOpen, todayDone, scoresGet, openDaily, openLevel, typeLetter, finish, openMaker, openCustom, mkLink, b64d, kamusSearch, get coachAt() { return coachAt; } };
+homeRefresh();
+const hd = readHashTTS();
+if (hd) openCustom(hd, true); else if (/^#tts=/.test(location.hash)) toast('Link TTS ini rusak \ud83d\ude15', 'bad');
+else if (location.hash === '#harian') openDaily(); else if (location.hash === '#buat') openMaker(); else if (location.hash === '#main') history.replaceState(null, '', location.pathname);
+})();
+</script>
+</body>
+</html>

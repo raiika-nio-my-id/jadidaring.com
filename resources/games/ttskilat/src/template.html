@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>TTS Kilat · Teka Teki Silang Online Gratis, TTS Harian &amp; Buat TTS Sendiri</title>
+<meta name="description" content="TTS Kilat: main teka teki silang online gratis dalam bahasa Indonesia. Ada TTS Harian baru setiap hari, 105 TTS bertema kuliner Nusantara, fauna, geografi, budaya, sekolah dan sains, plus bantuan huruf kalau buntu dan pembuat TTS (TTS maker) untuk dibagikan lewat link. Langsung main di HP atau laptop, tanpa download, tanpa iklan.">
+<meta name="theme-color" content="#1d3557">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TTS Kilat · teka teki silang online">
+<meta property="og:description" content="TTS Harian baru setiap hari dan 105 TTS bertema Indonesia. Gratis di browser, tanpa iklan.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><div class="ltiles"><b>T</b><b>T</b><b>S</b></div><span class="l2">KILAT</span></div>
+    <h1 class="sr-only">TTS Kilat: teka teki silang online</h1>
+    <p class="tagline">Teka teki silang Indonesia yang selesai sekali duduk. Buntu? Minta huruf, jangan googling.</p>
+    <button type="button" class="daily-card" id="dailyBtn">
+      <span class="dc-top"><span class="dc-tag">📅 TTS HARIAN</span><span id="dailyStreak" class="dc-streak"></span></span>
+      <span class="dc-date" id="dailyDate"></span>
+      <span class="dc-sub" id="dailySub">Satu TTS baru tiap hari, sama untuk semua pemain</span>
+    </button>
+    <p class="who-line" id="whoLine" hidden><button type="button" class="linkbtn" id="whoBtn"><span id="whoCnt">👥 Daftar yang sudah selesai hari ini</span> <u>lihat</u></button></p>
+    <button type="button" class="btn big primary" id="playBtn"><span aria-hidden="true">▶</span> <span id="playLbl">Main TTS</span></button>
+    <div class="row3">
+      <button type="button" class="btn" id="packBtn"><span aria-hidden="true">🧩</span> Paket</button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">❓</span> Cara main</button>
+      <button type="button" class="btn" id="lbBtn"><span aria-hidden="true">🏆</span> Rekor</button>
+      <button type="button" class="btn sq" id="muteBtn" aria-label="Suara">🔊</button>
+    </div>
+    <div class="row2">
+      <button type="button" class="btn" id="makeBtn"><span aria-hidden="true">✏️</span> Buat TTS</button>
+      <button type="button" class="btn" id="archBtn"><span aria-hidden="true">📅</span> Arsip</button>
+      <button type="button" class="btn" id="kamusBtn"><span aria-hidden="true">🔎</span> Kamus TTS</button>
+    </div>
+    <p class="stat-line" id="statLine"></p>
+  </div>
+  <section class="seo">
+    <h2>Teka teki silang online bahasa Indonesia</h2>
+    <p>TTS Kilat adalah game teka teki silang (TTS) online gratis yang bisa langsung dimainkan di browser HP atau laptop. Isi kotak mendatar dan menurun sesuai pertanyaan. Setiap kata yang benar langsung berubah hijau, jadi kamu tahu sedang di jalur yang benar. Satu TTS berisi 6 sampai 11 kata, cukup untuk mengisi waktu menunggu atau istirahat sebentar.</p>
+    <h3>Buntu? Tidak perlu cari jawaban TTS di Google</h3>
+    <p>Banyak orang mencari "jawaban TTS" saat terjebak di satu pertanyaan. Di TTS Kilat, bantuan sudah ada di dalam game: buka satu huruf, buka satu kata, atau cek kotak yang salah. Bintang memang berkurang kalau pakai bantuan, tapi TTS tetap bisa diselesaikan.</p>
+    <h3>TTS Harian, sama untuk semua pemain</h3>
+    <p>Setiap hari ada satu TTS Harian baru yang sama untuk semua orang di Indonesia (berganti tengah malam WITA). Selesaikan setiap hari untuk menjaga streak 🔥, lalu bagikan hasilmu ke WhatsApp tanpa membocorkan jawaban.</p>
+    <h3>TTS pintar dengan 7 tema</h3>
+    <p>Ada 105 TTS dalam 7 paket: Campur Sari, Kuliner Nusantara (rendang, pempek, rempah-rempah), Fauna, Alam &amp; Geografi, Budaya Indonesia, Sekolah &amp; Sains, dan Sehari-hari. Mulai dari yang mudah untuk anak SD sampai yang bikin mikir untuk orang dewasa. Kumpulkan Poin TTS dan masuk papan rekor.</p>
+    <h3>Contoh soal TTS dan jawabannya</h3>
+    <table class="seo-tts"><thead><tr><th>Pertanyaan TTS</th><th>Jawaban</th></tr></thead><tbody>
+      <tr><td>Masakan daging bersantan dan rempah khas Minang (7)</td><td>RENDANG</td></tr>
+      <tr><td>Olahan ikan dan sagu khas Palembang (6)</td><td>PEMPEK</td></tr>
+      <tr><td>Alat musik bambu dari Jawa Barat yang digoyang (8)</td><td>ANGKLUNG</td></tr>
+      <tr><td>Kerbau kerdil khas Sulawesi (4)</td><td>ANOA</td></tr>
+      <tr><td>Nasi berbentuk kerucut untuk syukuran (7)</td><td>TUMPENG</td></tr>
+      <tr><td>Rumah adat Papua berbentuk bulat (5)</td><td>HONAI</td></tr>
+      <tr><td>Gunung tertinggi di Pulau Jawa (6)</td><td>SEMERU</td></tr>
+      <tr><td>Tempat sungai bertemu laut (5)</td><td>MUARA</td></tr>
+    </tbody></table>
+    <p>Lebih dari 500 kata dan pertanyaan TTS bahasa Indonesia bisa dicari lewat <b>🔎 Kamus TTS</b>: ketik kata kunci pertanyaan atau pola huruf seperti <b>R?ND?NG</b>.</p>
+    <h3>Buat TTS sendiri online, gratis</h3>
+    <p>Mau membuat teka teki silang untuk kelas, kuis kantor, atau ulang tahun teman? Buka <b>Buat TTS</b>, tulis jawaban dan pertanyaannya, lalu TTS Kilat menyusun kotak mendatar dan menurun secara otomatis. Bagikan link-nya lewat WhatsApp, temanmu bisa langsung main tanpa download. Cocok untuk guru yang mencari TTS maker bahasa Indonesia.</p>
+    <h3>Nyaman di HP</h3>
+    <p>TTS Kilat memakai keyboard sendiri di layar, jadi keyboard HP tidak menutupi kotak TTS. Ketuk kotak untuk memilih, ketuk lagi untuk ganti arah mendatar atau menurun. Di laptop, langsung ketik, pakai panah untuk pindah, dan Tab untuk pertanyaan berikutnya. Tanpa download dan tanpa iklan.</p>
+  </section>
+  <footer class="site-footer"><p><strong>TTS Kilat</strong> · teka teki silang gratis dari JadiDaring</p><nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav></footer>
+</main>
+
+<section id="packs" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="packsBack" aria-label="Kembali">←</button><h2>Pilih TTS</h2><span class="ptot" id="packsStars"></span></div>
+    <div id="packList"></div>
+  </div>
+</section>
+
+<section id="maker" class="screen" hidden>
+  <div class="panel">
+    <div class="phead"><button type="button" class="btn sq" id="makerBack" aria-label="Kembali">←</button><h2>✏️ Buat TTS sendiri</h2></div>
+    <p class="small mk-intro">Tulis kata dan pertanyaannya, kotak TTS disusun otomatis. Kirim link-nya ke teman, kelas, atau grup WhatsApp. Gratis, tanpa daftar.</p>
+    <div class="mk-meta"><input id="mkTitle" maxlength="40" placeholder="Judul, mis. TTS Kelas 5B" aria-label="Judul TTS"><input id="mkAuthor" maxlength="20" placeholder="JadiDaring" aria-label="Nama pembuat" data-jd-account-name></div>
+    <div class="mk-head" aria-hidden="true"><span>Jawaban</span><span>Pertanyaan</span></div>
+    <div id="mkRows"></div>
+    <div class="mk-act"><button type="button" class="btn" id="mkAdd">＋ Tambah kata</button><button type="button" class="btn" id="mkEx">🎲 Isi contoh</button></div>
+    <button type="button" class="btn big primary" id="mkBuild">🧩 Susun TTS</button>
+    <div id="mkOut" class="mk-out" hidden>
+      <p id="mkMsg"></p>
+      <div class="obtns"><button type="button" class="btn primary" id="mkPlay">▶ Coba main</button><button type="button" class="btn" id="mkShare">📤 Bagikan link</button></div>
+    </div>
+    <p class="small">Tips: 6–12 kata yang punya huruf sama (A, I, E, N, R) paling mudah disilangkan. Jawaban hanya huruf A–Z, tanpa spasi.</p>
+  </div>
+</section>
+
+<section id="play" class="screen" hidden>
+  <div class="hud">
+    <button type="button" class="btn sq" id="playBack" aria-label="Kembali">←</button>
+    <div class="htitle"><b id="pzTitle"></b><span id="pzSub"></span></div>
+    <span class="timer" id="timer">0:00</span>
+  </div>
+  <div class="tools">
+    <button type="button" class="tbtn" id="hintLetter"><span aria-hidden="true">💡</span> Huruf</button>
+    <button type="button" class="tbtn" id="hintWord"><span aria-hidden="true">📖</span> Kata</button>
+    <button type="button" class="tbtn" id="checkBtn"><span aria-hidden="true">✔</span> Cek</button>
+    <span class="prog" id="prog"></span>
+  </div>
+  <div class="board">
+    <div class="gridwrap" id="gridWrap"><div id="grid" role="grid" aria-label="Kotak TTS"></div></div>
+    <aside class="clues" id="clueLists" aria-label="Daftar pertanyaan"><h3>Mendatar</h3><ol id="clA"></ol><h3>Menurun</h3><ol id="clD"></ol></aside>
+  </div>
+  <div class="cluebar" id="clueBar">
+    <button type="button" class="cbn" id="cluePrev" aria-label="Pertanyaan sebelumnya">‹</button>
+    <button type="button" class="cbt" id="clueText" aria-live="polite"></button>
+    <button type="button" class="cbn" id="clueNext" aria-label="Pertanyaan berikutnya">›</button>
+  </div>
+  <div class="kb" id="kb" aria-label="Keyboard"></div>
+  <div class="coach" id="coach" hidden role="status"></div>
+</section>
+
+<div class="overlay" id="result" hidden>
+  <div class="ocard">
+    <h2 id="resTitle">Selesai!</h2>
+    <div class="stars" id="resStars"></div>
+    <div class="rstats" id="resStats"></div>
+    <div id="lbForm" class="lbform" hidden>
+      <p class="small" id="lbFormTxt"></p>
+      <div class="frow"><input id="nameIn" maxlength="15" placeholder="JadiDaring" autocomplete="off" aria-label="Nama"><button type="button" class="btn primary" id="sendBtn">Kirim</button></div>
+    </div>
+    <div class="obtns">
+      <button type="button" class="btn primary" id="nextBtn">Lanjut ▶</button>
+      <button type="button" class="btn" id="shareBtn" hidden>📤 Bagikan</button>
+      <button type="button" class="btn" id="whoFromRes" hidden>👥 Daftar hari ini</button>
+      <button type="button" class="btn" id="resHome">🏠 Menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="lb" hidden>
+  <div class="ocard">
+    <h2>🏆 Rekor Poin TTS</h2>
+    <p class="small">Total Poin TTS dari semua TTS yang kamu selesaikan.</p>
+    <ol id="lbList" class="lblist"></ol>
+    <div class="mine" id="lbMine"></div>
+    <div class="frow" id="lbSendRow"><input id="nameIn2" maxlength="15" placeholder="JadiDaring" autocomplete="off" aria-label="Nama"><button type="button" class="btn primary" id="sendBtn2">Kirim poinku</button></div>
+    <div class="obtns"><button type="button" class="btn" id="lbClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="who" hidden>
+  <div class="ocard">
+    <h2>✅ Sudah selesai TTS Harian</h2>
+    <p class="small" id="whoDate"></p>
+    <ol id="whoList" class="lblist wholist"></ol>
+    <div class="mine" id="whoMine"></div>
+    <div class="obtns"><button type="button" class="btn primary" id="whoPlay">📅 Main TTS Harian</button><button type="button" class="btn" id="whoClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="how" hidden>
+  <div class="ocard how">
+    <h2>Cara main</h2>
+    <ol>
+      <li><b>Ketuk kotak</b> untuk memilih. Ketuk lagi untuk ganti arah <b>mendatar ↔ menurun</b>.</li>
+      <li>Baca pertanyaan di bar bawah, lalu ketik jawabannya. Kata yang benar langsung <b class="g">hijau</b>.</li>
+      <li>Buntu? <b>💡 Huruf</b> membuka satu kotak, <b>📖 Kata</b> membuka satu kata, <b>✔ Cek</b> menandai huruf yang salah.</li>
+      <li>⭐⭐⭐ = tanpa bantuan dan tanpa cek. Makin cepat, makin banyak Poin TTS.</li>
+      <li>Laptop: ketik langsung, panah untuk pindah, <b>Tab</b> untuk pertanyaan berikutnya, <b>Spasi</b> ganti arah.</li>
+    </ol>
+    <div class="obtns"><button type="button" class="btn primary" id="howClose">Siap!</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="arch" hidden>
+  <div class="ocard">
+    <h2>📅 Arsip TTS Harian</h2>
+    <p class="small">Ketinggalan? Main TTS Harian 7 hari terakhir. Streak 🔥 hanya dari TTS hari ini.</p>
+    <ul id="archList" class="archlist"></ul>
+    <div class="obtns"><button type="button" class="btn" id="archClose">Tutup</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="kamus" hidden>
+  <div class="ocard kamus">
+    <h2>🔎 Kamus TTS</h2>
+    <p class="small">Cari jawaban dari kata kunci pertanyaan, atau pola huruf: tulis <b>?</b> untuk huruf yang belum tahu, mis. <b>R?ND?NG</b>.</p>
+    <div class="frow"><input id="kamusIn" maxlength="40" placeholder="mis. rempah atau ?A?I" autocomplete="off" spellcheck="false" aria-label="Kata kunci atau pola"></div>
+    <ul id="kamusList" class="kamuslist" aria-live="polite"></ul>
+    <div class="obtns"><button type="button" class="btn" id="kamusClose">Tutup</button></div>
+  </div>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+<script>
+/*SIM*/
+</script>
+<script>
+/*RENDER*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>
