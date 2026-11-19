@@ -984,3 +984,22 @@ body {
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
 }
+
+/* Profile header stats row: Pengikut · Mengikuti · Pengunjung + follow button */
+.pf-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin-top: 10px; }
+.pf-stat { display: inline-flex; align-items: baseline; gap: 5px; color: var(--pf-text); text-decoration: none; font-size: .92rem; min-height: 32px; align-items: center; }
+.pf a.pf-stat { color: var(--pf-text); }
+.pf-stat strong { font-size: 1.15rem; font-weight: 800; color: color-mix(in srgb, var(--pf-accent) 60%, var(--pf-text)); }
+.pf-stat span { opacity: .78; }
+a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline; opacity: 1; }
+.pf-stats__act { margin: 0 0 0 auto; }
+.pf .pf-follow { min-height: 44px; padding: 10px 20px; }
+@media (max-width: 560px) { .pf-head { flex-direction: column; align-items: flex-start; } .pf-stats { gap: 4px 14px; } .pf-stats__act { margin: 6px 0 0; width: 100%; } .pf-stats__act .pf-follow, a.pf-stats__act { width: 100%; justify-content: center; } }
+
+/* Logged-in account chip */
+.clay-nav__me { gap: 8px; padding-left: 8px; max-width: 220px; }
+.clay-me__av { width: 28px; height: 28px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--clay-lavender); color: var(--clay-lavender-ink); font-weight: 800; font-size: 14px; box-shadow: var(--clay-in); }
+.clay-me__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.clay-nav__me[aria-current="page"] .clay-me__av { background: var(--clay-surface); }
+.clay-me__tab { display: block; max-width: 100%; }
+.pf-head__text { flex: 1 1 auto; min-width: 0; }
