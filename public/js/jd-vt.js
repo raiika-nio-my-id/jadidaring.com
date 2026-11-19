@@ -41,7 +41,7 @@
     return box;
   }
   function show(path) {
-    hide();
+    hide(true);
     var h = document.querySelector('.clay-header');
     el = build(path);
     el.style.top = (h ? Math.max(0, Math.round(h.getBoundingClientRect().bottom)) : 0) + 'px';
@@ -60,12 +60,56 @@
     var fixed = document.querySelector('meta[name="theme-color"][data-fixed]');
     if (keepBar !== true && fixed && fixed.dataset.pageColor) { fixed.setAttribute('content', fixed.dataset.pageColor); }
     if (el) { el.remove(); el = null; }
+    if (keepBar !== true) restoreNav();
   }
+
+  /* Instant nav state: the destination item becomes active on pointerdown, before anything loads. */
+  var NAVSEL = '.clay-nav a, .clay-bottom-nav a';
+  function navLinks() { return Array.prototype.slice.call(document.querySelectorAll(NAVSEL)); }
+  var initial = null;
+  function snapshot() { initial = navLinks().map(function (l) { return l.getAttribute('aria-current'); }); }
+  function restoreNav() {
+    if (!initial) return;
+    navLinks().forEach(function (l, i) {
+      l.classList.remove('is-pressed');
+      if (initial[i]) l.setAttribute('aria-current', initial[i]); else l.removeAttribute('aria-current');
+    });
+  }
+  function markNav(a) {
+    var path = a.pathname;
+    navLinks().forEach(function (l) {
+      var on = l.pathname === path && !l.classList.contains('clay-brand');
+      l.classList.toggle('is-pressed', on);
+      if (on) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current');
+    });
+  }
+  function navTarget(e) {
+    var a = e.target.closest && e.target.closest(NAVSEL);
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download') || a.origin !== location.origin) return null;
+    return a;
+  }
+  var armed = null;
+  document.addEventListener('pointerdown', function (e) {
+    if ((e.pointerType === 'mouse' && e.button) || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var a = navTarget(e);
+    if (!a || (a.pathname === location.pathname && a.search === location.search)) return;
+    armed = a; markNav(a);
+  }, true);
+  function disarm(e) {
+    if (!armed) return;
+    var a = armed; armed = null;
+    var up = e.type === 'pointerup' && e.target.closest && e.target.closest(NAVSEL) === a;
+    if (!up) restoreNav();
+  }
+  document.addEventListener('pointerup', disarm, true);
+  document.addEventListener('pointercancel', disarm, true);
+  snapshot();
   document.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest && e.target.closest('.clay-nav a, .clay-bottom-nav a, .clay-brand');
     if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download') || a.origin !== location.origin) return;
     if (a.pathname === location.pathname && a.search === location.search) return;
+    markNav(a);
     show(a.pathname);
   });
   window.addEventListener('pageshow', function () { hide(); });
