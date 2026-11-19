@@ -180,6 +180,10 @@ class NewsController extends Controller
             return 'Topic is disabled.';
         }
 
+        if ($topic->articles_per_day <= 0) {
+            return null; // 0 = no daily limit
+        }
+
         $today = Article::query()
             ->where('topic', $topic->slug)
             ->where('status', 'published')

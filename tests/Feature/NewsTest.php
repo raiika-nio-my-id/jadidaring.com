@@ -143,6 +143,15 @@ class NewsTest extends TestCase
         $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(6, 'topics');
     }
 
+    public function test_zero_daily_limit_means_unlimited(): void
+    {
+        NewsTopic::query()->where('slug', 'politik')->update(['articles_per_day' => 0]);
+
+        foreach (['satu', 'dua', 'tiga', 'empat', 'lima'] as $n) {
+            $this->postJson(self::API.'/articles', $this->payload(['topic' => 'politik', 'title' => "Berita politik tanpa batas nomor {$n}"]), $this->key())->assertCreated();
+        }
+    }
+
     public function test_comments_load_lazily_and_posting_requires_a_member(): void
     {
         $res = $this->postJson(self::API.'/articles', $this->payload(), $this->key())->assertCreated();
