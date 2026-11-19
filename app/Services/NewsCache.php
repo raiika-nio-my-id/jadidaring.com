@@ -89,6 +89,31 @@ class NewsCache
     }
 
     /**
+     * Populer is a SORT, not a filter: every visible article of the topic (or all topics), ordered by
+     * GA 7-day views desc, the rest newest first. Paginated like the normal listing.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public static function popularPage(?string $topic, int $page, int $per = self::PER_PAGE): array
+    {
+        $all = self::remember('popall:'.($topic ?? 'all'), function () use ($topic): array {
+            return Article::query()->visible()
+                ->when($topic !== null, fn ($q) => $q->where('topic', $topic))
+                ->orderByDesc('published_at')->orderByDesc('id')
+                ->limit(2000)
+                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_url', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'published_at', 'updated_at'])
+                ->map(fn (Article $a): array => [
+                    'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
+                    'img' => NewsImage::meta($a), 'updated_at' => $a->updated_at?->toIso8601String(), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url(),
+                ])->all();
+        });
+
+        $ranked = PopularStats::rank($all, fn (array $a): string => $a['slug'], PopularStats::newsViews());
+
+        return array_slice($ranked, ($page - 1) * $per, $per);
+    }
+
+    /**
      * Top articles by Google Analytics views (7 days). Falls back to newest-first when GA has no data.
      *
      * @return array{items: list<array<string, mixed>>, ranked: bool}

@@ -1,7 +1,7 @@
 @if (! empty($pagination) && $pagination['pages'] > 1)
     @php
         $cur = $pagination['page']; $last = $pagination['pages']; $base = $pagination['base'];
-        $href = fn (int $n): string => $n <= 1 ? $base : $base.'?page='.$n;
+        $href = fn (int $n): string => $n <= 1 ? $base : $base.(str_contains($base, '?') ? '&' : '?').'page='.$n;
         $nums = collect([1, $last])->merge(range(max(1, $cur - 1), min($last, $cur + 1)))->unique()->sort()->values();
     @endphp
     <nav class="pager" aria-label="Halaman berita">

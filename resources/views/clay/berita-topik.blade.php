@@ -12,11 +12,7 @@
 
         <div data-jd-slot="list">
         @include('clay._articles', ['articles' => $articles, 'emptyText' => ! empty($q) ? 'Tidak ada berita '.strtolower($topicName).' yang cocok dengan pencarian Anda.' : 'Belum ada artikel untuk topik '.strtolower($topicName).'. Pantau terus pembaruan dari redaksi kami!'])
-        @if(empty($popular))
-            @include('clay._pagination')
-        @else
-            <p class="clay-empty__text">Populer = paling banyak dibaca 7 hari terakhir (data Google Analytics).</p>
-        @endif
+        @include('clay._pagination')
         </div>
     </div>
 @endsection

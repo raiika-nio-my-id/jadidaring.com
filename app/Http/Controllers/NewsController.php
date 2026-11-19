@@ -25,11 +25,11 @@ class NewsController extends Controller
         $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
         $noindex = false;
         $popular = $q === '' && $request->query('urut') === 'populer';
-        $pg = $q === '' && ! $popular ? self::pageData($request, null) : ['page' => 1, 'pages' => 1];
+        $pg = $q === '' ? self::pageData($request, null) : ['page' => 1, 'pages' => 1];
         $articles = $q === '' && ! $popular ? NewsCache::page(null, $pg['page']) : [];
 
         if ($popular) {
-            $articles = NewsCache::popular(12)['items'];
+            $articles = NewsCache::popularPage(null, $pg['page']);
             $noindex = true;
         }
 
@@ -48,7 +48,7 @@ class NewsController extends Controller
             'q' => $q,
             'popular' => $popular,
             'noindex' => $noindex,
-            'pagination' => $q === '' && ! $popular ? $pg + ['base' => '/berita'] : null,
+            'pagination' => $q === '' ? $pg + ['base' => $popular ? '/berita?urut=populer' : '/berita'] : null,
             'relPrev' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] - 1, $pg['page'] > 1) : null,
             'relNext' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
             'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
@@ -89,11 +89,11 @@ class NewsController extends Controller
         $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
         $popular = $q === '' && $request->query('urut') === 'populer';
         $plain = $q === '' && ! $popular;
-        $pg = $plain ? self::pageData($request, $topik) : ['page' => 1, 'pages' => 1];
+        $pg = $q === '' ? self::pageData($request, $topik) : ['page' => 1, 'pages' => 1];
         $articles = $plain ? NewsCache::page($topik, $pg['page']) : [];
 
         if ($popular) {
-            $articles = array_slice(array_values(array_filter(NewsCache::popular(100)['items'], fn (array $a): bool => $a['topic'] === $topik)), 0, 12);
+            $articles = NewsCache::popularPage($topik, $pg['page']);
         }
 
         if ($q !== '') {
@@ -110,7 +110,7 @@ class NewsController extends Controller
             'q' => $q,
             'popular' => $popular,
             'noindex' => ! $plain,
-            'pagination' => $plain ? $pg + ['base' => $base] : null,
+            'pagination' => $q === '' ? $pg + ['base' => $popular ? $base.'?urut=populer' : $base] : null,
             'relPrev' => $plain ? self::pageUrl($base, $pg['page'] - 1, $pg['page'] > 1) : null,
             'relNext' => $plain ? self::pageUrl($base, $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
             'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
