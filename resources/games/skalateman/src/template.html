@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: site texts (9 languages), question banks (q.<lang>), avatars and reactions live in this JSON ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<title>Skala Teman · Tebak Skala 1–10 Temanmu · Party Game 2–8 Pemain</title>
+<meta name="description" content="Skala Teman (Friend Scale · 默契量表): party game santai 2–8 pemain buat kenalan lebih dekat. Kursi panas bergiliran menjawab jujur 1–10 (“Seberapa suka JadiDaring nonton film?”), yang lain menebak angkanya, tebakan paling dekat menang. Ngobrol dulu, host klik Lanjut. 9 bahasa (Indonesia, English, 中文, 日本語, 한국어, Melayu, Español, Português, ไทย), bisa latihan lawan bot.">
+<meta name="theme-color" content="#2a1b4d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skala Teman · Friend Scale">
+<meta property="og:description" content="Tebak skala 1–10 temanmu. Party game santai 2–8 pemain, 9 bahasa. Seberapa kenal kamu sama temanmu?">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<a class="skip" href="#main" data-t="skip">Lewati ke konten</a>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<main id="main" tabindex="-1">
+  <!-- ============ HOME ============ -->
+  <div id="home" class="screen">
+    <header class="site-header">
+      <div class="wrap hdr">
+        <span class="brand"><span class="brand-mark" aria-hidden="true">🎚️</span><span><strong id="brandName">Skala Teman</strong><small data-t="tagline"></small></span></span>
+        <label class="langsel"><span class="sr" data-t="uiLang"></span><span aria-hidden="true">🌐</span><select class="lang-pick" id="langSel"></select></label>
+      </div>
+    </header>
+    <section class="hero wrap" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="kicker" data-t="heroKicker"></p>
+        <h1 id="heroTitle" data-t="heroTitle"></h1>
+        <p class="lead" data-t="heroSub"></p>
+        <ul class="facts" id="facts"></ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="bubble b1" id="heroQ"></div>
+        <div class="hero-scale"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i class="hit">7</i><i>8</i><i>9</i><i>10</i></div>
+        <div class="faces"><span>🦊</span><span class="hit">🐼</span><span>🐸</span><span>🐯</span></div>
+      </div>
+    </section>
+    <section class="wrap play-grid" id="mainkan">
+      <article class="card">
+        <h2 data-t="setupTitle"></h2>
+        <label class="field"><span><span data-t="name"></span> <em class="gm-badge" id="gmNickBadge">(GM)</em></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+        <p class="field-label" data-t="avatar"></p>
+        <div class="av-pick" id="avPick" role="radiogroup"></div>
+      </article>
+      <article class="card">
+        <h2 data-t="playTitle"></h2>
+        <div class="practice">
+          <div class="row"><button type="button" class="btn yellow big" id="practiceBtn" data-t="practice"></button></div>
+          <div class="row sm"><span class="muted" data-t="bots"></span><div class="seg" id="botCount" role="radiogroup"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="5">5</button><button type="button" data-v="7">7</button></div></div>
+          <p class="muted small" data-t="practiceSub"></p>
+        </div>
+        <h3 data-t="onlineTitle"></h3>
+        <div class="row">
+          <button type="button" class="btn pink online-btn" id="createPrivate" data-t="createPrivate" disabled></button>
+          <button type="button" class="btn violet online-btn" id="createPublic" data-t="createPublic" disabled></button>
+          <button type="button" class="btn teal online-btn" id="quickMatch" data-t="quickMatch" disabled></button>
+        </div>
+        <form class="row" id="joinForm" autocomplete="off">
+          <label class="field grow"><span data-t="codeLabel"></span><input type="text" id="codeInput" maxlength="6" autocapitalize="characters" spellcheck="false" data-tp="codePh"></label>
+          <button type="submit" class="btn ghost online-btn" id="joinBtn" data-t="join" disabled></button>
+        </form>
+        <p class="note" id="onlineNote" role="status" aria-live="polite"></p>
+      </article>
+    </section>
+    <section class="wrap card gm-card" id="gmRooms" aria-labelledby="gmTitle" hidden>
+      <div class="gm-top"><h2 id="gmTitle" data-t="gmTitle"></h2><button type="button" class="btn ghost small" id="gmRefresh" data-t="gmRefresh"></button></div>
+      <p class="muted small" id="gmNote" role="status" aria-live="polite"></p>
+      <ul class="gm-list" id="gmList"></ul>
+    </section>
+    <section class="wrap card how" id="cara" aria-labelledby="howTitle">
+      <h2 id="howTitle" data-t="howTitle"></h2>
+      <ol class="steps" id="howList"></ol>
+      <h3 data-t="scoreTitle"></h3>
+      <ul class="score-rules" id="scoreRules"></ul>
+    </section>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p><strong id="footName">Skala Teman</strong> · <span data-t="footerNote"></span></p>
+        <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ LOBBY ============ -->
+  <div id="lobby" class="screen" hidden>
+    <div class="wrap lobby-wrap">
+      <div class="lobby-top">
+        <button type="button" class="icon-btn" id="lobbyExit" data-ta="exit">✕</button>
+        <h2 data-t="lobbyTitle"></h2>
+        <span class="vis" id="visBadge"></span>
+        <span class="grow"></span>
+        <label class="langsel mini"><span class="sr" data-t="uiLang"></span><span aria-hidden="true">🌐</span><select class="lang-pick" id="langSelLobby"></select></label>
+        <span class="conn" id="conn" role="status" aria-live="polite"></span>
+      </div>
+      <div class="card code-card" id="codeCard">
+        <div><small data-t="roomCode"></small><b class="code" id="roomCode"></b></div>
+        <button type="button" class="btn pink" id="inviteBtn" data-t="invite"></button>
+      </div>
+      <div class="lobby-grid">
+        <div class="card">
+          <h3><span data-t="players"></span> <small id="pCount"></small></h3>
+          <ul class="plist" id="plist"></ul>
+          <div class="row sm"><button type="button" class="btn ghost small" id="addBot" data-t="addBot"></button></div>
+        </div>
+        <div class="card">
+          <h3 data-t="settings"></h3>
+          <p class="muted small set-note" data-t="setNote"></p>
+          <div class="setting"><span data-t="rounds"></span><div class="seg" data-k="r"><button type="button" data-v="5">5</button><button type="button" data-v="8">8</button><button type="button" data-v="10">10</button><button type="button" data-v="15">15</button><button type="button" data-v="20">20</button></div></div>
+          <div class="setting"><span data-t="timer"></span><div class="seg" data-k="t"><button type="button" data-v="15">15s</button><button type="button" data-v="20">20s</button><button type="button" data-v="30">30s</button><button type="button" data-v="45">45s</button><button type="button" data-v="60">60s</button></div></div>
+        </div>
+      </div>
+      <div class="start-row">
+        <p class="note" id="lobbyNote" aria-live="polite"></p>
+        <button type="button" class="btn pink big" id="startBtn" data-t="start"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PLAY ============ -->
+  <div id="play" class="screen play" hidden>
+    <div class="topbar">
+      <button type="button" class="icon-btn" id="playExit" data-ta="exit">✕</button>
+      <b class="pill" id="roundPill"></b>
+      <b class="pill mode" id="hotPill"></b>
+      <span class="grow"></span>
+      <b class="pill code-pill" id="codePill"></b>
+      <label class="langsel mini"><span class="sr" data-t="uiLang"></span><span aria-hidden="true">🌐</span><select class="lang-pick" id="langSelPlay"></select></label>
+      <button type="button" class="icon-btn" id="muteBtn" data-ta="mute">🔊</button>
+    </div>
+    <div class="timer" id="timer" role="timer"><span class="bar"><i id="timerBar"></i></span><b id="timerNum">20</b></div>
+    <div class="play-main">
+    <div class="stage" id="stage">
+      <section class="qcard" id="qcard" aria-live="polite">
+        <div class="qhead" id="qhead"></div>
+        <h2 class="qtext" id="qtext"></h2>
+        <p class="qsub" id="qsub"></p>
+      </section>
+      <div class="pad-wrap" id="padWrap">
+        <div class="pad" id="pad" role="group" aria-label="1-10"></div>
+        <div class="pad-ends"><span id="padLo"></span><span id="padHi"></span></div>
+      </div>
+      <ul class="who" id="who" aria-label="Pemain"></ul>
+      <p class="status" id="status" aria-live="polite"></p>
+      <div class="reveal-bar" id="revealBar" hidden>
+        <div class="verdict" id="verdict"></div>
+        <div class="scale" id="scale" aria-hidden="true"></div>
+        <ol class="rows" id="rows"></ol>
+        <p class="talk" id="talk"></p>
+        <div class="next-row"><button type="button" class="btn pink big" id="nextBtn" hidden></button><button type="button" class="btn ghost small" id="endEarly" data-t="endEarly" hidden></button></div>
+        <p class="note" id="waitNext"></p>
+        <div class="reacts" id="reacts" role="group"></div>
+      </div>
+      <section class="board card" id="board" aria-labelledby="boardTitle">
+        <h3 id="boardTitle" data-t="scores"></h3>
+        <ol class="slist" id="slist"></ol>
+      </section>
+    </div>
+      <!-- open chat: always visible while playing (pick + reveal), shared via state.cm -->
+      <aside class="card chat" id="chatBox" aria-labelledby="chatTitle">
+        <h3 id="chatTitle" data-t="chatTitle"></h3>
+        <ol class="chat-list" id="chatList" aria-live="polite"></ol>
+        <form class="chat-form" id="chatForm" autocomplete="off">
+          <select id="chatWho" hidden data-ta="chatWho"></select>
+          <input type="text" id="chatInput" maxlength="120" data-tp="chatPh" data-ta="chatPh" enterkeyhint="send">
+          <button type="submit" class="btn teal small" id="chatSend" data-t="chatSend"></button>
+        </form>
+      </aside>
+    </div>
+    <div class="splash" id="splash" hidden aria-live="assertive"><div class="splash-card"><small id="splashRound"></small><b id="splashText"></b><span class="splash-who" id="splashWho"></span></div></div>
+    <div class="floaters" id="floaters" aria-hidden="true"></div>
+  </div>
+
+  <!-- ============ END ============ -->
+  <div id="end" class="screen" hidden>
+    <div class="wrap end-wrap">
+      <div class="lobby-top"><button type="button" class="icon-btn" id="endExit" data-ta="exit">✕</button><h2 data-t="endTitle"></h2><span class="grow"></span><label class="langsel mini"><span class="sr" data-t="uiLang"></span><span aria-hidden="true">🌐</span><select class="lang-pick" id="langSelEnd"></select></label></div>
+      <h1 class="win-line" id="winLine"></h1>
+      <div class="podium" id="podium"></div>
+      <div class="lobby-grid">
+        <div class="card"><h3 data-t="scores"></h3><ol class="slist" id="endList"></ol></div>
+        <div class="card"><h3>🎯 <span data-t="closeTitle"></span></h3><ol class="stars" id="closeList"></ol></div>
+      </div>
+      <div class="card recap"><h3>💬 <span data-t="recapTitle"></span></h3><ol class="recap-list" id="recapList"></ol></div>
+      <div class="start-row">
+        <p class="note" id="endNote"></p>
+        <button type="button" class="btn pink big" id="rematchBtn" data-t="rematch"></button>
+        <button type="button" class="btn ghost" id="endMenu" data-t="menu"></button>
+      </div>
+    </div>
+  </div>
+</main>
+<canvas class="fx" id="fx" aria-hidden="true"></canvas>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script id="sl-rules">
+/*RULES*/
+</script>
+<script id="sl-net">
+/*NET*/
+</script>
+<script id="sl-app">
+/*APP*/
+</script>
+</body>
+</html>
