@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Ogoh-Ogoh Arak · Game Ritme Co-op Online 2–6 Pemain di HP (Pawai Ogoh-Ogoh Bali)</title>
+<meta name="description" content="Ogoh-Ogoh Arak: game ritme co-op di browser HP tanpa download. Ketuk kompak mengikuti baleganjur untuk mengusung ogoh-ogoh keliling banjar, PUTAR di perempatan, HENING saat aba-aba, lalu bakar ogoh-ogoh di lapangan. Main bareng 2–6 teman online lewat link undangan, atau sendiri bersama penggotong bot.">
+<meta name="theme-color" content="#140c1c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ogoh-Ogoh Arak · pawai ritme co-op 2–6 pemain">
+<meta property="og:description" content="Ketuk kompak ikut baleganjur, putar di perempatan, jangan sampai ogoh-ogoh jatuh! Main bareng teman online.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="ogohogoharak">
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">PAWAI MALAM PENGERUPUKAN · CO-OP RITME</p><h1>OGOH-OGOH <span>ARAK</span></h1><p class="slogan">Kompak ikut baleganjur, jangan sampai jatuh!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama penggotong</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="designs" id="ogPick" role="radiogroup" aria-label="Pilih ogoh-ogoh"></div>
+      <div class="modes">
+        <button class="mode big" id="soloBtn"><i>🥁</i><span><b>Arak Sendiri</b><small>Kamu + 3 penggotong bot · offline</small></span></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Latihan</b><small>Rute pendek, tidak bisa jatuh</small></button>
+        <button class="mode" id="statBtn" disabled><i>🔥</i><b id="statTitle">Rekor</b><small id="statSub">Belum main</small></button>
+      </div>
+      <div class="online card">
+        <h2>Arak bareng online <small>co-op 2–6 pemain</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">🔎 Cari sekaa</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false" aria-label="Kode room"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh" aria-label="Muat ulang">↻</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Ketuk di ketukan</b> baleganjur: saat lingkaran menyentuh tandu, ketuk layar. 4 ketukan per birama.</li>
+          <li>Ketukan seluruh tim digabung. Kalau <b>tidak kompak</b>, ogoh-ogoh <b class="r">bergoyang</b>; keseimbangan habis = <b class="r">jatuh</b>. Jatuh 3 kali = pawai gagal.</li>
+          <li><b>PUTAR di perempatan:</b> saat panah muncul, ketuk sisi <b>kiri</b> atau <b>kanan</b> layar sesuai arah, semua harus sama (tradisi memutar ogoh-ogoh untuk membingungkan bhuta kala).</li>
+          <li><b>HENING:</b> satu birama tanpa ketukan. Jangan ketuk!</li>
+          <li>Sampai di lapangan? Ogoh-ogoh <b>dibakar</b>, roh jahat pergi, besok Nyepi.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>Spasi</kbd> ketuk · <kbd>←</kbd><kbd>→</kbd> putar · <kbd>M</kbd> suara</p>
+      </div>
+      <p class="foot muted">Ogoh-Ogoh Arak adalah game penggemar budaya Bali dengan desain ogoh-ogoh fiktif, tidak berafiliasi dengan banjar, desa adat, atau lembaga mana pun. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">← Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">🔗 Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><canvas id="lobbyCv" class="lobby-cv" width="600" height="300"></canvas><h3>Sekaa penggotong <small id="pCount">1/6</small></h3><ul id="pList" class="plist"></ul>
+      <div id="hostBox"><div class="row"><span>Ogoh-ogoh</span><div class="seg" id="onOg"></div></div><div class="row"><span>Tambah bot</span><div class="seg" id="onBot"></div></div>
+        <button class="btn green big-btn" id="startBtn">🥁 Mulai pawai</button></div>
+      <p class="muted" id="lobbyWait"></p>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik sorakan…" autocomplete="off" aria-label="Pesan chat"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <section id="play" class="screen stage" hidden>
+    <canvas id="cv" class="full"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="meter" id="meter"><div class="mrow"><span>🛕</span><div class="track"><i id="prog"></i><em id="corners"></em></div><span>🔥</span></div><div class="mrow"><span class="lbl">Seimbang</span><div class="bal"><i id="bal"></i></div><span id="lives" class="lives">❤❤❤</span></div></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>💬</button></div></div>
+    <div class="crew" id="crew"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="bubbles" id="bubbles" aria-live="polite"></div>
+    <div id="chatSlot" class="chat-pop" hidden></div>
+    <div class="cheer" id="cheer"></div>
+  </section>
+
+  <section id="result" class="screen overlay" hidden>
+    <div class="sheet">
+      <p class="kicker dark" id="resKick">HASIL PAWAI</p><h2 id="resTitle">Berhasil!</h2><p class="stars" id="resStars"></p><p class="sub" id="resSub"></p>
+      <div class="res-stats" id="resStats"></div>
+      <p class="reward" id="resNote"></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Lagi</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="shareBtn">📤 Bagikan</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*JS*/
+</script>
+</body>
+</html>

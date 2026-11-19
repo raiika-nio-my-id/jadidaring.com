@@ -1,0 +1,37 @@
+:root{--bg:#140c1c;--bg2:#3a1830;--ink:#1a0f14;--cream:#fff4e4;--paper:#fffaf1;--muted:#6f5f66;--edge:#e2c09a;--edge2:#f0dcc2;--accent:#e8452c;--accent2:#a3241a;--accent3:#5e120c;--green:#1f9a5c;--green2:#12693e;--yellow:#ffc93c}
+.hero{background:radial-gradient(120% 90% at 50% 10%,#4a2244 0%,#140c1c 72%)}
+.hero-top{justify-content:flex-end}
+.hero-title h1{text-shadow:0 4px 0 var(--accent2),0 10px 24px rgba(0,0,0,.6)}
+.designs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 8px}
+.og{appearance:none;border:0;border-radius:14px;background:#fff;padding:6px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;box-shadow:0 3px 0 var(--edge);font-size:12px;font-weight:800;color:var(--ink)}
+.og canvas{width:64px;height:64px}
+.og[aria-checked="true"]{box-shadow:0 0 0 3px var(--accent),0 3px 0 var(--edge);background:#fff1ea}
+.mode.big span{display:flex;flex-direction:column}
+.mode:disabled{opacity:1;cursor:default}
+.lobby-cv{width:100%;height:auto;aspect-ratio:2/1;border-radius:14px;background:#1c1024;display:block;margin-bottom:8px}
+.stage{background:#140c1c}
+.meter{flex:1;min-width:0;max-width:340px;background:rgba(20,10,24,.8);border-radius:14px;padding:6px 9px;color:#fff;font-weight:800;font-size:12px;box-shadow:0 3px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;gap:5px;margin:0 8px}
+.mrow{display:flex;align-items:center;gap:6px}
+.track,.bal{position:relative;flex:1;height:9px;border-radius:9px;background:rgba(255,255,255,.18);overflow:hidden}
+.track i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#ffb23c,#ff6a2c);border-radius:9px}
+.track em b{position:absolute;top:1px;width:7px;height:7px;margin-left:-3px;border-radius:50%;background:#fff;opacity:.8}
+.track em b.h{background:#8fd3ff}
+.bal i{position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:9px;background:#35d07f;transition:width .25s,background .25s}
+.bal i.mid{background:#ffc93c}.bal i.low{background:#ff4d4d}
+.lbl{font-size:11px;opacity:.85}
+.lives{color:#ff5d5d;letter-spacing:1px;font-size:13px}.lives s{color:rgba(255,255,255,.25);text-decoration:none}
+.hud-r{display:flex;flex-direction:column;gap:6px}
+.crew{position:absolute;left:8px;right:8px;top:calc(74px + env(safe-area-inset-top,0px));z-index:5;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;pointer-events:none}
+.crew span{background:rgba(20,10,24,.72);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;font-weight:800;max-width:30%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-bottom:3px solid #777}
+.crew span.g{border-color:#35d07f}.crew span.m{border-color:#ffc93c}.crew span.x{border-color:#ff4d4d}.crew span.me{background:rgba(232,69,44,.85)}
+.cheer{position:absolute;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:6;margin:0}
+.cheer button{background:rgba(255,255,255,.92)}
+.coach{position:absolute;left:12px;right:12px;top:calc(128px + env(safe-area-inset-top,0px));z-index:7;background:#fff4d6;color:#2a1a00;border-radius:14px;padding:9px 12px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-align:center;pointer-events:none}
+.bubbles{position:absolute;left:10px;top:calc(160px + env(safe-area-inset-top,0px));z-index:6;display:flex;flex-direction:column;gap:4px;pointer-events:none;max-width:70%}
+.bubbles p{margin:0;background:rgba(255,255,255,.92);border-radius:12px 12px 12px 3px;padding:5px 9px;font-size:13px;font-weight:700;animation:rise .25s ease-out;align-self:flex-start;max-width:100%;overflow-wrap:anywhere}
+.kicker.dark{color:var(--accent2);text-shadow:none;text-align:center}
+.stars{text-align:center;font-size:30px;margin:0;letter-spacing:4px;color:#f0a81c}.stars s{color:#ddd;text-decoration:none}
+.res-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0}
+.res-stats div{background:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 2px 0 var(--edge2);display:flex;flex-direction:column}
+.res-stats b{font-size:22px;font-weight:900}.res-stats small{color:var(--muted);font-weight:700}
+.reward{text-align:center;font-weight:800}
