@@ -838,7 +838,57 @@ html { -webkit-tap-highlight-color: transparent; }
 /* Inside the editor (draft preview + live preview) a fixed background would cover the form and buttons. */
 .clay-card .pf--fixed .pf-bg, .pf-live .pf--fixed .pf-bg { position: absolute; }
 .pf-inner { padding: 18px; display: grid; gap: 16px; }
-.pf-card { background: var(--pf-card); color: var(--pf-text); border-radius: var(--pf-radius); padding: 16px 18px; box-shadow: 0 6px 22px rgba(0,0,0,.12); -webkit-backdrop-filter: blur(var(--pf-blur)); backdrop-filter: blur(var(--pf-blur)); overflow-wrap: anywhere; }
+.pf-card { background: var(--pst-bg, var(--pf-card)); color: var(--pf-text); border: var(--pst-border, 0 solid transparent); border-radius: var(--pst-radius, var(--pf-radius)); padding: 16px 18px; box-shadow: var(--pst-shadow, 0 6px 22px rgba(0,0,0,.12)); -webkit-backdrop-filter: blur(var(--pst-blur, var(--pf-blur))) saturate(var(--pst-sat, 1)); backdrop-filter: blur(var(--pst-blur, var(--pf-blur))) saturate(var(--pst-sat, 1)); font-family: var(--pst-body, var(--pf-font)); overflow-wrap: anywhere; }
+/* Preset gaya: tokens only. --pst-bg/border/radius/shadow/blur/sat/body/head/tt/ls/h2c/ink(status bg)/av(avatar border). Forced styles also set text/accent/link. */
+[data-pfst] .pf-card h2 { font-family: var(--pst-head, var(--pf-font)); text-transform: var(--pst-tt, uppercase); letter-spacing: var(--pst-ls, .06em); color: var(--pst-h2c, color-mix(in srgb, var(--pf-accent) 72%, var(--pf-text))); }
+[data-pfst] .pf-card h1 { font-family: var(--pst-head, var(--pf-font)); }
+[data-pfst] .pf-status { background: var(--pst-ink, color-mix(in srgb, var(--pf-accent) 14%, transparent)); }
+[data-pfst] .pf-avatar { border: var(--pst-av, 4px solid var(--pf-accent)); }
+[data-pfst="clay"] { --pst-bg: var(--pf-card-solid); --pst-radius: 30px; --pst-blur: 0px; --pst-shadow: 8px 8px 18px rgba(0,0,0,.22), -6px -6px 14px rgba(255,255,255,.5), inset -3px -3px 6px rgba(0,0,0,.07), inset 3px 3px 6px rgba(255,255,255,.65); --pst-tt: none; --pst-ls: 0; --pst-av: 4px solid var(--pf-card-solid); }
+[data-pfst="glass"] { --pst-bg: color-mix(in srgb, var(--pf-card-solid) 58%, transparent); --pst-border: 1px solid rgba(255,255,255,.6); --pst-radius: 20px; --pst-blur: 18px; --pst-sat: 1.5; --pst-shadow: 0 8px 32px rgba(31,38,135,.25); }
+[data-pfst="flat"] { --pst-bg: var(--pf-card-solid); --pst-radius: 8px; --pst-blur: 0px; --pst-shadow: none; --pst-border: 1px solid color-mix(in srgb, var(--pf-text) 12%, transparent); --pst-tt: none; --pst-ls: 0; --pst-ink: color-mix(in srgb, var(--pf-accent) 12%, var(--pf-card-solid)); }
+[data-pfst="cartoon"] { --pst-bg: var(--pf-card-solid); --pst-radius: 26px; --pst-blur: 0px; --pst-border: 3px solid var(--pf-text); --pst-shadow: 0 6px 0 color-mix(in srgb, var(--pf-accent) 60%, #000); --pst-tt: none; --pst-ls: 0; --pst-av: 4px solid var(--pf-text); }
+[data-pfst="neubrutal"] { --pst-bg: var(--pf-card-solid); --pst-radius: 4px; --pst-blur: 0px; --pst-border: 3px solid var(--pf-text); --pst-shadow: 6px 6px 0 var(--pf-text); --pst-ls: .1em; --pst-ink: color-mix(in srgb, var(--pf-accent) 35%, var(--pf-card-solid)); --pst-av: 3px solid var(--pf-text); }
+[data-pfst="neumorph"] { --pst-bg: var(--pf-card-solid); --pst-radius: 24px; --pst-blur: 0px; --pst-shadow: 9px 9px 18px rgba(0,0,0,.2), -9px -9px 18px rgba(255,255,255,.75); --pst-tt: none; --pst-ls: 0; --pst-ink: color-mix(in srgb, var(--pf-text) 6%, var(--pf-card-solid)); --pst-av: 4px solid var(--pf-card-solid); }
+[data-pfst="bento"] { --pst-bg: var(--pf-card-solid); --pst-radius: 22px; --pst-blur: 0px; --pst-border: 1px solid color-mix(in srgb, var(--pf-text) 12%, transparent); --pst-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(0,0,0,.06); --pst-ls: .12em; --pst-ink: color-mix(in srgb, var(--pf-text) 6%, var(--pf-card-solid)); }
+[data-pfst="aurora"] { --pst-bg: linear-gradient(135deg, color-mix(in srgb, var(--pf-card-solid) 80%, var(--pf-accent)), color-mix(in srgb, var(--pf-card-solid) 80%, var(--pf-link))); --pst-radius: 24px; --pst-blur: 0px; --pst-border: 1px solid rgba(255,255,255,.5); --pst-shadow: 0 12px 30px color-mix(in srgb, var(--pf-accent) 32%, transparent); --pst-tt: none; --pst-ls: 0; }
+[data-pfst="y2k"] .pf-card { --pf-text: #1b2340; --pf-link: #2b4bd6; --pf-accent: #5a3fd6; }
+[data-pfst="y2k"] { --pst-bg: linear-gradient(180deg, #fdfdff 0%, #cfd7ea 48%, #f1f4fb 52%, #b3bedb 100%); --pst-radius: 18px; --pst-blur: 0px; --pst-border: 2px solid #fff; --pst-shadow: 0 0 0 1px #7a86a8, 0 6px 14px rgba(40,50,90,.35); --pst-ls: .08em; --pst-ink: rgba(255,255,255,.6); }
+[data-pfst="pixel"] { --pst-bg: var(--pf-card-solid); --pst-radius: 0px; --pst-blur: 0px; --pst-border: 4px solid var(--pf-text); --pst-shadow: 5px 5px 0 rgba(0,0,0,.45); --pst-ls: 0; --pst-av: 4px solid var(--pf-text); --pst-ink: color-mix(in srgb, var(--pf-accent) 22%, var(--pf-card-solid)); }
+[data-pfst="pixel"] .pf-card h2 { font-size: .72rem; line-height: 1.5; }
+[data-pfst="mono"] { --pst-bg: var(--pf-card-solid); --pst-radius: 2px; --pst-blur: 0px; --pst-border: 1px solid var(--pf-text); --pst-shadow: none; --pst-body: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; --pst-head: ui-monospace, Menlo, Consolas, monospace; --pst-tt: lowercase; --pst-ls: 0; --pst-ink: transparent; --pst-av: 1px solid var(--pf-text); }
+[data-pfst="neon"] .pf-card { --pf-text: #e8f9ff; --pf-link: #ff7cf6; --pf-accent: #22f3ff; }
+[data-pfst="neon"] { --pst-bg: rgba(10,8,30,.88); --pst-radius: 16px; --pst-blur: 6px; --pst-border: 1px solid #22f3ff; --pst-shadow: 0 0 14px rgba(34,243,255,.5), inset 0 0 20px rgba(34,243,255,.12); --pst-h2c: #22f3ff; --pst-ink: rgba(34,243,255,.12); }
+[data-pfst="skeuo"] { --pst-bg: linear-gradient(180deg, color-mix(in srgb, var(--pf-card-solid) 78%, #fff), var(--pf-card-solid) 55%, color-mix(in srgb, var(--pf-card-solid) 90%, #000)); --pst-radius: 14px; --pst-blur: 0px; --pst-border: 1px solid rgba(0,0,0,.3); --pst-shadow: inset 0 2px 0 rgba(255,255,255,.75), inset 0 -2px 0 rgba(0,0,0,.12), 0 6px 12px rgba(0,0,0,.28); --pst-tt: none; --pst-ls: 0; --pst-ink: color-mix(in srgb, var(--pf-text) 8%, var(--pf-card-solid)); }
+[data-pfst="skeuo"] .pf-card h2 { text-shadow: 0 1px 0 rgba(255,255,255,.7); }
+[data-pfst="paper"] { --pst-bg: var(--pf-card-solid); --pst-radius: 255px 18px 225px 18px / 18px 225px 18px 255px; --pst-blur: 0px; --pst-border: 2px solid var(--pf-text); --pst-shadow: 4px 4px 0 rgba(0,0,0,.18); --pst-tt: none; --pst-ls: 0; --pst-ink: transparent; }
+[data-pfst="paper"] .pf-card { padding: 20px 24px; }
+[data-pfst="kawaii"] { --pst-bg: var(--pf-card-solid); --pst-radius: 32px; --pst-blur: 0px; --pst-border: 3px solid color-mix(in srgb, var(--pf-accent) 45%, #fff); --pst-shadow: 0 6px 0 color-mix(in srgb, var(--pf-accent) 28%, transparent), 0 12px 24px rgba(0,0,0,.08); --pst-tt: none; --pst-ls: 0; --pst-av: 4px solid color-mix(in srgb, var(--pf-accent) 55%, #fff); }
+[data-pfst="liquid"] { --pst-bg: linear-gradient(135deg, color-mix(in srgb, var(--pf-card-solid) 68%, transparent), color-mix(in srgb, var(--pf-card-solid) 46%, transparent)); --pst-radius: 32px; --pst-blur: 26px; --pst-sat: 1.8; --pst-border: 1px solid rgba(255,255,255,.65); --pst-shadow: inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.3), 0 14px 40px rgba(0,0,0,.18); --pst-tt: none; --pst-ls: 0; }
+[data-pfst="editorial"] { --pst-bg: var(--pf-card-solid); --pst-radius: 0px; --pst-blur: 0px; --pst-border: 1px solid color-mix(in srgb, var(--pf-text) 25%, transparent); --pst-shadow: inset 0 4px 0 var(--pf-text); --pst-body: "Lora", Georgia, serif; --pst-head: "Playfair Display", Georgia, serif; --pst-ls: .14em; --pst-h2c: var(--pf-text); --pst-ink: transparent; --pst-av: 1px solid var(--pf-text); }
+[data-pfst="editorial"] .pf-card { padding-top: 22px; }
+[data-pfst="terminal"] .pf-card { --pf-text: #b6ffb6; --pf-link: #7dffd0; --pf-accent: #39ff14; }
+[data-pfst="terminal"] { --pst-bg: #0a0f0a; --pst-radius: 4px; --pst-blur: 0px; --pst-border: 1px solid #2f9e44; --pst-shadow: 0 0 14px rgba(57,255,20,.25); --pst-body: ui-monospace, Menlo, Consolas, monospace; --pst-head: ui-monospace, Menlo, Consolas, monospace; --pst-tt: lowercase; --pst-ls: 0; --pst-h2c: #39ff14; --pst-ink: rgba(57,255,20,.1); --pst-av: 2px solid #39ff14; }
+[data-pfst="terminal"] .pf-card h2::before { content: "> "; }
+[data-pfst="vapor"] .pf-card { --pf-text: #2a0a4a; --pf-link: #4a00a8; --pf-accent: #7a1fd1; }
+[data-pfst="vapor"] { --pst-bg: linear-gradient(135deg, rgba(255,160,224,.96), rgba(130,225,255,.94) 60%, rgba(200,150,255,.96)); --pst-radius: 6px; --pst-blur: 0px; --pst-border: 2px solid #fff; --pst-shadow: 6px 6px 0 #b967ff; --pst-ls: .1em; --pst-h2c: #3a006f; --pst-ink: rgba(255,255,255,.55); }
+[data-pfst="earthy"] { --pst-bg: color-mix(in srgb, var(--pf-card-solid) 82%, #d9c6a0); --pst-radius: 38px 14px 42px 16px / 16px 40px 18px 38px; --pst-blur: 0px; --pst-shadow: 0 6px 18px rgba(90,60,30,.2); --pst-tt: lowercase; --pst-ls: .02em; --pst-ink: color-mix(in srgb, #8a6a3a 14%, var(--pf-card-solid)); }
+/* preset fonts */
+[data-pfst="clay"] { --pst-head: "Baloo 2", var(--pf-font); }
+[data-pfst="flat"] { --pst-head: "Poppins", var(--pf-font); }
+[data-pfst="cartoon"] { --pst-head: "Baloo 2", var(--pf-font); --pst-body: "Comic Neue", var(--pf-font); }
+[data-pfst="neubrutal"] { --pst-head: "Space Grotesk", var(--pf-font); }
+[data-pfst="bento"] { --pst-head: "Inter", var(--pf-font); }
+[data-pfst="aurora"] { --pst-head: "Poppins", var(--pf-font); }
+[data-pfst="y2k"] { --pst-head: "Space Grotesk", var(--pf-font); }
+[data-pfst="pixel"] { --pst-head: "Press Start 2P", var(--pf-font); }
+[data-pfst="neon"] { --pst-head: "Space Grotesk", var(--pf-font); }
+[data-pfst="paper"] { --pst-head: "Pacifico", var(--pf-font); }
+[data-pfst="kawaii"] { --pst-head: "Baloo 2", var(--pf-font); }
+[data-pfst="earthy"] { --pst-head: "Lora", var(--pf-font); }
+[data-pfst="vapor"] { --pst-head: "Space Grotesk", var(--pf-font); }
+[data-pfst="earthy"] .pf-card h2 { font-style: italic; }
+
 /* The comment wall is site-owned: always claymorphism, readable over any member background. (The profile header follows the member theme.) */
 .pf-wall { background: var(--clay-surface); color: var(--clay-ink); border-radius: var(--radius-lg, 24px); box-shadow: var(--clay-out), var(--clay-in); -webkit-backdrop-filter: none; backdrop-filter: none; }
 .pf-wall.clay-card { background: var(--clay-surface); }

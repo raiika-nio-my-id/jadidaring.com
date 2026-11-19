@@ -28,7 +28,12 @@
 @unless (in_array($font, $selfFonts, true))
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $font) }}:wght@400;700&amp;display=swap">
 @endunless
-<div class="pf {{ $theme['bg']['fixed'] ? 'pf--fixed' : '' }} {{ $css['cursor'] !== '' ? 'pf--cursor' : '' }}" style="{{ $css['vars'] }}{{ $css['cursor'] }}"@if ($apTarget) data-autoplay="{{ $apTarget }}" data-owner="{{ $owner->username }}"@endif>
+@foreach (array_unique($css['styleFonts']) as $sf)
+    @unless (in_array($sf, $selfFonts, true) || $sf === $font)
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $sf) }}:wght@400;700&amp;display=swap">
+    @endunless
+@endforeach
+<div class="pf {{ $theme['bg']['fixed'] ? 'pf--fixed' : '' }} {{ $css['cursor'] !== '' ? 'pf--cursor' : '' }}" style="{{ $css['vars'] }}{{ $css['cursor'] }}"@if ($css['style'] !== 'bawaan') data-pfst="{{ $css['style'] }}"@endif @if ($apTarget) data-autoplay="{{ $apTarget }}" data-owner="{{ $owner->username }}"@endif>
     <div class="pf-bg" style="{{ $css['bg'] }}" data-theme-color="{{ $theme['bg']['color'] }}" aria-hidden="true"@if ($edit) data-edit="bg"@endif></div>
     <div class="pf-inner">
         <header class="pf-card pf-head"@if ($edit) data-edit="head" data-fixed="1"@endif>

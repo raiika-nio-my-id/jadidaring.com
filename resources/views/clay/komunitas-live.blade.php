@@ -28,6 +28,7 @@
             'patternCss' => \App\Services\ProfileConfig::patternSwatches(),
             'patternInk' => true,
             'uploadEnabled' => true,
+            'styles' => \App\Services\ProfileConfig::styleCatalog(),
             'catalog' => \App\Services\ProfileConfig::catalog(),
             'presets' => \App\Services\ProfileConfig::presets(),
             'cursors' => \App\Services\ProfileConfig::cursorPresets(),

@@ -200,6 +200,34 @@
   var SOLIDS = ['#ffffff', '#f7f2ec', '#ede7ff', '#ffd9ec', '#d7f5e3', '#d6ecff', '#fff3b0', '#ffd6b8', '#2b2440', '#111827', '#0b1f3a', '#3b0a45'];
   var GRADS = [['#ede7ff', '#ffd9ec'], ['#a1c4fd', '#c2e9fb'], ['#fbc2eb', '#a6c1ee'], ['#ffecd2', '#fcb69f'], ['#84fab0', '#8fd3f4'], ['#f6d365', '#fda085'], ['#0f0c29', '#302b63'], ['#232526', '#414345'], ['#ff6a88', '#ff99ac'], ['#43e97b', '#38f9d7']];
 
+  function stylePicker() {
+    var cur = cfg.theme.style || 'bawaan';
+    var c = cfg.theme.colors;
+    var tv = '--pf-text:' + c.text + ';--pf-accent:' + c.accent + ';--pf-link:' + c.link + ';--pf-card-solid:' + c.card + ';--pf-card:' + c.card + ';--pf-radius:14px;--pf-blur:0px;--pf-font:Nunito,system-ui,sans-serif;';
+    var wrap = h('div', { cls: 'le-field' }, [
+      h('p', { cls: 'le-flabel', text: 'Preset gaya' }),
+      h('p', { cls: 'le-hint', text: 'Ubah tampilan kartu dan header sekaligus (permukaan, tepi, bayangan, font). Warna tetap bisa kamu atur di bawah. Gaya bertanda ● memakai warna sendiri agar tetap terbaca.' })
+    ]);
+    var grid = h('div', { cls: 'le-sts', role: 'radiogroup', 'aria-label': 'Preset gaya' });
+    (B.styles || []).forEach(function (st) {
+      var b = h('button', { type: 'button', cls: 'le-st', role: 'radio', 'aria-checked': st.id === cur ? 'true' : 'false', title: st.hint, on: { click: function () {
+        cfg.theme.style = st.id;
+        Array.prototype.forEach.call(grid.children, function (x) { x.setAttribute('aria-checked', x === b ? 'true' : 'false'); });
+        var pf = stage.querySelector('.pf');
+        if (pf) { if (st.id === 'bawaan') pf.removeAttribute('data-pfst'); else pf.setAttribute('data-pfst', st.id); }
+        changed();
+      } } }, [
+        h('span', { cls: 'le-st__pf', 'data-pfst': st.id === 'bawaan' ? null : st.id, style: tv, 'aria-hidden': 'true' }, [
+          h('span', { cls: 'pf-card' }, [h('h2', { text: 'Aa' }), h('i', {}), h('i', {})])
+        ]),
+        h('strong', { text: st.label + (st.forced ? ' ●' : '') })
+      ]);
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid);
+    return wrap;
+  }
+
   var PANELS = {
     theme: function () {
       var kids = [];
@@ -211,6 +239,7 @@
           ]);
         })));
       }
+      kids.push(stylePicker());
       kids.push(
         select('theme.font', 'Font', 'Huruf untuk seluruh profil.', FONT_OPTS),
         h('div', { cls: 'le-grid2' }, [
@@ -870,7 +899,7 @@
     if (!oldPf || !newPf) { stage.innerHTML = ''; stage.appendChild(fresh); return; }
     Array.prototype.forEach.call(stage.querySelectorAll('link[rel=stylesheet]'), function (l) { l.remove(); });
     Array.prototype.forEach.call(fresh.querySelectorAll('link[rel=stylesheet]'), function (l) { stage.insertBefore(l, stage.firstChild); });
-    oldPf.className = newPf.className; oldPf.setAttribute('style', newPf.getAttribute('style') || '');
+    oldPf.className = newPf.className; if (newPf.hasAttribute('data-pfst')) oldPf.setAttribute('data-pfst', newPf.getAttribute('data-pfst')); else oldPf.removeAttribute('data-pfst'); oldPf.setAttribute('style', newPf.getAttribute('style') || '');
     var ob = oldPf.querySelector('.pf-bg'), nb = newPf.querySelector('.pf-bg');
     if (ob && nb) ob.setAttribute('style', nb.getAttribute('style') || '');
     if (nb && nb.getAttribute('data-theme-color') && window.__setThemeColor) { ob.setAttribute('data-theme-color', nb.getAttribute('data-theme-color')); window.__setThemeColor(nb.getAttribute('data-theme-color'), true); }

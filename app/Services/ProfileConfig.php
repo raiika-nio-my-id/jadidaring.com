@@ -38,6 +38,34 @@ class ProfileConfig
         'sakura' => ['Sakura', 16, 16], 'pedang' => ['Pedang', 2, 2], 'daun' => ['Daun', 3, 3],
     ];
 
+    /**
+     * "Preset gaya": surface style tokens (see public/css/clay.css [data-pfst]). id => [label, hint, forced palette?, heading font, body font].
+     * 'bawaan' is the current look. Forced-palette styles bring their own surface and text colours so they stay readable.
+     */
+    public const STYLES = [
+        'bawaan' => ['Bawaan', 'Tampilan standar profilmu.', false, null, null],
+        'clay' => ['Claymorphism', 'Gembung lembut seperti tanah liat.', false, 'Baloo 2', null],
+        'glass' => ['Glassbox', 'Kaca buram dengan tepi bercahaya.', false, null, null],
+        'flat' => ['Flat UI', 'Datar, bersih, tanpa bayangan.', false, 'Poppins', null],
+        'cartoon' => ['Cartoon', 'Garis tebal dan bayangan ala kartun.', false, 'Baloo 2', 'Comic Neue'],
+        'neubrutal' => ['Neubrutalism', 'Border hitam tebal, bayangan keras.', false, 'Space Grotesk', null],
+        'neumorph' => ['Neumorphism', 'Timbul tenggelam lembut (soft UI).', false, null, null],
+        'bento' => ['Bento', 'Kotak rapi bergaris tipis ala bento.', false, 'Inter', null],
+        'aurora' => ['Aurora', 'Gradasi mengalir bak aurora.', false, 'Poppins', null],
+        'y2k' => ['Y2K Chrome', 'Krom mengilap awal 2000-an.', true, 'Space Grotesk', null],
+        'pixel' => ['Pixel 8-bit', 'Piksel tegas ala game retro.', false, 'Press Start 2P', null],
+        'mono' => ['Minimal Mono', 'Garis tipis, huruf monospace.', false, null, null],
+        'neon' => ['Neon Siber', 'Gelap dengan garis neon menyala.', true, 'Space Grotesk', null],
+        'skeuo' => ['Skeuomorphic', 'Tombol dan panel terasa nyata.', false, null, null],
+        'paper' => ['Kertas Coret', 'Garis tangan ala buku catatan.', false, 'Pacifico', null],
+        'kawaii' => ['Pastel Kawaii', 'Manis, bulat, dan ceria.', false, 'Baloo 2', null],
+        'liquid' => ['Liquid Glass', 'Kaca cair ala Apple.', false, null, null],
+        'editorial' => ['Editorial', 'Tata letak majalah, huruf serif.', false, 'Playfair Display', 'Lora'],
+        'terminal' => ['Terminal', 'Layar hitam-hijau monospace.', true, null, null],
+        'vapor' => ['Vaporwave', 'Pink-biru senja ala 80-an.', true, 'Space Grotesk', null],
+        'earthy' => ['Organik Earthy', 'Bentuk organik, warna tanah.', false, 'Lora', null],
+    ];
+
     public const BG_TYPES = ['color', 'gradient', 'image', 'pattern'];
 
     public const MAX_WIDGETS = 14;
@@ -143,6 +171,7 @@ class ProfileConfig
         ];
         foreach ($list as &$item) {
             $item['theme'] = self::validate(['theme' => $item['theme']])['theme'];
+            unset($item['theme']['style']); // colour presets never change the surface style
             $item['swatch'] = 'background:'.self::bgLayers($item['theme']['bg']);
         }
 
@@ -179,6 +208,7 @@ class ProfileConfig
                 'bg' => ['type' => 'gradient', 'color' => '#ede7ff', 'color2' => '#ffd9ec', 'angle' => 135, 'image' => '', 'pattern' => 'dots', 'fixed' => true, 'overlay' => 0, 'ink' => 'dark'],
                 'colors' => ['text' => '#2b2440', 'accent' => '#7c5cff', 'card' => '#ffffff', 'link' => '#5a3fa0'],
                 'font' => 'Nunito',
+                'style' => 'bawaan',
                 'card' => ['radius' => 24, 'opacity' => 0.88, 'blur' => 8],
                 'cursor' => ['url' => '', 'preset' => '', 'size' => 32],
             ],
@@ -240,6 +270,7 @@ class ProfileConfig
                     'link' => self::color($co['link'] ?? null, $d['theme']['colors']['link']),
                 ],
                 'font' => self::enum($t['font'] ?? null, self::FONTS, 'Nunito'),
+                'style' => self::enum($t['style'] ?? null, array_keys(self::STYLES), 'bawaan'),
                 'card' => [
                     'radius' => (int) self::num($cd['radius'] ?? null, 0, 40, 24),
                     'opacity' => self::num($cd['opacity'] ?? null, 0.3, 1, 0.88),
@@ -477,7 +508,18 @@ class ProfileConfig
         return implode(',', $layers);
     }
 
-    /** @return array{vars: string, bg: string, font: string, cursor: string} inline-CSS strings built only from validated values */
+    /** @return list<array{id: string, label: string, hint: string, forced: bool}> */
+    public static function styleCatalog(): array
+    {
+        $o = [];
+        foreach (self::STYLES as $id => $v) {
+            $o[] = ['id' => $id, 'label' => $v[0], 'hint' => $v[1], 'forced' => $v[2]];
+        }
+
+        return $o;
+    }
+
+    /** @return array{vars: string, bg: string, font: string, cursor: string, style: string, styleFonts: list<string>} inline-CSS strings built only from validated values */
     public static function css(array $c): array
     {
         $t = $c['theme'];
@@ -485,8 +527,8 @@ class ProfileConfig
             return hexdec(substr($hex, 1, 2)).','.hexdec(substr($hex, 3, 2)).','.hexdec(substr($hex, 5, 2));
         };
         $vars = sprintf(
-            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
-            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
+            '--pf-text:%s;--pf-accent:%s;--pf-link:%s;--pf-card-solid:%s;--pf-card:rgba(%s,%s);--pf-radius:%dpx;--pf-blur:%dpx;--pf-font:\'%s\',system-ui,sans-serif;',
+            $t['colors']['text'], $t['colors']['accent'], $t['colors']['link'], $t['colors']['card'], $rgb($t['colors']['card']), $t['card']['opacity'], $t['card']['radius'], $t['card']['blur'], $t['font']
         );
 
         $bg = 'background:'.self::bgLayers($t['bg']).';';
@@ -502,6 +544,8 @@ class ProfileConfig
             $cursor = sprintf('cursor:url("/kursor/%s-%d.png") %d %d,auto;', $cu['preset'], $size, (int) round($hx * $size / 32), (int) round($hy * $size / 32));
         }
 
-        return ['vars' => $vars, 'bg' => $bg, 'font' => $t['font'], 'cursor' => $cursor];
+        $st = self::STYLES[$t['style'] ?? 'bawaan'] ?? self::STYLES['bawaan'];
+
+        return ['vars' => $vars, 'bg' => $bg, 'font' => $t['font'], 'cursor' => $cursor, 'style' => $t['style'] ?? 'bawaan', 'styleFonts' => array_values(array_filter([$st[3], $st[4]]))];
     }
 }

@@ -232,3 +232,16 @@ html.le-aim-lock { overflow: hidden; }
 }
 @media (max-width: 899px) { .member-page.le-page > .le-top { padding: 12px 12px 8px; } .le-chip { min-height: 40px; padding: 0 13px; font-size: .86rem; } .le-chip--ghost { flex: 1 1 100%; justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { .le-aim[open] { animation: none; } .le-ubah { transition: none; } }
+
+/* Preset gaya picker */
+.le-sts { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; margin-top: 8px; }
+.le-st { display: grid; gap: 6px; padding: 6px; border: 2px solid transparent; border-radius: 14px; background: rgba(120,120,140,.1); color: inherit; font: inherit; cursor: pointer; text-align: center; transition: transform .1s, border-color .1s, background .1s; }
+.le-st:active { transform: scale(.95); }
+.le-st:focus-visible { outline: 3px solid #6c5ce7; outline-offset: 2px; }
+.le-st[aria-checked="true"] { border-color: #6c5ce7; background: rgba(108,92,231,.14); }
+.le-st strong { font-size: .72rem; line-height: 1.2; }
+.le-st__pf { display: block; padding: 8px; border-radius: 10px; background: linear-gradient(135deg, #ede7ff, #ffd9ec); color: var(--pf-text); }
+.le-st__pf .pf-card { display: block; padding: 6px 8px; font-size: 10px; border-radius: var(--pst-radius, 12px); }
+.le-st__pf .pf-card h2 { margin: 0 0 4px; font-size: 13px; text-transform: none; letter-spacing: 0; }
+.le-st__pf .pf-card i { display: block; height: 4px; margin-top: 3px; border-radius: 2px; background: currentColor; opacity: .35; }
+.le-st__pf .pf-card i + i { width: 60%; }

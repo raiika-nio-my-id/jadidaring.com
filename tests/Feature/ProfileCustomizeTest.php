@@ -141,7 +141,9 @@ class ProfileCustomizeTest extends TestCase
         $presets = ProfileConfig::presets();
         $this->assertGreaterThanOrEqual(6, count($presets));
         foreach ($presets as $p) {
-            $this->assertSame($p['theme'], ProfileConfig::validate(['theme' => $p['theme']])['theme'], $p['id']);
+            $v = ProfileConfig::validate(['theme' => $p['theme']])['theme'];
+            unset($v['style']); // colour presets leave the surface style alone
+            $this->assertSame($p['theme'], $v, $p['id']);
         }
         $this->assertContains('retro', array_column($presets, 'id'));
 
