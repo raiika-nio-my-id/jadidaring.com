@@ -4,11 +4,11 @@
   'use strict';
   var el = null, safety = null;
   /* Skeleton cards reuse the real card classes and structure (text is ghosted), so box sizes match the real cards. */
-  var L = '&nbsp;', L2 = '&nbsp;<br>&nbsp;', L3 = '&nbsp;<br>&nbsp;<br>&nbsp;';
+  var L = '&nbsp;', L2 = '&nbsp;<br>&nbsp;', L3 = '&nbsp;<br>&nbsp;<br>&nbsp;', L5 = '&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;';
   function card(kind) {
-    if (kind === 'game') return '<div class="game-card jd-ghost"><div class="game-card__media jd-sk"></div><h2 class="game-card__title">' + L + '</h2><p class="game-card__desc">' + L2 + '</p><div class="game-card__footer"><span class="game-card__badge">Mainkan</span><span class="game-card__play">Buka Game</span></div></div>';
+    if (kind === 'game') return '<div class="game-card jd-ghost"><div class="game-card__media jd-sk"></div><h2 class="game-card__title">' + L + '</h2><p class="game-card__desc">' + L5 + '</p><div class="game-card__footer"><span class="game-card__badge">Mainkan</span><span class="game-card__play">Buka Game</span></div></div>';
     if (kind === 'profile') return '<div class="ch-card jd-ghost"><header class="ch-head"><span class="ch-av jd-sk"></span><div class="ch-who"><span class="ch-name">' + L + '</span><span class="ch-meta">' + L + '</span></div></header><div class="ch-body">' + L3 + '</div><footer class="ch-actions"><span class="ch-act">' + L + '</span></footer></div>';
-    return '<div class="news-card jd-ghost"><div class="jd-sk jd-sk-news-img"></div><h2>' + L2 + '</h2><div class="news-meta-row"><span class="news-date">' + L + '</span></div></div>';
+    return '<div class="news-card jd-ghost"><div class="jd-sk jd-sk-news-img"></div><h2>' + L3 + '</h2><div class="news-meta-row"><span class="news-date">' + L + '</span></div></div>';
   }
   function build(path) {
     var kind = /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : 'generic';

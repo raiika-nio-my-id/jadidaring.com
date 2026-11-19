@@ -40,7 +40,7 @@
 .jd-ghost .ch-name, .jd-ghost .ch-meta { display: block; width: 60%; }
 .jd-ghost .news-date, .jd-ghost .ch-act { display: inline-block; width: 40%; }
 .jd-ghost .game-card__desc { opacity: 1; }
-.jd-sk-news-img { width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-sm); box-shadow: none; }
+.jd-sk-news-img { width: 100%; aspect-ratio: 480 / 252; border-radius: var(--radius-sm); box-shadow: none; }
 .jd-ghost .game-card__media, .jd-ghost .ch-av { box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .jd-ghost * { animation: none !important; } }
 
