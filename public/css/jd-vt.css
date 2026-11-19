@@ -50,3 +50,7 @@
 .jd-ghost .jd-sk, .jd-ghost .game-card__media, .jd-ghost .ch-av { background: var(--jd-sk-bg); background-size: 220% 100%; animation: jd-shimmer 1.8s ease-in-out infinite; box-shadow: none; }
 .jd-ghost .game-card__media { border-radius: var(--radius-md); }
 .jd-ghost .game-card__badge { border-radius: var(--radius-pill); }
+
+/* Profile skeleton: real bar (Jelajahi / Edit profil / Pengaturan akun) above, content blocks below */
+.jd-sk-pfhead { height: 190px; border-radius: var(--radius-lg, 24px); margin: 4px 0 16px; }
+.jd-sk-pfblock { height: 120px; border-radius: var(--radius-md); margin: 0 0 16px; }

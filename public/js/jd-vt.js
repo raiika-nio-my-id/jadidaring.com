@@ -11,7 +11,7 @@
     return '<div class="news-card jd-ghost"><div class="jd-sk jd-sk-news-img"></div><h2>' + L3 + '</h2><div class="news-meta-row"><span class="news-date">' + L + '</span></div></div>';
   }
   function build(path) {
-    var kind = /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : 'generic';
+    var kind = /^\/u\//.test(path) ? 'profil' : /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : 'generic';
     var box = document.createElement('div');
     box.className = 'jd-skel';
     box.setAttribute('aria-hidden', 'true');
@@ -33,8 +33,11 @@
       shell.querySelectorAll('a,input,button,select').forEach(function (n) { n.tabIndex = -1; });
       var slot = shell.querySelector('[data-sk]');
       var n = kind === 'komunitas' ? 5 : 6, cards = '';
+      if (kind === 'profil') { if (slot) slot.innerHTML = '<div class="jd-sk jd-sk-pfhead"></div><div class="jd-sk jd-sk-pfblock"></div><div class="jd-sk jd-sk-pfblock"></div>'; }
+      else {
       for (var i = 0; i < n; i++) cards += card(kind === 'game' ? 'game' : kind === 'komunitas' ? 'profile' : 'news');
       if (slot) slot.innerHTML = cards;
+      }
     } else {
       var g = '';
       for (var j = 0; j < 3; j++) g += card('news');

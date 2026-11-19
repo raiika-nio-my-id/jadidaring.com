@@ -158,6 +158,7 @@
     <template id="jd-sk-berita"><div class="clay-section"><div><div class="clay-section__header"><h1 class="clay-section__title">Berita Terkini</h1></div></div>@include('clay._berita-controls', ['q' => '', 'popular' => false, 'currentTopic' => null, 'topics' => \App\Http\Controllers\ClayController::TOPICS])<div class="news-grid" data-sk></div></div></template>
     <template id="jd-sk-game"><div class="clay-section">@include('clay._game-head', ['sort' => 'views'])<div class="game-grid" data-sk></div></div></template>
     <template id="jd-sk-komunitas"><div class="clay-section ch-page">@include('clay._komunitas-feed-head')@include('clay._komunitas-tabs', ['tab' => 'terbaru'])@auth<a class="ch-cta" href="#" tabindex="-1"><span aria-hidden="true">✏️</span> Lagi mikirin apa? Tulis di profilmu</a>@endauth<div class="ch-list ch-list--feed" data-sk></div></div></template>
+    @auth<template id="jd-sk-profil"><div class="member-page">@include('clay._profile-bar', ['isOwner' => true])<div data-sk></div></div></template>@endauth
     @endunless
     @include('partials.ga4-consent')
     @unless (str_starts_with(request()->getHost(), 'admin.'))

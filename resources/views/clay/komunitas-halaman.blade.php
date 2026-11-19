@@ -4,15 +4,7 @@
 
 @section('content')
     <div class="member-page">
-        <div class="pf-bar">
-            <a href="/komunitas" class="news-back"><span aria-hidden="true">&larr;</span> Jelajahi</a>
-            @if ($isOwner)
-                <span class="pf-bar__owner">
-                    <a class="clay-btn clay-btn--primary" href="/komunitas/halamanku">Edit profil</a>
-                    <a class="clay-btn clay-btn--secondary" href="/akun">Pengaturan akun</a>
-                </span>
-            @endif
-        </div>
+        @include('clay._profile-bar', ['isOwner' => $isOwner])
         @if (session('status'))<p class="news-comments__msg" role="status">{{ session('status') }}</p>@endif
         @if (! $page->isPublished())<p class="clay-status" role="status">Profil ini disembunyikan moderator dan hanya terlihat olehmu.</p>@endif
         @include('clay._profile')
