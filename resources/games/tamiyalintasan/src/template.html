@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Tamiya Lintasan · Game Balap Tamiya Mini 4WD Online di HP (Mabar 2–4 Pemain)</title>
+<meta name="description" content="Tamiya Lintasan: game balap Tamiya mini 4WD di lintasan 3 jalur, langsung main di browser HP tanpa download. Atur dinamo, roller, dan ban, ketuk pas di tikungan biar nggak terpental, lalu mabar online 2–4 pemain plus bot dan chat sorak-sorai.">
+<meta name="theme-color" content="#e9b77e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tamiya Lintasan · balap mini 4WD 3 jalur">
+<meta property="og:description" content="Racik dinamo, roller, dan ban. Ketuk pas di tikungan, jangan sampai course out! Mabar 2–4 pemain + bot, gratis di HP.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="tamiyalintasan">
+  <!-- ============ HOME ============ -->
+  <section id="home" class="screen">
+    <div class="hero"><canvas id="heroCv"></canvas>
+      <div class="hero-top"><span></span><button class="icon-btn" id="muteBtn" aria-label="Suara">🔊</button></div>
+      <div class="hero-title"><p class="kicker">BALAP MINI 4WD · LINTASAN 3 JALUR</p><h1>TAMIYA <span>LINTASAN</span></h1><p class="slogan">Racik dinamo, ketuk pas di tikungan!</p></div>
+    </div>
+    <div class="panel">
+      <label class="name-row"><span>Nama racer</span><input id="nameInput" maxlength="16" placeholder="JadiDaring" autocomplete="off" spellcheck="false"></label>
+      <div class="garage-strip"><canvas id="stripCv" width="96" height="64"></canvas><div><b id="stripName">Kilat Biru</b><small id="stripSet">Atomik · Bearing · Slick</small></div><button class="btn small" id="garageBtn">🔧 Garasi</button></div>
+      <div class="tracks" id="trackPick" role="radiogroup" aria-label="Pilih lintasan"></div>
+      <p class="muted tip" id="trackTip"></p>
+      <div class="modes">
+        <button class="mode big" id="latBtn"><i>🏎️</i><b>Latihan vs Bot</b><small>Adu 1 lawan 3 bot, offline</small></button>
+        <button class="mode" id="taBtn"><i>⏱️</i><b>Time Attack</b><small id="taSub">Kejar rekor 3 lap</small></button>
+        <button class="mode" id="tutBtn"><i>🎓</i><b>Tutorial</b><small>1 lap, belajar ketuk tikungan</small></button>
+      </div>
+      <div class="online card">
+        <h2>Balap Cepat online <small>2–4 racer + bot</small></h2>
+        <p class="muted" id="onlineNote" hidden></p>
+        <div class="row"><button class="btn green online-btn" id="matchBtn">🔎 Cari lawan</button><button class="btn online-btn" id="createPub">Room publik</button><button class="btn online-btn" id="createPriv">Room privat</button></div>
+        <form id="joinForm" class="row"><input id="codeInput" maxlength="6" placeholder="KODE" autocomplete="off" spellcheck="false" aria-label="Kode room"><button class="btn online-btn" id="joinBtn">Gabung</button></form>
+        <div id="gmRooms" class="gm-rooms" hidden><div class="row"><b>Lobby (GM)</b><span class="muted" id="gmNote"></span><button class="btn small ghost" id="gmRefresh" aria-label="Muat ulang">↻</button></div><ul id="gmList"></ul></div>
+      </div>
+      <div class="card how">
+        <h2>Cara main</h2>
+        <ol class="how-list">
+          <li><b>Lampu hijau → ketuk ON.</b> Pas di hijau = <em class="g">start kilat</em>. Sebelum hijau = curi start (+1 dtk).</li>
+          <li>Tiap mendekati <b>tikungan</b>, jarum di bar bawah masuk zona. <b>Ketuk TIKUNG</b> di <em class="g">emas = PAS</em>, hijau = oke.</li>
+          <li>Telat / kecepetan = <b class="r">terpental</b>. Kalau mobil terlalu kencang: <b class="r">course out</b>, terbang keluar lintasan!</li>
+          <li><b>Garasi:</b> dinamo (kencang vs torsi), roller (lebar jendela tikungan), ban (cocokkan dengan lintasan).</li>
+          <li>3 lap. Jembatan <b>lane changer</b> memutar jalur tiap lap, jadi adil.</li>
+        </ol>
+        <p class="muted keys">Keyboard: <kbd>Spasi</kbd> / <kbd>Enter</kbd> = ON &amp; TIKUNG · <kbd>M</kbd> = suara</p>
+      </div>
+      <div class="card lb"><h2>Rekor Time Attack <small>di HP ini</small></h2><ol id="lbList" class="lb-list"></ol></div>
+      <p class="foot muted">Tamiya Lintasan adalah game penggemar mini 4WD. · <a href="https://gamehub.jadidaring.com/">Game lainnya</a></p>
+    </div>
+  </section>
+
+  <!-- ============ GARAGE ============ -->
+  <section id="garage" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" data-back>← Menu</button><h2>Garasi</h2><span class="muted" id="gTrack"></span></header>
+    <div class="g-stage"><canvas id="garageCv"></canvas></div>
+    <div class="chassis" id="chassisPick" role="radiogroup" aria-label="Pilih bodi"></div>
+    <div class="parts" id="parts"></div>
+    <div class="card g-stats"><div class="stats" id="gStats"></div><p class="muted" id="gIdeal"></p><p class="tip" id="gTip"></p></div>
+    <div class="row g-go"><button class="btn green" id="gRace">🏁 Balapan!</button><button class="btn ghost" data-back>Simpan</button></div>
+  </section>
+
+  <!-- ============ LOBBY ============ -->
+  <section id="lobby" class="screen" hidden>
+    <header class="bar"><button class="btn small ghost" id="lobbyLeave">← Keluar</button><h2>Room <b id="roomCode" class="code">------</b></h2><button class="btn small" id="inviteBtn">🔗 Undang</button></header>
+    <p class="muted" id="lobbyVis"></p>
+    <div class="card"><canvas id="lobbyCv" class="lobby-cv" aria-hidden="true"></canvas><h3>Racer <small id="pCount">1/4</small></h3><ul id="pList" class="plist"></ul>
+      <p class="muted" id="lobbyTrack"></p>
+      <div id="hostBox"><div class="row"><span>Bot pengisi</span><div class="seg" id="onBots"><button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div></div>
+        <div class="row"><span>Lintasan</span><div class="seg" id="onTrack"></div></div>
+        <button class="btn green big-btn" id="startBtn">🚦 Mulai balapan</button></div>
+      <div class="row"><button class="btn small ghost" id="lobGarage">🔧 Garasi</button><p class="muted" id="lobbyWait"></p></div>
+    </div>
+    <div class="card" id="chatCard"><div id="chat"><div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <div class="quick" id="quickChat"></div>
+      <form id="chatForm" class="row"><input id="chatInput" maxlength="120" placeholder="Ketik sorakan…" autocomplete="off" aria-label="Pesan chat"><button class="btn small">Kirim</button></form></div></div>
+  </section>
+
+  <!-- ============ RACE ============ -->
+  <section id="race" class="screen" hidden>
+    <canvas id="raceCv"></canvas>
+    <div class="hud-top"><button class="icon-btn" id="exitBtn" aria-label="Keluar">✕</button>
+      <div class="hud-mid"><span class="chip" id="hudLap">Lap 1/3</span><span class="chip" id="hudPos">P1</span><span class="chip" id="hudTime">0.00</span></div>
+      <div class="hud-r"><button class="icon-btn" id="muteBtn2" aria-label="Suara">🔊</button><button class="icon-btn" id="chatBtn" aria-label="Chat" hidden>💬</button></div></div>
+    <div class="lights" id="lights" aria-hidden="true"><i></i><i></i><i></i><i class="go"></i></div>
+    <div id="raceChatSlot" class="race-chat" hidden></div>
+    <div class="callout" id="callout"></div>
+    <div class="coach" id="coach" hidden></div>
+    <div class="race-bottom">
+      <div class="cheer" id="cheer"></div>
+      <div class="tbar" id="tbar" aria-hidden="true"><div class="tb-zone" id="tbZone"><i class="tb-perf" id="tbPerf"></i></div><b class="tb-needle" id="tbNeedle"></b><span class="tb-lbl" id="tbLbl">Tikungan 1</span><span class="tb-spd" id="tbSpd">0 km/j</span></div>
+      <button class="tap" id="tapBtn"><b id="tapLbl">ON</b><small id="tapSub">ketuk saat hijau</small></button>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="result" class="screen overlay" hidden>
+    <div class="res-card">
+      <p class="kicker" id="resKick">HASIL</p><h2 id="resTitle">Juara!</h2><p id="resSub" class="muted"></p>
+      <table class="res-table"><thead><tr><th>#</th><th>Racer</th><th>Total</th><th>Lap terbaik</th><th>Pas</th><th>💥</th></tr></thead><tbody id="resRows"></tbody></table>
+      <p class="laps" id="resLaps"></p>
+      <p class="reward" id="resNote"></p>
+      <div class="row end-btns"><button class="btn green" id="againBtn">↻ Lagi</button><button class="btn" id="toLobbyBtn" hidden>Ke lobby</button><button class="btn ghost" id="resGarage">🔧 Garasi</button><button class="btn ghost" id="resMenu">Menu</button></div>
+      <p class="muted" id="endWait"></p>
+    </div>
+  </section>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</main>
+<script>
+/*GAME*/
+</script>
+<script>
+/*RENDER*/
+</script>
+<script>
+/*NET*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>

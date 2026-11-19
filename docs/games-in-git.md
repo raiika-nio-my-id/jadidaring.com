@@ -50,8 +50,8 @@ exported first (no admin GET endpoint exists yet).
 | 6 | `rebutbendera` | in git (d1f8eb5) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 7 | `ogohogoharak` | in git (fed96fe) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 8 | `monyetuluwatu` | in git (5d10d86) | local build, verified = live (`index.deploy.html`) | yes | no |
-| 9 | `penaltitimnas` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 10 | `tamiyalintasan` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 9 | `penaltitimnas` | in git (6aa1693) | local build, verified = live (`index.deploy.html`) | yes | yes |
+| 10 | `tamiyalintasan` | in git | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 11 | `kopisenja` | database | local build, verified = live (`index.deploy.html`) | yes | no |
 | 12 | `mandarinharian` | database | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 13 | `whoosh` | database | local build, verified = live (`index.deploy.html`) | yes | no |
