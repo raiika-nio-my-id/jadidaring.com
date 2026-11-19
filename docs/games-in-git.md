@@ -1,6 +1,7 @@
 # Games in git
 
-Pilot: **Langit Bersama** (`/game/langitbersama`), moved 2026-11-20. Other games move one per commit; see the inventory below.
+Pilot: **Langit Bersama** (`/game/langitbersama`), moved 2026-11-20. The other games moved one per commit the same day.
+**Status: 45/45 games in git** (`GIT_GAMES` lists all 45; every `/game` listing entry is served from `resources/games/`).
 
 ## Before: game as content
 
@@ -40,8 +41,8 @@ account (`users.name`, changed only at `/akun`).
 ## Inventory (all games, popularity order = /game listing)
 
 Source check: the local build file was run through the same server pipeline and diffed against the live
-`/game/{slug}` response (equal = safe source for the move). Games without a local copy need their database html
-exported first (no admin GET endpoint exists yet).
+`/game/{slug}` response (equal = safe source for the move). Games without a local copy were exported from the database
+with the read-only admin endpoint `GET /api/admin/games/{slug}/html` (47dd30c) and checked the same way.
 
 | # | Game | Status | Source for the move | Name gate | Uses game API |
 |---|---|---|---|---|---|
@@ -72,24 +73,24 @@ exported first (no admin GET endpoint exists yet).
 | 25 | `duelular` | in git (6c5a285) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 26 | `sambungcoret` | in git (4153a29) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 27 | `lanjutkata` | in git (865855c) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 28 | `nadapiano` | in git | no local copy: export the database html first | no | no |
-| 29 | `gambletogether` | in git (ae05489) | no local copy: export the database html first | yes | yes |
+| 28 | `nadapiano` | in git (f87fd1a) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 29 | `gambletogether` | in git (ae05489) | database export (`GET /api/admin/games/{slug}/html`), verified = live | yes | yes |
 | 30 | `bumerangsakti` | in git (a520387) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 31 | `gamelanhero` | in git (21697d2) | no local copy: export the database html first | no | no |
+| 31 | `gamelanhero` | in git (21697d2) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
 | 32 | `pedangsihir` | in git (9f4acef) | local build, verified = live (`index.html`) | yes | yes |
 | 33 | `gelembung` | in git (50d7697) | local build, verified = live (`index.html`) | yes | yes |
 | 34 | `benteng` | in git (f08c3a3) | local build, verified = live (`index.html`) | yes | yes |
 | 35 | `ulartangga` | in git (c192fe7) | local build, verified = live (`index.html`) | yes | yes |
-| 36 | `mahjong-master` | in git (fbabf15) | no local copy: export the database html first | yes | yes |
-| 37 | `explodingkitten` | in git (d3c3811) | no local copy: export the database html first | yes | yes |
-| 38 | `mahjong` | in git (9ef48b5) | no local copy: export the database html first | yes | yes |
-| 39 | `tiltingball` | in git (ace822d) | no local copy: export the database html first | no | no |
-| 40 | `boxing` | in git (ff52fdc) | no local copy: export the database html first | no | no |
-| 41 | `spiderman` | in git (a40c5ea) | no local copy: export the database html first | no | no |
-| 42 | `kehidupankonoha` | in git (9fb862e) | no local copy: export the database html first | yes | yes |
-| 43 | `mlbbpicker` | in git (4045f96) | no local copy: export the database html first | no | no |
-| 44 | `clubgame` | in git (4cfe732) | no local copy: export the database html first | no | no |
-| 45 | `idle-game` | in git (4c08517) | no local copy: export the database html first | no | no |
+| 36 | `mahjong-master` | in git (fbabf15) | database export (`GET /api/admin/games/{slug}/html`), verified = live | yes | yes |
+| 37 | `explodingkitten` | in git (d3c3811) | database export (`GET /api/admin/games/{slug}/html`), verified = live | yes | yes |
+| 38 | `mahjong` | in git (9ef48b5) | database export (`GET /api/admin/games/{slug}/html`), verified = live | yes | yes |
+| 39 | `tiltingball` | in git (ace822d) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 40 | `boxing` | in git (ff52fdc) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 41 | `spiderman` | in git (a40c5ea) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 42 | `kehidupankonoha` | in git (9fb862e) | database export (`GET /api/admin/games/{slug}/html`), verified = live | yes | yes |
+| 43 | `mlbbpicker` | in git (4045f96) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 44 | `clubgame` | in git (4cfe732) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
+| 45 | `idle-game` | in git (4c08517) | database export (`GET /api/admin/games/{slug}/html`), verified = live | no | no |
 <!-- inventory:end -->
 
 ## After: game as code
