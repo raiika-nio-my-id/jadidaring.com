@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman,explodingkitten,kehidupankonoha,mahjong,mahjong-master,gambletogether', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium,coratcoret,anomaliminimarket,bajajdrift,rebutbendera,ogohogoharak,monyetuluwatu,penaltitimnas,tamiyalintasan,mandarinharian,kopisenja,whoosh,ttskilat,ikanrakus,drag201,malampendakian,cukurkekinian,pawanghujan,mudikmacet,gasingarena,dapurpadang3d,benteng,bumerangsakti,dapurpadang,duelular,gelembung,lanjutkata,pedangsihir,sambungcoret,skalateman,ulartangga,tiltingball,idle-game,clubgame,mlbbpicker,boxing,spiderman,explodingkitten,kehidupankonoha,mahjong,mahjong-master,gambletogether,gamelanhero', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -206,6 +206,7 @@ class GitGamesTest extends TestCase
     {
         return [
             // name-free:start
+            'gamelanhero' => ['gamelanhero'],
             'spiderman' => ['spiderman'],
             'boxing' => ['boxing'],
             'mlbbpicker' => ['mlbbpicker'],

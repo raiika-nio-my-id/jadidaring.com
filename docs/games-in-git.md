@@ -73,9 +73,9 @@ exported first (no admin GET endpoint exists yet).
 | 26 | `sambungcoret` | in git (4153a29) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 27 | `lanjutkata` | in git (865855c) | local build, verified = live (`index.deploy.html`) | yes | yes |
 | 28 | `nadapiano` | database | no local copy: export the database html first | no | no |
-| 29 | `gambletogether` | in git | no local copy: export the database html first | yes | yes |
+| 29 | `gambletogether` | in git (ae05489) | no local copy: export the database html first | yes | yes |
 | 30 | `bumerangsakti` | in git (a520387) | local build, verified = live (`index.deploy.html`) | yes | yes |
-| 31 | `gamelanhero` | database | no local copy: export the database html first | no | no |
+| 31 | `gamelanhero` | in git | no local copy: export the database html first | no | no |
 | 32 | `pedangsihir` | in git (9f4acef) | local build, verified = live (`index.html`) | yes | yes |
 | 33 | `gelembung` | in git (50d7697) | local build, verified = live (`index.html`) | yes | yes |
 | 34 | `benteng` | in git (f08c3a3) | local build, verified = live (`index.html`) | yes | yes |
