@@ -770,7 +770,7 @@
       if (!j) return;
       lastSaved = snap; B.hasDraft = true;
       try { localStorage.removeItem(LS); } catch (x) {}
-      if (JSON.stringify({ c: cfg, h: html }) === snap) { dirty = false; setState('Draft tersimpan otomatis ' + j.saved_at + ' · belum tayang'); }
+      if (JSON.stringify({ c: cfg, h: html }) === snap) { dirty = false; var t = new Date(); setState('Draft tersimpan otomatis ' + String(t.getHours()).padStart(2, '0') + '.' + String(t.getMinutes()).padStart(2, '0') + ' · belum tayang'); }
     }).catch(function () { setState('Belum tersimpan (offline?) · disimpan di perangkat ini'); });
   }
   (function restoreLocal() {

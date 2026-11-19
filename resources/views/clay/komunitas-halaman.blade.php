@@ -61,4 +61,5 @@
         </section>
     </div>
     <script src="{{ \App\Support\AssetUrl::to('js/member-frame.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/profile-music.js') }}" defer></script>
 @endsection

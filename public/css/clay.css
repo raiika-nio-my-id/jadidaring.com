@@ -1016,3 +1016,9 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .pf .pf-grid > .pf-w[style*="--w:33"] { flex-basis: calc(33.333% - var(--pf-gap, 16px) * .6667); }
 .pf .pf-grid > .pf-w[style*="--w:66"] { flex-basis: calc(66.667% - var(--pf-gap, 16px) * .3333); }
 @media (max-width: 639px) { .pf .pf-grid > .pf-w { flex-basis: 100% !important; } }
+.pf-ap-hint { position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 80; translate: -50% 0; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 0; border-radius: 999px; background: rgba(36, 27, 69, .92); color: #fff; font: 700 14px/1 var(--font-body, inherit); box-shadow: 0 8px 24px rgba(0, 0, 0, .25); cursor: pointer; animation: pf-ap-in .3s ease-out; }
+.pf-ap-hint span { font-size: 18px; animation: pf-ap-bob 1.4s ease-in-out infinite; }
+@keyframes pf-ap-in { from { opacity: 0; translate: -50% 10px; } }
+@keyframes pf-ap-bob { 50% { transform: translateY(-3px); } }
+@media (min-width: 900px) { .pf-ap-hint { bottom: 24px; } }
+@media (prefers-reduced-motion: reduce) { .pf-ap-hint, .pf-ap-hint span { animation: none; } }
