@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-oauth, delete-test-user]
+        options: [set-ga4, set-google-oauth, set-mail, delete-test-user]
       value:
         description: "set-ga4: measurement id (G-XXXX). delete-test-user: username (tmp + digits only)"
         required: false
@@ -35,13 +35,15 @@ jobs:
           VALUE: ${{ inputs.value }}
           G_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           G_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          M_USER: ${{ secrets.MAIL_USERNAME }}
+          M_PASS: ${{ secrets.MAIL_PASSWORD }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
-          envs: DEPLOY_PATH,ACTION,VALUE,G_ID,G_SECRET
+          envs: DEPLOY_PATH,ACTION,VALUE,G_ID,G_SECRET,M_USER,M_PASS
           script: |
             set -euo pipefail
             cd "$DEPLOY_PATH"
@@ -52,14 +54,19 @@ jobs:
               cat "$tmp" > .env; rm -f "$tmp"
             }
             case "$ACTION" in
-              set-ga4|set-google-oauth)
+              set-ga4|set-google-oauth|set-mail)
                 cp .env ".env.bak-$(date +%Y%m%d-%H%M%S)"
-                if [ "$ACTION" = set-ga4 ]; then setkey GA4_MEASUREMENT_ID "$VALUE"; else setkey GOOGLE_CLIENT_ID "$G_ID"; setkey GOOGLE_CLIENT_SECRET "$G_SECRET"; fi
+                if [ "$ACTION" = set-ga4 ]; then setkey GA4_MEASUREMENT_ID "$VALUE"
+                elif [ "$ACTION" = set-mail ]; then
+                  setkey MAIL_MAILER smtp; setkey MAIL_HOST smtp-relay.brevo.com; setkey MAIL_PORT 587
+                  setkey MAIL_USERNAME "$M_USER"; setkey MAIL_PASSWORD "$M_PASS"
+                  setkey MAIL_FROM_ADDRESS noreply@jadidaring.com; setkey MAIL_FROM_NAME '"Jadidaring"'
+                else setkey GOOGLE_CLIENT_ID "$G_ID"; setkey GOOGLE_CLIENT_SECRET "$G_SECRET"; fi
                 ls -t .env.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f
                 docker exec singlepage-app php artisan config:clear --no-ansi
                 docker exec singlepage-app php artisan cache:clear --no-ansi || true
-                grep -E '^(GA4_MEASUREMENT_ID|GOOGLE_CLIENT_ID)=' .env | sed -E 's/=(.{12}).*/=\1…/'
-                grep -c '^GOOGLE_CLIENT_SECRET=.\+' .env || true
+                grep -E '^(GA4_MEASUREMENT_ID|GOOGLE_CLIENT_ID|MAIL_MAILER|MAIL_HOST|MAIL_PORT|MAIL_FROM_ADDRESS)=' .env | sed -E 's/=(.{12}).*/=\1…/'
+                grep -c '^\(GOOGLE_CLIENT_SECRET\|MAIL_PASSWORD\)=.\+' .env || true
                 ;;
               delete-test-user)
                 docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi

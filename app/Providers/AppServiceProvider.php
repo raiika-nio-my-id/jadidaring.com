@@ -43,6 +43,20 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+        ResetPassword::toMailUsing(function (object $user, string $token) {
+            $url = route('member.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]);
+            $minutes = (int) config('auth.passwords.'.config('auth.defaults.passwords').'.expire', 60);
+
+            return (new \Illuminate\Notifications\Messages\MailMessage)
+                ->subject('Atur ulang kata sandi Jadidaring')
+                ->greeting('Halo!')
+                ->line('Kami menerima permintaan untuk mengatur ulang kata sandi akun Jadidaring kamu.')
+                ->action('Atur ulang kata sandi', $url)
+                ->line('Tautan ini berlaku '.$minutes.' menit.')
+                ->line('Kalau bukan kamu yang meminta, abaikan saja email ini. Kata sandimu tidak berubah.')
+                ->salutation('Salam, Tim Jadidaring');
+        });
+
         Gate::policy(CompanyProfile::class, CompanyProfilePolicy::class);
 
         Gate::define('manage-settings', function (User $user): bool {
