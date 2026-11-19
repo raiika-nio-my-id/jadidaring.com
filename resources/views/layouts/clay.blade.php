@@ -49,7 +49,7 @@
     @include('partials.theme-boot')
     @stack('head')
 </head>
-<body@hasSection('bodyclass') class="@yield('bodyclass')"@endif>
+<body@hasSection('bodyclass') class="@yield('bodyclass')"@endhasSection>
     <header class="clay-header">
         <div class="clay-shell">
             <div class="clay-header__bar">
