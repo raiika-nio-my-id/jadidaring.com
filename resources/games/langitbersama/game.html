@@ -1224,6 +1224,19 @@ const T = (k, v) => { const a = CFG.text[lang] || CFG.text.id; const x = a[k] !=
 let isGM = false, gmUI = null;
 let uid = getLS(KEYS.uid); if (!/^[A-Za-z0-9]{10}$/.test(uid)) { uid = DQ.rid().replace(/[^A-Za-z0-9]/g, 'x'); setLS(KEYS.uid, uid); }
 let myName = DQ.cleanText(getLS(KEYS.name), DQ.LIM.nameMax);
+/* Name follows the Jadidaring account (window.__JD_ME, injected by the server); it is never typed in-game.
+   Guests play as "Tamu" (saving needs login, the server answers 401 and the site shows the login prompt).
+   Without the server bridge (local file) the old name gate still works. */
+const JDME = (() => { try { const m = window.__JD_ME; return m && typeof m === 'object' ? m : null; } catch (x) { return null; } })();
+const accountName = () => (JDME && JDME.in ? DQ.cleanText(JDME.name, DQ.LIM.nameMax) : '') || 'Tamu';
+if (JDME) myName = accountName();
+function nameLockNote() {
+  const inp = $('nameInput'); if (!JDME || !inp) return; inp.value = accountName(); inp.readOnly = true; inp.setAttribute('aria-readonly', 'true'); inp.style.opacity = '.75';
+  let n = $('nameLock'); if (!n) { n = doc.createElement('small'); n.id = 'nameLock'; n.style.cssText = 'font-weight:400;font-size:13px;opacity:.8'; inp.insertAdjacentElement('afterend', n); }
+  const id = lang === 'id', next = encodeURIComponent('/game/langitbersama');
+  n.innerHTML = JDME.in ? (id ? 'Nama mengikuti akun Jadidaring. Ganti di <a href="/akun" target="_top">Akun</a>.' : 'Your name follows your Jadidaring account. Change it in <a href="/akun" target="_top">Account</a>.')
+    : (id ? 'Kamu main sebagai Tamu. <a href="/masuk?next=' + next + '" target="_top">Masuk</a> supaya namamu ikut akun dan karyamu tersimpan.' : 'You are playing as a guest. <a href="/masuk?next=' + next + '" target="_top">Log in</a> to use your account name and save.');
+}
 let myAv = Math.max(0, Math.min(CFG.avatars.length - 1, parseInt(getLS(KEYS.av), 10) || 0));
 const rand = (a, b) => a + Math.random() * (b - a);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -2547,15 +2560,15 @@ $('chatForm').addEventListener('submit', e => {
 
 /* ---------- name gate ---------- */
 function openGate() {
-  $('nameInput').value = ''; /* t367u: never prefill (placeholder JadiDaring) */ $('gateGm').hidden = !isGM; $('gateErr').textContent = ''; renderAv(); renderGateLang(); $('gate').hidden = false; setTimeout(() => $('nameInput').focus(), 30);
+  $('nameInput').value = ''; /* t367u: never prefill (placeholder JadiDaring) */ nameLockNote(); $('gateGm').hidden = !isGM; $('gateErr').textContent = ''; renderAv(); renderGateLang(); $('gate').hidden = false; if (!JDME) setTimeout(() => $('nameInput').focus(), 30);
 }
 function renderAv() {
   const box = $('avPick'); box.textContent = '';
   CFG.avatars.forEach((a, i) => { const b = doc.createElement('button'); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(i === myAv)); b.textContent = a; b.addEventListener('click', () => { myAv = i; renderAv(); }); box.appendChild(b); });
 }
 $('gateForm').addEventListener('submit', e => {
-  e.preventDefault(); const n = DQ.cleanText($('nameInput').value, DQ.LIM.nameMax); if (!n) { $('gateErr').textContent = T('needName'); return; }
-  const first = !room; myName = n; setLS(KEYS.name, n); try { sessionStorage.setItem('jdng.langitbersama', n); } catch (x) {} setLS(KEYS.av, String(myAv)); setLS(KEYS.lang, lang); /* t325u: confirm the gate language */ $('gate').hidden = true; renderStatus();
+  e.preventDefault(); const n = JDME ? accountName() : DQ.cleanText($('nameInput').value, DQ.LIM.nameMax); if (!n) { $('gateErr').textContent = T('needName'); return; }
+  const first = !room; myName = n; if (!JDME) setLS(KEYS.name, n); try { sessionStorage.setItem('jdng.langitbersama', n); } catch (x) {} setLS(KEYS.av, String(myAv)); setLS(KEYS.lang, lang); /* t325u: confirm the gate language */ $('gate').hidden = true; renderStatus();
   if (!getLS('langitbersama.howSeen')) { setLS('langitbersama.howSeen', '1'); setTimeout(openHow, 350); }
   if (first && !entering) connect(); else hello(false).catch(() => {});
 });

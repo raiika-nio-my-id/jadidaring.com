@@ -8,6 +8,7 @@ See `docs/games-in-git.md` for the pattern.
 - **Shared global wind** and a shared 60x time-of-day sky clock (`?jam=18.5[&hari=N][&jalan]` override).
 - `?wallpaper` = sky-only fullscreen. Storage keys `langitbersama.*`, session name key `jdng.langitbersama`.
 - GM: `?gmjd` opens the typed-code modal: POST rooms/{code}/gamemaster (admin session only). The old shared key is retired.
+- Player name follows the Jadidaring account (`window.__JD_ME`): the gate keeps avatar/language, the name field is read-only; guests are "Tamu" (saving needs login). Old `langitbersama.name` nicknames are ignored.
 - Player data (rooms, kites, chat, residents, scores) lives in the database and is reached through
   `/game/langitbersama/api/game/*`. Nothing in this folder stores player data.
 
