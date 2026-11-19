@@ -320,26 +320,8 @@
       ul.appendChild(h('li', { cls: 'le-order__fixed' }, [h('span', { text: '🔒' }), h('strong', { text: 'Komentar & Testimoni' }), h('em', { text: 'Tetap di bawah' })]));
       dragSort(ul);
       return { title: 'Susun kotak', hint: 'Seret ⠿ atau pakai panah untuk mengatur urutan.', kids: [ul, h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-add', text: '＋ Tambah kotak', on: { click: function () { open('add'); } } })] };
-    },
-    ai: function () {
-      var ta = h('textarea', { id: 'le-ai-json', cls: 'clay-input', rows: 5, spellcheck: 'false', placeholder: '{ "theme": { … } }' });
-      var msg = h('p', { cls: 'le-hint', role: 'status', 'aria-live': 'polite' });
-      return { title: 'Buat pakai AI', hint: 'Minta ChatGPT, Claude, atau Gemini mendesain profilmu.', kids: [
-        h('button', { type: 'button', cls: 'clay-btn clay-btn--cta le-add', text: '✨ Buka generator prompt', on: { click: function () { openAi(); } } }),
-        note('Setelah AI menjawab, klik tautan impor dari AI. Hasilnya terbuka di halaman ini untuk ditinjau.'),
-        field('Tempel JSON dari AI', 'Isi blok json saja, lalu tekan Muat.', ta, 'le-ai-json'),
-        h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-add', text: 'Muat ke profil', on: { click: function () {
-          var raw = ta.value.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
-          try {
-            var c = JSON.parse(raw);
-            if (c && c.config && typeof c.config === 'object') { if (typeof c.html === 'string' && c.html) { html = c.html; } c = c.config; }
-            if (!c || typeof c !== 'object') throw new Error('x');
-            cfg = merge(JSON.parse(initial), c); changed(true); msg.textContent = 'Dimuat. Periksa hasilnya, lalu Simpan draft.';
-          } catch (e) { msg.textContent = 'JSON tidak valid. Pastikan hanya menempel isi blok json dari AI.'; }
-        } } }),
-        msg
-      ] };
     }
+
   };
 
   function merge(base, over) {
@@ -376,7 +358,7 @@
         ta.value = html;
         ta.addEventListener('input', function () { html = ta.value; changed(); });
         kids.push(field('Kode HTML', 'Maks. 300 KB. Jalan di kotak terisolasi; iframe Spotify/YouTube dipindah otomatis ke kotaknya.', ta, id));
-        kids.push(note('Pratinjau kode baru tampil setelah kamu menekan Simpan draft.'));
+        kids.push(note('Pratinjau kode baru muncul setelah draft tersimpan otomatis (beberapa detik).'));
         break;
     }
     kids.push(h('div', { cls: 'le-wactions' }, [
@@ -565,14 +547,16 @@
   document.getElementById('le-close').addEventListener('click', closePanel);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
   document.querySelectorAll('[data-open]').forEach(function (b) {
-    if (b.dataset.open !== 'w' && !PANELS[b.dataset.open]) { b.hidden = true; return; }
-    b.addEventListener('click', function () { if (b.dataset.open === 'ai') openAi(); else open(b.dataset.open); });
+    if (b.dataset.open !== 'w' && b.dataset.open !== 'ai' && !PANELS[b.dataset.open]) { b.hidden = true; return; }
+    b.addEventListener('click', function () { if (b.dataset.open === 'ai') { if (window.JDAiWidget) window.JDAiWidget.open(b); } else open(b.dataset.open); });
   });
 
   /* tap anything on the page to edit it */
   document.getElementById('le').addEventListener('click', function (e) {
     if (document.body.classList.contains('le-peek')) return;
-    if (e.target.closest('.le-top, .le-classic, .pf-alert, .imp-fix, .le-draft, .le-drag')) return;
+    var ub = e.target.closest('.le-ubah');
+    if (ub) { e.preventDefault(); e.stopPropagation(); open(ub.dataset.ubah); return; }
+    if (e.target.closest('.le-top, .le-classic, .pf-alert, .imp-fix, .le-draft, .le-drag, .le-prefill')) return;
     if (dragJustEnded) { e.preventDefault(); e.stopPropagation(); return; }
     if (e.target.closest('[data-avatar-upload]')) { e.preventDefault(); e.stopPropagation(); avatarPick(); return; }
     var ie = e.target.closest('#le-stage [data-inline]');
@@ -660,7 +644,15 @@
 
   /* ---------- drag boxes on the page to reorder ---------- */
   var dragJustEnded = false;
+  /* "Ubah" is a real button (not a ::after label), so it can take the click instead of the title/text under it. */
   function decorate() {
+    Array.prototype.forEach.call(document.querySelectorAll('#le-stage [data-edit]:not([data-edit="bg"]), .le-wall[data-edit]'), function (sec) {
+      if (sec.querySelector(':scope > .le-ubah')) return;
+      var key = sec.dataset.edit;
+      var name = key.indexOf('w:') === 0 ? label((cfg.widgets[+key.slice(2)] || {}).type) : (key === 'head' ? 'profil' : (key === 'layout' ? 'susunan kotak' : 'komentar'));
+      var u = h('button', { type: 'button', cls: 'le-ubah', 'aria-label': 'Ubah ' + name, 'data-ubah': key, text: key === 'layout' ? '⇔ Susunan kotak' : (sec.hasAttribute('data-fixed') ? '🔒 Kotak tetap · Ubah' : '✎ Ubah') });
+      sec.appendChild(u);
+    });
     Array.prototype.forEach.call(stage.querySelectorAll('.pf-grid > [data-edit^="w:"]'), function (sec) {
       if (sec.querySelector(':scope > .le-drag')) return;
       var i = +sec.dataset.edit.slice(2);
@@ -729,22 +721,62 @@
 
   decorate();
 
-  /* ---------- AI generator in a modal ---------- */
-  var aiModal = null;
-  function openAi() {
-    if (!aiModal) {
-      aiModal = h('dialog', { cls: 'le-modal', 'aria-label': 'Buat profil pakai AI' });
-      var head = h('div', { cls: 'le-modal__head' }, [
-        h('div', {}, [h('h2', { text: '✨ Buat pakai AI' }), h('p', { cls: 'le-hint', text: 'Isi singkat, salin prompt ke ChatGPT, Claude, atau Gemini, lalu buka tautan impor dari jawabannya.' })]),
-        h('button', { type: 'button', cls: 'le-x', 'aria-label': 'Tutup', text: '✕', on: { click: function () { aiModal.close(); } } })
-      ]);
-      var fr = h('iframe', { src: B.promptUrl, title: 'Generator prompt AI', loading: 'lazy' });
-      var tabs = h('div', { cls: 'le-modal__foot' }, [h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-btn', text: 'Sudah punya JSON? Tempel di sini', on: { click: function () { aiModal.close(); open('ai'); } } })]);
-      aiModal.appendChild(head); aiModal.appendChild(fr); aiModal.appendChild(tabs);
-      aiModal.addEventListener('click', function (e) { if (e.target === aiModal) aiModal.close(); });
-      document.body.appendChild(aiModal);
+  /* ---------- AI widget: the generator modal lives in profile-ai-widget.js; it hands finished code back here ---------- */
+  function applyWidgetCode(code, o) {
+    o = o || {};
+    html = String(code || '');
+    var i = -1;
+    cfg.widgets.forEach(function (w, k) { if (w.type === 'custom_html' && i < 0) i = k; });
+    if (i < 0) {
+      if (cfg.widgets.length >= 14) { toast('Maks. 14 kotak. Hapus satu dulu.'); return false; }
+      cfg.widgets.push({ type: 'custom_html' }); i = cfg.widgets.length - 1;
     }
-    if (aiModal.showModal) aiModal.showModal(); else location.href = '/komunitas/buat';
+    if (o.title) cfg.widgets[i].title = String(o.title).slice(0, 60);
+    if (o.width) cfg.widgets[i].width = String(o.width);
+    changed(true);
+    var at = i;
+    whenRendered(function () {
+      open('w:' + at);
+      var el = stage.querySelector('[data-edit="w:' + at + '"]');
+      if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    });
+    return true;
+  }
+  window.JDLive = { applyWidgetCode: applyWidgetCode, hasCustomCode: function () { return html.trim() !== ''; }, toast: function (m) { toast(m); } };
+
+  /* The sandboxed preview frame only exists once the draft is saved; show it as soon as autosave returns its URL. */
+  var frameHtml = initialHtml;
+  function ensureFrame(src) {
+    var sec = stage.querySelector('[data-type="custom_html"]');
+    if (!sec || !src) return;
+    var fr = sec.querySelector('#member-frame');
+    if (!fr) {
+      var wrap = h('div', { cls: 'pf-frame' });
+      fr = h('iframe', { id: 'member-frame', title: 'Widget kustom', sandbox: 'allow-scripts allow-popups', allow: '', referrerpolicy: 'no-referrer', 'data-min': '120', 'data-max': '8000', style: 'height:320px' });
+      fr.src = src; wrap.appendChild(fr);
+      var ph = sec.querySelector('.pf-muted'); if (ph) ph.replaceWith(wrap); else sec.appendChild(wrap);
+      window.addEventListener('message', function (e) {
+        var d = e.data;
+        if (e.source !== fr.contentWindow || !d || typeof d.jdFrameHeight !== 'number' || !isFinite(d.jdFrameHeight)) return;
+        fr.style.height = Math.max(120, Math.min(8000, Math.ceil(d.jdFrameHeight))) + 'px';
+      });
+    } else if (fr.getAttribute('src') !== src) fr.src = src;
+    frameHtml = html;
+  }
+
+  function runPrefill() {
+    if (!(B.prefill && B.prefill.html)) return;
+    (function () {
+      var pf = B.prefill;
+      var bar = h('div', { cls: 'le-prefill', role: 'status' }, [
+        h('strong', { text: '✨ Widget dari AI sudah masuk.' }),
+        h('span', { text: ' Pilih lebar kotak di panel, lalu tekan Simpan draft atau Terbitkan. Belum tayang sebelum kamu menyimpan.' + (pf.replaces ? ' Kode kotak kustom yang lama diganti di draft ini; yang sedang tayang belum berubah.' : '') }),
+        (pf.notices && pf.notices.length) ? h('ul', {}, pf.notices.map(function (n) { return h('li', { text: n }); })) : null
+      ]);
+      document.getElementById('le').insertBefore(bar, stage);
+      if (history.replaceState) history.replaceState(null, '', '/komunitas/halamanku');
+      applyWidgetCode(pf.html, { title: pf.title, width: pf.width });
+    })();
   }
 
   /* ---------- autosave: local copy at once, server draft after a pause ---------- */
@@ -769,6 +801,7 @@
     }).then(function (j) {
       if (!j) return;
       lastSaved = snap; B.hasDraft = true;
+      if (j.frame && JSON.stringify({ c: cfg, h: html }) === snap) ensureFrame(j.frame);
       try { localStorage.removeItem(LS); } catch (x) {}
       if (JSON.stringify({ c: cfg, h: html }) === snap) { dirty = false; var t = new Date(); setState('Draft tersimpan otomatis ' + String(t.getHours()).padStart(2, '0') + '.' + String(t.getMinutes()).padStart(2, '0') + ' · belum tayang'); }
     }).catch(function () { setState('Belum tersimpan (offline?) · disimpan di perangkat ini'); });
@@ -841,15 +874,19 @@
     var ob = oldPf.querySelector('.pf-bg'), nb = newPf.querySelector('.pf-bg');
     if (ob && nb) ob.setAttribute('style', nb.getAttribute('style') || '');
     var oh = oldPf.querySelector('.pf-head'), nh = newPf.querySelector('.pf-head');
-    if (oh && nh && oh.innerHTML !== nh.innerHTML) oh.innerHTML = nh.innerHTML;
+    if (oh && nh) {
+      var oc = oh.cloneNode(true); Array.prototype.forEach.call(oc.querySelectorAll('.le-ubah'), function (x) { x.remove(); });
+      if (oc.innerHTML !== nh.innerHTML) oh.innerHTML = nh.innerHTML;
+    }
     var oa = oldPf.querySelector('.pf-avwrap img');
     if (oa && /^blob:/.test(oa.src) && get('profile.avatar') === '') { /* upload still running: keep local preview */ }
     var og = oldPf.querySelector('.pf-grid'), ng = newPf.querySelector('.pf-grid');
     if (!og || !ng) return;
+    Array.prototype.forEach.call(og.querySelectorAll(':scope > .le-ubah'), function (x) { x.remove(); });
     var pool = Array.prototype.slice.call(og.children);
     var keepFrame = pool.filter(function (s) { return s.querySelector('#member-frame'); })[0];
     var next = Array.prototype.map.call(ng.children, function (n) {
-      if (n.dataset.type === 'custom_html' && keepFrame && html === initialHtml) {
+      if (n.dataset.type === 'custom_html' && keepFrame && html === frameHtml) {
         keepFrame.dataset.edit = n.dataset.edit; keepFrame.setAttribute('aria-label', n.getAttribute('aria-label'));
         return keepFrame;
       }
@@ -893,5 +930,6 @@
     }
     location.href = '/u/' + B.username;
   });
+  runPrefill();
   window.addEventListener('beforeunload', function (e) { if (editing) commitInline(); if (dirty && !submitting && JSON.stringify({ c: cfg, h: html }) !== lastSaved) { e.preventDefault(); e.returnValue = ''; } });
 })();
