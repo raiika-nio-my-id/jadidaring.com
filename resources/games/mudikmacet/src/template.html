@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, levels, tutorial and colours live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mudik Macet · Puzzle Geser Kendaraan Mudik Lebaran</title>
+<meta name="description" content="Mudik Macet: puzzle geser kendaraan bertema mudik Lebaran. Geser bus, angkot, dan motor untuk membuka jalan bagi mobil mudikmu. 15 rute, tantangan harian, bintang 1-3. Gratis, cocok untuk HP.">
+<meta name="theme-color" content="#ff9b54">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mudik Macet">
+<meta property="og:description" content="Geser bus, angkot, dan motor. Bawa mobil mudikmu keluar dari macet Lebaran!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Papan Mudik Macet"></canvas>
+
+<!-- home -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><span class="l1">MUDIK</span><span class="l2">MACET</span></div>
+    <h1 class="sr-only" data-c="site.name"></h1>
+    <p class="tagline" data-c="site.tagline"></p>
+    <label class="name-field"><span data-t="nameLabel"></span>
+      <input id="nameIn" data-jd-account-name type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring">
+      <small data-t="nameHint"></small>
+    </label>
+    <button type="button" class="btn big primary" id="playBtn"><span class="ic" aria-hidden="true">🚗</span><span id="playLbl" data-t="play"></span></button>
+    <button type="button" class="btn big daily" id="dailyBtn"><span class="ic" aria-hidden="true">📅</span><span class="lbl"><span data-t="daily"></span><small id="dailySub"></small></span></button>
+    <div class="row2">
+      <button type="button" class="btn" id="levelsBtn"><span aria-hidden="true">🗺️</span> <span data-t="levels"></span></button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">🎓</span> <span data-t="how"></span></button>
+    </div>
+    <div class="stat-strip" id="statStrip"></div>
+  </div>
+  <footer class="site-footer">
+    <p><strong data-c="site.name"></strong> · <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </footer>
+</main>
+
+<!-- level picker -->
+<div class="overlay" id="levelsDlg" role="dialog" aria-modal="true" aria-labelledby="lvTitle" hidden>
+  <div class="dlg wide">
+    <h2 id="lvTitle" data-t="packTitle"></h2>
+    <p class="muted" data-t="packSub"></p>
+    <div class="lv-grid" id="lvGrid"></div>
+    <button type="button" class="btn" id="lvClose" data-t="close"></button>
+  </div>
+</div>
+
+<!-- play HUD -->
+<div id="hud" hidden>
+  <div class="hud-top">
+    <button type="button" class="ic-btn" id="backBtn" data-t-aria="menu">‹</button>
+    <div class="plate">
+      <div class="plate-name" id="lvName"></div>
+      <div class="plate-stats"><span><span data-t="moves"></span> <b id="mvNum">0</b></span><span class="sep">·</span><span><span data-t="par"></span> <b id="parNum">0</b></span><span class="star-pre" id="starPre" aria-hidden="true"></span></div>
+    </div>
+    <button type="button" class="ic-btn" id="muteBtn" data-t-aria="mute">🔊</button>
+  </div>
+  <div class="coach" id="coach" hidden><b id="coachTxt"></b><small id="coachSub"></small><button type="button" class="skip" id="skipTut" data-t="skip"></button></div>
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <span class="demo-tag" id="demoTag" data-t="demo" hidden></span>
+  <div class="hud-bot">
+    <button type="button" class="tool" id="undoBtn"><span aria-hidden="true">↶</span><small data-t="undo"></small></button>
+    <button type="button" class="tool" id="resetBtn"><span aria-hidden="true">⟲</span><small data-t="reset"></small></button>
+    <button type="button" class="tool hint" id="hintBtn"><span aria-hidden="true">💡</span><small data-t="hint"></small></button>
+  </div>
+</div>
+
+<!-- win -->
+<div class="overlay win" id="winDlg" role="dialog" aria-modal="true" aria-labelledby="winTitle" hidden>
+  <div class="dlg">
+    <div class="ketupat-row" aria-hidden="true"><i></i><i></i><i></i></div>
+    <h2 id="winTitle" class="win-title" data-t="winTitle"></h2>
+    <div class="win-stars" id="winStars" aria-label="Bintang"></div>
+    <p class="win-sub" id="winSub"></p>
+    <p class="win-badge" id="winBadge" hidden></p>
+    <div class="win-grid"><div><small data-t="moves"></small><b id="wMoves"></b></div><div><small data-t="par"></small><b id="wPar"></b></div><div><small data-t="best"></small><b id="wBest"></b></div></div>
+    <button type="button" class="btn big primary" id="nextBtn" data-t="next"></button>
+    <div class="row2">
+      <button type="button" class="btn" id="againBtn" data-t="again"></button>
+      <button type="button" class="btn" id="menuBtn" data-t="menu"></button>
+    </div>
+  </div>
+</div>
+
+<script id="mm-sim">
+/*SIM*/
+</script>
+<script id="mm-render">
+/*RENDER*/
+</script>
+<script id="mm-app">
+/*APP*/
+</script>
+</body>
+</html>

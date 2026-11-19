@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, levels, tutorial and colours live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+{
+  "site": {
+    "name": "Mudik Macet",
+    "slug": "mudikmacet",
+    "tagline": "Geser kendaraan, mobil mudikmu harus pulang!"
+  },
+  "game": {
+    "exitRow": 2,
+    "stars": {
+      "slack": 0.5,
+      "minSlack": 2
+    },
+    "hintCapsStars": 2,
+    "daily": {
+      "minMoves": 10,
+      "maxMoves": 22,
+      "steps": 220
+    },
+    "demoLevel": "L09",
+    "demoMoves": 4
+  },
+  "tutorial": {
+    "g": [
+      "......",
+      "..B...",
+      "AAB..C",
+      ".....C",
+      ".....C",
+      "......"
+    ],
+    "v": "",
+    "par": 3,
+    "steps": [
+      {
+        "piece": "B",
+        "dir": -1,
+        "text": "Angkot hijau menghalangi jalan. Seret ke ATAS \u2b06\ufe0f",
+        "sub": "Angkot tegak hanya bisa naik-turun"
+      },
+      {
+        "piece": "C",
+        "dir": 1,
+        "text": "Bus biru juga menutup lajur. Seret ke BAWAH \u2b07\ufe0f",
+        "sub": "Bus panjang 3 kotak, geser sampai lajur kosong"
+      },
+      {
+        "piece": "A",
+        "dir": 1,
+        "text": "Jalan terbuka! Seret mobil mudikmu ke KANAN \u27a1\ufe0f",
+        "sub": "Keluar lewat pintu KELUAR di kanan"
+      }
+    ],
+    "c": {
+      "B": 0,
+      "C": 1
+    }
+  },
+  "levels": [
+    {
+      "id": "L01",
+      "name": "Gerbang Tol Cikampek",
+      "blurb": "Pemanasan di gerbang tol.",
+      "g": [
+        "..EEDB",
+        "CC..DB",
+        ".AA.D.",
+        ".F.a.c",
+        "GF....",
+        "Gb...."
+      ],
+      "v": "abc",
+      "par": 2
+    },
+    {
+      "id": "L02",
+      "name": "Rest Area KM 57",
+      "blurb": "Parkiran penuh pemudik.",
+      "g": [
+        "aCCGGH",
+        "..DD.H",
+        ".AA.I.",
+        "...bI.",
+        "JF.Ec.",
+        "JF.EBB"
+      ],
+      "v": "ab",
+      "par": 3
+    },
+    {
+      "id": "L03",
+      "name": "Pantura Indramayu",
+      "blurb": "Angkot ngetem di bahu jalan.",
+      "g": [
+        "fx..g.",
+        "a..Gcb",
+        "AA.G.h",
+        "d....e",
+        "...DDD",
+        "FF..EE"
+      ],
+      "v": "bcdghe",
+      "par": 4
+    },
+    {
+      "id": "L04",
+      "name": "Jalur Nagreg",
+      "blurb": "Tanjakan padat merayap.",
+      "g": [
+        "BB.bDD",
+        "C..GGE",
+        "CAA..E",
+        "...HHH",
+        "FF..ax",
+        "...IIc"
+      ],
+      "v": "bca",
+      "par": 5
+    },
+    {
+      "id": "L05",
+      "name": "Pasar Tumpah Tegal",
+      "blurb": "Pasar sampai ke badan jalan.",
+      "g": [
+        "fBBBe.",
+        ".c...G",
+        "AAaC.G",
+        "...C..",
+        "dDDFxb",
+        "...F.g"
+      ],
+      "v": "aebf",
+      "par": 6
+    },
+    {
+      "id": "L06",
+      "name": "Simpang Jomin",
+      "blurb": "Semua lajur saling kunci.",
+      "g": [
+        "aDDD..",
+        "...GCx",
+        ".AAGCF",
+        "..EE.F",
+        ".HHH.c",
+        "b....."
+      ],
+      "v": "b",
+      "par": 7
+    },
+    {
+      "id": "L07",
+      "name": "Exit Brebes Timur",
+      "blurb": "Pintu keluar paling legendaris.",
+      "g": [
+        ".F.JJ.",
+        ".FDD..",
+        "AA.GHE",
+        ".b.GHE",
+        "CBxcHa",
+        "CB..II"
+      ],
+      "v": "ab",
+      "par": 8
+    },
+    {
+      "id": "L08",
+      "name": "Kalikangkung",
+      "blurb": "Bus AKAP berjejer.",
+      "g": [
+        "Hxa...",
+        "H.GEED",
+        "AAG.FD",
+        "C.BIF.",
+        "C.BIFb",
+        "..cKK."
+      ],
+      "v": "bc",
+      "par": 10
+    },
+    {
+      "id": "L09",
+      "name": "Alas Roban",
+      "blurb": "Truk dan bus berbaris di hutan.",
+      "g": [
+        "..B.JJ",
+        "d.B...",
+        "AAFEHa",
+        "c.FEHC",
+        "I..ExC",
+        "I.DDDb"
+      ],
+      "v": "acd",
+      "par": 12
+    },
+    {
+      "id": "L10",
+      "name": "Pelabuhan Merak",
+      "blurb": "Antre kapal ke Sumatra.",
+      "g": [
+        "E.JJ.I",
+        "E..GxI",
+        "HAAG.I",
+        "H...D.",
+        "c.FBDa",
+        "CCFB.b"
+      ],
+      "v": "c",
+      "par": 14
+    },
+    {
+      "id": "L11",
+      "name": "Ketapang",
+      "blurb": "Menyeberang ke Gilimanuk.",
+      "g": [
+        ".EFFC.",
+        ".E..CG",
+        ".AADdG",
+        "...Dbc",
+        ".BHHea",
+        ".B...x"
+      ],
+      "v": "d",
+      "par": 16
+    },
+    {
+      "id": "L12",
+      "name": "Lingkar Gentong",
+      "blurb": "Tikungan maut, padat total.",
+      "g": [
+        "LKIHCC",
+        "LKIHJF",
+        "AAI.JF",
+        "EEDDBF",
+        "....B.",
+        "cGGa.."
+      ],
+      "v": "c",
+      "par": 18
+    },
+    {
+      "id": "L13",
+      "name": "Pertigaan Kampung",
+      "blurb": "Hampir sampai, tapi macet.",
+      "g": [
+        "..CbEE",
+        "IICDJJ",
+        ".AADgH",
+        "F.BBBH",
+        "FGGf..",
+        "F...c."
+      ],
+      "v": "fgcb",
+      "par": 20
+    },
+    {
+      "id": "L14",
+      "name": "Pasar Kaget Malam Takbiran",
+      "blurb": "Ramai takbiran keliling.",
+      "g": [
+        "IB..CG",
+        "IB.cCG",
+        "AAJLCD",
+        "EEJLbD",
+        ".FHHa.",
+        ".F...."
+      ],
+      "v": "",
+      "par": 23
+    },
+    {
+      "id": "L15",
+      "name": "Gang Rumah Nenek",
+      "blurb": "Opor ayam sudah menunggu!",
+      "g": [
+        "ca.IIC",
+        ".GGGHC",
+        "AAFJH.",
+        "..FJDD",
+        "BEEE.L",
+        "B..KKL"
+      ],
+      "v": "",
+      "par": 26
+    }
+  ],
+  "palette": {
+    "angkot": [
+      "#21b36b",
+      "#1e88e5",
+      "#e8433f",
+      "#8e5bd6",
+      "#ff5fa2",
+      "#00b5c9",
+      "#f6c419",
+      "#ff8a1f"
+    ],
+    "bus": [
+      [
+        "#1f9d55",
+        "#f6c419"
+      ],
+      [
+        "#1565c0",
+        "#ffffff"
+      ],
+      [
+        "#d62f3a",
+        "#ffd23f"
+      ],
+      [
+        "#0f7b8a",
+        "#ffe28a"
+      ]
+    ],
+    "motor": [
+      "#e8433f",
+      "#1e88e5",
+      "#2a2a2a",
+      "#ff8a1f",
+      "#21b36b"
+    ]
+  },
+  "text": {
+    "play": "Main",
+    "daily": "Tantangan Harian",
+    "levels": "Pilih Level",
+    "how": "Latihan",
+    "mute": "Suara mati",
+    "unmute": "Suara nyala",
+    "nameLabel": "Nama pengemudi",
+    "nameHint": "Opsional \u00b7 tampil di layar menang",
+    "driver": "Pemudik",
+    "back": "Kembali",
+    "menu": "Menu",
+    "undo": "Batal",
+    "reset": "Ulang",
+    "hint": "Petunjuk",
+    "next": "Lanjut",
+    "again": "Main Lagi",
+    "moves": "Langkah",
+    "par": "Target",
+    "best": "Terbaik",
+    "stars": "Bintang",
+    "locked": "Terkunci",
+    "packTitle": "Rute Mudik",
+    "packSub": "15 rute, dari santai sampai bikin pusing",
+    "dailyTitle": "Harian",
+    "dailySub": "Macet baru setiap hari (WITA)",
+    "dailyLoading": "Menyiapkan macet hari ini\u2026",
+    "dailyDone": "Sudah tembus hari ini \u2713",
+    "winTitle": "SELAMAT MUDIK!",
+    "winSub": "{name} tembus dalam {moves} langkah",
+    "newBest": "REKOR BARU!",
+    "perfect": "Sesuai target! Sempurna",
+    "hinted": "Pakai petunjuk \u00b7 maks \u2b50\u2b50",
+    "parHint": "Target {par} langkah untuk \u2b50\u2b50\u2b50",
+    "noMoveBack": "Belum ada langkah",
+    "hintSolving": "Mencari jalan\u2026",
+    "hintNone": "Mobil mudik sudah bisa jalan!",
+    "blocked": "Tin tin! Terhalang",
+    "polisi": "Pak Polisi tidak bisa digeser",
+    "tutLocked": "Ikuti petunjuk dulu ya",
+    "tutTitle": "Latihan Mudik",
+    "tutDone": "Lulus latihan! Siap mudik beneran",
+    "skip": "Lewati",
+    "exit": "KELUAR",
+    "exitSub": "Kampung",
+    "gate": "GERBANG TOL",
+    "toast3": "Mantap! \u2b50\u2b50\u2b50",
+    "demo": "DEMO",
+    "howTitle": "Cara Main",
+    "how1": "Seret kendaraan sepanjang arahnya: yang mendatar ke kiri-kanan, yang tegak ke atas-bawah.",
+    "how2": "Buka jalan untuk mobil mudik emas, lalu bawa keluar lewat pintu KELUAR di kanan.",
+    "how3": "Makin sedikit langkah, makin banyak bintang. Pak Polisi tidak bisa digeser.",
+    "footerNote": "Puzzle geser kendaraan bertema mudik Lebaran",
+    "levelN": "Level {n}",
+    "close": "Tutup"
+  }
+}
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mudik Macet &#xB7; Puzzle Geser Kendaraan Mudik Lebaran</title>
+<meta name="description" content="Mudik Macet: puzzle geser kendaraan bertema mudik Lebaran. Geser bus, angkot, dan motor untuk membuka jalan bagi mobil mudikmu. 15 rute, tantangan harian, bintang 1-3. Gratis, cocok untuk HP.">
+<meta name="theme-color" content="#ff9b54">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mudik Macet">
+<meta property="og:description" content="Geser bus, angkot, dan motor. Bawa mobil mudikmu keluar dari macet Lebaran!">
+<style>
+:root{--ink:#2b1a10;--cream:#fff7e8;--gold:#ffb627;--orange:#f07c1a;--red:#e8433f;--green:#1f9d55;--teal:#0f7b8a;--card:rgba(255,248,236,.94);--shadow:0 6px 0 rgba(77,38,10,.35),0 14px 30px rgba(40,18,4,.28);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#ffb27a;color:var(--ink);overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+body{overflow:hidden;touch-action:manipulation}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-user-select:none;user-select:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 16px;border:0;border-radius:16px;background:#fff;color:var(--ink);font-weight:800;font-size:16px;box-shadow:0 4px 0 #c98f5c,0 8px 16px rgba(60,25,5,.18);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #c98f5c,0 3px 8px rgba(60,25,5,.18)}
+.btn:focus-visible,.tool:focus-visible,.ic-btn:focus-visible,.lv:focus-visible,input:focus-visible{outline:3px solid #2a7fff;outline-offset:2px}
+.btn.big{width:100%;min-height:62px;font-size:20px;border-radius:20px}
+.btn.primary{background:linear-gradient(180deg,#ffd45a,#ff9f1c);color:#3b1d00;box-shadow:0 5px 0 #b75d00,0 10px 22px rgba(120,50,0,.35);text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.btn.primary:active{box-shadow:0 2px 0 #b75d00}
+.btn.daily{background:linear-gradient(180deg,#3fc57a,#1f9d55);color:#fff;box-shadow:0 5px 0 #0f6233,0 10px 22px rgba(10,70,30,.35);text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn.daily .lbl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.btn.daily small{font-size:12px;font-weight:600;opacity:.9}
+.btn .ic{font-size:24px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.row2 .btn{font-size:15px;padding:8px 10px}
+/* home */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) 16px max(10px,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;z-index:5}
+.home-card{width:min(400px,100%);display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 18px 18px;background:var(--card);border-radius:28px;box-shadow:var(--shadow);border:3px solid #fff;position:relative;margin:auto 0 8px}
+.home-card::before{content:"";position:absolute;left:18px;right:18px;top:-9px;height:16px;border-radius:8px;background:repeating-linear-gradient(90deg,#e8433f 0 22px,#fff 22px 44px);box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.logo{display:flex;flex-direction:column;align-items:center;line-height:.86;margin-top:6px;transform:rotate(-3deg)}
+.logo span{font-weight:1000;font-size:clamp(46px,14vw,64px);letter-spacing:1px;-webkit-text-stroke:2px #3b1d00;paint-order:stroke fill;text-shadow:0 5px 0 #3b1d00,0 9px 14px rgba(0,0,0,.25)}
+.logo .l1{color:#ffd23f}
+.logo .l2{color:#ff6b3d;margin-left:34px}
+.tagline{margin:4px 0 0;text-align:center;font-weight:700;color:#7a4320}
+.name-field{width:100%;display:flex;flex-direction:column;gap:4px;font-weight:800;font-size:13px;color:#7a4320}
+.name-field input{width:100%;min-height:48px;padding:10px 14px;border:3px solid #f0c48f;border-radius:14px;background:#fff;color:var(--ink);font:700 18px/1.2 inherit;font-family:inherit}
+.name-field input::placeholder{color:#b8aca0;opacity:1;font-weight:600}
+.name-field small{font-weight:600;color:#a07a5a}
+.stat-strip{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:13px;font-weight:700;color:#7a4320}
+.stat-strip span{background:#ffe9c7;border-radius:999px;padding:5px 10px}
+.site-footer{margin-top:8px;text-align:center;font-size:12px;color:#5b2d10;background:rgba(255,248,236,.75);border-radius:14px;padding:6px 12px}
+.site-footer p{margin:0 0 2px}
+.site-footer a{color:#7a2d00;font-weight:700}
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(40,18,4,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.dlg{width:min(380px,100%);max-height:calc(100% - 8px);overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 18px 18px;background:var(--card);border:3px solid #fff;border-radius:26px;box-shadow:var(--shadow);text-align:center;animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+.dlg.wide{width:min(560px,100%)}
+.dlg h2{margin:0;font-size:24px;font-weight:1000}
+.muted{margin:-6px 0 0;color:#8a5a36;font-weight:600;font-size:14px}
+.lv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;width:100%}
+.lv{position:relative;min-height:92px;border:0;border-radius:16px;padding:8px 6px;background:linear-gradient(180deg,#fff,#ffeccc);box-shadow:0 4px 0 #d39b62;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.lv b{font-size:22px;font-weight:1000}
+.lv .nm{font-size:11px;font-weight:700;color:#7a4320;line-height:1.1}
+.lv .st{font-size:13px;letter-spacing:1px}
+.lv.done{background:linear-gradient(180deg,#fff6d6,#ffd776)}
+.lv.lock{opacity:.55;filter:grayscale(.6)}
+.lv.lock b::after{content:" \1F512 ";font-size:14px}
+/* HUD */
+#hud{position:fixed;inset:0;z-index:6;pointer-events:none}
+#hud>*{pointer-events:auto}
+.hud-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top)) 10px 0}
+.ic-btn{flex:0 0 auto;width:52px;height:52px;border:0;border-radius:16px;background:#fff;font-size:26px;font-weight:900;box-shadow:0 4px 0 #c98f5c;display:grid;place-items:center;line-height:1}
+.ic-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #c98f5c}
+.plate{flex:1;min-width:0;padding:6px 12px;border-radius:14px;background:#1d5c3a;color:#fff;border:3px solid #fff;box-shadow:0 4px 0 rgba(0,0,0,.3);text-align:center}
+.plate-name{font-weight:900;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px}
+.plate-stats{font-size:13px;font-weight:600;display:flex;justify-content:center;gap:6px;align-items:center}
+.plate-stats b{font-size:18px;color:#ffd23f;font-variant-numeric:tabular-nums}
+.plate-stats .sep{opacity:.5}
+.star-pre{letter-spacing:-1px;font-size:13px}
+.hud-bot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:10px;padding:0 10px max(12px,env(safe-area-inset-bottom))}
+.tool{width:min(110px,30vw);height:62px;border:0;border-radius:18px;background:#fff;box-shadow:0 5px 0 #c98f5c,0 8px 16px rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:24px;line-height:1;font-weight:900}
+.tool small{font-size:12px;font-weight:800;margin-top:3px}
+.tool:active{transform:translateY(3px);box-shadow:0 2px 0 #c98f5c}
+.tool:disabled{opacity:.45}
+.tool.hint{background:linear-gradient(180deg,#fff4b8,#ffd23f)}
+.coach{position:absolute;left:10px;right:10px;margin:0 auto;top:calc(max(10px,env(safe-area-inset-top)) + 66px);max-width:420px;padding:12px 14px;border-radius:18px;background:#fff;border:3px solid #ffb627;box-shadow:0 6px 0 rgba(120,60,0,.3);display:flex;flex-direction:column;gap:2px;text-align:center;animation:pop .35s}
+.coach b{font-size:17px}
+.coach small{color:#8a5a36;font-weight:600}
+.coach .skip{position:absolute;right:-4px;top:-14px;border:0;border-radius:999px;background:#3b1d00;color:#fff;font-size:12px;font-weight:800;padding:6px 10px;min-height:30px}
+.toast{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) scale(.8);padding:10px 18px;border-radius:999px;background:rgba(43,26,16,.88);color:#fff;font-weight:800;pointer-events:none;opacity:0;transition:opacity .2s,transform .2s;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.demo-tag{position:absolute;right:12px;bottom:90px;background:#e8433f;color:#fff;font-weight:900;padding:4px 10px;border-radius:8px;letter-spacing:2px}
+/* win */
+.overlay.win{background:radial-gradient(circle at 50% 40%,rgba(255,210,90,.35),rgba(40,18,4,.55))}
+.win-title{font-size:clamp(30px,9vw,40px)!important;color:#ffd23f;-webkit-text-stroke:2px #3b1d00;paint-order:stroke fill;text-shadow:0 4px 0 #3b1d00;animation:wobble 1.6s ease-in-out infinite;letter-spacing:.5px}
+.win-stars{display:flex;gap:6px;font-size:46px;line-height:1;min-height:52px}
+.win-stars i{font-style:normal;filter:grayscale(1) opacity(.3);transform:scale(.4);transition:transform .35s cubic-bezier(.2,1.8,.4,1),filter .2s}
+.win-stars i.on{filter:none;transform:scale(1)}
+.win-sub{margin:0;font-weight:700;color:#7a4320}
+.win-badge{margin:0;padding:4px 12px;border-radius:999px;background:#e8433f;color:#fff;font-weight:900;font-size:14px;animation:pulse 1s infinite}
+.win-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.win-grid div{background:#ffe9c7;border-radius:14px;padding:6px 4px;display:flex;flex-direction:column}
+.win-grid small{font-weight:700;color:#8a5a36;font-size:12px}
+.win-grid b{font-size:22px;font-weight:1000}
+.ketupat-row{display:flex;gap:24px;margin-top:-6px}
+.ketupat-row i{width:22px;height:22px;transform:rotate(45deg);background:repeating-linear-gradient(45deg,#2f9e44 0 5px,#c8e06a 5px 10px);border:2px solid #1d6b2c;border-radius:3px;animation:swing 2s ease-in-out infinite;transform-origin:50% -10px}
+.ketupat-row i:nth-child(2){animation-delay:-.6s}.ketupat-row i:nth-child(3){animation-delay:-1.2s}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+@keyframes wobble{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.05)}}
+@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes swing{0%,100%{transform:rotate(35deg)}50%{transform:rotate(55deg)}}
+@media (min-width:960px){.screen{align-items:flex-start;padding-left:48px}.home-card{margin:auto 0 8px}.site-footer{width:400px}}
+.hud-top{max-width:720px;margin:0 auto}
+@media (max-height:640px){.home-card{gap:8px;padding:14px 14px 12px}.logo span{font-size:44px}.btn.big{min-height:54px;font-size:18px}.tool{height:54px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="tr" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<canvas id="cv" aria-label="Papan Mudik Macet"></canvas>
+
+<!-- home -->
+<main id="home" class="screen">
+  <div class="home-card">
+    <div class="logo" aria-hidden="true"><span class="l1">MUDIK</span><span class="l2">MACET</span></div>
+    <h1 class="sr-only" data-c="site.name"></h1>
+    <p class="tagline" data-c="site.tagline"></p>
+    <label class="name-field"><span data-t="nameLabel"></span>
+      <input id="nameIn" data-jd-account-name type="text" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="JadiDaring">
+      <small data-t="nameHint"></small>
+    </label>
+    <button type="button" class="btn big primary" id="playBtn"><span class="ic" aria-hidden="true">&#x1F697;</span><span id="playLbl" data-t="play"></span></button>
+    <button type="button" class="btn big daily" id="dailyBtn"><span class="ic" aria-hidden="true">&#x1F4C5;</span><span class="lbl"><span data-t="daily"></span><small id="dailySub"></small></span></button>
+    <div class="row2">
+      <button type="button" class="btn" id="levelsBtn"><span aria-hidden="true">&#x1F5FA;&#xFE0F;</span> <span data-t="levels"></span></button>
+      <button type="button" class="btn" id="howBtn"><span aria-hidden="true">&#x1F393;</span> <span data-t="how"></span></button>
+    </div>
+    <div class="stat-strip" id="statStrip"></div>
+  </div>
+  <footer class="site-footer">
+    <p><strong data-c="site.name"></strong> &#xB7; <span data-t="footerNote"></span></p>
+    <nav aria-label="Tautan"><a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a></nav>
+  </footer>
+</main>
+
+<!-- level picker -->
+<div class="overlay" id="levelsDlg" role="dialog" aria-modal="true" aria-labelledby="lvTitle" hidden>
+  <div class="dlg wide">
+    <h2 id="lvTitle" data-t="packTitle"></h2>
+    <p class="muted" data-t="packSub"></p>
+    <div class="lv-grid" id="lvGrid"></div>
+    <button type="button" class="btn" id="lvClose" data-t="close"></button>
+  </div>
+</div>
+
+<!-- play HUD -->
+<div id="hud" hidden>
+  <div class="hud-top">
+    <button type="button" class="ic-btn" id="backBtn" data-t-aria="menu">&#x2039;</button>
+    <div class="plate">
+      <div class="plate-name" id="lvName"></div>
+      <div class="plate-stats"><span><span data-t="moves"></span> <b id="mvNum">0</b></span><span class="sep">&#xB7;</span><span><span data-t="par"></span> <b id="parNum">0</b></span><span class="star-pre" id="starPre" aria-hidden="true"></span></div>
+    </div>
+    <button type="button" class="ic-btn" id="muteBtn" data-t-aria="mute">&#x1F50A;</button>
+  </div>
+  <div class="coach" id="coach" hidden><b id="coachTxt"></b><small id="coachSub"></small><button type="button" class="skip" id="skipTut" data-t="skip"></button></div>
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <span class="demo-tag" id="demoTag" data-t="demo" hidden></span>
+  <div class="hud-bot">
+    <button type="button" class="tool" id="undoBtn"><span aria-hidden="true">&#x21B6;</span><small data-t="undo"></small></button>
+    <button type="button" class="tool" id="resetBtn"><span aria-hidden="true">&#x27F2;</span><small data-t="reset"></small></button>
+    <button type="button" class="tool hint" id="hintBtn"><span aria-hidden="true">&#x1F4A1;</span><small data-t="hint"></small></button>
+  </div>
+</div>
+
+<!-- win -->
+<div class="overlay win" id="winDlg" role="dialog" aria-modal="true" aria-labelledby="winTitle" hidden>
+  <div class="dlg">
+    <div class="ketupat-row" aria-hidden="true"><i></i><i></i><i></i></div>
+    <h2 id="winTitle" class="win-title" data-t="winTitle"></h2>
+    <div class="win-stars" id="winStars" aria-label="Bintang"></div>
+    <p class="win-sub" id="winSub"></p>
+    <p class="win-badge" id="winBadge" hidden></p>
+    <div class="win-grid"><div><small data-t="moves"></small><b id="wMoves"></b></div><div><small data-t="par"></small><b id="wPar"></b></div><div><small data-t="best"></small><b id="wBest"></b></div></div>
+    <button type="button" class="btn big primary" id="nextBtn" data-t="next"></button>
+    <div class="row2">
+      <button type="button" class="btn" id="againBtn" data-t="again"></button>
+      <button type="button" class="btn" id="menuBtn" data-t="menu"></button>
+    </div>
+  </div>
+</div>
+
+<script id="mm-sim">
+// Mudik Macet - pure puzzle rules (no DOM). Exposed as globalThis.MM.
+(function (G) {
+  'use strict';
+  var W = 6, H = 6, EXIT_ROW = 2;
+  // Level grid: 6 strings x 6 chars. 'A' = mobil mudik (horizontal, exit row),
+  // 'B'..'W' = angkot (length 2) or bus (length 3), orientation from shape,
+  // 'a'..'w' = motor (1 cell; horizontal unless listed in def.v), 'x' = polisi (fixed), '.' = empty.
+  function parse(def) {
+    var g = def.g, seen = {}, pieces = [];
+    if (!g || g.length !== H) throw Error('grid must have ' + H + ' rows');
+    for (var y = 0; y < H; y++) {
+      if (g[y].length !== W) throw Error('row ' + y + ' must have ' + W + ' cols');
+      for (var x = 0; x < W; x++) {
+        var c = g[y][x]; if (c === '.') continue;
+        if (c === 'x') { pieces.push({ id: 'x' + x + y, type: 'polisi', x: x, y: y, len: 1, dir: 'h', fixed: true }); continue; }
+        if (seen[c]) continue; seen[c] = 1;
+        var len = 1, dir = 'h';
+        if (c >= 'a' && c <= 'w') { dir = (def.v || '').indexOf(c) >= 0 ? 'v' : 'h'; }
+        else if (x + 1 < W && g[y][x + 1] === c) { dir = 'h'; while (x + len < W && g[y][x + len] === c) len++; }
+        else { dir = 'v'; while (y + len < H && g[y + len][x] === c) len++; }
+        if (/[A-W]/.test(c) && len < 2) throw Error('vehicle ' + c + ' too short');
+        var type = c === 'A' ? 'mudik' : (c >= 'a' && c <= 'w') ? 'motor' : len >= 3 ? 'bus' : 'angkot';
+        var pc = { id: c, type: type, x: x, y: y, len: len, dir: dir, fixed: false }; if (def.c && def.c[c] != null) pc.col = def.c[c]; pieces.push(pc);
+      }
+    }
+    var car = pieces.filter(function (p) { return p.type === 'mudik'; })[0];
+    if (!car || car.dir !== 'h' || car.y !== EXIT_ROW || car.len !== 2) throw Error('mobil mudik A must be 2 long, horizontal, on row ' + EXIT_ROW);
+    // put the car first so index 0 is always the car
+    pieces.sort(function (a, b) { return (b.type === 'mudik') - (a.type === 'mudik'); });
+    if (!validPlacement(pieces)) throw Error('pieces overlap or leave the board');
+    return pieces;
+  }
+  function cells(p) { var r = []; for (var i = 0; i < p.len; i++) r.push(p.dir === 'h' ? [p.x + i, p.y] : [p.x, p.y + i]); return r; }
+  function grid(pieces, skip) {
+    var o = new Array(W * H); for (var i = 0; i < o.length; i++) o[i] = -1;
+    pieces.forEach(function (p, k) { if (k === skip) return; cells(p).forEach(function (c) { o[c[1] * W + c[0]] = k; }); });
+    return o;
+  }
+  function validPlacement(pieces) {
+    var o = {}, ok = true;
+    pieces.forEach(function (p) { cells(p).forEach(function (c) { if (c[0] < 0 || c[1] < 0 || c[0] >= W || c[1] >= H) ok = false; var k = c[1] * W + c[0]; if (o[k]) ok = false; o[k] = 1; }); });
+    return ok;
+  }
+  // how far piece k can slide: {min: <=0, max: >=0} cells along its axis
+  function limits(pieces, k, occ) {
+    var p = pieces[k]; if (p.fixed) return { min: 0, max: 0 };
+    occ = occ || grid(pieces); var mn = 0, mx = 0, x, y;
+    if (p.dir === 'h') {
+      for (x = p.x - 1; x >= 0 && occ[p.y * W + x] < 0; x--) mn--;
+      for (x = p.x + p.len; x < W && occ[p.y * W + x] < 0; x++) mx++;
+    } else {
+      for (y = p.y - 1; y >= 0 && occ[y * W + p.x] < 0; y--) mn--;
+      for (y = p.y + p.len; y < H && occ[y * W + p.x] < 0; y++) mx++;
+    }
+    return { min: mn, max: mx };
+  }
+  function clone(pieces) { return pieces.map(function (p) { var o = { id: p.id, type: p.type, x: p.x, y: p.y, len: p.len, dir: p.dir, fixed: p.fixed }; if (p.col != null) o.col = p.col; return o; }); }
+  // returns new pieces array, or null when the slide is illegal (blocked, off-axis, fixed, zero)
+  function move(pieces, k, delta) {
+    if (!delta || !pieces[k] || pieces[k].fixed || delta !== Math.round(delta)) return null;
+    var l = limits(pieces, k); if (delta < l.min || delta > l.max) return null;
+    var n = clone(pieces); if (n[k].dir === 'h') n[k].x += delta; else n[k].y += delta; return n;
+  }
+  function isWin(pieces) { var c = pieces[0]; return c.type === 'mudik' && c.y === EXIT_ROW && c.x + c.len === W; }
+  function key(pieces) { var s = ''; for (var i = 0; i < pieces.length; i++) s += String.fromCharCode(48 + (pieces[i].dir === 'h' ? pieces[i].x : pieces[i].y)); return s; }
+  // BFS: fewest moves (a slide of any distance = 1 move) until the car reaches the exit.
+  // Compact state: one byte per piece = its position along its own axis.
+  function solve(pieces, maxStates) {
+    maxStates = maxStates || 200000;
+    var n = pieces.length, dir = [], len = [], fix = [], other = [], i;
+    var st0 = new Array(n);
+    for (i = 0; i < n; i++) { var p = pieces[i]; dir[i] = p.dir === 'h' ? 1 : 0; len[i] = p.len; fix[i] = p.fixed ? 1 : 0; other[i] = dir[i] ? p.y : p.x; st0[i] = dir[i] ? p.x : p.y; }
+    var carTarget = W - len[0];
+    if (st0[0] === carTarget) return { moves: 0, path: [] };
+    var occ = new Int8Array(W * H), k0 = String.fromCharCode.apply(null, st0.map(function (v) { return v + 48; }));
+    var prev = new Map(); prev.set(k0, null);
+    var q = [k0], qi = 0, codes = new Array(n);
+    while (qi < q.length) {
+      var ck = q[qi++];
+      for (i = 0; i < W * H; i++) occ[i] = 0;
+      for (i = 0; i < n; i++) {
+        codes[i] = ck.charCodeAt(i); var v = codes[i] - 48;
+        for (var j = 0; j < len[i]; j++) occ[dir[i] ? other[i] * W + v + j : (v + j) * W + other[i]] = 1;
+      }
+      for (var k = 0; k < n; k++) {
+        if (fix[k]) continue; var pos = codes[k] - 48, d, c;
+        for (var s2 = -1; s2 <= 1; s2 += 2) {
+          for (d = s2; ; d += s2) {
+            var np = pos + d, edge = s2 < 0 ? np : np + len[k] - 1;
+            if (edge < 0 || edge >= (dir[k] ? W : H)) break;
+            c = dir[k] ? other[k] * W + edge : edge * W + other[k];
+            if (occ[c]) break;
+            var nk = ck.substring(0, k) + String.fromCharCode(np + 48) + ck.substring(k + 1);
+            if (prev.has(nk)) continue; prev.set(nk, [ck, k, d]);
+            if (k === 0 && np === carTarget) { var path = [], z = nk; while (prev.get(z)) { var e = prev.get(z); path.unshift([e[1], e[2]]); z = e[0]; } return { moves: path.length, path: path, states: prev.size }; }
+            if (prev.size > maxStates) return null;
+            q.push(nk);
+          }
+        }
+      }
+    }
+    return { moves: -1, path: [], states: prev.size }; // unsolvable
+  }
+  // car can drive straight out once every cell to its right on the exit row is free
+  function exitClear(pieces) { var occ = grid(pieces, 0), c = pieces[0]; for (var x = c.x + c.len; x < W; x++) if (occ[c.y * W + x] >= 0) return false; return true; }
+  // stars: 3 = par or better, 2 = within slack, 1 = solved. Using a hint caps at 2.
+  function stars(moves, par, hinted, cfg) {
+    cfg = cfg || { slack: 0.5, minSlack: 2 };
+    var s = moves <= par ? 3 : moves <= par + Math.max(cfg.minSlack, Math.ceil(par * cfg.slack)) ? 2 : 1;
+    return hinted ? Math.min(2, s) : s;
+  }
+  // ---- calendar + seeded RNG (daily level) ----
+  function dateKey(ms, offsetMin) { // calendar date in a fixed zone, default Asia/Makassar (UTC+8)
+    var d = new Date((ms == null ? Date.now() : ms) + (offsetMin == null ? 480 : offsetMin) * 60000);
+    return d.getUTCFullYear() + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + d.getUTCDate()).slice(-2);
+  }
+  function hash(s) { var h = 2166136261 >>> 0; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+  function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function toGrid(pieces) {
+    var rows = []; for (var y = 0; y < H; y++) rows.push('......'.split(''));
+    var v = ''; pieces.forEach(function (p) { cells(p).forEach(function (c) { rows[c[1]][c[0]] = p.type === 'polisi' ? 'x' : p.id; }); if (p.type === 'motor' && p.dir === 'v') v += p.id; });
+    return { g: rows.map(function (r) { return r.join(''); }), v: v };
+  }
+  function randomPiece(R, ps, shape) {
+    var up = 'BCDEFGHIJKLMNOPQRSTUVW', lo = 'abcdefghijklmnopqrstuvw', used = {}, pol = 0;
+    ps.forEach(function (q) { used[q.id] = 1; if (q.type === 'polisi') pol++; });
+    for (var t = 0; t < 30; t++) {
+      var r = R(), p;
+      if (r < shape.pPolisi && pol < shape.maxPolisi) p = { type: 'polisi', len: 1, dir: 'h', fixed: true };
+      else if (r < shape.pPolisi + shape.pMotor) p = { type: 'motor', len: 1, dir: R() < 0.5 ? 'h' : 'v', fixed: false };
+      else { var bus = R() < shape.pBus; p = { type: bus ? 'bus' : 'angkot', len: bus ? 3 : 2, dir: R() < 0.6 ? 'v' : 'h', fixed: false }; }
+      p.x = Math.floor(R() * (W - (p.dir === 'h' ? p.len - 1 : 0))); p.y = Math.floor(R() * (H - (p.dir === 'v' ? p.len - 1 : 0)));
+      if (p.y === EXIT_ROW && (p.dir === 'h' || p.type === 'polisi')) continue; // would block the exit forever
+      if (!validPlacement(ps.concat([p]))) continue;
+      if (p.type === 'polisi') p.id = 'x' + p.x + p.y;
+      else { var pool = p.type === 'motor' ? lo : up; for (var i = 0; i < pool.length; i++) if (!used[pool[i]]) { p.id = pool[i]; break; } if (!p.id) return null; }
+      return p;
+    }
+    return null;
+  }
+  // deterministic generator: random start, then hill-climb towards longer optimal solutions (bounded steps).
+  function generate(seedStr, opt) {
+    opt = opt || {}; var lo = opt.minMoves || 8, hi = opt.maxMoves || 22, steps = opt.steps || 260, cap = opt.cap || 15000;
+    var R = rng(hash(seedStr)), shape = { pPolisi: 0.07, pMotor: 0.15, pBus: 0.3, maxPolisi: 1 };
+    var cur = null, curM = 0, best = null;
+    for (var t = 0; t < steps; t++) {
+      var ps;
+      if (!cur) { ps = [{ id: 'A', type: 'mudik', x: Math.floor(R() * 2), y: EXIT_ROW, len: 2, dir: 'h', fixed: false }]; for (var i = 0; i < 9; i++) { var np = randomPiece(R, ps, shape); if (np) ps.push(np); } }
+      else {
+        ps = clone(cur); var r = R(), j = 1 + Math.floor(R() * (ps.length - 1));
+        if (r < 0.45 || ps.length < 6) { var a = randomPiece(R, ps, shape); if (a) ps.push(a); }
+        else if (r < 0.7 && ps.length > 6) ps.splice(j, 1);
+        else { var rm = ps.splice(j, 1)[0], b = randomPiece(R, ps, shape); if (b) ps.push(b); else ps.splice(j, 0, rm); }
+        if (ps.length > 14) continue;
+      }
+      if (exitClear(ps)) continue;
+      var s = solve(ps, cap); if (!s || s.moves < 1 || s.moves > hi) continue;
+      if (!cur || s.moves >= curM) { cur = ps; curM = s.moves; }
+      if (curM >= lo && (!best || curM > best.par)) best = { pieces: clone(cur), par: curM };
+      if (best && best.par >= hi) break;
+    }
+    if (!best && cur) best = { pieces: cur, par: curM };
+    if (!best) { var f = parse({ g: ['..B...', '..B..C', 'AAB..C', '.....C', '......', '......'] }); best = { pieces: f, par: solve(f).moves }; }
+    best.pieces.forEach(function (p) { if (p.type === 'polisi') p.id = 'x' + p.x + p.y; });
+    var tg = toGrid(best.pieces); return { g: tg.g, v: tg.v, par: best.par, seed: seedStr };
+  }
+  function daily(dk) { return generate('mudikmacet|' + dk, { minMoves: 10, maxMoves: 22, steps: 220 }); }
+  // ---- records ----
+  function mergeBest(rec, id, moves, st) {
+    rec = rec || {}; var o = rec[id], isNew = !o || moves < o.moves;
+    var n = { moves: o ? Math.min(o.moves, moves) : moves, stars: Math.max(o ? o.stars : 0, st), plays: (o ? o.plays : 0) + 1 };
+    var r = {}; for (var k in rec) r[k] = rec[k]; r[id] = n; return { rec: r, isNew: isNew };
+  }
+  function tutDone(store) { try { return store.getItem('mudikmacet.tut') === '1'; } catch (e) { return false; } }
+  function setTut(store, v) { try { if (v) store.setItem('mudikmacet.tut', '1'); else store.removeItem('mudikmacet.tut'); } catch (e) {} }
+  G.MM = { W: W, H: H, EXIT_ROW: EXIT_ROW, parse: parse, cells: cells, grid: grid, limits: limits, move: move, isWin: isWin, solve: solve, exitClear: exitClear,
+    stars: stars, dateKey: dateKey, hash: hash, rng: rng, generate: generate, daily: daily, toGrid: toGrid, clone: clone, validPlacement: validPlacement,
+    mergeBest: mergeBest, tutDone: tutDone, setTut: setTut };
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script id="mm-render">
+// Mudik Macet - canvas drawing: sunset kampung scenery, asphalt toll plaza board, top-down vehicles, particles.
+(function (G) {
+  'use strict';
+  var cv, cx, W = 0, H = 0, DPR = 1, scene = null, L = { bx: 0, by: 0, cs: 60 }, parts = [], conf = [], CFG = null, reduce = false;
+  var TAU = Math.PI * 2, TXF = { flip: false, vert: false };
+  function rr(c, x, y, w, h, r) { r = Math.min(r, w / 2, h / 2); c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function shade(hex, f) { // f -1..1 darken/lighten
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, t = f < 0 ? 0 : 255, p = Math.abs(f);
+    r = Math.round((t - r) * p + r); g = Math.round((t - g) * p + g); b = Math.round((t - b) * p + b);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+  function hsh(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+  function init(canvas, cfg) { cv = canvas; cx = cv.getContext('2d'); CFG = cfg; try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {} }
+  function resize(mode, extraTop) {
+    DPR = Math.min(2, G.devicePixelRatio || 1); W = G.innerWidth; H = G.innerHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    layout(mode, extraTop); buildScene();
+  }
+  function layout(mode, extraTop) {
+    var cs, bx, by;
+    if (mode === 'home' && W >= 960) {
+      cs = Math.min((W - 520) / 7.4, (H - 140) / 7.2, 90); bx = 500 + (W - 500 - 6 * cs) / 2 - cs * 0.35; by = (H - 6 * cs) / 2 + cs * 0.35;
+    } else {
+      var top = 78 + (extraTop || 0), bot = 92, avail = H - top - bot;
+      cs = Math.floor(Math.min((W - 20) / 6.85, (avail - 10) / 6.9, 96)); bx = Math.round((W - 6 * cs) / 2 - cs * 0.22); by = Math.round(top + (avail - 6 * cs) / 2 + cs * 0.28);
+    }
+    L = { bx: bx, by: by, cs: cs, mode: mode };
+  }
+  // ---------- static scenery ----------
+  function buildScene() {
+    scene = document.createElement('canvas'); scene.width = cv.width; scene.height = cv.height;
+    var c = scene.getContext('2d'); c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var cs = L.cs, bx = L.bx, by = L.by, bw = 6 * cs, hor = Math.max(60, H * 0.2, by - cs * 1.25);
+    // sky
+    var g = c.createLinearGradient(0, 0, 0, hor + 10); g.addColorStop(0, '#6fb7e8'); g.addColorStop(0.45, '#ffc48a'); g.addColorStop(1, '#ff8f62');
+    c.fillStyle = g; c.fillRect(0, 0, W, hor + 10);
+    // sun
+    var sx = W * 0.22, sy = hor - 8, sg = c.createRadialGradient(sx, sy, 4, sx, sy, 120); sg.addColorStop(0, 'rgba(255,245,200,1)'); sg.addColorStop(0.25, 'rgba(255,220,140,.9)'); sg.addColorStop(1, 'rgba(255,170,100,0)');
+    c.fillStyle = sg; c.fillRect(sx - 130, sy - 130, 260, 260); c.fillStyle = '#fff1c4'; c.beginPath(); c.arc(sx, sy, 26, 0, TAU); c.fill();
+    // clouds
+    c.fillStyle = 'rgba(255,240,225,.8)'; [[0.12, 0.25, 1], [0.6, 0.15, 1.3], [0.85, 0.35, 0.9]].forEach(function (k) { var x = W * k[0], y = hor * k[1], s = 18 * k[2]; c.beginPath(); c.arc(x, y, s, 0, TAU); c.arc(x + s, y - s * 0.4, s * 1.2, 0, TAU); c.arc(x + s * 2.2, y, s * 0.9, 0, TAU); c.rect(x, y - 2, s * 2.2, s * 0.9); c.fill(); });
+    // hills
+    function hill(col, base, amp, f, ph) { c.fillStyle = col; c.beginPath(); c.moveTo(0, hor + 12); for (var x = 0; x <= W + 10; x += 10) c.lineTo(x, base - amp * (0.6 + 0.4 * Math.sin(x * f + ph)) * (0.7 + 0.3 * Math.sin(x * f * 2.7 + ph * 2))); c.lineTo(W, hor + 12); c.closePath(); c.fill(); }
+    hill('#c9837a', hor - 18, 46, 0.006, 1); hill('#a8696a', hor - 6, 30, 0.011, 4);
+    // kampung silhouette: houses, mosque, palms
+    c.fillStyle = '#6f3f4a';
+    for (var x = -20; x < W + 40; x += 46) { var hh = 14 + (hsh('h' + x) % 10); c.fillRect(x, hor - hh, 30, hh + 4); c.beginPath(); c.moveTo(x - 4, hor - hh); c.lineTo(x + 15, hor - hh - 12); c.lineTo(x + 34, hor - hh); c.fill(); }
+    var mx = W * 0.72; c.beginPath(); c.arc(mx, hor - 30, 20, Math.PI, 0); c.fill(); c.fillRect(mx - 22, hor - 31, 44, 32); c.fillRect(mx + 30, hor - 70, 7, 72); c.beginPath(); c.moveTo(mx + 28, hor - 70); c.lineTo(mx + 33.5, hor - 84); c.lineTo(mx + 39, hor - 70); c.fill();
+    c.beginPath(); c.moveTo(mx, hor - 58); c.lineTo(mx, hor - 50); c.lineWidth = 2; c.strokeStyle = '#6f3f4a'; c.stroke(); c.beginPath(); c.arc(mx + 2, hor - 60, 4, 0.6, 5.6); c.stroke();
+    [W * 0.08, W * 0.44, W * 0.93].forEach(function (px, i) { var ph = 34 + i * 6; c.strokeStyle = '#5b3140'; c.lineWidth = 4; c.beginPath(); c.moveTo(px, hor + 2); c.quadraticCurveTo(px + 6, hor - ph / 2, px + 2, hor - ph); c.stroke(); c.fillStyle = '#5b3140'; for (var a = 0; a < 6; a++) { var an = -Math.PI / 2 + (a - 2.5) * 0.55; c.beginPath(); c.ellipse(px + 2 + Math.cos(an) * 12, hor - ph + Math.sin(an) * 7 + 4, 14, 4, an, 0, TAU); c.fill(); } });
+    // ground: sawah
+    var gg = c.createLinearGradient(0, hor, 0, H); gg.addColorStop(0, '#9ccf4f'); gg.addColorStop(1, '#4f9a3a'); c.fillStyle = gg; c.fillRect(0, hor, W, H - hor);
+    c.strokeStyle = 'rgba(40,90,20,.25)'; c.lineWidth = 1.5; for (var yy = hor + 8, k2 = 1; yy < H; yy += 6 + k2 * 2.2, k2++) { c.beginPath(); c.moveTo(0, yy); c.lineTo(W, yy); c.stroke(); }
+    // plaza apron (wider asphalt under board) + exit road to the right edge
+    var ap = cs * 0.55, ey = by + 2 * cs;
+    c.fillStyle = '#d8c7a6'; rr(c, bx - ap - 6, by - ap - 6, bw + 2 * ap + 12, bw + 2 * ap + 12, cs * 0.5); c.fill(); // concrete shoulder
+    asphalt(c, bx - ap, by - ap, bw + 2 * ap, bw + 2 * ap, cs * 0.42);
+    asphalt(c, bx + bw, ey - cs * 0.08, W - bx - bw + 4, cs * 1.16, 0);
+    c.fillStyle = 'rgba(255,255,255,.85)'; for (var ex = bx + bw + cs * 0.7; ex < W; ex += cs * 0.9) { c.fillRect(ex, ey - cs * 0.06, cs * 0.45, cs * 0.05); c.fillRect(ex, ey + cs * 1.01, cs * 0.45, cs * 0.05); }
+    // chevrons on the exit lane
+    c.fillStyle = '#ffd23f'; for (var cxp = bx + bw + cs * 0.45; cxp < Math.min(W - 10, bx + bw + cs * 2.6); cxp += cs * 0.62) { c.beginPath(); c.moveTo(cxp, ey + cs * 0.3); c.lineTo(cxp + cs * 0.22, ey + cs * 0.5); c.lineTo(cxp, ey + cs * 0.7); c.lineTo(cxp + cs * 0.1, ey + cs * 0.5); c.closePath(); c.fill(); }
+    // board surface: tiles + lane paint
+    asphalt(c, bx, by, bw, bw, cs * 0.12, true);
+    c.strokeStyle = 'rgba(255,255,255,.09)'; c.lineWidth = 1; for (var i = 1; i < 6; i++) { c.beginPath(); c.moveTo(bx + i * cs, by + 4); c.lineTo(bx + i * cs, by + bw - 4); c.moveTo(bx + 4, by + i * cs); c.lineTo(bx + bw - 4, by + i * cs); c.stroke(); }
+    c.setLineDash([cs * 0.28, cs * 0.24]); c.strokeStyle = 'rgba(255,255,255,.32)'; c.lineWidth = Math.max(2, cs * 0.04);
+    [1, 3, 4].forEach(function (r) { c.beginPath(); c.moveTo(bx + cs * 0.2, by + r * cs); c.lineTo(bx + bw - cs * 0.2, by + r * cs); c.stroke(); });
+    c.setLineDash([]); c.strokeStyle = 'rgba(255,210,63,.75)'; c.lineWidth = Math.max(2, cs * 0.05);
+    c.beginPath(); c.moveTo(bx + cs * 0.08, ey + cs * 0.06); c.lineTo(bx + bw, ey + cs * 0.06); c.moveTo(bx + cs * 0.08, ey + cs * 0.94); c.lineTo(bx + bw, ey + cs * 0.94); c.stroke();
+    // kerbs (red / white) around the board, gap on the exit row
+    kerb(c, bx - cs * 0.2, by - cs * 0.2, bw + cs * 0.4, cs * 0.2, true); kerb(c, bx - cs * 0.2, by + bw, bw + cs * 0.4, cs * 0.2, true);
+    kerb(c, bx - cs * 0.2, by, cs * 0.2, bw, false);
+    kerb(c, bx + bw, by, cs * 0.2, 2 * cs, false); kerb(c, bx + bw, ey + cs, cs * 0.2, 3 * cs, false);
+    // traffic cones at corners
+    [[bx - cs * 0.45, by + bw + cs * 0.3], [bx - cs * 0.45, by - cs * 0.42], [bx + bw + cs * 0.42, by + bw + cs * 0.3]].forEach(function (p) { cone(c, p[0], p[1], cs * 0.26); });
+    // exit gantry sign
+    var sgx = bx + bw + cs * 0.12, sgy = ey - cs * 1.05, sw = Math.min(cs * 1.9, W - sgx - 6); if (sw > cs * 0.9) {
+      c.fillStyle = '#7d8790'; c.fillRect(sgx + sw * 0.15, sgy + cs * 0.5, 4, cs * 0.5); c.fillRect(sgx + sw * 0.8, sgy + cs * 0.5, 4, cs * 0.5);
+      c.fillStyle = '#0c7a43'; rr(c, sgx, sgy, sw, cs * 0.62, 6); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 2; rr(c, sgx + 3, sgy + 3, sw - 6, cs * 0.62 - 6, 4); c.stroke();
+      c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '900 ' + Math.round(cs * 0.22) + 'px system-ui,sans-serif'; c.fillText(T('exit') + ' \u2192', sgx + sw / 2, sgy + cs * 0.22);
+      c.font = '700 ' + Math.round(cs * 0.16) + 'px system-ui,sans-serif'; c.fillText(T('exitSub'), sgx + sw / 2, sgy + cs * 0.45);
+    }
+    // toll banner over the top kerb
+    var tw = Math.min(bw * 0.7, cs * 3.6), tx = bx + (bw - tw) / 2, ty = by - cs * 0.62;
+    c.fillStyle = '#1d5c3a'; rr(c, tx, ty, tw, cs * 0.36, 8); c.fill(); c.fillStyle = '#ffd23f'; c.fillRect(tx + 6, ty + cs * 0.3, tw - 12, 3);
+    c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '900 ' + Math.round(cs * 0.19) + 'px system-ui,sans-serif'; c.fillText(T('gate'), tx + tw / 2, ty + cs * 0.17);
+  }
+  function T(k) { return (CFG && CFG.text[k]) || k; }
+  function asphalt(c, x, y, w, h, r, fine) {
+    c.save(); rr(c, x, y, w, h, r); c.clip();
+    var g = c.createLinearGradient(x, y, x + w * 0.3, y + h); g.addColorStop(0, fine ? '#55504c' : '#4a4643'); g.addColorStop(1, fine ? '#3e3a37' : '#36322f'); c.fillStyle = g; c.fillRect(x, y, w, h);
+    var n = Math.min(2600, (w * h) / 60), s = hsh('a' + Math.round(x) + Math.round(y));
+    for (var i = 0; i < n; i++) { s = (s * 1103515245 + 12345) >>> 0; var px = x + (s % 10000) / 10000 * w; s = (s * 1103515245 + 12345) >>> 0; var py = y + (s % 10000) / 10000 * h; c.fillStyle = (s & 1) ? 'rgba(255,240,220,.07)' : 'rgba(0,0,0,.12)'; c.fillRect(px, py, 1.6, 1.6); }
+    if (fine) { c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x + w * 0.7, y + h * 0.1); c.lineTo(x + w * 0.74, y + h * 0.22); c.lineTo(x + w * 0.71, y + h * 0.3); c.moveTo(x + w * 0.15, y + h * 0.8); c.lineTo(x + w * 0.22, y + h * 0.86); c.stroke(); }
+    var v = c.createRadialGradient(x + w / 2, y + h / 2, w * 0.3, x + w / 2, y + h / 2, w * 0.75); v.addColorStop(0, 'rgba(255,190,120,.06)'); v.addColorStop(1, 'rgba(0,0,0,.22)'); c.fillStyle = v; c.fillRect(x, y, w, h);
+    c.restore();
+  }
+  function kerb(c, x, y, w, h, horiz) {
+    var seg = Math.max(10, L.cs * 0.36), len = horiz ? w : h; c.fillStyle = '#f4efe6'; c.fillRect(x, y, w, h);
+    c.fillStyle = '#e8433f'; for (var i = 0; i < len; i += seg * 2) { if (horiz) c.fillRect(x + i, y, Math.min(seg, len - i), h); else c.fillRect(x, y + i, w, Math.min(seg, len - i)); }
+    c.fillStyle = 'rgba(0,0,0,.18)'; if (horiz) c.fillRect(x, y + h - 2, w, 2); else c.fillRect(x + w - 2, y, 2, h);
+  }
+  function cone(c, x, y, s) {
+    c.fillStyle = 'rgba(0,0,0,.25)'; c.beginPath(); c.ellipse(x + 2, y + s * 0.95, s * 0.6, s * 0.2, 0, 0, TAU); c.fill();
+    c.fillStyle = '#ff7a1a'; c.beginPath(); c.moveTo(x - s * 0.45, y + s * 0.9); c.lineTo(x, y - s * 0.8); c.lineTo(x + s * 0.45, y + s * 0.9); c.closePath(); c.fill();
+    c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x - s * 0.27, y + s * 0.25); c.lineTo(x + s * 0.27, y + s * 0.25); c.lineTo(x + s * 0.18, y); c.lineTo(x - s * 0.18, y); c.closePath(); c.fill();
+    c.fillStyle = '#c4520a'; c.fillRect(x - s * 0.55, y + s * 0.85, s * 1.1, s * 0.14);
+  }
+  // ---------- vehicles (local frame: length along +x, width 1 cell, front at +x) ----------
+  function glass(c, x, y, w, h, r) { var g = c.createLinearGradient(x, y, x + w, y + h); g.addColorStop(0, '#2b4a6b'); g.addColorStop(0.5, '#4f7fa8'); g.addColorStop(1, '#203a55'); c.fillStyle = g; rr(c, x, y, w, h, r); c.fill(); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(x + w * 0.2, y + h * 0.15, w * 0.12, h * 0.7); }
+  function body(c, x, y, w, h, r, col) {
+    var g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, shade(col, 0.35)); g.addColorStop(0.45, col); g.addColorStop(1, shade(col, -0.3));
+    c.fillStyle = g; rr(c, x, y, w, h, r); c.fill(); c.strokeStyle = shade(col, -0.5); c.lineWidth = 1.5 / 60 * L.cs / L.cs; c.lineWidth = 0.02; c.stroke();
+  }
+  function wheels(c, xs, y0, y1) { c.fillStyle = '#1c1a19'; xs.forEach(function (x) { rr(c, x, y0 - 0.04, 0.24, 0.1, 0.03); c.fill(); rr(c, x, y1 - 0.06, 0.24, 0.1, 0.03); c.fill(); }); }
+  function lights(c, Lx, y0, y1, on) { c.fillStyle = on ? '#fff6b0' : '#ffe9a0'; c.beginPath(); c.ellipse(Lx - 0.05, y0 + 0.1, 0.035, 0.07, 0, 0, TAU); c.ellipse(Lx - 0.05, y1 - 0.1, 0.035, 0.07, 0, 0, TAU); c.fill(); }
+  function tails(c, x0, y0, y1) { c.fillStyle = '#e02a2a'; c.fillRect(x0 + 0.01, y0 + 0.06, 0.04, 0.1); c.fillRect(x0 + 0.01, y1 - 0.16, 0.04, 0.1); }
+  function drawMudik(c, len, t) {
+    var x0 = 0.08, x1 = len - 0.08, y0 = 0.14, y1 = 0.86;
+    wheels(c, [0.3, len - 0.55], y0, y1);
+    body(c, x0, y0, x1 - x0, y1 - y0, 0.2, '#ffad1f');
+    c.fillStyle = 'rgba(255,255,255,.25)'; rr(c, x0 + 0.1, y0 + 0.05, x1 - x0 - 0.2, 0.06, 0.03); c.fill();
+    c.fillStyle = '#e0621a'; c.fillRect(x0 + 0.05, 0.47, x1 - x0 - 0.1, 0.06); // racing stripe
+    glass(c, x1 - 0.62, y0 + 0.08, 0.2, y1 - y0 - 0.16, 0.06); glass(c, x0 + 0.18, y0 + 0.1, 0.12, y1 - y0 - 0.2, 0.05);
+    c.fillStyle = shade('#ffad1f', 0.18); rr(c, x0 + 0.32, y0 + 0.06, x1 - x0 - 0.94, y1 - y0 - 0.12, 0.08); c.fill();
+    // luggage on the roof rack: kardus + koper, roped
+    var rx = x0 + 0.36, rw = x1 - x0 - 1.02;
+    c.fillStyle = '#c8955a'; rr(c, rx, 0.24, rw * 0.55, 0.3, 0.03); c.fill(); c.fillStyle = '#e6c08a'; c.fillRect(rx + rw * 0.25, 0.24, 0.04, 0.3);
+    c.fillStyle = '#3a6fd8'; rr(c, rx + rw * 0.05, 0.56, rw * 0.7, 0.2, 0.04); c.fill(); c.fillStyle = '#89aef5'; c.fillRect(rx + rw * 0.1, 0.6, rw * 0.6, 0.03);
+    c.fillStyle = '#e8433f'; rr(c, rx + rw * 0.62, 0.26, rw * 0.36, 0.24, 0.04); c.fill();
+    c.strokeStyle = '#6b3e1a'; c.lineWidth = 0.025; c.beginPath(); c.moveTo(rx - 0.02, 0.2); c.lineTo(rx + rw, 0.8); c.moveTo(rx + rw, 0.2); c.lineTo(rx - 0.02, 0.8); c.stroke();
+    lights(c, x1, y0, y1, true); tails(c, x0, y0, y1);
+    // mini merah-putih flag on the antenna
+    var wv = Math.sin(t * 8) * 0.03; c.strokeStyle = '#333'; c.lineWidth = 0.015; c.beginPath(); c.moveTo(x0 + 0.12, y0 + 0.05); c.lineTo(x0 + 0.02, y0 - 0.12); c.stroke();
+    c.fillStyle = '#e8433f'; c.fillRect(x0 - 0.15, y0 - 0.12 + wv, 0.17, 0.05); c.fillStyle = '#fff'; c.fillRect(x0 - 0.15, y0 - 0.07 + wv, 0.17, 0.05);
+    c.fillStyle = '#ffad1f'; c.beginPath(); c.ellipse(x1 - 0.66, y0 - 0.02, 0.05, 0.035, 0, 0, TAU); c.ellipse(x1 - 0.66, y1 + 0.02, 0.05, 0.035, 0, 0, TAU); c.fill();
+  }
+  function drawAngkot(c, len, col, id) {
+    var x0 = 0.08, x1 = len - 0.08, y0 = 0.12, y1 = 0.88;
+    wheels(c, [0.28, len - 0.55], y0, y1);
+    body(c, x0, y0, x1 - x0, y1 - y0, 0.1, col);
+    c.fillStyle = '#fff'; c.fillRect(x0 + 0.04, y0 + 0.02, x1 - x0 - 0.08, 0.05); c.fillRect(x0 + 0.04, y1 - 0.07, x1 - x0 - 0.08, 0.05);
+    glass(c, x1 - 0.36, y0 + 0.08, 0.14, y1 - y0 - 0.16, 0.04);
+    c.fillStyle = shade(col, 0.22); rr(c, x0 + 0.1, y0 + 0.1, x1 - x0 - 0.5, y1 - y0 - 0.2, 0.05); c.fill();
+    c.strokeStyle = 'rgba(40,40,40,.55)'; c.lineWidth = 0.025; c.beginPath(); c.moveTo(x0 + 0.16, y0 + 0.2); c.lineTo(x1 - 0.48, y0 + 0.2); c.moveTo(x0 + 0.16, y1 - 0.2); c.lineTo(x1 - 0.48, y1 - 0.2); c.stroke();
+    c.fillStyle = '#fff'; rr(c, x0 + 0.42, 0.37, 0.4, 0.26, 0.04); c.fill(); c.save(); c.scale(0.01, 0.01); c.fillStyle = '#222'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '900 20px system-ui,sans-serif';
+    c.translate((x0 + 0.62) * 100, 51); if (TXF.flip) c.scale(-1, 1); if (TXF.vert) c.rotate(TXF.flip ? Math.PI / 2 : -Math.PI / 2); c.fillText(('0' + (1 + hsh(id) % 19)).slice(-2), 0, 1); c.restore();
+    lights(c, x1, y0, y1, false); tails(c, x0, y0, y1);
+  }
+  function drawBus(c, len, col, acc) {
+    var x0 = 0.06, x1 = len - 0.06, y0 = 0.08, y1 = 0.92;
+    wheels(c, [0.3, 0.6, len - 0.6], y0 + 0.02, y1 - 0.02);
+    body(c, x0, y0, x1 - x0, y1 - y0, 0.12, col);
+    c.fillStyle = 'rgba(20,30,40,.55)'; for (var wx = x0 + 0.22; wx < x1 - 0.5; wx += 0.33) { c.fillRect(wx, y0 + 0.01, 0.26, 0.06); c.fillRect(wx, y1 - 0.07, 0.26, 0.06); }
+    c.fillStyle = acc; c.beginPath(); c.moveTo(x0 + 0.1, y1 - 0.12); c.bezierCurveTo(len * 0.35, y1 - 0.12, len * 0.5, y0 + 0.2, x1 - 0.4, y0 + 0.16); c.lineTo(x1 - 0.4, y0 + 0.28); c.bezierCurveTo(len * 0.5, y0 + 0.32, len * 0.38, y1 - 0.04, x0 + 0.1, y1 - 0.02); c.closePath(); c.globalAlpha = 0.9; c.fill(); c.globalAlpha = 1;
+    glass(c, x1 - 0.26, y0 + 0.08, 0.14, y1 - y0 - 0.16, 0.05);
+    c.fillStyle = '#d9dde2'; rr(c, x0 + 0.5, 0.3, 0.45, 0.4, 0.06); c.fill(); rr(c, x0 + 1.3, 0.3, 0.45, 0.4, 0.06); c.fill();
+    c.strokeStyle = '#9aa3ad'; c.lineWidth = 0.02; for (var k = 0; k < 4; k++) { c.beginPath(); c.moveTo(x0 + 0.56 + k * 0.1, 0.36); c.lineTo(x0 + 0.56 + k * 0.1, 0.64); c.moveTo(x0 + 1.36 + k * 0.1, 0.36); c.lineTo(x0 + 1.36 + k * 0.1, 0.64); c.stroke(); }
+    c.fillStyle = 'rgba(0,0,0,.25)'; rr(c, x0 + 2.05, 0.38, 0.22, 0.24, 0.03); c.fill();
+    lights(c, x1, y0, y1, false); tails(c, x0, y0, y1);
+  }
+  function drawMotor(c, col, id, t) {
+    var h = hsh(id);
+    c.fillStyle = '#1c1a19'; rr(c, 0.1, 0.45, 0.22, 0.1, 0.04); c.fill(); rr(c, 0.68, 0.45, 0.22, 0.1, 0.04); c.fill();
+    body(c, 0.24, 0.36, 0.5, 0.28, 0.12, col);
+    if (h & 1) { c.fillStyle = '#d8b77a'; rr(c, 0.04, 0.3, 0.26, 0.4, 0.06); c.fill(); c.strokeStyle = '#8a6a36'; c.lineWidth = 0.02; c.strokeRect(0.08, 0.36, 0.18, 0.28); }
+    c.strokeStyle = '#333'; c.lineWidth = 0.04; c.beginPath(); c.moveTo(0.7, 0.26); c.lineTo(0.7, 0.74); c.stroke();
+    c.fillStyle = ['#3a6fd8', '#21b36b', '#8e5bd6', '#f6c419'][h % 4]; c.beginPath(); c.ellipse(0.5, 0.5, 0.12, 0.2, 0, 0, TAU); c.fill();
+    c.fillStyle = (h & 2) ? '#fff' : '#e8433f'; c.beginPath(); c.arc(0.54, 0.5, 0.11, 0, TAU); c.fill(); c.fillStyle = '#223'; c.beginPath(); c.arc(0.58, 0.5, 0.075, -0.9, 0.9); c.fill();
+    c.fillStyle = '#ffe9a0'; c.beginPath(); c.arc(0.9, 0.5, 0.035, 0, TAU); c.fill();
+  }
+  function drawPolisi(c, t) {
+    cone(c, 0.16, 0.2, 0.12); cone(c, 0.84, 0.78, 0.12);
+    c.fillStyle = 'rgba(0,0,0,.25)'; c.beginPath(); c.ellipse(0.53, 0.55, 0.34, 0.3, 0, 0, TAU); c.fill();
+    c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(0.5, 0.5, 0.36, 0, TAU); c.fill(); c.save(); c.beginPath(); c.arc(0.5, 0.5, 0.36, 0, TAU); c.clip();
+    c.fillStyle = '#222'; for (var i = -4; i < 6; i++) { c.beginPath(); c.moveTo(i * 0.14, 0); c.lineTo(i * 0.14 + 0.07, 0); c.lineTo(i * 0.14 + 0.07 + 1, 1); c.lineTo(i * 0.14 + 1, 1); c.fill(); } c.restore();
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(0.5, 0.5, 0.27, 0, TAU); c.fill();
+    var wave = Math.sin(t * 5) * 0.35;
+    c.save(); c.translate(0.5, 0.5); c.rotate(wave); c.fillStyle = '#7a5532'; rr(c, 0, -0.04, 0.32, 0.08, 0.04); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.arc(0.34, 0, 0.05, 0, TAU); c.fill(); c.restore();
+    c.fillStyle = '#7a5532'; c.beginPath(); c.ellipse(0.5, 0.5, 0.15, 0.23, 0, 0, TAU); c.fill();
+    c.fillStyle = '#c6f432'; c.fillRect(0.4, 0.38, 0.2, 0.04); c.fillRect(0.4, 0.58, 0.2, 0.04);
+    c.fillStyle = '#f4f4f4'; c.beginPath(); c.arc(0.5, 0.5, 0.1, 0, TAU); c.fill(); c.fillStyle = '#1b1b1b'; c.beginPath(); c.arc(0.5, 0.5, 0.1, -0.7, 0.7); c.lineTo(0.5, 0.5); c.fill();
+    c.fillStyle = '#c9a227'; c.beginPath(); c.arc(0.48, 0.5, 0.03, 0, TAU); c.fill();
+  }
+  function color(p, i) {
+    var pal = CFG.palette, h = hsh(p.id + i);
+    if (p.col != null) { if (p.type === 'bus') return pal.bus[p.col % pal.bus.length]; if (p.type === 'angkot') return [pal.angkot[p.col % pal.angkot.length]]; }
+    if (p.type === 'angkot') return [pal.angkot[h % pal.angkot.length]];
+    if (p.type === 'bus') return pal.bus[h % pal.bus.length];
+    if (p.type === 'motor') return [pal.motor[h % pal.motor.length]];
+    return ['#ffad1f'];
+  }
+  function drawPiece(c, p, i, vx, vy, t, o) {
+    var cs = L.cs, x = L.bx + vx * cs, y = L.by + vy * cs, len = p.len, h = hsh(p.id), facing = p.type === 'mudik' ? 1 : (h & 4 ? 1 : -1);
+    var bob = reduce ? 0 : Math.sin(t * 3.1 + (h % 100)) * cs * 0.012, lift = o.lift || 0;
+    c.save();
+    if (p.dir === 'h') c.translate(x, y + bob - lift); else { c.translate(x + cs, y + bob * 0.5 - lift); c.rotate(Math.PI / 2); }
+    if (o.shake) c.translate(Math.sin(t * 60) * cs * 0.03, 0);
+    c.scale(cs, cs);
+    if (facing < 0 && p.type !== 'polisi') { c.translate(len, 0); c.scale(-1, 1); }
+    if (p.type !== 'polisi') { var sh = p.type === 'motor' ? [0.1, 0.36, 0.8, 0.34, 0.15] : [0.1, 0.18, len - 0.2, 0.7, 0.18]; c.fillStyle = 'rgba(10,5,0,' + (0.32 + lift / cs) + ')'; rr(c, sh[0] + 0.05 + lift / cs * 0.6 * facing, sh[1] + 0.07 + lift / cs, sh[2], sh[3], sh[4]); c.fill(); }
+    if (o.glow) { c.shadowColor = o.glow; c.shadowBlur = 18 * (G.devicePixelRatio || 1); }
+    var col = color(p, i); TXF = { flip: facing < 0, vert: p.dir === 'v' };
+    if (p.type === 'mudik') drawMudik(c, len, t); else if (p.type === 'angkot') drawAngkot(c, len, col[0], p.id); else if (p.type === 'bus') drawBus(c, len, col[0], col[1]); else if (p.type === 'motor') drawMotor(c, col[0], p.id, t); else drawPolisi(c, t);
+    c.restore();
+  }
+  // ---------- particles ----------
+  function puff(x, y, vx, vy, kind) { if (parts.length > 220) parts.shift(); parts.push({ x: x, y: y, vx: vx, vy: vy, life: 0, max: kind === 'dust' ? 0.5 : 0.9, r: kind === 'dust' ? 3 : 5, kind: kind }); }
+  function exhaust(p, dirSign) { // puffs behind the piece after a slide
+    var cs = L.cs, cx0, cy0, back = -dirSign;
+    if (p.dir === 'h') { cx0 = L.bx + (back < 0 ? p.x : p.x + p.len) * cs; cy0 = L.by + (p.y + 0.5) * cs; for (var i = 0; i < 6; i++) puff(cx0, cy0 + (Math.random() - 0.5) * cs * 0.5, back * (20 + Math.random() * 40), -10 - Math.random() * 20, i % 2 ? 'dust' : 'smoke'); }
+    else { cx0 = L.bx + (p.x + 0.5) * cs; cy0 = L.by + (back < 0 ? p.y : p.y + p.len) * cs; for (var j = 0; j < 6; j++) puff(cx0 + (Math.random() - 0.5) * cs * 0.5, cy0, (Math.random() - 0.5) * 30, back * (20 + Math.random() * 40), j % 2 ? 'dust' : 'smoke'); }
+  }
+  function clearFx() { parts.length = 0; conf.length = 0; }
+  function confetti(n) { var cols = ['#ffd23f', '#e8433f', '#21b36b', '#1e88e5', '#ff5fa2', '#fff']; for (var i = 0; i < (n || 140); i++) conf.push({ x: W / 2 + (Math.random() - 0.5) * W * 0.3, y: H * 0.35, vx: (Math.random() - 0.5) * 900, vy: -300 - Math.random() * 700, r: Math.random() * TAU, vr: (Math.random() - 0.5) * 12, c: cols[i % cols.length], s: 5 + Math.random() * 6, ket: i % 9 === 0, life: 0 }); }
+  function stepFx(dt) {
+    for (var i = parts.length - 1; i >= 0; i--) { var q = parts[i]; q.life += dt; q.x += q.vx * dt; q.y += q.vy * dt; q.vx *= 0.94; q.vy *= 0.94; if (q.life > q.max) parts.splice(i, 1); }
+    for (var j = conf.length - 1; j >= 0; j--) { var f = conf[j]; f.life += dt; f.vy += 900 * dt; f.vx *= 0.985; f.x += f.vx * dt; f.y += f.vy * dt; f.r += f.vr * dt; if (f.y > H + 40 || f.life > 5) conf.splice(j, 1); }
+  }
+  function drawFx(c) {
+    parts.forEach(function (q) { var k = q.life / q.max; c.fillStyle = q.kind === 'dust' ? 'rgba(196,160,110,' + (0.55 * (1 - k)) + ')' : 'rgba(235,235,235,' + (0.6 * (1 - k)) + ')'; c.beginPath(); c.arc(q.x, q.y, q.r * (1 + k * 2.5) * L.cs / 60, 0, TAU); c.fill(); });
+    conf.forEach(function (f) { c.save(); c.translate(f.x, f.y); c.rotate(f.r); if (f.ket) { c.fillStyle = '#2f9e44'; c.fillRect(-f.s, -f.s, f.s * 2, f.s * 2); c.fillStyle = '#c8e06a'; c.fillRect(-f.s * 0.4, -f.s, f.s * 0.8, f.s * 2); } else { c.fillStyle = f.c; c.fillRect(-f.s / 2, -f.s / 4, f.s, f.s / 2); } c.restore(); });
+  }
+  function bunting(c, t) { // ketupat string over the top kerb
+    var cs = L.cs, x0 = L.bx - cs * 0.15, x1 = L.bx + 6 * cs + cs * 0.15, y = L.by - cs * 0.22, n = 9;
+    c.strokeStyle = 'rgba(80,40,10,.7)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x0, y); c.quadraticCurveTo((x0 + x1) / 2, y + cs * 0.25, x1, y); c.stroke();
+    for (var i = 1; i < n; i++) { var u = i / n, px = x0 + (x1 - x0) * u, py = y + cs * 0.25 * 2 * u * (1 - u) * 1, sw = reduce ? 0 : Math.sin(t * 2 + i) * 0.25, s = cs * 0.1;
+      c.save(); c.translate(px, py); c.rotate(sw); c.fillStyle = i % 2 ? '#2f9e44' : '#ffd23f'; c.beginPath(); c.moveTo(0, 0); c.lineTo(s, s * 1.2); c.lineTo(0, s * 2.4); c.lineTo(-s, s * 1.2); c.closePath(); c.fill(); c.strokeStyle = i % 2 ? '#c8e06a' : '#e09b00'; c.lineWidth = 1; c.beginPath(); c.moveTo(-s * 0.5, s * 0.6); c.lineTo(s * 0.5, s * 1.8); c.moveTo(s * 0.5, s * 0.6); c.lineTo(-s * 0.5, s * 1.8); c.stroke(); c.restore(); }
+  }
+  // ---------- frame ----------
+  // st: {pieces, vis:[{x,y}], drag:{k,min,max}, hint:{k,d}, carOut, hand:{k,dir}, glowK, shakeK, dim}
+  function frame(st, t, dt) {
+    stepFx(dt); var c = cx; c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(scene, 0, 0); c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var cs = L.cs; bunting(c, t);
+    if (!st || !st.pieces) { drawFx(c); return; }
+    var ps = st.pieces;
+    if (st.drag) { var p = ps[st.drag.k], v = st.vis[st.drag.k]; c.fillStyle = 'rgba(255,230,140,.16)'; c.strokeStyle = 'rgba(255,230,140,.6)'; c.lineWidth = 2; c.setLineDash([6, 6]);
+      if (p.dir === 'h') rr(c, L.bx + (p.x + st.drag.min) * cs + 3, L.by + p.y * cs + 3, (p.len + st.drag.max - st.drag.min) * cs - 6, cs - 6, cs * 0.2); else rr(c, L.bx + p.x * cs + 3, L.by + (p.y + st.drag.min) * cs + 3, cs - 6, (p.len + st.drag.max - st.drag.min) * cs - 6, cs * 0.2);
+      c.fill(); c.stroke(); c.setLineDash([]); }
+    if (st.hint) { var hp = ps[st.hint.k], pulse = 0.5 + 0.5 * Math.sin(t * 6), gx = hp.dir === 'h' ? hp.x + st.hint.d : hp.x, gy = hp.dir === 'v' ? hp.y + st.hint.d : hp.y;
+      c.save(); c.globalAlpha = 0.35 + 0.2 * pulse; drawPiece(c, hp, st.hint.k, gx, gy, t, {}); c.restore();
+      c.strokeStyle = 'rgba(255,210,63,' + (0.6 + 0.4 * pulse) + ')'; c.lineWidth = 4; c.setLineDash([]); var w = hp.dir === 'h' ? hp.len : 1, h = hp.dir === 'v' ? hp.len : 1; rr(c, L.bx + gx * cs + 3, L.by + gy * cs + 3, w * cs - 6, h * cs - 6, cs * 0.2); c.stroke(); }
+    // draw order: polisi, others, lifted (dragged) piece last
+    var order = ps.map(function (_, i) { return i; }).sort(function (a, b) { return (st.drag && a === st.drag.k) - (st.drag && b === st.drag.k) || (ps[a].type !== 'polisi') - (ps[b].type !== 'polisi'); });
+    order.forEach(function (i) { var v = st.vis[i], ox = (i === 0 && st.carOut) ? st.carOut : 0;
+      drawPiece(c, ps[i], i, v.x + ox, v.y, t, { lift: st.drag && st.drag.k === i ? cs * 0.06 : 0, glow: (st.glowK === i) ? 'rgba(255,220,80,.95)' : (i === 0 ? 'rgba(255,180,40,.55)' : null), shake: st.shakeK === i }); });
+    if (st.hand) { var q = ps[st.hand.k], ph = (t * 0.8) % 1, e = ph < 0.7 ? ph / 0.7 : 1, a = ph < 0.85 ? 1 : (1 - (ph - 0.85) / 0.15), dist = st.hand.dist || 1;
+      var hx = L.bx + (q.x + (q.dir === 'h' ? q.len / 2 : 0.5)) * cs + (q.dir === 'h' ? st.hand.dir * e * dist * cs : 0), hy = L.by + (q.y + (q.dir === 'v' ? q.len / 2 : 0.5)) * cs + (q.dir === 'v' ? st.hand.dir * e * dist * cs : 0);
+      c.globalAlpha = a; c.fillStyle = 'rgba(255,255,255,.5)'; c.beginPath(); c.arc(hx, hy, cs * 0.22, 0, TAU); c.fill(); c.font = Math.round(cs * 0.55) + 'px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'top'; c.fillText('\ud83d\udc46', hx + cs * 0.06, hy - cs * 0.08); c.globalAlpha = 1; }
+    drawFx(c);
+  }
+  function hit(px, py) { var gx = (px - L.bx) / L.cs, gy = (py - L.by) / L.cs; return { x: gx, y: gy, inside: gx >= 0 && gy >= 0 && gx < 6 && gy < 6 }; }
+  G.MMR = { init: init, resize: resize, frame: frame, hit: hit, exhaust: exhaust, confetti: confetti, clearFx: clearFx, puff: puff, layout: function () { return L; }, size: function () { return { w: W, h: H }; } };
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script id="mm-app">
+// Mudik Macet - screens, input, Web Audio synth, records, tutorial, daily worker.
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); }, root = document.documentElement;
+  var CFG = JSON.parse($('website-config').textContent), M = window.MM, R = window.MMR, TX = CFG.text;
+  function t(k, v) { var s = TX[k] == null ? k : TX[k]; if (v) for (var n in v) s = s.split('{' + n + '}').join(v[n]); return s; }
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem('mudikmacet.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem('mudikmacet.' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  // ---------- texts into DOM ----------
+  document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+  document.querySelectorAll('[data-t-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-t-aria'))); });
+  document.querySelectorAll('[data-c]').forEach(function (el) { var k = el.getAttribute('data-c').split('.'), v = CFG; k.forEach(function (x) { v = v && v[x]; }); el.textContent = v || ''; });
+  // ---------- sound (synth only) ----------
+  var Snd = {
+    ctx: null, muted: store.get('mute', 0) === 1,
+    ensure: function () { if (!this.ctx) { var A = window.AudioContext || window.webkitAudioContext; if (A) try { this.ctx = new A(); } catch (e) {} } if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); },
+    tone: function (f, dur, type, vol, when, to) {
+      if (this.muted || !this.ctx) return; var c = this.ctx, t0 = c.currentTime + (when || 0), o = c.createOscillator(), g = c.createGain();
+      o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); if (to) o.frequency.exponentialRampToValueAtTime(to, t0 + dur);
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol || 0.2, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.02);
+    },
+    noise: function (dur, vol, freq, when) {
+      if (this.muted || !this.ctx) return; var c = this.ctx, t0 = c.currentTime + (when || 0), n = Math.floor(c.sampleRate * dur), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      var s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain(); s.buffer = b; f.type = 'bandpass'; f.frequency.value = freq || 1500; f.Q.value = 1.2; g.gain.value = vol || 0.3;
+      s.connect(f); f.connect(g); g.connect(c.destination); s.start(t0);
+    },
+    clack: function () { this.noise(0.06, 0.35, 2200); this.tone(180, 0.06, 'square', 0.06); },
+    slide: function () { this.noise(0.18, 0.12, 600); },
+    horn: function () { this.tone(392, 0.16, 'square', 0.07); this.tone(494, 0.16, 'square', 0.06); },
+    tintin: function () { var s = this; [0, 0.22].forEach(function (w) { s.tone(392, 0.15, 'square', 0.07, w); s.tone(494, 0.15, 'square', 0.06, w); }); },
+    vroom: function () { this.tone(70, 0.7, 'sawtooth', 0.12, 0, 260); this.noise(0.5, 0.15, 400); },
+    win: function () { var s = this; [523, 659, 784, 1047, 784, 1047].forEach(function (f, i) { s.tone(f, 0.22, 'triangle', 0.18, 0.12 * i); }); s.tintin(); },
+    star: function (i) { this.tone(880 * (1 + i * 0.26), 0.25, 'sine', 0.2); this.tone(1760 * (1 + i * 0.26), 0.12, 'sine', 0.05); },
+    blip: function () { this.tone(660, 0.06, 'triangle', 0.12); }
+  };
+  function syncMute() { $('muteBtn').textContent = Snd.muted ? '\ud83d\udd07' : '\ud83d\udd0a'; $('muteBtn').setAttribute('aria-label', t(Snd.muted ? 'unmute' : 'mute')); }
+  $('muteBtn').addEventListener('click', function () { Snd.muted = !Snd.muted; store.set('mute', Snd.muted ? 1 : 0); syncMute(); Snd.ensure(); Snd.blip(); });
+  syncMute();
+  // ---------- name (placeholder only, never prefilled with the brand) ----------
+  var nameIn = $('nameIn'), saved = store.get('name', '');
+  if (saved && typeof saved === 'string') nameIn.value = saved;
+  nameIn.addEventListener('input', function () { store.set('name', nameIn.value.trim().slice(0, 16)); });
+  function driver() { var v = nameIn.value.trim(); return v || t('driver'); }
+  // ---------- toast ----------
+  var toastT; function toast(msg) { var el = $('toast'); el.textContent = msg; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove('on'); }, 1300); }
+  // ---------- daily (generated in a worker, cached per WITA date) ----------
+  var DK = M.dateKey(Date.now(), 480), dailyLvl = null, dailyWait = false;
+  (function () {
+    var c = store.get('daily', null); if (c && c.dk === DK && c.lvl && c.lvl.g) { dailyLvl = c.lvl; return; }
+    var done = function (l) { dailyLvl = l; store.set('daily', { dk: DK, lvl: l }); updateHome(); if (dailyWait) { dailyWait = false; startDaily(); } };
+    var opt = CFG.game.daily;
+    try {
+      var src = $('mm-sim').textContent + '\nonmessage=function(e){postMessage(MM.generate("mudikmacet|"+e.data.dk,e.data.opt))};';
+      var w = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+      w.onmessage = function (e) { done(e.data); w.terminate(); }; w.onerror = function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); setTimeout(function () { done(M.generate('mudikmacet|' + DK, opt)); }, 30); };
+      w.postMessage({ dk: DK, opt: opt });
+    } catch (e) { setTimeout(function () { done(M.generate('mudikmacet|' + DK, opt)); }, 60); }
+  })();
+  // ---------- records ----------
+  function rec() { return store.get('best', {}); }
+  function unlocked(i) { return i === 0 || !!rec()[CFG.levels[i - 1].id]; }
+  function nextLevelIdx() { var r = rec(); for (var i = 0; i < CFG.levels.length; i++) if (!r[CFG.levels[i].id]) return i; return CFG.levels.length - 1; }
+  function fmtDate(dk) { var p = dk.split('-'), mon = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']; return +p[2] + ' ' + mon[+p[1] - 1] + ' ' + p[0]; }
+  function updateHome() {
+    var r = rec(), tut = M.tutDone(localStorage), n = nextLevelIdx();
+    $('playLbl').textContent = tut ? t('play') + ' \u00b7 ' + t('levelN', { n: n + 1 }) : t('play');
+    $('dailySub').textContent = dailyLvl ? (r['d:' + DK] ? t('dailyDone') : fmtDate(DK) + ' \u00b7 ' + t('parHint', { par: dailyLvl.par }).replace(' untuk \u2b50\u2b50\u2b50', '')) : t('dailyLoading');
+    var stars = 0, cleared = 0; CFG.levels.forEach(function (l) { if (r[l.id]) { cleared++; stars += r[l.id].stars; } });
+    $('statStrip').innerHTML = ''; [['\ud83c\udfc1', cleared + '/' + CFG.levels.length], ['\u2b50', stars + '/' + CFG.levels.length * 3]].forEach(function (x) { var s = document.createElement('span'); s.textContent = x[0] + ' ' + x[1]; $('statStrip').appendChild(s); });
+  }
+  // ---------- game state ----------
+  var Game = null, homePreview = M.parse(CFG.levels[4]);
+  function newGame(mode, def, meta) {
+    var ps = M.parse(def); R.clearFx();
+    Game = { mode: mode, def: def, id: meta.id, name: meta.name, par: def.par, start: M.clone(ps), pieces: ps, hist: [], hinted: false, over: false,
+      vis: ps.map(function (p) { return { x: p.x, y: p.y }; }), drag: null, hint: null, sel: 0, carOut: 0, step: 0, shakeK: -1, glowK: -1 };
+    return Game;
+  }
+  function enterPlay() {
+    $('home').hidden = true; $('hud').hidden = false; $('winDlg').hidden = true; $('levelsDlg').hidden = true; root.classList.add('playing', 'jr-hub-off');
+    var demo = Game.mode === 'demo'; $('demoTag').hidden = !demo; ['undoBtn', 'resetBtn', 'hintBtn'].forEach(function (id) { $(id).disabled = demo; });
+    $('coach').hidden = Game.mode !== 'tutorial'; $('hintBtn').hidden = Game.mode === 'tutorial';
+    $('lvName').textContent = Game.name; relayout(); hud(); coach();
+  }
+  function goHome() {
+    Game = null; $('hud').hidden = true; $('winDlg').hidden = true; $('home').hidden = false; root.classList.remove('playing', 'jr-hub-off');
+    if (/^#(demo|tutorial|daily)$/.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
+    updateHome(); relayout();
+  }
+  function startLevel(i) { var l = CFG.levels[i]; newGame('pack', l, { id: l.id, name: t('levelN', { n: i + 1 }) + ' \u00b7 ' + l.name, idx: i }); Game.idx = i; enterPlay(); toast(l.blurb); }
+  function startTutorial() { newGame('tutorial', CFG.tutorial, { id: 'tut', name: t('tutTitle') }); enterPlay(); }
+  function startDaily() {
+    if (!dailyLvl) { dailyWait = true; toast(t('dailyLoading')); return; }
+    newGame('daily', dailyLvl, { id: 'd:' + DK, name: t('dailyTitle') + ' \u00b7 ' + fmtDate(DK) }); enterPlay();
+  }
+  function startDemo() {
+    var i = CFG.levels.findIndex(function (l) { return l.id === CFG.game.demoLevel; }); if (i < 0) i = 0;
+    var l = CFG.levels[i]; newGame('demo', l, { id: l.id, name: t('levelN', { n: i + 1 }) + ' \u00b7 ' + l.name });
+    var sol = M.solve(Game.pieces).path; for (var k = 0; k < CFG.game.demoMoves && k < sol.length; k++) { Game.hist.push(Game.pieces); Game.pieces = M.move(Game.pieces, sol[k][0], sol[k][1]); }
+    Game.vis = Game.pieces.map(function (p) { return { x: p.x, y: p.y }; }); var nx = sol[CFG.game.demoMoves]; if (nx) Game.hint = { k: nx[0], d: nx[1] };
+    enterPlay();
+  }
+  function moves() { return Game.hist.length; }
+  function starStr(n) { return '\u2605\u2605\u2605'.slice(0, n) + '\u2606\u2606\u2606'.slice(0, 3 - n); }
+  function hud() {
+    if (!Game) return; $('mvNum').textContent = moves(); $('parNum').textContent = Game.par;
+    $('starPre').textContent = Game.mode === 'tutorial' ? '' : starStr(M.stars(Math.max(moves(), Game.par), Game.par, Game.hinted, CFG.game.stars));
+    $('undoBtn').disabled = Game.mode === 'demo' || !moves() || Game.over;
+  }
+  function tutStep() { return Game && Game.mode === 'tutorial' ? CFG.tutorial.steps[Game.step] : null; }
+  function pieceIdx(id) { for (var i = 0; i < Game.pieces.length; i++) if (Game.pieces[i].id === id) return i; return -1; }
+  function coach() {
+    var s = tutStep(); if (!s) { if (Game) Game.hand = null; return; }
+    $('coachTxt').textContent = s.text; $('coachSub').textContent = s.sub || '';
+    var k = pieceIdx(s.piece); Game.hand = { k: k, dir: s.dir, dist: s.piece === 'A' ? 2 : 1 }; Game.glowK = k;
+  }
+  function blocksExit(p) { var car = Game.pieces[0]; return M.cells(p).some(function (c) { return c[1] === M.EXIT_ROW && c[0] >= car.x + car.len; }); }
+  function tutCheck() {
+    var s = tutStep(); if (!s) return; var p = Game.pieces[pieceIdx(s.piece)];
+    if (s.piece === 'A' ? M.isWin(Game.pieces) : !blocksExit(p)) { Game.step++; Snd.star(Game.step - 1); coach(); }
+  }
+  // ---------- moves ----------
+  function commit(k, d) {
+    if (!Game || Game.over) return false; var n = M.move(Game.pieces, k, d); if (!n) return false;
+    Game.hist.push(Game.pieces); Game.pieces = n; Game.hint = null; Game.sel = k; Snd.clack(); Snd.slide(); R.exhaust(n[k], d > 0 ? 1 : -1);
+    if (Game.mode === 'tutorial') tutCheck();
+    hud(); if (M.isWin(n)) win(); return true;
+  }
+  function undo() { if (!Game || Game.over || !moves() || Game.mode === 'demo') return; Game.pieces = Game.hist.pop(); Game.hint = null; Snd.blip(); hud(); }
+  function reset() { if (!Game || Game.over || Game.mode === 'demo') return; Game.pieces = M.clone(Game.start); Game.hist = []; Game.hinted = false; Game.hint = null; Game.step = 0; coach(); Snd.blip(); hud(); }
+  function hint() {
+    if (!Game || Game.over || Game.mode !== 'pack' && Game.mode !== 'daily') return; Snd.ensure();
+    if (M.exitClear(Game.pieces)) { Game.hint = { k: 0, d: M.W - Game.pieces[0].len - Game.pieces[0].x }; toast(t('hintNone')); return; }
+    var s = M.solve(Game.pieces, 250000); if (!s || !s.path.length) { toast(t('hintSolving')); return; }
+    Game.hint = { k: s.path[0][0], d: s.path[0][1] }; Game.hinted = true; Snd.tone(990, 0.18, 'sine', 0.15); hud(); toast(t('hinted'));
+  }
+  function win() {
+    Game.over = true; Game.drag = null; Game.hand = null; Game.glowK = -1; var g = Game; Snd.vroom(); hud();
+    var t0 = performance.now(); (function drive() { if (Game !== g) return; var e = (performance.now() - t0) / 800; g.carOut = Math.min(4, e * e * 4); if (Math.random() < 0.7) R.exhaust({ dir: 'h', x: g.pieces[0].x + g.carOut, y: g.pieces[0].y, len: 2 }, 1); if (e < 1) requestAnimationFrame(drive); })();
+    setTimeout(function () { if (Game !== g) return; showWin(g); }, 850);
+  }
+  function showWin(g) {
+    var mv = g.hist.length, st = g.mode === 'tutorial' ? 3 : M.stars(mv, g.par, g.hinted, CFG.game.stars), best = mv, isNew = false;
+    if (g.mode === 'tutorial') M.setTut(localStorage, true);
+    else if (g.mode !== 'demo') { var m = M.mergeBest(rec(), g.id, mv, st); store.set('best', m.rec); best = m.rec[g.id].moves; isNew = m.isNew && (m.rec[g.id].plays > 1); }
+    R.confetti(160); Snd.win();
+    $('winTitle').textContent = t('winTitle');
+    $('winSub').textContent = g.mode === 'tutorial' ? t('tutDone') : t('winSub', { name: driver(), moves: mv });
+    var badge = isNew ? t('newBest') : (g.hinted ? t('hinted') : (mv <= g.par ? t('perfect') : '')); $('winBadge').textContent = badge; $('winBadge').hidden = !badge;
+    $('wMoves').textContent = mv; $('wPar').textContent = g.par; $('wBest').textContent = best;
+    var ws = $('winStars'); ws.innerHTML = ''; for (var i = 0; i < 3; i++) { var s = document.createElement('i'); s.textContent = '\u2b50'; ws.appendChild(s); }
+    ws.setAttribute('aria-label', st + ' / 3');
+    for (var j = 0; j < st; j++) (function (j) { setTimeout(function () { ws.children[j].classList.add('on'); Snd.star(j); }, 300 + j * 280); })(j);
+    var hasNext = g.mode === 'tutorial' || (g.mode === 'pack' && g.idx < CFG.levels.length - 1);
+    $('nextBtn').textContent = hasNext ? t('next') + ' \u00b7 ' + t('levelN', { n: g.mode === 'tutorial' ? 1 : g.idx + 2 }) : t('menu');
+    $('winDlg').hidden = false; $('nextBtn').focus();
+  }
+  $('nextBtn').addEventListener('click', function () { Snd.ensure(); Snd.blip(); var g = Game; if (!g) return goHome(); if (g.mode === 'tutorial') return startLevel(0); if (g.mode === 'pack' && g.idx < CFG.levels.length - 1) return startLevel(g.idx + 1); goHome(); });
+  $('againBtn').addEventListener('click', function () { Snd.blip(); var g = Game; if (!g) return; if (g.mode === 'pack') startLevel(g.idx); else if (g.mode === 'daily') startDaily(); else startTutorial(); });
+  $('menuBtn').addEventListener('click', function () { Snd.blip(); goHome(); });
+  $('backBtn').addEventListener('click', function () { Snd.blip(); goHome(); });
+  $('undoBtn').addEventListener('click', undo); $('resetBtn').addEventListener('click', reset); $('hintBtn').addEventListener('click', hint);
+  $('skipTut').addEventListener('click', function () { M.setTut(localStorage, true); startLevel(0); });
+  // ---------- home buttons ----------
+  $('playBtn').addEventListener('click', function () { Snd.ensure(); Snd.blip(); if (!M.tutDone(localStorage)) startTutorial(); else startLevel(nextLevelIdx()); });
+  $('dailyBtn').addEventListener('click', function () { Snd.ensure(); Snd.blip(); startDaily(); });
+  $('howBtn').addEventListener('click', function () { Snd.ensure(); Snd.blip(); startTutorial(); });
+  $('levelsBtn').addEventListener('click', function () {
+    Snd.ensure(); Snd.blip(); var gEl = $('lvGrid'), r = rec(); gEl.innerHTML = '';
+    CFG.levels.forEach(function (l, i) {
+      var b = document.createElement('button'), o = r[l.id], u = unlocked(i); b.type = 'button'; b.className = 'lv' + (o ? ' done' : '') + (u ? '' : ' lock');
+      b.innerHTML = '<b></b><span class="nm"></span><span class="st"></span>'; b.children[0].textContent = i + 1; b.children[1].textContent = l.name; b.children[2].textContent = o ? starStr(o.stars) : (u ? t('par') + ' ' + l.par : t('locked'));
+      b.setAttribute('aria-label', t('levelN', { n: i + 1 }) + ' ' + l.name + (u ? '' : ' (' + t('locked') + ')'));
+      b.addEventListener('click', function () { if (!u) { Snd.horn(); toast(t('locked')); return; } $('levelsDlg').hidden = true; startLevel(i); });
+      gEl.appendChild(b);
+    });
+    $('levelsDlg').hidden = false;
+  });
+  $('lvClose').addEventListener('click', function () { $('levelsDlg').hidden = true; });
+  // ---------- pointer input on the board ----------
+  var cv = $('cv');
+  function pieceAt(gx, gy) { var o = M.grid(Game.pieces); return o[Math.floor(gy) * M.W + Math.floor(gx)]; }
+  cv.addEventListener('pointerdown', function (e) {
+    Snd.ensure(); if (!Game || Game.over || Game.mode === 'demo' || !$('winDlg').hidden) return;
+    var h = R.hit(e.clientX, e.clientY); if (!h.inside) return; var k = pieceAt(h.x, h.y); if (k == null || k < 0) return;
+    var p = Game.pieces[k]; e.preventDefault();
+    if (p.fixed) { Snd.horn(); Game.shakeK = k; setTimeout(function () { if (Game) Game.shakeK = -1; }, 300); toast(t('polisi')); return; }
+    var s = tutStep(); if (s && p.id !== s.piece) { Snd.horn(); toast(t('tutLocked')); return; }
+    var l = M.limits(Game.pieces, k); Game.drag = { k: k, sx: e.clientX, sy: e.clientY, min: l.min, max: l.max, off: 0, bumped: false, id: e.pointerId }; Game.sel = k;
+    try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+  });
+  cv.addEventListener('pointermove', function (e) {
+    var d = Game && Game.drag; if (!d || d.id !== e.pointerId) return; var p = Game.pieces[d.k], cs = R.layout().cs;
+    var raw = (p.dir === 'h' ? e.clientX - d.sx : e.clientY - d.sy) / cs, off = Math.max(d.min, Math.min(d.max, raw));
+    if (!d.bumped && (raw > d.max + 0.3 || raw < d.min - 0.3)) { // pushed into something
+      var edge = raw > 0 ? (p.dir === 'h' ? p.x + p.len + d.max : p.y + p.len + d.max) >= M.W : (p.dir === 'h' ? p.x + d.min : p.y + d.min) <= 0;
+      if (!edge) { d.bumped = true; Snd.horn(); var bx = p.dir === 'h' ? (raw > 0 ? p.x + p.len + d.max : p.x + d.min - 1) : p.x, by = p.dir === 'v' ? (raw > 0 ? p.y + p.len + d.max : p.y + d.min - 1) : p.y;
+        var o = M.grid(Game.pieces)[by * M.W + bx]; if (o >= 0) { Game.shakeK = o; setTimeout(function () { if (Game) Game.shakeK = -1; }, 280); } }
+    }
+    d.off = off;
+  });
+  function endDrag(e) {
+    var d = Game && Game.drag; if (!d || (e && d.id !== e.pointerId)) return; Game.drag = null; var n = Math.round(d.off);
+    var p = Game.pieces[d.k]; Game.vis[d.k] = { x: p.x + (p.dir === 'h' ? d.off : 0), y: p.y + (p.dir === 'v' ? d.off : 0) };
+    if (n) commit(d.k, n);
+  }
+  cv.addEventListener('pointerup', endDrag); cv.addEventListener('pointercancel', endDrag);
+  // keyboard: Tab-free play \u2014 Space cycles vehicles, arrows slide one cell, Z undo, R reset
+  document.addEventListener('keydown', function (e) {
+    if (!Game || Game.over || Game.mode === 'demo' || e.target === nameIn) return; var k = e.key;
+    if (k === ' ' || k === 'n') { e.preventDefault(); var ps = Game.pieces, i = Game.sel; do { i = (i + 1) % ps.length; } while (ps[i].fixed); var s = tutStep(); if (s) i = pieceIdx(s.piece); Game.sel = i; Game.glowK = i; Snd.blip(); return; }
+    var dir = { ArrowLeft: [-1, 'h'], ArrowRight: [1, 'h'], ArrowUp: [-1, 'v'], ArrowDown: [1, 'v'] }[k];
+    if (dir) { e.preventDefault(); var p = Game.pieces[Game.sel]; if (p.dir !== dir[1]) { Snd.horn(); return; } var st = tutStep(); if (st && p.id !== st.piece) { toast(t('tutLocked')); return; } if (!commit(Game.sel, dir[0])) Snd.horn(); return; }
+    if (k === 'z' || k === 'Z') undo(); else if (k === 'r' || k === 'R') reset(); else if (k === 'Escape') goHome();
+  });
+  // ---------- layout + loop ----------
+  function relayout() { R.resize($('home').hidden ? 'play' : 'home', Game && Game.mode === 'tutorial' ? 72 : 0); }
+  window.addEventListener('resize', relayout);
+  R.init(cv, CFG); relayout();
+  var last = performance.now(), homeVis = homePreview.map(function (p) { return { x: p.x, y: p.y }; });
+  function loop(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now; var tt = now / 1000;
+    if (Game) {
+      var a = 1 - Math.pow(0.0005, dt);
+      Game.pieces.forEach(function (p, i) { var v = Game.vis[i]; if (Game.drag && Game.drag.k === i) { v.x = p.x + (p.dir === 'h' ? Game.drag.off : 0); v.y = p.y + (p.dir === 'v' ? Game.drag.off : 0); } else { v.x += (p.x - v.x) * a; v.y += (p.y - v.y) * a; if (Math.abs(p.x - v.x) < 0.002) v.x = p.x; if (Math.abs(p.y - v.y) < 0.002) v.y = p.y; } });
+      R.frame({ pieces: Game.pieces, vis: Game.vis, drag: Game.drag, hint: Game.hint, carOut: Game.carOut, hand: Game.hand, glowK: Game.glowK, shakeK: Game.shakeK }, tt, dt);
+    } else R.frame({ pieces: homePreview, vis: homeVis }, tt, dt);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  // ---------- routes ----------
+  function route() { var h = location.hash; if (h === '#demo') startDemo(); else if (h === '#tutorial') startTutorial(); else if (h === '#daily') startDaily(); }
+  updateHome(); route();
+  window.addEventListener('hashchange', route);
+  window.MMApp = { get game() { return Game; }, startLevel: startLevel, startTutorial: startTutorial, startDaily: startDaily, startDemo: startDemo, commit: commit, undo: undo, reset: reset, hint: hint, goHome: goHome, dailyKey: DK, get daily() { return dailyLvl; } };
+})();
+</script>
+</body>
+</html>

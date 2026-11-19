@@ -1,0 +1,378 @@
+{
+ "site": {
+  "name": "Mudik Macet",
+  "slug": "mudikmacet",
+  "tagline": "Geser kendaraan, mobil mudikmu harus pulang!"
+ },
+ "game": {
+  "exitRow": 2,
+  "stars": {
+   "slack": 0.5,
+   "minSlack": 2
+  },
+  "hintCapsStars": 2,
+  "daily": {
+   "minMoves": 10,
+   "maxMoves": 22,
+   "steps": 220
+  },
+  "demoLevel": "L09",
+  "demoMoves": 4
+ },
+ "tutorial": {
+  "g": [
+   "......",
+   "..B...",
+   "AAB..C",
+   ".....C",
+   ".....C",
+   "......"
+  ],
+  "v": "",
+  "par": 3,
+  "steps": [
+   {
+    "piece": "B",
+    "dir": -1,
+    "text": "Angkot hijau menghalangi jalan. Seret ke ATAS ⬆️",
+    "sub": "Angkot tegak hanya bisa naik-turun"
+   },
+   {
+    "piece": "C",
+    "dir": 1,
+    "text": "Bus biru juga menutup lajur. Seret ke BAWAH ⬇️",
+    "sub": "Bus panjang 3 kotak, geser sampai lajur kosong"
+   },
+   {
+    "piece": "A",
+    "dir": 1,
+    "text": "Jalan terbuka! Seret mobil mudikmu ke KANAN ➡️",
+    "sub": "Keluar lewat pintu KELUAR di kanan"
+   }
+  ],
+  "c": {
+   "B": 0,
+   "C": 1
+  }
+ },
+ "levels": [
+  {
+   "id": "L01",
+   "name": "Gerbang Tol Cikampek",
+   "blurb": "Pemanasan di gerbang tol.",
+   "g": [
+    "..EEDB",
+    "CC..DB",
+    ".AA.D.",
+    ".F.a.c",
+    "GF....",
+    "Gb...."
+   ],
+   "v": "abc",
+   "par": 2
+  },
+  {
+   "id": "L02",
+   "name": "Rest Area KM 57",
+   "blurb": "Parkiran penuh pemudik.",
+   "g": [
+    "aCCGGH",
+    "..DD.H",
+    ".AA.I.",
+    "...bI.",
+    "JF.Ec.",
+    "JF.EBB"
+   ],
+   "v": "ab",
+   "par": 3
+  },
+  {
+   "id": "L03",
+   "name": "Pantura Indramayu",
+   "blurb": "Angkot ngetem di bahu jalan.",
+   "g": [
+    "fx..g.",
+    "a..Gcb",
+    "AA.G.h",
+    "d....e",
+    "...DDD",
+    "FF..EE"
+   ],
+   "v": "bcdghe",
+   "par": 4
+  },
+  {
+   "id": "L04",
+   "name": "Jalur Nagreg",
+   "blurb": "Tanjakan padat merayap.",
+   "g": [
+    "BB.bDD",
+    "C..GGE",
+    "CAA..E",
+    "...HHH",
+    "FF..ax",
+    "...IIc"
+   ],
+   "v": "bca",
+   "par": 5
+  },
+  {
+   "id": "L05",
+   "name": "Pasar Tumpah Tegal",
+   "blurb": "Pasar sampai ke badan jalan.",
+   "g": [
+    "fBBBe.",
+    ".c...G",
+    "AAaC.G",
+    "...C..",
+    "dDDFxb",
+    "...F.g"
+   ],
+   "v": "aebf",
+   "par": 6
+  },
+  {
+   "id": "L06",
+   "name": "Simpang Jomin",
+   "blurb": "Semua lajur saling kunci.",
+   "g": [
+    "aDDD..",
+    "...GCx",
+    ".AAGCF",
+    "..EE.F",
+    ".HHH.c",
+    "b....."
+   ],
+   "v": "b",
+   "par": 7
+  },
+  {
+   "id": "L07",
+   "name": "Exit Brebes Timur",
+   "blurb": "Pintu keluar paling legendaris.",
+   "g": [
+    ".F.JJ.",
+    ".FDD..",
+    "AA.GHE",
+    ".b.GHE",
+    "CBxcHa",
+    "CB..II"
+   ],
+   "v": "ab",
+   "par": 8
+  },
+  {
+   "id": "L08",
+   "name": "Kalikangkung",
+   "blurb": "Bus AKAP berjejer.",
+   "g": [
+    "Hxa...",
+    "H.GEED",
+    "AAG.FD",
+    "C.BIF.",
+    "C.BIFb",
+    "..cKK."
+   ],
+   "v": "bc",
+   "par": 10
+  },
+  {
+   "id": "L09",
+   "name": "Alas Roban",
+   "blurb": "Truk dan bus berbaris di hutan.",
+   "g": [
+    "..B.JJ",
+    "d.B...",
+    "AAFEHa",
+    "c.FEHC",
+    "I..ExC",
+    "I.DDDb"
+   ],
+   "v": "acd",
+   "par": 12
+  },
+  {
+   "id": "L10",
+   "name": "Pelabuhan Merak",
+   "blurb": "Antre kapal ke Sumatra.",
+   "g": [
+    "E.JJ.I",
+    "E..GxI",
+    "HAAG.I",
+    "H...D.",
+    "c.FBDa",
+    "CCFB.b"
+   ],
+   "v": "c",
+   "par": 14
+  },
+  {
+   "id": "L11",
+   "name": "Ketapang",
+   "blurb": "Menyeberang ke Gilimanuk.",
+   "g": [
+    ".EFFC.",
+    ".E..CG",
+    ".AADdG",
+    "...Dbc",
+    ".BHHea",
+    ".B...x"
+   ],
+   "v": "d",
+   "par": 16
+  },
+  {
+   "id": "L12",
+   "name": "Lingkar Gentong",
+   "blurb": "Tikungan maut, padat total.",
+   "g": [
+    "LKIHCC",
+    "LKIHJF",
+    "AAI.JF",
+    "EEDDBF",
+    "....B.",
+    "cGGa.."
+   ],
+   "v": "c",
+   "par": 18
+  },
+  {
+   "id": "L13",
+   "name": "Pertigaan Kampung",
+   "blurb": "Hampir sampai, tapi macet.",
+   "g": [
+    "..CbEE",
+    "IICDJJ",
+    ".AADgH",
+    "F.BBBH",
+    "FGGf..",
+    "F...c."
+   ],
+   "v": "fgcb",
+   "par": 20
+  },
+  {
+   "id": "L14",
+   "name": "Pasar Kaget Malam Takbiran",
+   "blurb": "Ramai takbiran keliling.",
+   "g": [
+    "IB..CG",
+    "IB.cCG",
+    "AAJLCD",
+    "EEJLbD",
+    ".FHHa.",
+    ".F...."
+   ],
+   "v": "",
+   "par": 23
+  },
+  {
+   "id": "L15",
+   "name": "Gang Rumah Nenek",
+   "blurb": "Opor ayam sudah menunggu!",
+   "g": [
+    "ca.IIC",
+    ".GGGHC",
+    "AAFJH.",
+    "..FJDD",
+    "BEEE.L",
+    "B..KKL"
+   ],
+   "v": "",
+   "par": 26
+  }
+ ],
+ "palette": {
+  "angkot": [
+   "#21b36b",
+   "#1e88e5",
+   "#e8433f",
+   "#8e5bd6",
+   "#ff5fa2",
+   "#00b5c9",
+   "#f6c419",
+   "#ff8a1f"
+  ],
+  "bus": [
+   [
+    "#1f9d55",
+    "#f6c419"
+   ],
+   [
+    "#1565c0",
+    "#ffffff"
+   ],
+   [
+    "#d62f3a",
+    "#ffd23f"
+   ],
+   [
+    "#0f7b8a",
+    "#ffe28a"
+   ]
+  ],
+  "motor": [
+   "#e8433f",
+   "#1e88e5",
+   "#2a2a2a",
+   "#ff8a1f",
+   "#21b36b"
+  ]
+ },
+ "text": {
+  "play": "Main",
+  "daily": "Tantangan Harian",
+  "levels": "Pilih Level",
+  "how": "Latihan",
+  "mute": "Suara mati",
+  "unmute": "Suara nyala",
+  "nameLabel": "Nama pengemudi",
+  "nameHint": "Opsional · tampil di layar menang",
+  "driver": "Pemudik",
+  "back": "Kembali",
+  "menu": "Menu",
+  "undo": "Batal",
+  "reset": "Ulang",
+  "hint": "Petunjuk",
+  "next": "Lanjut",
+  "again": "Main Lagi",
+  "moves": "Langkah",
+  "par": "Target",
+  "best": "Terbaik",
+  "stars": "Bintang",
+  "locked": "Terkunci",
+  "packTitle": "Rute Mudik",
+  "packSub": "15 rute, dari santai sampai bikin pusing",
+  "dailyTitle": "Harian",
+  "dailySub": "Macet baru setiap hari (WITA)",
+  "dailyLoading": "Menyiapkan macet hari ini…",
+  "dailyDone": "Sudah tembus hari ini ✓",
+  "winTitle": "SELAMAT MUDIK!",
+  "winSub": "{name} tembus dalam {moves} langkah",
+  "newBest": "REKOR BARU!",
+  "perfect": "Sesuai target! Sempurna",
+  "hinted": "Pakai petunjuk · maks ⭐⭐",
+  "parHint": "Target {par} langkah untuk ⭐⭐⭐",
+  "noMoveBack": "Belum ada langkah",
+  "hintSolving": "Mencari jalan…",
+  "hintNone": "Mobil mudik sudah bisa jalan!",
+  "blocked": "Tin tin! Terhalang",
+  "polisi": "Pak Polisi tidak bisa digeser",
+  "tutLocked": "Ikuti petunjuk dulu ya",
+  "tutTitle": "Latihan Mudik",
+  "tutDone": "Lulus latihan! Siap mudik beneran",
+  "skip": "Lewati",
+  "exit": "KELUAR",
+  "exitSub": "Kampung",
+  "gate": "GERBANG TOL",
+  "toast3": "Mantap! ⭐⭐⭐",
+  "demo": "DEMO",
+  "howTitle": "Cara Main",
+  "how1": "Seret kendaraan sepanjang arahnya: yang mendatar ke kiri-kanan, yang tegak ke atas-bawah.",
+  "how2": "Buka jalan untuk mobil mudik emas, lalu bawa keluar lewat pintu KELUAR di kanan.",
+  "how3": "Makin sedikit langkah, makin banyak bintang. Pak Polisi tidak bisa digeser.",
+  "footerNote": "Puzzle geser kendaraan bertema mudik Lebaran",
+  "levelN": "Level {n}",
+  "close": "Tutup"
+ }
+}
