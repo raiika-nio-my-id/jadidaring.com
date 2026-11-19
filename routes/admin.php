@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\CurhatanModerationController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function (): void {
         Route::get('/curhatan', [CurhatanModerationController::class, 'index'])->name('admin.curhatan');
         Route::post('/curhatan/post/{post}', [CurhatanModerationController::class, 'togglePost'])->name('admin.curhatan.post');
         Route::post('/curhatan/komentar/{comment}', [CurhatanModerationController::class, 'toggleComment'])->name('admin.curhatan.comment');
+        Route::get('/statistik', [StatistikController::class, 'index'])->name('admin.statistik');
+        Route::post('/statistik/refresh', [StatistikController::class, 'refresh'])->middleware('throttle:stats-refresh')->name('admin.statistik.refresh');
         Route::get('/settings', [SettingsController::class, 'edit'])->name('admin.settings');
         Route::put('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
     });

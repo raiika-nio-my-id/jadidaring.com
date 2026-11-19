@@ -35,6 +35,14 @@ return [
         'measurement_id' => env('GA4_MEASUREMENT_ID'),
     ],
 
+    // Read-only GA4 Data API + Search Console for the admin Statistik page. Values live only in the server .env.
+    'google_stats' => [
+        'property_id' => env('GA4_PROPERTY_ID'),
+        'site_url' => env('GSC_SITE_URL', 'sc-domain:jadidaring.com'),
+        'sa_json_b64' => env('GOOGLE_STATS_SA_JSON_B64'),
+        'sa_json_path' => env('GOOGLE_STATS_SA_JSON_PATH'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

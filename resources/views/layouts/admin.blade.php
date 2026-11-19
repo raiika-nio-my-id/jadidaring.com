@@ -30,6 +30,7 @@
                 @can('manage-settings')
                     <a href="{{ route('admin.messages') }}" @if(request()->routeIs('admin.messages')) aria-current="page" @endif>Pesan</a>
                     <a href="{{ route('admin.curhatan') }}" @if(request()->routeIs('admin.curhatan')) aria-current="page" @endif>Curhatan</a>
+                    <a href="{{ route('admin.statistik') }}" @if(request()->routeIs('admin.statistik')) aria-current="page" @endif>Statistik</a>
                     <a href="{{ route('admin.settings') }}" @if(request()->routeIs('admin.settings')) aria-current="page" @endif>Settings</a>
                 @endcan
             @endif

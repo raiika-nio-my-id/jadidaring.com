@@ -74,6 +74,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Named, per-member limiters (separate counters; unnamed throttles share one key per user).
+        RateLimiter::for('stats-refresh', fn (Request $request) => Limit::perMinutes(10, 3)->by('stats-refresh:'.($request->user()?->id ?? $request->ip()))->response(
+            fn () => back()->with('success', 'Terlalu sering refresh. Tunggu beberapa menit, data masih memakai cache.')
+        ));
         RateLimiter::for('email-change', fn (Request $request) => [Limit::perHour(5)->by('email-change:'.($request->user()?->id ?? $request->ip())), Limit::perMinute(2)->by('email-change-m:'.($request->user()?->id ?? $request->ip()))]);
         RateLimiter::for('profile-save', fn (Request $request) => Limit::perMinute(30)->by('profile-save:'.($request->user()?->id ?? $request->ip())));
         RateLimiter::for('profile-autosave', fn (Request $request) => Limit::perMinute(40)->by('profile-autosave:'.($request->user()?->id ?? $request->ip())));
