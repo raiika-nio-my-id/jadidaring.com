@@ -28,6 +28,7 @@
                     <a href="{{ route('admin.clients.create') }}" @if(request()->routeIs('admin.clients.create')) aria-current="page" @endif>New client</a>
                 @endcan
                 @can('manage-settings')
+                    <a href="{{ route('admin.messages') }}" @if(request()->routeIs('admin.messages')) aria-current="page" @endif>Pesan</a>
                     <a href="{{ route('admin.settings') }}" @if(request()->routeIs('admin.settings')) aria-current="page" @endif>Settings</a>
                 @endcan
             @endif

@@ -130,7 +130,8 @@ class ClayController extends Controller
             ."Disallow: /*/api/\n"
             ."Disallow: /game/*/api/\n"
             ."Disallow: /_boost/\n\n"
-            ."Sitemap: {$host}/sitemap.xml\n";
+            ."Sitemap: {$host}/sitemap.xml\n"
+            ."Sitemap: {$host}/news-sitemap.xml\n";
 
         return response($content, 200, [
             'Content-Type' => 'text/plain; charset=utf-8',
@@ -140,48 +141,50 @@ class ClayController extends Controller
     public function sitemap(Request $request): Response
     {
         $host = 'https://'.TenantPath::host();
-        $today = now()->toDateString();
+        $articles = \App\Services\NewsCache::latest(null, 500);
+        $newest = $articles === [] ? null : max(array_map(fn (array $a): string => $a['updated_at'] ?? $a['published_at'], $articles));
+        $topicNewest = [];
 
-        $urls = [
-            $host.'/',
-            $host.'/berita',
-        ];
+        foreach ($articles as $a) {
+            $t = $a['updated_at'] ?? $a['published_at'];
+            $topicNewest[$a['topic']] = max($topicNewest[$a['topic']] ?? '', $t);
+        }
+
+        // [url, lastmod|null]. lastmod is the real last change; unknown dates are left out, never faked.
+        $urls = [[$host.'/', $newest], [$host.'/berita', $newest]];
 
         foreach (array_keys(self::TOPICS) as $topic) {
-            $urls[] = $host.'/berita/'.$topic;
+            $urls[] = [$host.'/berita/'.$topic, $topicNewest[$topic] ?? null];
         }
 
-        $urls[] = $host.'/game';
+        $gameProfiles = CompanyProfile::query()->live()->games()->where('subdomain', '!=', 'gamehub')->orderBy('subdomain')->get();
+        $gamesNewest = $gameProfiles->max('updated_at');
+        $urls[] = [$host.'/game', $gamesNewest?->toIso8601String()];
 
-        foreach (\App\Services\NewsCache::latest(null, 500) as $article) {
-            $urls[] = $host.$article['url'];
+        foreach ($articles as $article) {
+            $urls[] = [$host.$article['url'], $article['updated_at'] ?? $article['published_at']];
         }
-
-        $gameProfiles = CompanyProfile::query()
-            ->live()
-            ->games()
-            ->where('subdomain', '!=', 'gamehub')
-            ->orderBy('subdomain')
-            ->get();
 
         foreach ($gameProfiles as $profile) {
-            $urls[] = $host.'/game/'.$profile->subdomain;
+            $urls[] = [$host.'/game/'.$profile->subdomain, $profile->updated_at?->toIso8601String()];
         }
 
-        $urls[] = $host.'/komunitas';
+        $urls[] = [$host.'/komunitas', \App\Models\MemberPage::query()->max('updated_at') ? \Illuminate\Support\Carbon::parse(\App\Models\MemberPage::query()->max('updated_at'))->toIso8601String() : null];
+
+        foreach (\App\Http\Controllers\PageController::PAGES as $path => $updated) {
+            $urls[] = [$host.'/'.$path, $updated];
+        }
+
+        $urls[] = [$host.'/syarat-ketentuan', (string) config('singlepage.terms_updated_on') ?: null];
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
             .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
-        foreach ($urls as $url) {
-            $xml .= '  <url><loc>'.e($url).'</loc><lastmod>'.$today.'</lastmod></url>'."\n";
+        foreach ($urls as [$url, $mod]) {
+            $xml .= '  <url><loc>'.e($url).'</loc>'.($mod ? '<lastmod>'.e(\Illuminate\Support\Carbon::parse($mod)->toW3cString()).'</lastmod>' : '').'</url>'."\n";
         }
 
-        $xml .= '</urlset>';
-
-        return response($xml, 200, [
-            'Content-Type' => 'application/xml; charset=utf-8',
-        ]);
+        return response($xml.'</urlset>', 200, ['Content-Type' => 'application/xml; charset=utf-8']);
     }
 
     /**

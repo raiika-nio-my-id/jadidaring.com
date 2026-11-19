@@ -89,7 +89,9 @@ class NewsTest extends TestCase
             ->assertSee('Laravel merilis pembaruan keamanan penting', false)
             ->assertSee('<link rel="canonical" href="https://jadidaring.test'.$path.'">', false)
             ->assertSee('og:type" content="article"', false)
-            ->assertSee('og:image" content="https://img.example.com/a.jpg"', false)
+            ->assertSee('og:image" content="https://jadidaring.test/gambar-berita/', false)
+            ->assertSee('twitter:card" content="summary_large_image"', false)
+            ->assertSee('"BreadcrumbList"', false)
             ->assertSee('"@type":"NewsArticle"', false)
             ->assertSee('blog.laravel.com', false)
             ->assertSee('rel="nofollow noopener noreferrer"', false);

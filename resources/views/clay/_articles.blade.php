@@ -7,10 +7,8 @@
 @else
     <div class="news-grid @if (! empty($featured)) news-grid--home @endif">
         @foreach ($articles as $a)
-            <a href="{{ $a['url'] }}" class="news-card @if (empty($a['image_url'])) news-card--noimg @endif @if (! empty($featured) && $loop->first) news-card--featured @endif">
-                @if (! empty($a['image_url']))
-                    <img src="{{ $a['image_url'] }}" alt="" width="640" height="360" loading="lazy" decoding="async" referrerpolicy="no-referrer">
-                @endif
+            <a href="{{ $a['url'] }}" class="news-card @if (! empty($featured) && $loop->first) news-card--featured @endif">
+                <img src="{{ \App\Services\NewsImage::src($a['id'], 480, $a['img']['v']) }}" srcset="{{ \App\Services\NewsImage::src($a['id'], 480, $a['img']['v']) }} 480w, {{ \App\Services\NewsImage::src($a['id'], 800, $a['img']['v']) }} 800w" sizes="(min-width: 960px) 25vw, (min-width: 640px) 50vw, 100vw" width="480" height="252" alt="" loading="lazy" decoding="async">
                 <span class="topic-badge topic-badge--{{ $a['topic'] }}">{{ \App\Http\Controllers\ClayController::TOPICS[$a['topic']] ?? $a['topic'] }}</span>
                 <h2>{{ $a['title'] }}</h2>
                 <p>{{ $a['summary'] }}</p>

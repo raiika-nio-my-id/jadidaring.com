@@ -4,6 +4,13 @@
     <meta property="article:published_time" content="{{ $article['published_at'] }}">
     <meta property="article:section" content="{{ $topicName }}">
     <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => 'https://'.config('singlepage.base_domain').'/'],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Berita', 'item' => 'https://'.config('singlepage.base_domain').'/berita'],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => $topicName, 'item' => 'https://'.config('singlepage.base_domain').'/berita/'.$article['topic']],
+        ['@type' => 'ListItem', 'position' => 4, 'name' => $article['title']],
+    ]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+    <link rel="preload" as="image" href="{{ \App\Services\NewsImage::src($article['id'], 800, $article['img']['v']) }}" imagesrcset="{{ \App\Services\NewsImage::src($article['id'], 480, $article['img']['v']) }} 480w, {{ \App\Services\NewsImage::src($article['id'], 800, $article['img']['v']) }} 800w, {{ \App\Services\NewsImage::src($article['id'], 1200, $article['img']['v']) }} 1200w" imagesizes="(min-width: 800px) 760px, 100vw" fetchpriority="high">
 @endpush
 
 @section('content')
@@ -15,9 +22,15 @@
         <h1 class="clay-section__title">{{ $article['title'] }}</h1>
         <p class="news-meta news-meta-row"><time class="news-date" datetime="{{ $article['published_at'] }}"><svg class="news-date__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span>{{ \Illuminate\Support\Carbon::parse($article['published_at'])->locale('id')->translatedFormat('l, d F Y H:i') }}</span></time></p>
 
-        @if ($article['image_url'])
-            <img class="news-hero" src="{{ $article['image_url'] }}" alt="" referrerpolicy="no-referrer">
-        @endif
+        @php($im = $article['img'])
+        <figure class="news-figure">
+            <img class="news-hero" src="{{ \App\Services\NewsImage::src($article['id'], 800, $im['v']) }}"
+                 srcset="{{ \App\Services\NewsImage::src($article['id'], 480, $im['v']) }} 480w, {{ \App\Services\NewsImage::src($article['id'], 800, $im['v']) }} 800w, {{ \App\Services\NewsImage::src($article['id'], 1200, $im['v']) }} 1200w"
+                 sizes="(min-width: 800px) 760px, 100vw" width="1200" height="630" alt="{{ $im['alt'] }}" fetchpriority="high" decoding="async">
+            @if ($im['photo'])
+                <figcaption class="news-figure__credit">Foto: {{ $im['credit'] }} · {{ $im['license'] }} · <a href="{{ $im['source_url'] }}" rel="nofollow noopener noreferrer" target="_blank">Sumber foto</a></figcaption>
+            @endif
+        </figure>
 
         <p class="news-lead">{{ $article['summary'] }}</p>
 

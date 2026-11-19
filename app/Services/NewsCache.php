@@ -54,10 +54,10 @@ class NewsCache
                 ->when($topic !== null, fn ($q) => $q->where('topic', $topic))
                 ->orderByDesc('published_at')->orderByDesc('id')
                 ->limit($limit)
-                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_url', 'published_at'])
+                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_url', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'published_at', 'updated_at'])
                 ->map(fn (Article $a): array => [
-                    'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
-                    'image_url' => $a->image_url, 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url(),
+                    'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
+                    'img' => NewsImage::meta($a), 'updated_at' => $a->updated_at?->toIso8601String(), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url(),
                 ])->all();
         });
     }

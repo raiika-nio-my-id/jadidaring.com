@@ -911,3 +911,25 @@ body {
 /* Custom profile cursor: one cursor only. Links/buttons use it too, text fields keep the caret; touch is unaffected. */
 .pf--cursor a, .pf--cursor button, .pf--cursor summary, .pf--cursor label, .pf--cursor select, .pf--cursor [role="button"] { cursor: inherit; }
 .pf--cursor input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]), .pf--cursor textarea { cursor: text; }
+
+/* Static pages + contact form */
+.page-doc { max-width: 760px; margin-inline: auto; line-height: 1.75; }
+.page-doc h2 { font-family: var(--font-display); font-size: 1.3rem; margin: 1.8em 0 .5em; }
+.page-doc ul { padding-left: 1.3em; } .page-doc li { margin-bottom: .5em; }
+.page-doc__date { margin-top: 2em; font-size: .9rem; color: var(--clay-ink-2); }
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field-error { color: var(--clay-danger); margin: 4px 0 0; font-weight: 700; }
+.page-doc .clay-form label { display: block; font-weight: 800; margin: 14px 0 6px; }
+.page-doc .clay-form .clay-input { width: 100%; }
+
+/* Article images */
+.news-card img { aspect-ratio: 1200 / 630; height: auto; background: var(--clay-lavender); }
+.news-card--featured img { aspect-ratio: auto; height: 230px; }
+@media (min-width: 640px) { .news-card--featured { padding: 16px 16px 24px; } .news-card--featured .topic-badge { top: 24px; left: 24px; } }
+.news-figure { margin: 12px 0 18px; }
+.news-figure .news-hero { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; margin: 0; background: var(--clay-lavender); }
+.news-figure__credit { margin-top: 8px; font-size: .85rem; color: var(--clay-ink-2); line-height: 1.5; }
+.news-figure__credit a { color: inherit; text-decoration: underline; }
+.news-search { display: flex; gap: 10px; margin: 0 0 16px; max-width: 520px; }
+.news-search .clay-input { flex: 1; min-width: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

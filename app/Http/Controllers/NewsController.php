@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Services\NewsCache;
+use App\Services\NewsImage;
 use App\Services\TenantPath;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -15,14 +16,31 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
+        $articles = NewsCache::latest(null, 24);
+        $noindex = false;
+
+        if ($q !== '') {
+            $like = '%'.addcslashes($q, '%_\\').'%';
+            $articles = Article::query()->visible()
+                ->where(fn ($w) => $w->where('title', 'like', $like)->orWhere('summary', 'like', $like))
+                ->orderByDesc('published_at')->limit(24)
+                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'published_at', 'updated_at'])
+                ->map(fn (Article $a): array => ['id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
+                    'img' => NewsImage::meta($a), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url()])->all();
+            $noindex = true;
+        }
+
         return view('clay.berita-index', [
+            'q' => $q,
+            'noindex' => $noindex,
             'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi — Jadidaring',
             'metaDescription' => 'Berita terkini hari ini seputar politik, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/berita',
             'topics' => ClayController::TOPICS,
-            'articles' => NewsCache::latest(null, 24),
+            'articles' => $articles,
         ]);
     }
 
@@ -43,7 +61,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function show(string $topik, string $slug): View|RedirectResponse
+    public function show(string $topik, string $slug): View|RedirectResponse|\Illuminate\Http\Response
     {
         $data = NewsCache::remember('article:'.$slug, function () use ($slug): ?array {
             $article = Article::query()->visible()->where('slug', $slug)->first();
@@ -54,7 +72,7 @@ class NewsController extends Controller
 
             return [
                 'id' => $article->id, 'topic' => $article->topic, 'slug' => $article->slug, 'title' => $article->title,
-                'summary' => $article->summary, 'image_url' => $article->image_url, 'sources' => $article->sources,
+                'summary' => $article->summary, 'img' => NewsImage::meta($article), 'sources' => $article->sources,
                 'published_at' => $article->published_at?->toIso8601String(),
                 'updated_at' => $article->updated_at?->toIso8601String(),
                 'paragraphs' => self::paragraphs((string) $article->body),
@@ -78,12 +96,14 @@ class NewsController extends Controller
 
         $url = 'https://'.TenantPath::host().'/berita/'.$data['topic'].'/'.$data['slug'];
 
-        return view('clay.berita-artikel', [
+        return response()->view('clay.berita-artikel', [
             'metaTitle' => $data['title'].' — Jadidaring',
             'metaDescription' => $data['summary'],
             'canonicalUrl' => $url,
             'ogType' => 'article',
-            'ogImage' => $data['image_url'],
+            'ogImage' => NewsImage::absolute($data['id'], 1200, $data['img']['v']),
+            'ogImageAlt' => $data['img']['alt'],
+            'lastModified' => $data['updated_at'],
             'article' => $data,
             'topicName' => ClayController::TOPICS[$data['topic']],
             'jsonLd' => [
@@ -94,11 +114,21 @@ class NewsController extends Controller
                 'mainEntityOfPage' => $url,
                 'datePublished' => $data['published_at'],
                 'dateModified' => $data['updated_at'],
-                'image' => $data['image_url'] ? [$data['image_url']] : [],
-                'publisher' => ['@type' => 'Organization', 'name' => 'Jadidaring'],
+                'image' => [NewsImage::absolute($data['id'], 1200, $data['img']['v'])],
+                'articleSection' => ClayController::TOPICS[$data['topic']],
+                'inLanguage' => 'id-ID',
+                'author' => ['@type' => 'Organization', 'name' => 'Redaksi Jaring', 'url' => 'https://'.TenantPath::host().'/tentang'],
+                'publisher' => self::publisher(),
                 'citation' => array_map(fn (array $s): string => $s['url'], $data['sources']),
             ],
-        ]);
+        ])->header('Last-Modified', \Illuminate\Support\Carbon::parse($data['updated_at'])->toRfc7231String());
+    }
+
+    /** @return array<string, mixed> */
+    public static function publisher(): array
+    {
+        return ['@type' => 'Organization', 'name' => 'Jadidaring', 'url' => 'https://'.TenantPath::host().'/',
+            'logo' => ['@type' => 'ImageObject', 'url' => 'https://'.TenantPath::host().'/marketing/images/logo-512.png', 'width' => 512, 'height' => 512]];
     }
 
     public function comments(string $topik, string $slug): JsonResponse

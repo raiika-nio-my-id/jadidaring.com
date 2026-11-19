@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/clients/{companyProfile}/pin', [CompanyProfileController::class, 'togglePin'])->name('admin.clients.pin');
     Route::get('/clients/{companyProfile}/analytics', [AnalyticsController::class, 'show'])->name('admin.clients.analytics');
     Route::middleware('can:manage-settings')->group(function (): void {
+        Route::get('/messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('admin.messages');
+        Route::post('/messages/{message}/read', [\App\Http\Controllers\Admin\ContactMessageController::class, 'read'])->name('admin.messages.read');
+        Route::delete('/messages/{message}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('admin.messages.destroy');
         Route::get('/settings', [SettingsController::class, 'edit'])->name('admin.settings');
         Route::put('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
     });

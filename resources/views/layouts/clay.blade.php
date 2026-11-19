@@ -16,6 +16,11 @@
     @isset($ogImage)
         @if($ogImage)
     <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    @if(!empty($ogImageAlt))<meta property="og:image:alt" content="{{ $ogImageAlt }}">
+    <meta name="twitter:image:alt" content="{{ $ogImageAlt }}">@endif
+    <meta name="twitter:image" content="{{ $ogImage }}">
         @endif
     @endisset
     <meta property="og:site_name" content="Jadidaring">
@@ -26,7 +31,14 @@
     <link rel="alternate" hreflang="id" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
     <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
     <meta name="theme-color" content="#f4ecff">
-    <script type="application/ld+json">{!! json_encode([chr(64).'context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/', 'inLanguage' => 'id-ID'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <link rel="alternate" type="application/rss+xml" title="Berita Jadidaring" href="/berita/rss.xml">
+    <script type="application/ld+json">{!! json_encode([chr(64).'context' => 'https://schema.org', chr(64).'graph' => [
+        ['@type' => 'WebSite', '@id' => 'https://jadidaring.com/#website', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/', 'inLanguage' => 'id-ID',
+            'publisher' => ['@id' => 'https://jadidaring.com/#org'],
+            'potentialAction' => ['@type' => 'SearchAction', 'target' => ['@type' => 'EntryPoint', 'urlTemplate' => 'https://jadidaring.com/berita?q={search_term_string}'], 'query-input' => 'required name=search_term_string']],
+        ['@type' => 'Organization', '@id' => 'https://jadidaring.com/#org', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/',
+            'logo' => ['@type' => 'ImageObject', 'url' => 'https://jadidaring.com/marketing/images/logo-512.png', 'width' => 512, 'height' => 512]],
+    ]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="{{ \App\Support\AssetUrl::to('marketing/images/favicon.svg') }}" type="image/svg+xml">
 
@@ -76,7 +88,12 @@
     <footer class="clay-footer">
         <div class="clay-shell">
             <div class="clay-footer__links">
+                <a href="/tentang">Tentang</a>
+                <a href="/kebijakan-redaksi">Kebijakan Redaksi</a>
+                <a href="/kebijakan-privasi">Kebijakan Privasi</a>
+                <a href="/kontak">Kontak</a>
                 <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a>
+                <a href="/berita/rss.xml">RSS</a>
                 <a href="/berita">Berita</a>
                 <a href="/game">Game</a>
                 <a href="/komunitas">Komunitas</a>
