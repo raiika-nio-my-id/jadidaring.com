@@ -17,7 +17,7 @@
 .le-stage[aria-busy="true"] .pf-inner { opacity: .82; transition: opacity .15s; }
 
 /* Editable targets */
-body:not(.le-peek) .le-stage [data-edit], body:not(.le-peek) .le-wall { position: relative; cursor: pointer; transition: outline-color .15s, box-shadow .15s; outline: 2px dashed transparent; outline-offset: 3px; }
+body:not(.le-peek) .le-stage [data-edit]:not(.pf-bg), body:not(.le-peek) .le-wall { position: relative; cursor: pointer; transition: outline-color .15s, box-shadow .15s; outline: 2px dashed transparent; outline-offset: 3px; }
 body:not(.le-peek) .le-stage [data-edit]:hover, body:not(.le-peek) .le-wall:hover { outline-color: color-mix(in srgb, #7c5cff 75%, #fff); }
 body:not(.le-peek) .le-stage iframe { pointer-events: none; }
 body:not(.le-peek) .le-stage a, body:not(.le-peek) .le-stage audio { pointer-events: none; }
