@@ -123,9 +123,9 @@ class CommunityDraftKeyTest extends TestCase
     public function test_builder_prompt_script_has_cdn_allowlist_and_draft_instructions(): void
     {
         $js = file_get_contents(public_path('js/prompt-builder.js'));
-        foreach (['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'cdn.tailwindcss.com', 'X-Draft-Key', 'DRAFT'] as $needle) {
+        foreach (['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'unpkg.com', 'cdn.tailwindcss.com', '?json=', 'PRATINJAU'] as $needle) {
             $this->assertStringContainsString($needle, $js);
         }
-        $this->actingAs(User::factory()->member()->create(['username' => 'ff_ff']))->get($this->base().'/komunitas/buat')->assertSee('data-mint="/komunitas/draft-key"', false);
+        $this->actingAs(User::factory()->member()->create(['username' => 'ff_ff']))->get($this->base().'/komunitas/buat')->assertSee('data-import="https://jadidaring.test/komunitas/halamanku/import"', false);
     }
 }

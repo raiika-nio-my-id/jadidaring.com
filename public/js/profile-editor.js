@@ -16,10 +16,19 @@
   function lines(id) { return (form.elements[id].value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean); }
   function pair(s) { var i = s.indexOf('|'); return i < 0 ? [s.trim(), ''] : [s.slice(0, i).trim(), s.slice(i + 1).trim()]; }
 
+  // Any decimal is accepted: clamp to the field's min/max and round to 2 decimals (the server does the same).
+  function num(el) {
+    var n = Number(String(el.value).replace(',', '.'));
+    if (!isFinite(n)) n = Number(el.min) || 0;
+    if (el.min !== '') n = Math.max(Number(el.min), n);
+    if (el.max !== '') n = Math.min(Number(el.max), n);
+    return Math.round(n * 100) / 100;
+  }
+
   function collect() {
     var c = {};
     form.querySelectorAll('[data-path]').forEach(function (el) {
-      set(c, el.dataset.path, el.type === 'checkbox' ? el.checked : (el.type === 'number' || el.type === 'range') ? Number(el.value) : el.value);
+      set(c, el.dataset.path, el.type === 'checkbox' ? el.checked : (el.type === 'number' || el.type === 'range') ? num(el) : el.value);
     });
     c.widgets = [];
     order.forEach(function (t) {

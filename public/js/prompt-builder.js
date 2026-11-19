@@ -52,7 +52,7 @@
     '  "music": { "url": "https://... .mp3/.ogg/.wav atau kosong", "title": "judul" },',
     '  "widgets": [ urutan tampil; tipe: about, status, gallery, links, counter, music, friends, quote, youtube, custom_html. Bentuk: {"type":"gallery","items":[{"url":"https://...","caption":"..."}]} (maks 12), {"type":"links","items":[{"label":"...","url":"https://..."}]} (maks 10), {"type":"friends","items":[{"username":"..."}]} (maks 8), {"type":"quote","text":"...","author":"..."}, {"type":"youtube","id":"11 karakter atau tautan youtube"}, lainnya cukup {"type":"about"} ] }',
     '',
-    'BATASAN KEAMANAN PLATFORM',
+    'ANGKA: tulis sebagai angka JSON (tanpa tanda kutip), titik sebagai desimal. Rentang: angle 0-360 (bulat), overlay 0-0.8, card.radius 0-40 (bulat), card.opacity 0.3-1, card.blur 0-24 (bulat), cursor.size 16-48 (bulat). Desimal bebas (mis. 0.12 atau 0.83) dan dibulatkan ke 2 desimal oleh platform; nilai di luar rentang dipotong ke batas terdekat, jadi tetap usahakan di dalam rentang.',
     '- Semua warna wajib #rrggbb. Semua URL wajib https:// dan HANYA dari URL yang diberikan pengguna; jangan mengarang URL gambar, audio, atau tautan. Bila tidak ada gambar, pakai latar gradient/pattern.',
     '- Musik tidak pernah autoplay (pengunjung menekan putar). Jangan mengarang informasi (alamat, harga, testimoni, kontak, statistik). Bila data kosong, kosongkan atau hapus bagiannya.',
     '- Menu utama dan kolom komentar ditambahkan Jadidaring dan tidak bisa diubah; jangan membuatnya.',
@@ -68,28 +68,29 @@
 
   var delivery = '';
 
-  function deliverySection(info, title) {
+  function deliverySection(info) {
     if (!info) {
-      return '\nPENGIRIMAN HASIL\n- Balas dengan blok json (dan blok html bila ada widget kustom). Pengguna menempel JSON di jadidaring.com/komunitas/halamanku (tombol Muat ke editor), lalu meninjau dan menerbitkannya.';
+      return '\nPENGIRIMAN HASIL\n- Balas dengan blok json. Pengguna menempel JSON itu di jadidaring.com/komunitas/halamanku (kotak "Tempel JSON dari AI"), lalu meninjau dan menerbitkannya.';
     }
-    var curl = "curl -sS -X POST " + info.endpoint + " -H 'Content-Type: application/json' -H 'X-Draft-Key: " + info.key + "' --data-binary @profil.json";
-    return [
+    var cur = info.config ? ['', 'PROFIL SAAT INI (JSON; ubah seperlunya sesuai permintaan, pertahankan yang tidak diminta berubah):', JSON.stringify(info.config)] : [];
+    return cur.concat([
       '',
-      'PENGIRIMAN HASIL (kunci sekali pakai, berlaku 60 menit)',
-      '- Setelah JSON selesai dan kamu periksa, kirim sebagai DRAFT:',
-      '  1) Jika kamu bisa membuat permintaan HTTP: POST ke ' + info.endpoint + ' dengan Content-Type: application/json dan isi {"key":"' + info.key + '","config":{...objek JSON profil...},"html":"<dokumen HTML widget kustom sebagai string, atau hilangkan kunci html>"}.',
-      '  2) Jika tidak bisa: balas dengan blok json (objek profil) dan, bila ada, blok html. Lalu blok bash berisi persis perintah ini setelah pengguna menyimpan JSON sebagai profil.json dengan bentuk {"config":{...},"html":"..."} (tambahkan "key":"' + info.key + '" bila kunci tidak dikirim lewat header):',
-      '     ' + curl,
-      '- Kunci ini hanya membuat DRAFT dan hangus setelah satu kali berhasil. Profil TIDAK tayang otomatis: pengguna meninjau di https://jadidaring.com/komunitas/halamanku lalu menekan Terbitkan atau Batal. Jangan membagikan kunci ini ke pihak lain dan jangan menaruhnya di dalam JSON atau HTML.',
-      '- Jika pengiriman gagal, tampilkan pesan error-nya dan berikan blok json serta perintah curl di atas.'
-    ].join('\n');
+      'PENGIRIMAN HASIL: SATU TAUTAN KLIK',
+      '- Setelah JSON final dan kamu periksa, balas dengan SATU tautan yang bisa diklik pengguna (tanpa kunci, tanpa rahasia). Bentuknya:',
+      '  ' + info.base + '?json=<JSON profil yang diminify (satu baris, tanpa spasi berlebih), di-URL-encode>',
+      '- Cara membuatnya: minify JSON, lalu percent-encode semua karakter selain huruf, angka, - _ . ~ (misal { jadi %7B, " jadi %22, spasi jadi %20, # jadi %23, / jadi %2F). Jangan menaruh JSON mentah di tautan.',
+      '- Jika kamu punya alat kode, boleh lebih pendek: ' + info.base + '?d=<base64url dari zlib-compress JSON minify>. Contoh Python: base64.urlsafe_b64encode(zlib.compress(json.dumps(cfg,separators=(",",":")).encode())).decode().rstrip("=")',
+      '- Jika tidak yakin bisa menyandi dengan benar, JANGAN mengarang: balas saja dengan blok json agar pengguna menempelnya di "Tempel JSON dari AI".',
+      '- Jaga tautan di bawah sekitar 6000 karakter: singkatkan teks, kurangi item galeri/tautan bila perlu. Tulis tautan di baris sendiri sebagai teks biasa (jangan di dalam blok kode) lalu tambahkan blok json yang sama sebagai cadangan.',
+      '- Tautan itu hanya membuka PRATINJAU; pengguna harus masuk, menekan Simpan sebagai draft, lalu memilih Terbitkan. Profil tidak pernah tayang otomatis.'
+    ]).join('\n');
   }
 
   function mintKey() {
-    if (!form.dataset.mint) { return Promise.resolve(null); }
-    return fetch(form.dataset.mint, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': form.dataset.csrf, 'Accept': 'application/json' } })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .catch(function () { return null; });
+    if (!form.dataset.import) { return Promise.resolve(null); }
+    var cfg = null;
+    try { cfg = JSON.parse(form.dataset.config || 'null'); } catch (e) { cfg = null; }
+    return Promise.resolve({ base: form.dataset.import, config: cfg });
   }
 
   function build() {
@@ -134,9 +135,9 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     mintKey().then(function (info) {
-      delivery = deliverySection(info, val('title'));
+      delivery = deliverySection(info);
       prompt = build(); preview.value = prompt; result.hidden = false;
-      say(info ? 'Kunci draft sekali pakai (60 menit) sudah disisipkan di prompt. Jangan dibagikan.' : (form.dataset.mint ? 'Kunci draft belum tersedia (batas pembuatan tercapai). Prompt tanpa kirim otomatis: tempel hasilnya di Halaman Saya.' : 'Masuk untuk menyertakan kunci kirim draft otomatis.'));
+      say(info ? 'Prompt siap: AI akan membalas dengan satu tautan klik ke pratinjau profilmu (JSON profilmu saat ini ikut disertakan).' : 'Masuk agar AI bisa membalas dengan tautan klik langsung. Tanpa masuk, tempel JSON hasilnya di editor.');
       result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     });
   });
@@ -153,14 +154,16 @@
     });
   });
 
-  document.getElementById('pb-chatgpt').addEventListener('click', function () {
-    var url = 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
+  function openPrefill(base, name) {
+    var url = base + encodeURIComponent(prompt).replace(/%20/g, '+');
     if (url.length > 7500) {
-      // Too long for a URL: fall back to copy + open.
-      copy().then(function () { say('Prompt terlalu panjang untuk tautan. Prompt disalin, tinggal tempel di ChatGPT.'); window.open('https://chatgpt.com/', '_blank', 'noopener'); });
+      // Too long for a URL: copy, then open the empty chat.
+      copy().then(function () { say('Prompt terlalu panjang untuk tautan. Prompt disalin, tinggal tempel di ' + name + '.'); window.open(base.split('?')[0], '_blank', 'noopener'); });
       return;
     }
-    say('Membuka ChatGPT dengan prompt terisi…');
+    say('Membuka ' + name + ' dengan prompt terisi. Tekan kirim di sana.');
     window.open(url, '_blank', 'noopener');
-  });
+  }
+  document.getElementById('pb-chatgpt').addEventListener('click', function () { openPrefill('https://chatgpt.com/?q=', 'ChatGPT'); });
+  document.getElementById('pb-claude').addEventListener('click', function () { openPrefill('https://claude.ai/new?q=', 'Claude'); });
 })();

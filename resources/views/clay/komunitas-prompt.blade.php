@@ -10,7 +10,7 @@
 
         <section class="clay-card clay-card--lavender pb-card" aria-labelledby="pb-h">
             <h2 id="pb-h">Buat Profilmu dengan AI</h2>
-            <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-mint="/komunitas/draft-key" data-csrf="{{ csrf_token() }}" data-endpoint="https://{{ \App\Services\TenantPath::host() }}/api/komunitas/draft"@endauth>
+            <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-import="https://{{ \App\Services\TenantPath::host() }}/komunitas/halamanku/import" data-config='@json($currentConfig)'@endauth>
                 <div class="pb-grid">
                     <div><label for="pb-type">Jenis halaman / tujuan</label>
                         <select class="clay-input" id="pb-type" name="type">
@@ -68,6 +68,7 @@
                 <div class="clay-actions">
                     <button type="button" class="clay-btn clay-btn--primary" id="pb-chatgpt">Buka di ChatGPT</button>
                     <button type="button" class="clay-btn clay-btn--secondary" id="pb-gemini">Buka di Gemini</button>
+                    <button type="button" class="clay-btn clay-btn--secondary" id="pb-claude">Buka di Claude</button>
                     <button type="button" class="clay-btn clay-btn--secondary" id="pb-copy">Salin prompt</button>
                 </div>
                 <p id="pb-toast" class="news-comments__msg" role="status" aria-live="polite"></p>

@@ -24,13 +24,13 @@
         @endif
 
         <div class="pf-editor">
-        <form id="pf-edit" class="clay-form pf-edit" method="post" action="/komunitas/halamanku" enctype="multipart/form-data"
+        <form id="pf-edit" class="clay-form pf-edit" novalidate method="post" action="/komunitas/halamanku" enctype="multipart/form-data"
               data-types='@json(\App\Services\ProfileConfig::WIDGETS)' data-initial='@json($config)' data-csrf="{{ csrf_token() }}" data-preview="/komunitas/halamanku/pratinjau">
             @csrf
             <input type="hidden" name="config" id="pf-config">
 
-            <details class="clay-card clay-card--lavender" open><summary>Impor dari AI</summary>
-                <p class="news-meta">Tempel JSON dari AI (isi blok <code>json</code>), lalu muat ke editor.</p>
+            <details class="clay-card clay-card--lavender" open><summary>Tempel JSON dari AI</summary>
+                <p class="news-meta">Tempel JSON dari AI (isi blok <code>json</code>), lalu muat ke editor. Kalau AI memberi <em>tautan</em> impor, cukup klik tautannya.</p>
                 <textarea class="clay-input" id="pf-import" rows="4" spellcheck="false" aria-label="JSON dari AI"></textarea>
                 <div class="clay-actions"><button class="clay-btn clay-btn--secondary" type="button" id="pf-import-go">Muat ke editor</button></div>
                 <p id="pf-import-msg" class="news-comments__msg" role="status" aria-live="polite"></p>
@@ -50,11 +50,11 @@
                     <div><label for="e-c1">Warna 1</label><input class="pb-color" type="color" id="e-c1" data-path="theme.bg.color"></div>
                     <div><label for="e-c2">Warna 2 (gradasi)</label><input class="pb-color" type="color" id="e-c2" data-path="theme.bg.color2"></div>
                 </div>
-                <label for="e-an">Sudut gradasi: derajat</label><input class="clay-input" type="number" id="e-an" data-path="theme.bg.angle" min="0" max="360">
+                <label for="e-an">Sudut gradasi: derajat</label><input class="clay-input" type="number" step="any" id="e-an" data-path="theme.bg.angle" min="0" max="360">
                 <label for="e-bi">URL gambar latar (https)</label><input class="clay-input" id="e-bi" data-path="theme.bg.image" inputmode="url">
                 <label for="e-bp">Pola</label>
                 <select class="clay-input" id="e-bp" data-path="theme.bg.pattern"><option value="none">Tanpa pola</option><option value="dots">Titik</option><option value="grid">Kotak</option><option value="stripes">Garis</option></select>
-                <label for="e-ov">Gelapkan latar (0–0.8)</label><input class="clay-input" type="number" step="0.05" min="0" max="0.8" id="e-ov" data-path="theme.bg.overlay">
+                <label for="e-ov">Gelapkan latar (0–0.8)</label><input class="clay-input" type="number" step="any" min="0" max="0.8" id="e-ov" data-path="theme.bg.overlay">
                 <label class="pb-check"><input type="checkbox" data-path="theme.bg.fixed"> Latar tetap saat menggulir</label>
             </details>
 
@@ -67,9 +67,9 @@
                 <label for="e-t4">Warna tautan</label><input class="pb-color" type="color" id="e-t4" data-path="theme.colors.link">
                 <label for="e-f">Font</label>
                 <select class="clay-input" id="e-f" data-path="theme.font">@foreach (\App\Services\ProfileConfig::FONTS as $f)<option>{{ $f }}</option>@endforeach</select>
-                <label for="e-r">Sudut kartu (0–40): px</label><input class="clay-input" type="number" id="e-r" data-path="theme.card.radius" min="0" max="40">
-                <label for="e-o">Kepekatan kartu (0.3–1)</label><input class="clay-input" type="number" step="0.05" id="e-o" data-path="theme.card.opacity" min="0.3" max="1">
-                <label for="e-bl">Blur kartu (0–24): px</label><input class="clay-input" type="number" id="e-bl" data-path="theme.card.blur" min="0" max="24">
+                <label for="e-r">Sudut kartu (0–40): px</label><input class="clay-input" type="number" step="any" id="e-r" data-path="theme.card.radius" min="0" max="40">
+                <label for="e-o">Kepekatan kartu (0.3–1)</label><input class="clay-input" type="number" step="any" id="e-o" data-path="theme.card.opacity" min="0.3" max="1">
+                <label for="e-bl">Blur kartu (0–24): px</label><input class="clay-input" type="number" step="any" id="e-bl" data-path="theme.card.blur" min="0" max="24">
                 <label for="e-cu">URL kursor kustom (https, gambar kecil)</label><input class="clay-input" id="e-cu" data-path="theme.cursor.url" inputmode="url">
             </details>
 
@@ -92,7 +92,10 @@
                 <label for="cf">atau unggah file .html</label><input class="clay-input" id="cf" type="file" name="file" accept=".html,.htm,.txt">
             </details>
 
-            <div class="clay-actions clay-actions--bar"><button class="clay-btn clay-btn--primary" type="submit">Buat Draft &amp; Pratinjau</button></div>
+            <div class="clay-actions clay-actions--bar">
+                <button class="clay-btn clay-btn--primary clay-btn--cta" type="submit">Simpan draft &amp; lihat pratinjau</button>
+                <span class="pf-bar-note">Belum tayang. Setelah ini kamu memilih Terbitkan atau Batal.</span>
+            </div>
         </form>
         <aside class="pf-live-wrap" aria-label="Pratinjau langsung"><h2>Pratinjau langsung</h2><div id="pf-live" class="pf-live"></div></aside>
         </div>

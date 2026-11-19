@@ -152,6 +152,21 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException $e, Request $request) {
+            if ($request->expectsJson() || $request->is('api/*') || $request->is('*/api/game/*')) {
+                return null;
+            }
+
+            $wait = (int) ($e->getHeaders()['Retry-After'] ?? 30);
+            $msg = 'Terlalu banyak permintaan dalam waktu singkat. Tunggu sekitar '.max(1, $wait).' detik lalu coba lagi.';
+
+            if ($request->is('komunitas/*') && ! $request->isMethod('GET') && ! $request->isMethod('HEAD') && $request->hasSession()) {
+                return redirect()->back(fallback: '/')->withInput($request->except(['password', 'password_confirmation', 'file']))->withErrors(['throttle' => $msg]);
+            }
+
+            return response($msg, 429, ['Retry-After' => (string) $wait, 'Content-Type' => 'text/plain; charset=UTF-8']);
+        });
+
         $exceptions->render(function (NotFoundHttpException $exception, Request $request) {
             if ($request->is('api/admin/*')) {
                 return response()->json(['message' => 'Client not found.'], 404);

@@ -70,7 +70,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/keluar', [AuthController::class, 'logout'])->name('member.logout');
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
     Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
-    Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:10,60')->name('community.save');
+    Route::get('/komunitas/halamanku/import', [CommunityController::class, 'importForm'])->middleware('throttle:60,1')->name('community.import');
+    Route::post('/komunitas/halamanku/import', [CommunityController::class, 'importSave'])->middleware('throttle:30,1')->name('community.import.save');
+    Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:30,1')->name('community.save');
     Route::post('/u/{username}/ikuti', [\App\Http\Controllers\FollowController::class, 'follow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.follow');
     Route::post('/u/{username}/berhenti-mengikuti', [\App\Http\Controllers\FollowController::class, 'unfollow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.unfollow');
     Route::post('/u/{username}/komentar', [CommunityController::class, 'comment'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1')->name('community.comment');
@@ -79,7 +81,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/u/{username}/lapor', [CommunityController::class, 'report'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:10,1');
     Route::post('/komunitas/halamanku/pratinjau', [CommunityController::class, 'preview'])->middleware('throttle:60,1')->name('community.preview');
     Route::post('/komunitas/draft-key', [CommunityController::class, 'mintKey'])->middleware('throttle:5,60')->name('community.draftkey');
-    Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:20,60')->name('community.draft.publish');
+    Route::post('/komunitas/halamanku/draft/terbitkan', [CommunityController::class, 'publishDraft'])->middleware('throttle:30,1')->name('community.draft.publish');
     Route::post('/komunitas/halamanku/draft/batal', [CommunityController::class, 'cancelDraft'])->name('community.draft.cancel');
     Route::post('/akun/nama', [AuthController::class, 'updateName'])->middleware('throttle:6,60')->name('member.account.name');
     Route::post('/akun/hapus', [AuthController::class, 'deleteAccount'])->middleware('throttle:5,60')->name('member.account.delete');

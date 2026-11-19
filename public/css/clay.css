@@ -787,7 +787,11 @@ body {
 .clay-btn--secondary { background: var(--clay-surface); color: var(--clay-ink-2); box-shadow: var(--clay-out), var(--clay-in), inset 0 0 0 2px color-mix(in srgb, var(--clay-lavender) 70%, transparent); }
 .clay-btn--danger { background: var(--clay-danger); color: #fff; }
 .clay-btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
-.clay-actions--bar { position: sticky; bottom: 76px; z-index: 5; padding: 10px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--clay-bg) 88%, transparent); backdrop-filter: blur(6px); justify-content: center; }
+.clay-actions--bar { position: sticky; bottom: 12px; z-index: 5; padding: 12px 14px; border-radius: var(--radius-md); background: var(--clay-surface, #fff); box-shadow: var(--clay-out); flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; }
+.clay-actions--solid { margin: 12px 0; flex-wrap: wrap; }
+.clay-btn--cta { background: #5b3fa6; color: #fff; opacity: 1; font-weight: 800; }
+.clay-btn--cta:hover, .clay-btn--cta:focus-visible { background: #4a3190; color: #fff; }
+.pf-bar-note { font-size: .85rem; color: var(--clay-ink-2); }
 @media (max-width: 480px) { .clay-actions, .pb-actions { flex-direction: column; } .clay-actions .clay-btn, .pb-actions .clay-btn { width: 100%; } .clay-actions--bar { border-radius: var(--radius-md); } }
 .clay-danger-zone { margin-top: 18px; } .clay-danger-zone summary { font-weight: 800; cursor: pointer; color: var(--clay-danger); }
 /* Editor fields: label above a full-width control, not inline. */

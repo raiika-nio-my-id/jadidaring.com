@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\MemberFrameToken;
 use App\Services\MemberPageSanitizer;
 use App\Services\ProfileConfig;
+use App\Services\ProfilePayload;
 use App\Services\TenantPath;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -55,6 +56,7 @@ class CommunityController extends Controller
             'metaDescription' => 'Buat profil ala Friendster dengan bantuan AI: latar, tema, musik, dan widget. Pakai prompt siap pakai untuk ChatGPT atau Gemini.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/komunitas/buat',
             'mine' => auth()->check() ? MemberPage::query()->where('user_id', auth()->id())->first() : null,
+            'currentConfig' => auth()->check() ? (MemberPageDraft::query()->where('user_id', auth()->id())->first()?->profileConfig() ?? MemberPage::query()->where('user_id', auth()->id())->first()?->profileConfig() ?? ProfileConfig::defaults()) : null,
         ]);
     }
 
@@ -188,6 +190,51 @@ class CommunityController extends Controller
         }
 
         return response()->json(['ok' => true, 'status' => 'draft', 'review_url' => 'https://'.TenantPath::host().'/komunitas/halamanku', 'message' => 'Draft tersimpan. Buka review_url (masuk sebagai pemilik) untuk meninjau, lalu Terbitkan atau Batal.'], 201, $cors);
+    }
+
+    /** GET never writes: it only renders a validated preview of the link's payload with a CSRF-protected save form. */
+    public function importForm(Request $request): View
+    {
+        $user = $request->user();
+        $raw = (string) ($request->query('d') ?? $request->query('json') ?? '');
+        $config = null;
+        $error = null;
+
+        try {
+            $config = ProfileConfig::validate(ProfilePayload::decode($raw), false);
+        } catch (\InvalidArgumentException $e) {
+            $error = $e->getMessage();
+        } catch (ValidationException $e) {
+            $error = (string) collect($e->errors())->flatten()->first();
+        }
+
+        return view('clay.komunitas-import', [
+            'metaTitle' => 'Impor profil dari AI — Jadidaring', 'metaDescription' => 'Tinjau profil dari AI sebelum disimpan sebagai draft.',
+            'noindex' => true, 'owner' => $user, 'config' => $config, 'error' => $error,
+            'friendPages' => $config ? $this->friendPages($config) : [],
+            'views' => (int) MemberPage::query()->where('user_id', $user->id)->value('views'),
+        ]);
+    }
+
+    /** Creates a DRAFT only (never publishes). The config is re-validated server-side. */
+    public function importSave(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $data = $request->validate(['config' => ['required', 'string', 'max:120000']]);
+
+        try {
+            $config = $this->normalizeConfig(ProfilePayload::decode($data['config']), '');
+        } catch (\InvalidArgumentException $e) {
+            return redirect('/komunitas/halamanku')->withErrors(['config' => $e->getMessage()]);
+        }
+
+        $existing = MemberPageDraft::query()->where('user_id', $user->id)->first();
+        MemberPageDraft::query()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['title' => $this->titleFor('', $user), 'html' => '', 'source' => 'paste', 'config' => $config],
+        );
+
+        return redirect('/komunitas/halamanku')->with('status', 'Draft dari AI tersimpan. Belum tayang sampai kamu menekan Terbitkan.'.($existing ? ' (Draft sebelumnya diganti.)' : ''));
     }
 
     public function publishDraft(Request $request): RedirectResponse
