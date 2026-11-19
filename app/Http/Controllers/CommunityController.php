@@ -156,30 +156,6 @@ class CommunityController extends Controller
         return $response;
     }
 
-    /** The previous form editor, kept reachable as a fallback while the live editor rolls out. */
-    public function editClassic(Request $request): View
-    {
-        $user = $request->user();
-        $page = MemberPage::query()->where('user_id', $user->id)->first();
-        $draft = MemberPageDraft::query()->where('user_id', $user->id)->first();
-        $config = $draft ? $draft->profileConfig() : ($page?->profileConfig() ?? ProfileConfig::defaults());
-        $html = $draft ? (string) $draft->html : (string) ($page?->html ?? '');
-
-        return view('clay.komunitas-buat', [
-            'metaTitle' => 'Edit Profil — Jadidaring',
-            'metaDescription' => 'Atur tampilan profilmu.',
-            'noindex' => true,
-            'page' => $page,
-            'draft' => $draft,
-            'draftFrame' => $draft && trim((string) $draft->html) !== '' ? $this->draftFrame($request, $user, $draft) : null,
-            'draftConfig' => $draft?->profileConfig(),
-            'config' => $config,
-            'customHtml' => $html,
-            'friendPages' => $this->friendPages($draft ? $draft->profileConfig() : $config),
-            'owner' => $user,
-        ]);
-    }
-
     /** @return array<string, true> usernames of published member profiles referenced by the friends widget */
     private function friendPages(array $config): array
     {

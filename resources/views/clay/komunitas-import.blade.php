@@ -7,7 +7,7 @@
             <h1 class="clay-section__title">Pratinjau dari AI</h1>
             <div class="pf-alert pf-alert--err" role="alert">
                 <strong>Tautan ini tidak bisa dibaca.</strong> {{ $error }}
-                <p class="news-meta">Tautan yang sangat panjang kadang terpotong oleh aplikasi chat. Minta AI menampilkan JSON-nya, lalu tempel di kotak <strong>Tempel JSON dari AI</strong> pada halaman edit.</p>
+                <p class="news-meta">Tautan yang sangat panjang kadang terpotong oleh aplikasi chat. Minta AI menampilkan JSON-nya, lalu di halaman edit buka <strong>✨ Buat pakai AI</strong> dan pakai kotak <strong>Tempel JSON dari AI</strong>.</p>
             </div>
             <div class="clay-actions"><a class="clay-btn clay-btn--cta" href="/komunitas/halamanku">Buka editor</a></div>
         @else

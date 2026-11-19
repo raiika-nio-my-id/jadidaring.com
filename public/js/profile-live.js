@@ -266,7 +266,7 @@
       return { title: 'Buat pakai AI', hint: 'Minta ChatGPT, Claude, atau Gemini mendesain profilmu.', kids: [
         h('a', { cls: 'clay-btn clay-btn--cta le-add', href: '/komunitas/buat', text: '✨ Buka generator prompt' }),
         note('Setelah AI menjawab, klik tautan impor dari AI. Hasilnya terbuka di halaman ini untuk ditinjau.'),
-        field('Atau tempel JSON dari AI', 'Isi blok json saja, lalu tekan Muat.', ta, 'le-ai-json'),
+        field('Tempel JSON dari AI', 'Isi blok json saja, lalu tekan Muat.', ta, 'le-ai-json'),
         h('button', { type: 'button', cls: 'clay-btn clay-btn--secondary le-add', text: 'Muat ke profil', on: { click: function () {
           var raw = ta.value.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
           try {
@@ -482,7 +482,7 @@
       var sel = document.querySelector('.le-sel');
       if (sel && sel !== stage.querySelector('.pf')) {
         var r = sel.getBoundingClientRect(), room = window.innerHeight - panel.offsetHeight;
-        if (r.top < 70 || r.top > room - 60) window.scrollBy({ top: r.top - 80, behavior: 'smooth' });
+        if (r.top < 110 || r.top > room - 60) window.scrollBy({ top: r.top - 116, behavior: 'smooth' });
       }
     }
     var f = pBody.querySelector('input:not([type=hidden]):not(.sr-only),textarea,select,button');

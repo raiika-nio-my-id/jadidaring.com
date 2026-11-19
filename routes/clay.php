@@ -81,7 +81,7 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
     Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
     Route::post('/komunitas/halamanku/gambar', [CommunityController::class, 'uploadImage'])->middleware('throttle:profile-upload')->name('community.upload');
-    Route::get('/komunitas/halamanku/klasik', [CommunityController::class, 'editClassic'])->name('community.edit.classic');
+    Route::redirect('/komunitas/halamanku/klasik', '/komunitas/halamanku');
     Route::get('/komunitas/halamanku/import', [CommunityController::class, 'importForm'])->middleware('throttle:profile-preview')->name('community.import');
     Route::post('/komunitas/buat/simpan', [CommunityController::class, 'promptSave'])->middleware('throttle:profile-preview')->name('community.prompt.save');
     Route::post('/komunitas/buat/reset', [CommunityController::class, 'promptReset'])->middleware('throttle:profile-preview')->name('community.prompt.reset');

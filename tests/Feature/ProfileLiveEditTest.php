@@ -34,7 +34,7 @@ class ProfileLiveEditTest extends TestCase
             ->assertSee('data-edit="w:0"', false)->assertSee('data-edit="wall"', false)
             ->assertSee('Simpan draft')->assertSee('Terbitkan')->assertSee('Batal')->assertSee('Tambah kotak')
             ->assertSee('profile-live.js', false)->assertSee('Pengunjung');
-        $this->actingAs($u)->get($this->base().'/komunitas/halamanku/klasik')->assertOk()->assertSee('id="pf-edit"', false);
+        $this->actingAs($u)->get($this->base().'/komunitas/halamanku/klasik')->assertRedirect('/komunitas/halamanku');
     }
 
     public function test_boot_json_cannot_break_out_of_its_script_tag(): void

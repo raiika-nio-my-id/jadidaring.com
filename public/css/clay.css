@@ -1005,3 +1005,5 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .clay-me__tab { display: block; max-width: 100%; }
 .pf-head__text { flex: 1 1 auto; min-width: 0; }
 @media (max-width: 560px) { .pf-stats { justify-content: center; } }
+/* Flash message on a member profile: readable on any member background */
+.member-page > .news-comments__msg { display: inline-block; margin: 0 0 10px; padding: 8px 16px; border-radius: var(--radius-pill); background: var(--clay-surface); color: var(--clay-ink); font-weight: 700; box-shadow: var(--clay-out); }

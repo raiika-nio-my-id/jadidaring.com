@@ -94,7 +94,6 @@
             <h2>Komentar &amp; Testimoni</h2>
             <p class="news-comments__hint">Kolom komentar selalu ada di bawah profilmu dan tidak bisa dihapus. Pengunjung yang masuk bisa menulis di sini.</p>
         </section>
-        <p class="le-classic"><a href="/komunitas/halamanku/klasik">Pakai editor lama</a></p>
     </div>
 
     <aside id="le-panel" class="le-panel" aria-labelledby="le-panel-title" hidden>
