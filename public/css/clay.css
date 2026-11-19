@@ -839,6 +839,12 @@ html { -webkit-tap-highlight-color: transparent; }
 .clay-card .pf--fixed .pf-bg, .pf-live .pf--fixed .pf-bg { position: absolute; }
 .pf-inner { padding: 18px; display: grid; gap: 16px; }
 .pf-card { background: var(--pf-card); color: var(--pf-text); border-radius: var(--pf-radius); padding: 16px 18px; box-shadow: 0 6px 22px rgba(0,0,0,.12); -webkit-backdrop-filter: blur(var(--pf-blur)); backdrop-filter: blur(var(--pf-blur)); overflow-wrap: anywhere; }
+/* Fixed boxes (profile header, comment wall) are site-owned: always claymorphism, readable over any member background. */
+.pf-card.pf-head, .pf-wall { background: var(--clay-surface); color: var(--clay-ink); border-radius: var(--radius-lg, 24px); box-shadow: var(--clay-out), var(--clay-in); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.pf-card.pf-head { --pf-text: var(--clay-ink); --pf-link: var(--clay-lavender-ink); --pf-card: var(--clay-surface); padding: 20px 22px; }
+.pf-card.pf-head h1, .pf-card.pf-head h2 { color: var(--clay-ink); }
+.pf-card.pf-head .pf-avatar { box-shadow: var(--clay-out); }
+.pf-wall.clay-card { background: var(--clay-surface); }
 .pf a { color: var(--pf-link); }
 .pf h1, .pf h2 { font-family: var(--pf-font); margin: 0 0 6px; line-height: 1.2; }
 .pf h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: color-mix(in srgb, var(--pf-accent) 72%, var(--pf-text)); }
