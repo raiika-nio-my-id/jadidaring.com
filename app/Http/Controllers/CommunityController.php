@@ -56,6 +56,7 @@ class CommunityController extends Controller
             'metaDescription' => 'Buat profil ala Friendster dengan bantuan AI: latar, tema, musik, dan widget. Pakai prompt siap pakai untuk ChatGPT atau Gemini.',
             'canonicalUrl' => 'https://'.TenantPath::host().'/komunitas/buat',
             'mine' => auth()->check() ? MemberPage::query()->where('user_id', auth()->id())->first() : null,
+            'savedForm' => auth()->check() ? json_decode((string) DB::table('prompt_form_states')->where('user_id', auth()->id())->value('data'), true) : null,
             'currentConfig' => auth()->check() ? (MemberPageDraft::query()->where('user_id', auth()->id())->first()?->profileConfig() ?? MemberPage::query()->where('user_id', auth()->id())->first()?->profileConfig() ?? ProfileConfig::defaults()) : null,
         ]);
     }
@@ -192,16 +193,19 @@ class CommunityController extends Controller
         return response()->json(['ok' => true, 'status' => 'draft', 'review_url' => 'https://'.TenantPath::host().'/komunitas/halamanku', 'message' => 'Draft tersimpan. Buka review_url (masuk sebagai pemilik) untuk meninjau, lalu Terbitkan atau Batal.'], 201, $cors);
     }
 
-    /** GET never writes: it only renders a validated preview of the link's payload with a CSRF-protected save form. */
+    /** GET never writes: renders a validated preview of the link's payload; every value is auto-fixed, never a dead end. */
     public function importForm(Request $request): View
     {
         $user = $request->user();
         $raw = (string) ($request->query('d') ?? $request->query('json') ?? '');
         $config = null;
         $error = null;
+        $fixes = [];
 
         try {
-            $config = ProfileConfig::validate(ProfilePayload::decode($raw), false);
+            $candidate = ProfilePayload::decode($raw);
+            $config = ProfileConfig::validate($candidate, false);
+            $fixes = $this->fixes($candidate, $config);
         } catch (\InvalidArgumentException $e) {
             $error = $e->getMessage();
         } catch (ValidationException $e) {
@@ -209,23 +213,75 @@ class CommunityController extends Controller
         }
 
         return view('clay.komunitas-import', [
-            'metaTitle' => 'Impor profil dari AI — Jadidaring', 'metaDescription' => 'Tinjau profil dari AI sebelum disimpan sebagai draft.',
-            'noindex' => true, 'owner' => $user, 'config' => $config, 'error' => $error,
+            'metaTitle' => 'Pratinjau dari AI — Jadidaring', 'metaDescription' => 'Tinjau profil dari AI sebelum disimpan atau diterbitkan.',
+            'noindex' => true, 'owner' => $user, 'config' => $config, 'error' => $error, 'fixes' => $fixes,
             'friendPages' => $config ? $this->friendPages($config) : [],
             'views' => (int) MemberPage::query()->where('user_id', $user->id)->value('views'),
         ]);
     }
 
-    /** Creates a DRAFT only (never publishes). The config is re-validated server-side. */
+    /**
+     * Lists values the validator changed or dropped, so the preview can highlight them.
+     *
+     * @return list<array{path: string, from: string, to: string}>
+     */
+    private function fixes(array $raw, array $clean): array
+    {
+        $flat = static function (array $a, string $p = '') use (&$flat): array {
+            $o = [];
+            foreach ($a as $k => $v) {
+                $key = $p === '' ? (string) $k : $p.'.'.$k;
+                is_array($v) ? $o += $flat($v, $key) : $o[$key] = $v;
+            }
+
+            return $o;
+        };
+        $r = $flat($raw);
+        $c = $flat($clean);
+        $show = static fn ($v): string => is_bool($v) ? ($v ? 'ya' : 'tidak') : mb_substr((string) $v, 0, 60);
+        $out = [];
+
+        foreach ($r as $path => $v) {
+            if (str_starts_with($path, 'widgets.')) {
+                continue;
+            }
+            if (! array_key_exists($path, $c)) {
+                $out[] = ['path' => $path, 'from' => $show($v), 'to' => 'dibuang (tidak dikenal)'];
+            } elseif (is_numeric($v) && is_numeric($c[$path]) ? abs((float) $v - (float) $c[$path]) > 0.0001 : (is_string($v) && is_string($c[$path]) && strcasecmp($v, $c[$path]) !== 0)) {
+                $out[] = ['path' => $path, 'from' => $show($v), 'to' => $show($c[$path])];
+            }
+        }
+
+        $rw = count($raw['widgets'] ?? []);
+        $cw = count($clean['widgets'] ?? []);
+        if ($rw !== $cw) {
+            $out[] = ['path' => 'widgets', 'from' => $rw.' widget', 'to' => $cw.' widget (yang tidak valid dibuang)'];
+        }
+
+        return array_slice($out, 0, 20);
+    }
+
+    /** POST: action=draft saves a draft; action=publish goes live. Config is re-validated server-side. */
     public function importSave(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $data = $request->validate(['config' => ['required', 'string', 'max:120000']]);
+        $data = $request->validate(['config' => ['required', 'string', 'max:120000'], 'action' => ['nullable', 'in:draft,publish']]);
 
         try {
             $config = $this->normalizeConfig(ProfilePayload::decode($data['config']), '');
         } catch (\InvalidArgumentException $e) {
             return redirect('/komunitas/halamanku')->withErrors(['config' => $e->getMessage()]);
+        }
+
+        if (($data['action'] ?? 'draft') === 'publish') {
+            $existing = MemberPage::query()->where('user_id', $user->id)->first();
+            MemberPage::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['title' => $existing?->title ?: $this->titleFor('', $user), 'html' => (string) ($existing?->html ?? ''), 'config' => $config, 'status' => $this->keepHidden($user->id)],
+            );
+            MemberPageDraft::query()->where('user_id', $user->id)->delete();
+
+            return redirect('/u/'.$user->username)->with('status', 'Profil diperbarui.');
         }
 
         $existing = MemberPageDraft::query()->where('user_id', $user->id)->first();
@@ -235,6 +291,25 @@ class CommunityController extends Controller
         );
 
         return redirect('/komunitas/halamanku')->with('status', 'Draft dari AI tersimpan. Belum tayang sampai kamu menekan Terbitkan.'.($existing ? ' (Draft sebelumnya diganti.)' : ''));
+    }
+
+    /** Remembers the prompt generator form per member. */
+    public function promptSave(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->validate(['data' => ['required', 'array'], 'data.*' => ['nullable']]);
+        $json = json_encode($data['data'], JSON_UNESCAPED_UNICODE);
+        abort_if(strlen((string) $json) > 20000, 422);
+        $now = now();
+        DB::table('prompt_form_states')->upsert([['user_id' => $request->user()->id, 'data' => $json, 'created_at' => $now, 'updated_at' => $now]], ['user_id'], ['data', 'updated_at']);
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function promptReset(Request $request): \Illuminate\Http\JsonResponse
+    {
+        DB::table('prompt_form_states')->where('user_id', $request->user()->id)->delete();
+
+        return response()->json(['ok' => true]);
     }
 
     public function publishDraft(Request $request): RedirectResponse

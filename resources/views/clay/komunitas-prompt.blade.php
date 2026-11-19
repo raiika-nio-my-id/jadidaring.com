@@ -10,7 +10,7 @@
 
         <section class="clay-card clay-card--lavender pb-card" aria-labelledby="pb-h">
             <h2 id="pb-h">Buat Profilmu dengan AI</h2>
-            <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-import="https://{{ \App\Services\TenantPath::host() }}/komunitas/halamanku/import" data-config='@json($currentConfig)'@endauth>
+            <form id="pb-form" class="clay-form pb-form" autocomplete="off"@auth data-import="https://{{ \App\Services\TenantPath::host() }}/komunitas/halamanku/import" data-config='@json($currentConfig)' data-csrf="{{ csrf_token() }}" data-save="/komunitas/buat/simpan" data-reset="/komunitas/buat/reset" data-saved='@json($savedForm)'@endauth>
                 <div class="pb-grid">
                     <div><label for="pb-type">Jenis halaman / tujuan</label>
                         <select class="clay-input" id="pb-type" name="type">
@@ -60,7 +60,8 @@
                 </div>
                 <label for="pb-extra">Arahan tambahan (opsional)</label>
                 <textarea class="clay-input" id="pb-extra" name="extra" rows="2" maxlength="600"></textarea>
-                <div class="clay-actions"><button class="clay-btn clay-btn--primary" type="submit">Buat Prompt</button></div>
+                <div class="clay-actions"><button class="clay-btn clay-btn--primary" type="submit">Buat Prompt</button><button class="clay-btn clay-btn--secondary" type="button" id="pb-reset">Ulang dari awal</button></div>
+                <p class="news-meta" id="pb-saved-note">@auth Isianmu tersimpan otomatis di akunmu. @else Isianmu tersimpan di peramban ini. @endauth</p>
             </form>
 
             <div id="pb-result" hidden>

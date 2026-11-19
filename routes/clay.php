@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/akun', [AuthController::class, 'account'])->name('member.account');
     Route::get('/komunitas/halamanku', [CommunityController::class, 'edit'])->name('community.edit');
     Route::get('/komunitas/halamanku/import', [CommunityController::class, 'importForm'])->middleware('throttle:profile-preview')->name('community.import');
+    Route::post('/komunitas/buat/simpan', [CommunityController::class, 'promptSave'])->middleware('throttle:profile-preview')->name('community.prompt.save');
+    Route::post('/komunitas/buat/reset', [CommunityController::class, 'promptReset'])->middleware('throttle:profile-preview')->name('community.prompt.reset');
     Route::post('/komunitas/halamanku/import', [CommunityController::class, 'importSave'])->middleware('throttle:profile-save')->name('community.import.save');
     Route::post('/komunitas/halamanku', [CommunityController::class, 'save'])->middleware('throttle:profile-save')->name('community.save');
     Route::post('/u/{username}/ikuti', [\App\Http\Controllers\FollowController::class, 'follow'])->where('username', '[a-z0-9_]{3,20}')->middleware('throttle:30,1')->name('community.follow');

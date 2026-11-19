@@ -145,4 +145,50 @@
   }
   document.getElementById('pb-chatgpt').addEventListener('click', function () { openPrefill('https://chatgpt.com/?q=', 'ChatGPT'); });
   document.getElementById('pb-claude').addEventListener('click', function () { openPrefill('https://claude.ai/new?q=', 'Claude'); });
+
+  // Persist every field: per member on the server, per browser (localStorage) as fallback and for guests.
+  var LS = 'jd-prompt-form-v1';
+  function snapshot() {
+    var d = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.type === 'submit' || el.type === 'button') return;
+      if (el.type === 'checkbox') { (d[el.name] = d[el.name] || []); if (el.checked) d[el.name].push(el.value); }
+      else d[el.name] = el.value;
+    });
+    return d;
+  }
+  function restore(d) {
+    if (!d || typeof d !== 'object') return;
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || !(el.name in d)) return;
+      if (el.type === 'checkbox') el.checked = Array.isArray(d[el.name]) && d[el.name].indexOf(el.value) >= 0;
+      else if (el.tagName === 'SELECT') { for (var i = 0; i < el.options.length; i++) if (el.options[i].value === d[el.name]) { el.selectedIndex = i; break; } }
+      else el.value = d[el.name];
+    });
+    showDesc();
+  }
+  var saved = null;
+  try { saved = form.dataset.saved ? JSON.parse(form.dataset.saved) : null; } catch (e) { saved = null; }
+  if (!saved) { try { saved = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (e) { saved = null; } }
+  restore(saved);
+
+  var saveTimer = null;
+  function persist() {
+    var d = snapshot();
+    try { localStorage.setItem(LS, JSON.stringify(d)); } catch (e) { /* storage may be blocked */ }
+    if (form.dataset.save) {
+      fetch(form.dataset.save, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': form.dataset.csrf }, body: JSON.stringify({ data: d }) }).catch(function () {});
+    }
+  }
+  function later() { clearTimeout(saveTimer); saveTimer = setTimeout(persist, 700); }
+  form.addEventListener('input', later); form.addEventListener('change', later);
+
+  document.getElementById('pb-reset').addEventListener('click', function () {
+    if (!window.confirm('Hapus semua isian dan mulai dari awal?')) return;
+    form.reset(); sel.selectedIndex = 0; showDesc();
+    try { localStorage.removeItem(LS); } catch (e) { /* ignore */ }
+    if (form.dataset.reset) { fetch(form.dataset.reset, { method: 'POST', credentials: 'same-origin', headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': form.dataset.csrf } }).catch(function () {}); }
+    result.hidden = true; prompt = '';
+    document.getElementById('pb-saved-note').textContent = 'Semua isian dihapus. Silakan mulai dari awal.';
+  });
 })();
