@@ -1170,3 +1170,11 @@ details[open] .analytics-summary::before { content: '▾ '; }
     .analytics-card-value { font-size: 1.7rem; }
 }
 
+
+/* Theme switch: dim like a lamp */
+:root.jd-theme-vt::view-transition-group(root) { animation-duration: .6s; }
+:root.jd-theme-vt::view-transition-old(root), :root.jd-theme-vt::view-transition-new(root) { animation-duration: .6s; animation-timing-function: ease-in-out; mix-blend-mode: normal; }
+:root.jd-theme-fade *, :root.jd-theme-fade *::before, :root.jd-theme-fade *::after { transition: background-color .6s ease-in-out, color .6s ease-in-out, border-color .6s ease-in-out, box-shadow .6s ease-in-out, fill .6s ease-in-out, stroke .6s ease-in-out !important; }
+@keyframes jd-spin { from { transform: rotate(-110deg) scale(.8); } to { transform: none; } }
+.theme-toggle.jd-spin svg { animation: jd-spin .6s cubic-bezier(.3,.8,.3,1); }
+@media (prefers-reduced-motion: reduce) { .theme-toggle.jd-spin svg { animation: none; } }

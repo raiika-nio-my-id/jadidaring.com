@@ -20,6 +20,30 @@
         syncButtons(theme);
     }
 
+    // Dimming-lamp switch: ~600ms crossfade (View Transition, else a temporary transition class). Instant under reduced motion.
+    const root = document.documentElement;
+    let fadeTimer = null;
+    function swapTheme(next) {
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('[data-theme-toggle]').forEach((b) => {
+            if (reduce) { return; }
+            b.classList.remove('jd-spin'); void b.offsetWidth; b.classList.add('jd-spin');
+            setTimeout(() => b.classList.remove('jd-spin'), 700);
+        });
+        if (reduce) { applyTheme(next); return; }
+        clearTimeout(fadeTimer);
+        if (document.startViewTransition) {
+            root.classList.add('jd-theme-vt');
+            const t = document.startViewTransition(() => { applyTheme(next); });
+            const done = () => root.classList.remove('jd-theme-vt');
+            t.finished.then(done, done);
+            return;
+        }
+        root.classList.add('jd-theme-fade');
+        applyTheme(next);
+        fadeTimer = setTimeout(() => root.classList.remove('jd-theme-fade'), 750);
+    }
+
     window.__setTheme = function (theme) {
         const next = theme === 'dark' ? 'dark' : 'light';
         try {
@@ -27,7 +51,7 @@
         } catch (error) {
             // Ignore private-mode storage failures.
         }
-        applyTheme(next);
+        swapTheme(next);
     };
 
     window.__toggleTheme = function () {

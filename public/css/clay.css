@@ -1137,3 +1137,12 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .jd-chips > .jd-jig { animation: jd-jig .42s cubic-bezier(.3,.7,.4,1); }
 .jd-chips > .jd-deflate { animation: jd-deflate .32s ease-out; }
 @media (prefers-reduced-motion: reduce) { .jd-chips > .jd-jig, .jd-chips > .jd-deflate { animation: none !important; } }
+
+/* ===== Theme switch: dim like a lamp (own commit) ===== */
+:root.jd-theme-vt::view-transition-group(root) { animation-duration: .6s; }
+:root.jd-theme-vt::view-transition-old(root), :root.jd-theme-vt::view-transition-new(root) { animation-duration: .6s; animation-timing-function: ease-in-out; mix-blend-mode: normal; }
+:root.jd-theme-vt .clay-header, :root.jd-theme-vt .clay-main, :root.jd-theme-vt .clay-bottom-nav, :root.jd-theme-vt .clay-nav__link, :root.jd-theme-vt .clay-bottom-nav__item { view-transition-name: none !important; }
+:root.jd-theme-fade *, :root.jd-theme-fade *::before, :root.jd-theme-fade *::after { transition: background-color .6s ease-in-out, color .6s ease-in-out, border-color .6s ease-in-out, box-shadow .6s ease-in-out, fill .6s ease-in-out, stroke .6s ease-in-out !important; }
+@keyframes jd-spin { from { transform: rotate(-110deg) scale(.8); } to { transform: none; } }
+.theme-toggle.jd-spin svg { animation: jd-spin .6s cubic-bezier(.3,.8,.3,1); }
+@media (prefers-reduced-motion: reduce) { .theme-toggle.jd-spin svg { animation: none; } }
