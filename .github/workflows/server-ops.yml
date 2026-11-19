@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-oauth, set-mail, delete-test-user]
+        options: [set-ga4, set-google-oauth, set-mail, mail-test, delete-test-user]
       value:
         description: "set-ga4: measurement id (G-XXXX). delete-test-user: username (tmp + digits only)"
         required: false
@@ -25,6 +25,7 @@ jobs:
         run: |
           case "$ACTION" in
             set-ga4) [[ "$VALUE" =~ ^G-[A-Z0-9]{4,20}$ ]] || { echo "bad GA4 id"; exit 1; } ;;
+            mail-test) [[ "$VALUE" =~ ^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$ ]] || { echo "bad email"; exit 1; } ;;
             delete-test-user) [[ "$VALUE" =~ ^tmp[0-9]{3,20}$ ]] || { echo "username must match tmp<digits>"; exit 1; } ;;
           esac
       - name: Run on the server
@@ -67,6 +68,9 @@ jobs:
                 docker exec singlepage-app php artisan cache:clear --no-ansi || true
                 grep -E '^(GA4_MEASUREMENT_ID|GOOGLE_CLIENT_ID|MAIL_MAILER|MAIL_HOST|MAIL_PORT|MAIL_FROM_ADDRESS)=' .env | sed -E 's/=(.{12}).*/=\1…/'
                 grep -c '^\(GOOGLE_CLIENT_SECRET\|MAIL_PASSWORD\)=.\+' .env || true
+                ;;
+              mail-test)
+                docker exec -e TO="$VALUE" singlepage-app php artisan mail:test --no-ansi
                 ;;
               delete-test-user)
                 docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi
