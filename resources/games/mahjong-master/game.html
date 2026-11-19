@@ -1,0 +1,2131 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mahjong Solitaire & Multiplayer &#x2014; Jadidaring Canvas Game</title>
+    <meta name="description" content="Mainkan game Mahjong klasik responsif berbasis HTML5 Canvas. Dukungan mode latihan offline dan duel multiplayer online.">
+    <script type="application/json" id="website-config">
+    {
+        "site": {
+            "type": "game",
+            "name": "Mahjong Master",
+            "tagline": "Seni Strategi & Ketelitian Ubin Klasik",
+            "description": "Game Mahjong Solitaire premium berbasis Canvas dengan visual 2.5D tajam, generator teka-teki yang selalu dapat dipecahkan, efek audio prosedural, dan dukungan multiplayer Jadidaring.",
+            "lang": "id"
+        },
+        "game": {
+            "title": "Mahjong Solitaire",
+            "defaultLayout": "turtle",
+            "timeLimitSeconds": 1200,
+            "theme": {
+                "tableColor": "#0d3b24",
+                "tileFace": "#fcf8ef",
+                "tileSide": "#e4d9c0",
+                "tileBack": "#1e6b42"
+            }
+        },
+        "contact": {
+            "email": "support@jadidaring.com"
+        },
+        "footer": {
+            "termsUrl": "/syarat-ketentuan",
+            "copyrightYear": 2026,
+            "disclaimer": "Platform ini disediakan untuk hiburan dan asah otak. Semua sesi online diisolasi per subdomain."
+        }
+    }
+    </script>
+    <style>
+        :root {
+            --bg-table: #0d3320;
+            --bg-table-dark: #071f13;
+            --felt-pattern: radial-gradient(circle at 50% 50%, #154a2e 0%, #0b2c1b 70%, #06190f 100%);
+            --wood-dark: #2a1508;
+            --wood-border: #4a2711;
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-hover: #fae07a;
+            --text-light: #f4f6f0;
+            --text-dim: #a4b3a6;
+            --tile-shadow: rgba(0, 0, 0, 0.45);
+            --tile-highlight: rgba(255, 255, 200, 0.4);
+            --modal-bg: rgba(6, 20, 13, 0.92);
+            --panel-bg: rgba(10, 34, 21, 0.88);
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-table-dark);
+            font-family: var(--font-stack);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header Navigation */
+        header {
+            height: 60px;
+            background: linear-gradient(180deg, #1f1107 0%, #120904 100%);
+            border-bottom: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 20;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-badge {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #b8860b 0%, #ffd700 50%, #8b6508 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            color: #120904;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            border: 1px solid #fff3a8;
+        }
+
+        .brand-text h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-text span {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .stat-val {
+            font-weight: 700;
+            color: var(--gold-light);
+            min-width: 28px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Buttons & Controls */
+        .btn {
+            background: linear-gradient(180deg, #2a5a3a 0%, #153820 100%);
+            border: 1px solid #3d8053;
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: linear-gradient(180deg, #37764d 0%, #1d4d2d 100%);
+            border-color: var(--gold);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-gold {
+            background: linear-gradient(180deg, #caa135 0%, #8c6a18 100%);
+            border-color: #ffd700;
+            color: #1a0f00;
+            font-weight: 700;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(180deg, #e5b944 0%, #a67e20 100%);
+            color: #000;
+        }
+
+        .btn-danger {
+            background: linear-gradient(180deg, #a73322 0%, #681d12 100%);
+            border-color: #e74c3c;
+        }
+
+        .btn-icon {
+            padding: 6px 9px;
+            font-size: 14px;
+        }
+
+        /* Subheader Game Controls */
+        .toolbar {
+            height: 48px;
+            background: rgba(10, 24, 16, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-layout {
+            background: #091a11;
+            border: 1px solid #235235;
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .select-layout:focus {
+            border-color: var(--gold);
+        }
+
+        .mode-badge {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-practice {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+
+        .mode-online {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.5);
+            display: none;
+        }
+
+        /* Canvas Arena */
+        main {
+            flex: 1;
+            position: relative;
+            background: var(--felt-pattern);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-canvas {
+            display: block;
+            touch-action: none;
+            cursor: pointer;
+        }
+
+        /* Floating Helper Bar / Toast */
+        .toast {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(14, 25, 18, 0.95);
+            border: 1px solid var(--gold);
+            color: var(--gold-light);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 40;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            height: 38px;
+            background: #090e0b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--modal-bg);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            padding: 24px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .modal-header h2 {
+            color: var(--gold-light);
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #e0e8e2;
+        }
+
+        .modal-body p {
+            margin-bottom: 12px;
+        }
+
+        .rules-list {
+            list-style: none;
+            margin: 12px 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .rules-list li::before {
+            content: "\25C6 ";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 0.75rem;
+            top: 4px;
+        }
+
+        .room-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .room-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .room-item:hover {
+            border-color: var(--gold);
+        }
+
+        .form-input {
+            width: 100%;
+            background: #091a11;
+            border: 1px solid #235235;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin: 8px 0 16px 0;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--gold);
+        }
+
+        /* Victory Announcement Banner */
+        .victory-badge {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .victory-title {
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            margin-bottom: 8px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            header {
+                height: 52px;
+                padding: 0 10px;
+            }
+            .brand-text h1 {
+                font-size: 0.95rem;
+            }
+            .brand-text span {
+                display: none;
+            }
+            .stats-bar {
+                gap: 10px;
+                padding: 4px 10px;
+            }
+            .toolbar {
+                height: 44px;
+                padding: 0 8px;
+            }
+            .btn span.btn-label {
+                display: none;
+            }
+            .btn {
+                padding: 5px 8px;
+            }
+            footer {
+                font-size: 0.7rem;
+                padding: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- JaRing Game Hub link v1 (jr-hub): include in every jadidaring.com game, right after <body>. Corner: data-pos="bl|br|tl|tr"; offsets: style="--jr-hub-x:12px;--jr-hub-y:12px". Hidden when framed (Game Hub modal). Add class "jr-hub-off" to <html> to hide it during active play. -->
+<style id="jr-hub-css">
+#jr-hub{--jr-hub-x:12px;--jr-hub-y:12px;position:fixed;z-index:2147483000;top:auto;right:auto;bottom:calc(var(--jr-hub-y) + env(safe-area-inset-bottom,0px));left:calc(var(--jr-hub-x) + env(safe-area-inset-left,0px));display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;width:auto;height:auto;min-height:32px;margin:0;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(18,20,26,.84);color:#fff;font:600 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:.92;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}
+#jr-hub[data-pos^="t"]{top:calc(var(--jr-hub-y) + env(safe-area-inset-top,0px));bottom:auto}
+#jr-hub[data-pos$="r"]{right:calc(var(--jr-hub-x) + env(safe-area-inset-right,0px));left:auto}
+#jr-hub:hover{opacity:1;color:#fff;transform:translateY(-1px)}
+#jr-hub:focus-visible{outline:3px solid #ffd23f;outline-offset:2px;opacity:1}
+#jr-hub[hidden],.jr-hub-off #jr-hub{display:none!important}
+@media (prefers-reduced-motion:reduce){#jr-hub{transition:none}}
+@media print{#jr-hub{display:none!important}}
+</style>
+<a id="jr-hub" data-pos="bl" style="--jr-hub-y:50px" href="https://gamehub.jadidaring.com/" aria-label="Kembali ke JaRing Game Hub" title="Kembali ke JaRing Game Hub"><span aria-hidden="true">&larr;</span> Game Hub</a>
+<script>(function(){var a=document.getElementById('jr-hub'),f=true;try{f=window.self!==window.top}catch(e){}if(a&&f)a.hidden=true})();</script>
+<!-- /jr-hub -->
+<!-- jd-namegate v1 (t367u): name modal BEFORE the game opens (every game that needs a nickname). Empty input + gray placeholder "JadiDaring" (never prefilled), autofill off. Asked once per tab session (sessionStorage jdng.<slug>), then the game's own name fields/keys are filled. Skipped for #demo / ?wallpaper / framed / webdriver (localStorage jdng.force=1 forces it in tests) / invite links (?room=: the JRInvite card asks the name). API: JDNG.name, JDNG.on(fn), window event "jdng:name". -->
+<style id="jdng-css">
+html.jdng-on,html.jdng-on body{overflow:hidden!important}
+#jdng{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:radial-gradient(120% 90% at 50% 0%,var(--jdng-a2,#2c3a66) 0%,var(--jdng-bg,#0e1322) 72%);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center}
+#jdng[hidden]{display:none!important}
+#jdng .jdng-c{width:min(100%,380px);box-sizing:border-box;margin:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.45);animation:jdngIn .35s ease-out}
+@keyframes jdngIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+#jdng .jdng-i{font-size:46px;line-height:1;margin:0 0 8px;animation:jdngB 2.4s ease-in-out infinite}
+@keyframes jdngB{50%{transform:translateY(-5px) rotate(-4deg)}}
+#jdng .jdng-g{margin:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.72;font-weight:700}
+#jdng .jdng-t{margin:4px 0 6px;font-size:24px;line-height:1.2;font-weight:800;color:#fff}
+#jdng .jdng-s{margin:0 0 16px;font-size:14px;opacity:.78}
+#jdng .jdng-n{display:block;width:100%;box-sizing:border-box;margin:0;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.25);background:#fff;color:#151821;font:600 18px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center;outline:none;-webkit-appearance:none;appearance:none}
+#jdng .jdng-n::placeholder{color:#9aa0ab;opacity:1;font-weight:500}
+#jdng .jdng-n:focus{border-color:var(--jdng-a,#ffcf3f);box-shadow:0 0 0 4px rgba(255,207,63,.28)}
+#jdng .jdng-e{min-height:18px;margin:8px 0 8px;font-size:13px;color:#ffb4a8}
+#jdng .jdng-b{display:block;width:100%;margin:0;padding:14px;border:0;border-radius:14px;background:var(--jdng-a,#ffcf3f);color:var(--jdng-ink,#1b1b1b);font:800 18px/1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+#jdng .jdng-b:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28)}
+@media (prefers-reduced-motion:reduce){#jdng .jdng-c,#jdng .jdng-i{animation:none}}
+</style>
+<div id="jdng" role="dialog" aria-modal="true" aria-labelledby="jdngT" hidden><form class="jdng-c" id="jdngF" autocomplete="off" novalidate><div class="jdng-i" id="jdngI" aria-hidden="true"></div><p class="jdng-g" id="jdngG"></p><h2 class="jdng-t" id="jdngT"></h2><p class="jdng-s" id="jdngS"></p><input class="jdng-n" id="jdngN" name="jdng-nick" type="text" value="" placeholder="JadiDaring" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" enterkeyhint="go" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-labelledby="jdngT"><p class="jdng-e" id="jdngE" role="alert"></p><button class="jdng-b" id="jdngB" type="submit"></button></form></div>
+<script>window.JDNG_CFG={"slug": "mahjong-master", "inputs": ["#mp-player-name"], "keys": [], "max": 16, "icon": "\ud83c\udc04", "title": "Mahjong Master", "accent": "#ffcf3f"};</script>
+<script>(function(){var C=window.JDNG_CFG||{},W=window,D=document,R=D.documentElement,K='jdng.'+(C.slug||location.hostname.split('.')[0]),cb=[],G=W.JDNG={name:'',done:false,on:function(f){if(G.done)f(G.name);else cb.push(f)}};
+function st(s,k,v){try{if(v===undefined)return s.getItem(k)||'';s.setItem(k,v)}catch(e){}return ''}
+function ss(k,v){var s;try{s=W.sessionStorage}catch(e){return ''}return st(s,k,v)}
+function ls(k,v){var s;try{s=W.localStorage}catch(e){return ''}return st(s,k,v)}
+var el=D.getElementById('jdng'),inp=D.getElementById('jdngN'),q=location.search,L=String((C.langKey&&ls(C.langKey))||(C.multi&&navigator.language)||R.lang||'id').toLowerCase().slice(0,2);
+var TX={id:['Siapa namamu?','Nama ini dipakai di skor, room & daftar pemain.','Main \u25B6','Isi nama dulu ya.'],en:["What's your name?",'Used for scores, rooms and player lists.','Play \u25B6','Please enter your name.'],zh:['\u4F60\u53EB\u4EC0\u4E48\u540D\u5B57\uFF1F','\u540D\u5B57\u4F1A\u663E\u793A\u5728\u5206\u6570\u3001\u623F\u95F4\u548C\u73A9\u5BB6\u5217\u8868\u4E2D\u3002','\u5F00\u59CB \u25B6','\u8BF7\u5148\u8F93\u5165\u540D\u5B57\u3002']};
+var T=(TX[L]||(L==='ms'||!C.multi?TX.id:TX.en)).slice();if(C.sub&&T[0]===TX.id[0])T[1]=C.sub;
+function clean(v){return String(v||'').replace(/[\u0000-\u001f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,C.max||24)}
+function set(x,n){if(!x||x.value===n)return;x.value=n;try{x.dispatchEvent(new Event('input',{bubbles:true}));x.dispatchEvent(new Event('change',{bubbles:true}))}catch(e){}}
+function fill(onlyEmpty){var n=G.name;if(!n)return;(C.inputs||[]).forEach(function(s){var a=D.querySelectorAll(s);for(var i=0;i<a.length;i++)if(!onlyEmpty||!a[i].value)set(a[i],n)})}
+function finish(n,quiet){n=clean(n);if(!n)return;G.name=n;G.done=true;ss(K,n);(C.keys||[]).forEach(function(k){ls(k,n)});el.hidden=true;R.classList.remove('jdng-on');fill(false);var f=cb.splice(0);for(var i=0;i<f.length;i++)try{f[i](n)}catch(e){}try{W.dispatchEvent(new CustomEvent('jdng:name',{detail:n}))}catch(e){}}
+function open(){if(G.done)return;el.hidden=false;R.classList.add('jdng-on');inp.value='';foc()}
+function foc(){if(el.hidden)return;try{inp.focus({preventScroll:true})}catch(e){inp.focus()}}
+D.getElementById('jdngI').textContent=C.icon||'\uD83C\uDFAE';D.getElementById('jdngG').textContent=C.title||'';D.getElementById('jdngT').textContent=T[0];D.getElementById('jdngS').textContent=T[1];D.getElementById('jdngB').textContent=T[2];inp.maxLength=C.max||24;
+if(C.accent)el.style.setProperty('--jdng-a',C.accent);if(C.ink)el.style.setProperty('--jdng-ink',C.ink);if(C.bg)el.style.setProperty('--jdng-bg',C.bg);if(C.bg2)el.style.setProperty('--jdng-a2',C.bg2);
+D.getElementById('jdngF').addEventListener('submit',function(e){e.preventDefault();var n=clean(inp.value);if(!n){D.getElementById('jdngE').textContent=T[3];foc();return}D.getElementById('jdngE').textContent='';finish(n)});
+['keydown','keyup','keypress'].forEach(function(t){W.addEventListener(t,function(e){if(el.hidden)return;e.stopImmediatePropagation();if(t==='keydown'&&!el.contains(e.target)&&e.key!=='Tab'){e.preventDefault();foc()}},true)});
+D.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('jr-inv-form')){var x=f.querySelector('input');if(x&&clean(x.value)){G.name=clean(x.value);ss(K,G.name);G.done=true;var c2=cb.splice(0);for(var i=0;i<c2.length;i++)try{c2[i](G.name)}catch(er){}}}},true);
+if(C.observe&&W.MutationObserver)new MutationObserver(function(){if(G.done)fill(true)}).observe(R,{childList:true,subtree:true});
+var skip=false;try{skip=W.self!==W.top}catch(e){skip=true}
+if(/^#(demo|snap)/i.test(location.hash)||/[?&]wallpaper\b/i.test(q)||(navigator.webdriver&&!ls('jdng.force'))||(C.skip&&C.skip()))skip=true;
+var saved=clean(ss(K)),inv=C.invite&&new RegExp('[?&]'+C.invite+'=').test(q);
+if(saved){G.name=saved;G.done=true;D.addEventListener('DOMContentLoaded',function(){fill(true)})}
+else if(skip){}
+else if(inv){var t0=Date.now(),seen=false,iv=setInterval(function(){var j=D.getElementById('jr-invite');if(j)seen=true;if(G.done){clearInterval(iv);return}if(!j&&(seen||Date.now()-t0>4000)){clearInterval(iv);open()}},300)}
+else{open();D.addEventListener('DOMContentLoaded',function(){setTimeout(foc,60)});W.addEventListener('load',function(){setTimeout(foc,120)})}
+})();</script>
+<!-- /jd-namegate -->
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand-box">
+            <div class="brand-badge" aria-hidden="true">&#x1F004;</div>
+            <div class="brand-text">
+                <h1 id="site-title">Mahjong Master</h1>
+                <span id="site-tagline">Solitaire & Online Table</span>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item" title="Sisa Ubin">
+                <span class="stat-label">Ubin:</span>
+                <span class="stat-val" id="stat-tiles">144</span>
+            </div>
+            <div class="stat-item" title="Pasangan Terbuka">
+                <span class="stat-label">Pasangan:</span>
+                <span class="stat-val" id="stat-matches">0</span>
+            </div>
+            <div class="stat-item" title="Waktu Bermain">
+                <span class="stat-label">Waktu:</span>
+                <span class="stat-val" id="stat-timer">00:00</span>
+            </div>
+            <div class="stat-item" title="Skor">
+                <span class="stat-label">Skor:</span>
+                <span class="stat-val" id="stat-score">0</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-gold" id="btn-multiplayer" style="display:none;">
+                <span>&#x1F310;</span> <span class="btn-label">Online</span>
+            </button>
+            <button class="btn" id="btn-rules" title="Petunjuk & Cara Bermain">
+                <span>&#x1F4D6;</span> <span class="btn-label">Aturan</span>
+            </button>
+            <button class="btn btn-icon" id="btn-sound" title="Aktif/Nonaktifkan Suara">
+                <span id="sound-icon">&#x1F50A;</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toolbar Controls -->
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <select class="select-layout" id="select-layout" title="Pilih Formasi Ubin">
+                <option value="turtle">Formasi: Kura-kura (Turtle - 144 Ubin)</option>
+                <option value="pyramid">Formasi: Piramida (Pyramid - 144 Ubin)</option>
+                <option value="fortress">Formasi: Benteng (Fortress - 144 Ubin)</option>
+                <option value="arena">Formasi: Arena Mini (Arena - 72 Ubin)</option>
+            </select>
+            <button class="btn" id="btn-restart" title="Mulai Permainan Baru">
+                <span>&#x1F504;</span> <span class="btn-label">Buka Baru</span>
+            </button>
+        </div>
+
+        <div class="toolbar-group">
+            <span class="mode-badge mode-practice" id="badge-mode">Mode Latihan (Lokal)</span>
+            <button class="btn" id="btn-undo" title="Batalkan Gerakan Terakhir">
+                <span>&#x21A9;&#xFE0F;</span> <span class="btn-label">Undo</span>
+            </button>
+            <button class="btn" id="btn-hint" title="Bantuan Pasangan Terbuka">
+                <span>&#x1F4A1;</span> <span class="btn-label">Hint</span>
+            </button>
+            <button class="btn" id="btn-shuffle" title="Kocok Ubin Tersisa (Penalti Skor)">
+                <span>&#x1F500;</span> <span class="btn-label">Kocok</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Canvas Game Board -->
+    <main id="canvas-container">
+        <canvas id="game-canvas"></canvas>
+        <div class="toast" id="toast-msg">Pesan game</div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <span>&#xA9; <span id="copyright-year">2026</span> <strong id="footer-brand">Mahjong Master</strong> &#x2014; HTML5 Canvas Engine.</span>
+        </div>
+        <div class="footer-right">
+            <a href="https://gamehub.jadidaring.com/">Game Hub</a> &middot; <a href="/syarat-ketentuan" id="terms-link">Syarat & Ketentuan</a>
+        </div>
+    </footer>
+
+    <!-- Rules Modal -->
+    <div class="modal-overlay" id="modal-rules">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Cara Bermain Mahjong Solitaire</h2>
+                <button class="modal-close" data-close="modal-rules">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Tujuan permainan adalah menghapus semua ubin dari papan dengan mencocokkan pasangan ubin identik yang berstatus <strong>Bebas</strong>.</p>
+                <ul class="rules-list">
+                    <li><strong>Syarat Ubin Bebas:</strong> Ubin tidak tertindih sebagian atau seluruhnya oleh ubin lain di atasnya, serta memiliki sisi kiri ATAU kanan yang kosong tanpa penghalang langsung.</li>
+                    <li><strong>Pencocokan Biasa:</strong> Ubin Karakter (Wan), Bambu (Tiao), Titik (Tong), Angin (Timur/Selatan/Barat/Utara), dan Naga (Merah/Hijau/Putih) harus cocok dengan ubin bernilai dan simbol yang sama persis.</li>
+                    <li><strong>Ubin Spesial:</strong> Ubin Musim (Semi, Panas, Gugur, Dingin) dapat dicocokkan dengan ubin Musim mana saja. Begitu pula ubin Bunga (Plum, Anggrek, Seruni, Bambu) dapat dipasangkan dengan sesama Bunga.</li>
+                    <li><strong>Fitur Pembantu:</strong> Gunakan <em>Hint</em> untuk mencari pasangan yang ada, atau <em>Undo</em> untuk membatalkan langkah.</li>
+                </ul>
+                <div style="text-align: right; margin-top: 16px;">
+                    <button class="btn btn-gold" data-close="modal-rules">Mengerti & Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="modal-overlay" id="modal-victory">
+        <div class="modal-card">
+            <div class="victory-badge">
+                <div style="font-size: 50px;">&#x1F3C6;</div>
+                <div class="victory-title">Selamat! Anda Menang!</div>
+                <p style="color: var(--text-dim);">Semua pasangan ubin Mahjong telah berhasil dibersihkan dengan sempurna.</p>
+            </div>
+            <div class="modal-body" style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Total Waktu:</span>
+                    <strong id="win-time" style="color: var(--gold-light);">00:00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Skor Akhir:</span>
+                    <strong id="win-score" style="color: var(--gold-light);">0</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Jumlah Undo / Shuffle:</span>
+                    <strong id="win-penalties" style="color: var(--accent-red);">0</strong>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn btn-gold" id="btn-win-replay">Main Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Online Multiplayer Modal -->
+    <div class="modal-overlay" id="modal-multiplayer">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Meja Multiplayer Jadidaring</h2>
+                <button class="modal-close" data-close="modal-multiplayer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Bersaing kecepatan mencocokkan ubin secara langsung dengan pemain lain melalui jaringan platform Jadidaring.</p>
+                <div id="mp-status-box" style="margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 6px; font-size: 0.85rem;">
+                    Menghubungi konfigurasi game...
+                </div>
+
+                <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-light); font-weight: 700;">Nama Tampilan:</label>
+                <input type="text" id="mp-player-name" class="form-input" placeholder="Masukkan nama Anda..." maxlength="16">
+
+                <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                    <button class="btn btn-gold" id="mp-btn-match" style="flex: 1;">&#x26A1; Cari Tanding Cepat</button>
+                    <button class="btn" id="mp-btn-create" style="flex: 1;">&#x2795; Buat Meja Privat</button>
+                </div>
+
+                <div style="margin-top: 14px;">
+                    <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-light); font-weight: 700;">Gabung Meja dengan Kode:</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="mp-join-code" class="form-input" style="margin: 0; text-transform: uppercase;" placeholder="KODE MEJA">
+                        <button class="btn" id="mp-btn-join">Masuk</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <h3 style="font-size: 0.95rem; color: var(--gold-light); margin-bottom: 8px;">Daftar Meja Terbuka:</h3>
+                    <div id="mp-rooms-list" class="room-grid">
+                        <div style="color: var(--text-dim); font-size: 0.8rem; text-align: center; padding: 10px;">Tidak ada meja publik yang tersedia saat ini.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+    (function() {
+        "use strict";
+
+        // Read configuration
+        let config = {
+            site: { name: "Mahjong Master", tagline: "Solitaire" },
+            game: { defaultLayout: "turtle" },
+            footer: { termsUrl: "/syarat-ketentuan", copyrightYear: 2026 }
+        };
+        try {
+            const rawConfig = document.getElementById("website-config");
+            if (rawConfig) {
+                config = JSON.parse(rawConfig.textContent);
+            }
+        } catch (e) {
+            console.error("Config parse error:", e);
+        }
+
+        // Apply text bindings
+        if (config.site) {
+            if (config.site.name) {
+                document.getElementById("site-title").textContent = config.site.name;
+                document.getElementById("footer-brand").textContent = config.site.name;
+            }
+            if (config.site.tagline) {
+                document.getElementById("site-tagline").textContent = config.site.tagline;
+            }
+        }
+        if (config.footer && config.footer.copyrightYear) {
+            document.getElementById("copyright-year").textContent = config.footer.copyrightYear;
+        }
+
+        /* -------------------------------------------------------------
+           AUDIO SYNTHESIZER (Web Audio API - No external files)
+        ------------------------------------------------------------- */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            if (type === "click") {
+                // Crisp wooden tile click
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(140, now + 0.04);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.start(now);
+                osc.stop(now + 0.04);
+            } else if (type === "match") {
+                // Harmonious bamboo bell ding
+                osc.type = "triangle";
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === "error") {
+                // Dull muted block clack
+                osc.type = "sawtooth";
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.exponentialRampToValueAtTime(90, now + 0.1);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === "victory") {
+                // Fanfare arpeggio
+                const notes = [523.25, 659.25, 783.99, 1046.5];
+                notes.forEach((freq, i) => {
+                    const o = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    o.connect(g);
+                    g.connect(ctx.destination);
+                    o.type = "sine";
+                    o.frequency.setValueAtTime(freq, now + i * 0.1);
+                    g.gain.setValueAtTime(0.25, now + i * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.4);
+                    o.start(now + i * 0.1);
+                    o.stop(now + i * 0.1 + 0.4);
+                });
+            }
+        }
+
+        /* -------------------------------------------------------------
+           TOAST NOTIFICATION
+        ------------------------------------------------------------- */
+        const toastEl = document.getElementById("toast-msg");
+        let toastTimeout = null;
+        function showToast(text, duration = 2200) {
+            toastEl.textContent = text;
+            toastEl.classList.add("show");
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toastEl.classList.remove("show");
+            }, duration);
+        }
+
+        /* -------------------------------------------------------------
+           MAHJONG SUITS & TILE DEFINITIONS
+        ------------------------------------------------------------- */
+        // Total full mahjong deck has 144 tiles:
+        // 3 suits (Characters, Bamboo, Dots) x 9 ranks x 4 copies = 108
+        // 4 Winds x 4 copies = 16
+        // 3 Dragons x 4 copies = 12
+        // 4 Seasons x 1 copy = 4 (Match any season)
+        // 4 Flowers x 1 copy = 4 (Match any flower)
+        // Total = 144 tiles (72 pairs)
+
+        const SUITS = {
+            CHAR: "wan",
+            BAMBOO: "tiao",
+            DOTS: "tong",
+            WIND: "wind",
+            DRAGON: "dragon",
+            SEASON: "season",
+            FLOWER: "flower"
+        };
+
+        function createStandardDeck(numTiles = 144) {
+            const deck = [];
+            let id = 1;
+
+            // Helper to add 4 copies of a standard tile
+            function addQuad(suit, value, label, char = "") {
+                for (let c = 0; c < 4; c++) {
+                    deck.push({
+                        id: id++,
+                        suit: suit,
+                        val: value,
+                        label: label,
+                        symbol: char,
+                        family: suit + "_" + value
+                    });
+                }
+            }
+
+            // 1-9 Dots
+            for (let i = 1; i <= 9; i++) addQuad(SUITS.DOTS, i, `${i} Titik`, i);
+            // 1-9 Bamboo
+            for (let i = 1; i <= 9; i++) addQuad(SUITS.BAMBOO, i, `${i} Bambu`, i);
+            // 1-9 Characters
+            const cnNums = ["\u4e00", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d"];
+            for (let i = 1; i <= 9; i++) addQuad(SUITS.CHAR, i, `${i} Karakter`, cnNums[i-1]);
+
+            // Winds: East, South, West, North
+            const winds = [
+                { val: 1, name: "Timur", char: "\u6771" },
+                { val: 2, name: "Selatan", char: "\u5357" },
+                { val: 3, name: "Barat", char: "\u897f" },
+                { val: 4, name: "Utara", char: "\u5317" }
+            ];
+            winds.forEach(w => addQuad(SUITS.WIND, w.val, `Angin ${w.name}`, w.char));
+
+            // Dragons: Red (Zhong), Green (Fa), White (Bai)
+            const dragons = [
+                { val: 1, name: "Merah", char: "\u4e2d" },
+                { val: 2, name: "Hijau", char: "\u767c" },
+                { val: 3, name: "Putih", char: "\u767d" }
+            ];
+            dragons.forEach(d => addQuad(SUITS.DRAGON, d.val, `Naga ${d.name}`, d.char));
+
+            // 4 Seasons (any season matches another season)
+            const seasons = [
+                { val: 1, name: "Semi", char: "\u6625" },
+                { val: 2, name: "Panas", char: "\u590f" },
+                { val: 3, name: "Gugur", char: "\u79cb" },
+                { val: 4, name: "Dingin", char: "\u51ac" }
+            ];
+            seasons.forEach(s => {
+                deck.push({
+                    id: id++,
+                    suit: SUITS.SEASON,
+                    val: s.val,
+                    label: `Musim ${s.name}`,
+                    symbol: s.char,
+                    family: SUITS.SEASON // all seasons match
+                });
+            });
+
+            // 4 Flowers (any flower matches another flower)
+            const flowers = [
+                { val: 1, name: "Plum", char: "\u6885" },
+                { val: 2, name: "Anggrek", char: "\u862d" },
+                { val: 3, name: "Seruni", char: "\u83ca" },
+                { val: 4, name: "Bambu", char: "\u7af9" }
+            ];
+            flowers.forEach(f => {
+                deck.push({
+                    id: id++,
+                    suit: SUITS.FLOWER,
+                    val: f.val,
+                    label: `Bunga ${f.name}`,
+                    symbol: f.char,
+                    family: SUITS.FLOWER // all flowers match
+                });
+            });
+
+            if (numTiles < 144) {
+                // If half arena (72 tiles / 36 pairs)
+                return deck.slice(0, numTiles);
+            }
+            return deck;
+        }
+
+        function checkTilesMatch(t1, t2) {
+            if (!t1 || !t2 || t1.id === t2.id) return false;
+            return t1.family === t2.family;
+        }
+
+        /* -------------------------------------------------------------
+           BOARD LAYOUT DEFINITIONS (Grid coordinates: X, Y, Z layer)
+           Each tile has size: width = 2 units, height = 2 units
+           Z represents vertical layer height (0 = ground, 1, 2, 3...)
+        ------------------------------------------------------------- */
+        const LAYOUTS = {
+            // Classic Shanghai Turtle (144 tiles)
+            turtle: () => {
+                const slots = [];
+                // Layer 0: Ground footprint
+                // Rows 1-8
+                const l0 = [
+                    // row 0
+                    [0, 6, 2],
+                    // row 1
+                    [1, 4, 6],
+                    // row 2
+                    [2, 3, 8],
+                    // row 3
+                    [3, 2, 10],
+                    // row 4 (center wings)
+                    [4, 0, 14], // full width wing row
+                    // row 5
+                    [5, 2, 10],
+                    // row 6
+                    [6, 3, 8],
+                    // row 7
+                    [7, 4, 6],
+                    // row 8
+                    [8, 6, 2]
+                ];
+
+                // Build layer 0 slots (width 2 each)
+                // Middle wings at y=3.5, x=-1, 13
+                slots.push({ x: 0, y: 7, z: 0 }); // far left wing
+                slots.push({ x: 26, y: 7, z: 0 }); // far right wing 1
+                slots.push({ x: 28, y: 7, z: 0 }); // far right wing 2
+
+                for (let row = 0; row < 8; row++) {
+                    const startX = 6 + (row === 0 || row === 7 ? 4 : (row === 1 || row === 6 ? 2 : 0));
+                    const count = (row === 0 || row === 7 ? 6 : (row === 1 || row === 6 ? 8 : (row === 2 || row === 5 ? 10 : 12)));
+                    for (let c = 0; c < count; c++) {
+                        slots.push({ x: startX + c * 2, y: 1 + row * 2, z: 0 });
+                    }
+                }
+
+                // Layer 1 (6 x 6 inner block)
+                for (let r = 0; r < 6; r++) {
+                    for (let c = 0; c < 6; c++) {
+                        slots.push({ x: 9 + c * 2, y: 3 + r * 2, z: 1 });
+                    }
+                }
+
+                // Layer 2 (4 x 4 pyramid)
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        slots.push({ x: 11 + c * 2, y: 5 + r * 2, z: 2 });
+                    }
+                }
+
+                // Layer 3 (2 x 2 upper)
+                for (let r = 0; r < 2; r++) {
+                    for (let c = 0; c < 2; c++) {
+                        slots.push({ x: 13 + c * 2, y: 7 + r * 2, z: 3 });
+                    }
+                }
+
+                // Layer 4 (Single crown peak on top)
+                slots.push({ x: 14, y: 8, z: 4 });
+
+                // Trim or pad to exact 144
+                return slots.slice(0, 144);
+            },
+
+            // Step Pyramid (144 tiles)
+            pyramid: () => {
+                const slots = [];
+                // 10x8 base = 80
+                for (let y = 0; y < 8; y++) {
+                    for (let x = 0; x < 10; x++) {
+                        slots.push({ x: 4 + x * 2, y: 2 + y * 2, z: 0 });
+                    }
+                }
+                // 8x6 = 48
+                for (let y = 0; y < 6; y++) {
+                    for (let x = 0; x < 8; x++) {
+                        slots.push({ x: 6 + x * 2, y: 4 + y * 2, z: 1 });
+                    }
+                }
+                // 4x3 = 12
+                for (let y = 0; y < 3; y++) {
+                    for (let x = 0; x < 4; x++) {
+                        slots.push({ x: 10 + x * 2, y: 7 + y * 2, z: 2 });
+                    }
+                }
+                // 2x2 = 4
+                for (let y = 0; y < 2; y++) {
+                    for (let x = 0; x < 2; x++) {
+                        slots.push({ x: 12 + x * 2, y: 8 + y * 2, z: 3 });
+                    }
+                }
+                return slots.slice(0, 144);
+            },
+
+            // Fortress layout (144 tiles)
+            fortress: () => {
+                const slots = [];
+                // Outer wall
+                for (let y = 0; y < 8; y++) {
+                    for (let x = 0; x < 12; x++) {
+                        // Four corner bastions + perimeter
+                        const isBorder = (x < 2 || x >= 10 || y < 2 || y >= 6);
+                        if (isBorder) {
+                            slots.push({ x: 3 + x * 2, y: 2 + y * 2, z: 0 });
+                        }
+                    }
+                }
+                // Center keep
+                for (let y = 2; y < 6; y++) {
+                    for (let x = 3; x < 9; x++) {
+                        slots.push({ x: 3 + x * 2, y: 2 + y * 2, z: 0 });
+                        slots.push({ x: 3 + x * 2, y: 2 + y * 2, z: 1 });
+                    }
+                }
+                // Tower tops
+                slots.push({ x: 3, y: 2, z: 1 });
+                slots.push({ x: 25, y: 2, z: 1 });
+                slots.push({ x: 3, y: 16, z: 1 });
+                slots.push({ x: 25, y: 16, z: 1 });
+                return slots.slice(0, 144);
+            },
+
+            // Arena Mini (72 tiles)
+            arena: () => {
+                const slots = [];
+                for (let y = 0; y < 6; y++) {
+                    for (let x = 0; x < 8; x++) {
+                        slots.push({ x: 6 + x * 2, y: 3 + y * 2, z: 0 });
+                    }
+                }
+                for (let y = 1; y < 5; y++) {
+                    for (let x = 2; x < 6; x++) {
+                        slots.push({ x: 6 + x * 2, y: 3 + y * 2, z: 1 });
+                    }
+                }
+                for (let y = 2; y < 4; y++) {
+                    for (let x = 3; x < 5; x++) {
+                        slots.push({ x: 6 + x * 2, y: 3 + y * 2, z: 2 });
+                    }
+                }
+                return slots.slice(0, 72);
+            }
+        };
+
+        /* -------------------------------------------------------------
+           BOARD TILE ENGINE & SOLVABILITY GENERATOR
+        ------------------------------------------------------------- */
+        let activeBoard = []; // Array of tile entities on board
+        let selectedTile = null;
+        let hintPair = null;
+        let moveHistory = [];
+        let score = 0;
+        let matchedPairs = 0;
+        let gameTimerSeconds = 0;
+        let timerInterval = null;
+        let isGameWon = false;
+        let penaltiesCount = 0;
+
+        // Check if a tile on the board is currently "free" / playable
+        // A tile is free if:
+        // 1. NO tile exists directly above it (higher Z) overlapping horizontally and vertically
+        // 2. AND at the same Z level, either left OR right is not blocked
+        function isTileFree(targetTile, board = activeBoard) {
+            if (!targetTile || !targetTile.active) return false;
+
+            const tx = targetTile.x;
+            const ty = targetTile.y;
+            const tz = targetTile.z;
+
+            // Tile dimensions in grid units: width = 2, height = 2
+            let blockedAbove = false;
+            let blockedLeft = false;
+            let blockedRight = false;
+
+            for (let i = 0; i < board.length; i++) {
+                const o = board[i];
+                if (!o.active || o.id === targetTile.id) continue;
+
+                // 1. Check above (higher Z)
+                if (o.z > tz) {
+                    const overlapX = Math.abs(o.x - tx) < 2;
+                    const overlapY = Math.abs(o.y - ty) < 2;
+                    if (overlapX && overlapY) {
+                        blockedAbove = true;
+                        break;
+                    }
+                }
+            }
+
+            if (blockedAbove) return false;
+
+            // 2. Check left and right on the same level Z
+            for (let i = 0; i < board.length; i++) {
+                const o = board[i];
+                if (!o.active || o.id === targetTile.id) continue;
+
+                if (o.z === tz) {
+                    const overlapY = Math.abs(o.y - ty) < 2;
+                    if (overlapY) {
+                        // Left neighbor check
+                        if (o.x === tx - 2) blockedLeft = true;
+                        // Right neighbor check
+                        if (o.x === tx + 2) blockedRight = true;
+                    }
+                }
+            }
+
+            return (!blockedLeft || !blockedRight);
+        }
+
+        // Generate board with reverse-matching technique so it is ALWAYS solvable!
+        function generateSolvableBoard(layoutKey) {
+            const layoutFn = LAYOUTS[layoutKey] || LAYOUTS.turtle;
+            let rawSlots = layoutFn();
+
+            // Ensure even count
+            if (rawSlots.length % 2 !== 0) {
+                rawSlots = rawSlots.slice(0, rawSlots.length - 1);
+            }
+
+            const totalSlots = rawSlots.length;
+            const deck = createStandardDeck(totalSlots);
+
+            // Group deck into pairs
+            const pairs = [];
+            const shuffledDeck = [...deck].sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < shuffledDeck.length; i++) {
+                const t1 = shuffledDeck[i];
+                if (!t1 || t1.used) continue;
+                for (let j = i + 1; j < shuffledDeck.length; j++) {
+                    const t2 = shuffledDeck[j];
+                    if (t2 && !t2.used && checkTilesMatch(t1, t2)) {
+                        t1.used = true;
+                        t2.used = true;
+                        pairs.push([t1, t2]);
+                        break;
+                    }
+                }
+            }
+
+            // Fill slots ensuring pairs are assigned to accessible positions
+            const slots = rawSlots.map((s, index) => ({
+                id: index + 1,
+                x: s.x,
+                y: s.y,
+                z: s.z,
+                active: true,
+                tile: null
+            }));
+
+            // Pair-placement solver:
+            // We iteratively pick two free slots, assign a pair of tiles, and pretend they were removed in reverse.
+            const unassigned = [...slots];
+            for (let p = 0; p < pairs.length; p++) {
+                const pair = pairs[p];
+                // Find currently "free" slots among the unassigned pool
+                const available = unassigned.filter(s => isTileFree(s, unassigned));
+
+                let s1, s2;
+                if (available.length >= 2) {
+                    const idx1 = Math.floor(Math.random() * available.length);
+                    s1 = available.splice(idx1, 1)[0];
+                    const idx2 = Math.floor(Math.random() * available.length);
+                    s2 = available.splice(idx2, 1)[0];
+                } else if (unassigned.length >= 2) {
+                    s1 = unassigned.shift();
+                    s2 = unassigned.shift();
+                } else {
+                    break;
+                }
+
+                // Remove from unassigned
+                const i1 = unassigned.indexOf(s1);
+                if (i1 > -1) unassigned.splice(i1, 1);
+                const i2 = unassigned.indexOf(s2);
+                if (i2 > -1) unassigned.splice(i2, 1);
+
+                s1.tile = pair[0];
+                s2.tile = pair[1];
+            }
+
+            // Return active entities
+            return slots.map(s => ({
+                ...s,
+                animScale: 1,
+                animOpacity: 1,
+                isHovered: false
+            }));
+        }
+
+        /* -------------------------------------------------------------
+           CANVAS GRAPHICS RENDERING & TILE ARTWORK
+        ------------------------------------------------------------- */
+        const canvas = document.getElementById("game-canvas");
+        const ctx = canvas.getContext("2d");
+        const container = document.getElementById("canvas-container");
+
+        let tileWidth = 56;
+        let tileHeight = 74;
+        let tileDepth = 9;
+        let originX = 0;
+        let originY = 0;
+
+        function resizeCanvas() {
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + "px";
+            canvas.style.height = rect.height + "px";
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            // Compute optimal scale based on board footprint
+            let minX = 999, maxX = -999, minY = 999, maxY = -999;
+            activeBoard.forEach(t => {
+                if (t.x < minX) minX = t.x;
+                if (t.x + 2 > maxX) maxX = t.x + 2;
+                if (t.y < minY) minY = t.y;
+                if (t.y + 2 > maxY) maxY = t.y + 2;
+            });
+
+            if (minX === 999) { minX = 0; maxX = 30; minY = 0; maxY = 20; }
+
+            const gridSpanX = (maxX - minX);
+            const gridSpanY = (maxY - minY);
+
+            const availableW = rect.width * 0.92;
+            const availableH = rect.height * 0.88;
+
+            const scaleX = availableW / (gridSpanX * 26);
+            const scaleY = availableH / (gridSpanY * 34);
+            const baseScale = Math.min(Math.max(Math.min(scaleX, scaleY), 0.6), 1.6);
+
+            tileWidth = Math.round(50 * baseScale);
+            tileHeight = Math.round(68 * baseScale);
+            tileDepth = Math.max(Math.round(8 * baseScale), 5);
+
+            // Center board
+            const boardPixelW = (gridSpanX / 2) * tileWidth;
+            const boardPixelH = (gridSpanY / 2) * tileHeight;
+            originX = Math.round((rect.width - boardPixelW) / 2 - (minX / 2) * tileWidth);
+            originY = Math.round((rect.height - boardPixelH) / 2 - (minY / 2) * tileHeight);
+        }
+
+        // Convert grid coords to canvas 2D pixel coordinates
+        function gridToScreen(x, y, z) {
+            // Isometric perspective offset for 3D layered elevation
+            const screenX = originX + (x / 2) * tileWidth - (z * tileDepth * 0.45);
+            const screenY = originY + (y / 2) * tileHeight - (z * tileDepth * 0.85);
+            return { x: screenX, y: screenY };
+        }
+
+        // Draw crisp 2.5D beveled Ivory Mahjong Tile
+        function drawMahjongTile(tileObj) {
+            if (!tileObj.active && tileObj.animOpacity <= 0.01) return;
+
+            const { x, y } = gridToScreen(tileObj.x, tileObj.y, tileObj.z);
+            const isSelected = selectedTile && selectedTile.id === tileObj.id;
+            const isHinted = hintPair && (hintPair[0].id === tileObj.id || hintPair[1].id === tileObj.id);
+            const isFree = isTileFree(tileObj);
+
+            ctx.save();
+
+            // Lift effect when selected or hovered
+            const liftY = isSelected ? -10 : (tileObj.isHovered && isFree ? -3 : 0);
+            ctx.translate(x, y + liftY);
+
+            // Scaling for match / dissolve animation
+            if (tileObj.animScale !== 1) {
+                ctx.translate(tileWidth / 2, tileHeight / 2);
+                ctx.scale(tileObj.animScale, tileObj.animScale);
+                ctx.translate(-tileWidth / 2, -tileHeight / 2);
+            }
+            ctx.globalAlpha = tileObj.animOpacity;
+
+            const w = tileWidth;
+            const h = tileHeight;
+            const d = tileDepth;
+            const r = Math.max(w * 0.08, 3); // corner radius
+
+            // 1. Cast Floor Shadow
+            ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+            ctx.beginPath();
+            ctx.roundRect(4, 6 + d, w + 4, h + 2, r);
+            ctx.fill();
+
+            // 2. Green Jade Tile Back / Side Extrusion
+            ctx.fillStyle = "#1b5a37"; // Jade back
+            ctx.beginPath();
+            ctx.roundRect(0, d, w, h, r);
+            ctx.fill();
+
+            // 3. Bone / Ivory Middle Layer
+            ctx.fillStyle = "#d8ccb0"; // Bone side
+            ctx.beginPath();
+            ctx.roundRect(0, d * 0.4, w, h, r);
+            ctx.fill();
+
+            // 4. White Ivory Tile Face
+            const faceGrad = ctx.createLinearGradient(0, 0, 0, h);
+            if (isSelected) {
+                faceGrad.addColorStop(0, "#fffef0");
+                faceGrad.addColorStop(1, "#f9f0c2");
+            } else if (isHinted) {
+                faceGrad.addColorStop(0, "#e8f7ff");
+                faceGrad.addColorStop(1, "#cce6ff");
+            } else if (!isFree) {
+                faceGrad.addColorStop(0, "#ebe6dc");
+                faceGrad.addColorStop(1, "#ddd7cb");
+            } else {
+                faceGrad.addColorStop(0, "#ffffff");
+                faceGrad.addColorStop(1, "#f4eee1");
+            }
+
+            ctx.fillStyle = faceGrad;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, w, h, r);
+            ctx.fill();
+
+            // Bevel stroke & borders
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = isSelected ? "#d4af37" : (isHinted ? "#3498db" : "rgba(120, 110, 95, 0.6)");
+            ctx.stroke();
+
+            // Glowing border if selected
+            if (isSelected) {
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = "#ffd700";
+                ctx.stroke();
+            } else if (isHinted) {
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#3498db";
+                ctx.stroke();
+            }
+
+            // Draw Tile Face Glyphs & Artwork
+            drawTileContent(ctx, tileObj.tile, w, h, isFree);
+
+            // Shading over blocked tiles
+            if (!isFree) {
+                ctx.fillStyle = "rgba(40, 50, 45, 0.28)";
+                ctx.beginPath();
+                ctx.roundRect(0, 0, w, h, r);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        // Draw Chinese characters, dots, bamboo stalks on tile face
+        function drawTileContent(c, tileData, w, h, isFree) {
+            if (!tileData) return;
+            c.save();
+
+            const cx = w / 2;
+            const cy = h / 2;
+            c.textAlign = "center";
+            c.textBaseline = "middle";
+
+            const redColor = "#c0392b";
+            const greenColor = "#196f3d";
+            const blueColor = "#2471a3";
+
+            switch (tileData.suit) {
+                case SUITS.CHAR: {
+                    // Top: Chinese Number (\u4e00 to \u4e5d)
+                    c.font = `bold ${Math.round(h * 0.32)}px sans-serif`;
+                    c.fillStyle = blueColor;
+                    c.fillText(tileData.symbol, cx, cy - h * 0.2);
+
+                    // Bottom: "\u842c" (Wan / 10,000)
+                    c.font = `bold ${Math.round(h * 0.30)}px sans-serif`;
+                    c.fillStyle = redColor;
+                    c.fillText("\u842c", cx, cy + h * 0.24);
+                    break;
+                }
+
+                case SUITS.BAMBOO: {
+                    if (tileData.val === 1) {
+                        // 1 Bamboo: Sparrow / Phoenix bird stylized
+                        c.font = `${Math.round(h * 0.44)}px sans-serif`;
+                        c.fillText("\ud83e\udd9a", cx, cy);
+                    } else {
+                        // Draw vertical bamboo sticks
+                        drawBambooPattern(c, tileData.val, w, h, greenColor, redColor, blueColor);
+                    }
+                    break;
+                }
+
+                case SUITS.DOTS: {
+                    // Concentric colorful circles
+                    drawDotsPattern(c, tileData.val, w, h, blueColor, greenColor, redColor);
+                    break;
+                }
+
+                case SUITS.WIND: {
+                    c.font = `bold ${Math.round(h * 0.46)}px sans-serif`;
+                    c.fillStyle = "#1e272c";
+                    c.fillText(tileData.symbol, cx, cy);
+                    // Small sublabel
+                    c.font = `bold ${Math.round(h * 0.14)}px sans-serif`;
+                    c.fillStyle = "#7f8c8d";
+                    c.fillText(tileData.label.split(" ")[1] || "", cx, h - 8);
+                    break;
+                }
+
+                case SUITS.DRAGON: {
+                    c.font = `bold ${Math.round(h * 0.48)}px sans-serif`;
+                    if (tileData.val === 1) {
+                        c.fillStyle = redColor;
+                        c.fillText("\u4e2d", cx, cy);
+                    } else if (tileData.val === 2) {
+                        c.fillStyle = greenColor;
+                        c.fillText("\u767c", cx, cy);
+                    } else {
+                        // White dragon: Blue decorative hollow frame
+                        c.strokeStyle = blueColor;
+                        c.lineWidth = 2.5;
+                        c.strokeRect(cx - w * 0.28, cy - h * 0.28, w * 0.56, h * 0.56);
+                        c.font = `bold ${Math.round(h * 0.16)}px sans-serif`;
+                        c.fillStyle = blueColor;
+                        c.fillText("\u767d", cx, cy);
+                    }
+                    break;
+                }
+
+                case SUITS.SEASON:
+                case SUITS.FLOWER: {
+                    // Flower / Season badge
+                    c.font = `bold ${Math.round(h * 0.36)}px sans-serif`;
+                    c.fillStyle = tileData.suit === SUITS.SEASON ? "#d35400" : "#8e44ad";
+                    c.fillText(tileData.symbol, cx, cy - h * 0.12);
+
+                    c.font = `bold ${Math.round(h * 0.15)}px sans-serif`;
+                    c.fillStyle = "#555";
+                    c.fillText(tileData.label, cx, cy + h * 0.28);
+                    break;
+                }
+            }
+
+            c.restore();
+        }
+
+        // Draw Bamboo stalks helper
+        function drawBambooPattern(c, val, w, h, green, red, blue) {
+            const cx = w / 2;
+            const cy = h / 2;
+            const bw = Math.max(w * 0.08, 3);
+            const bh = h * 0.24;
+
+            function stick(sx, sy, col) {
+                c.fillStyle = col;
+                c.beginPath();
+                c.roundRect(sx - bw / 2, sy - bh / 2, bw, bh, 2);
+                c.fill();
+                // Little node ring
+                c.fillStyle = "#fff";
+                c.fillRect(sx - bw / 2, sy - 1, bw, 2);
+            }
+
+            const col1 = green, col2 = red, col3 = blue;
+            if (val === 2) {
+                stick(cx, cy - h * 0.2, col1);
+                stick(cx, cy + h * 0.2, col3);
+            } else if (val === 3) {
+                stick(cx, cy - h * 0.25, col3);
+                stick(cx - w * 0.2, cy + h * 0.2, col1);
+                stick(cx + w * 0.2, cy + h * 0.2, col1);
+            } else if (val === 4) {
+                stick(cx - w * 0.2, cy - h * 0.2, col3);
+                stick(cx + w * 0.2, cy - h * 0.2, col1);
+                stick(cx - w * 0.2, cy + h * 0.2, col1);
+                stick(cx + w * 0.2, cy + h * 0.2, col3);
+            } else {
+                // Multi-stick array
+                c.font = `bold ${Math.round(h * 0.34)}px sans-serif`;
+                c.fillStyle = green;
+                c.fillText(val + " \u6761", cx, cy);
+            }
+        }
+
+        // Draw Dots pattern helper
+        function drawDotsPattern(c, val, w, h, blue, green, red) {
+            const cx = w / 2;
+            const cy = h / 2;
+            const dotR = Math.max(w * 0.11, 4);
+
+            function circle(ox, oy, color, ring = true) {
+                c.beginPath();
+                c.arc(ox, oy, dotR, 0, Math.PI * 2);
+                c.fillStyle = color;
+                c.fill();
+                if (ring) {
+                    c.lineWidth = 1.5;
+                    c.strokeStyle = "#ffffff";
+                    c.stroke();
+                }
+            }
+
+            if (val === 1) {
+                // Giant sun flower dot
+                c.beginPath();
+                c.arc(cx, cy, dotR * 1.8, 0, Math.PI * 2);
+                c.fillStyle = red;
+                c.fill();
+                c.beginPath();
+                c.arc(cx, cy, dotR * 0.7, 0, Math.PI * 2);
+                c.fillStyle = "#ffffff";
+                c.fill();
+            } else if (val === 2) {
+                circle(cx, cy - h * 0.22, green);
+                circle(cx, cy + h * 0.22, blue);
+            } else if (val === 3) {
+                circle(cx - w * 0.22, cy - h * 0.25, blue);
+                circle(cx, cy, red);
+                circle(cx + w * 0.22, cy + h * 0.25, green);
+            } else if (val === 4) {
+                circle(cx - w * 0.2, cy - h * 0.22, blue);
+                circle(cx + w * 0.2, cy - h * 0.22, green);
+                circle(cx - w * 0.2, cy + h * 0.22, green);
+                circle(cx + w * 0.2, cy + h * 0.22, blue);
+            } else {
+                // 5-9 dots
+                c.font = `bold ${Math.round(h * 0.36)}px sans-serif`;
+                c.fillStyle = blue;
+                c.fillText(val + " \u7b52", cx, cy);
+            }
+        }
+
+        // Render main game loop
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Sort tiles by: layer Z ascending, then Y ascending, then X ascending
+            // This ensures proper 3D depth and shadow overlap!
+            const sortedTiles = [...activeBoard].sort((a, b) => {
+                if (a.z !== b.z) return a.z - b.z;
+                if (a.y !== b.y) return a.y - b.y;
+                return a.x - b.x;
+            });
+
+            sortedTiles.forEach(drawMahjongTile);
+
+            // Animate tile dissolutions
+            let animating = false;
+            activeBoard.forEach(t => {
+                if (!t.active && t.animOpacity > 0) {
+                    t.animOpacity -= 0.08;
+                    t.animScale += 0.04;
+                    if (t.animOpacity < 0) t.animOpacity = 0;
+                    animating = true;
+                }
+            });
+
+            requestAnimationFrame(render);
+        }
+
+        /* -------------------------------------------------------------
+           INTERACTION & RAYCASTING (Find clicked tile)
+        ------------------------------------------------------------- */
+        function getTileAtPoint(px, py) {
+            // Traverse in reverse render order (highest Z layer first)
+            const sorted = [...activeBoard].sort((a, b) => {
+                if (b.z !== a.z) return b.z - a.z;
+                if (b.y !== a.y) return b.y - a.y;
+                return b.x - a.x;
+            });
+
+            for (let i = 0; i < sorted.length; i++) {
+                const t = sorted[i];
+                if (!t.active) continue;
+
+                const { x, y } = gridToScreen(t.x, t.y, t.z);
+                const lift = (selectedTile && selectedTile.id === t.id) ? -10 : 0;
+                const topY = y + lift;
+
+                if (px >= x && px <= x + tileWidth && py >= topY && py <= topY + tileHeight) {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        function handleTileClick(tileObj) {
+            if (!tileObj || !tileObj.active) return;
+
+            // Check if playable
+            if (!isTileFree(tileObj)) {
+                playSound("error");
+                showToast("Ubin ini terkunci! Bebaskan sisi atau tumpukan di atasnya.");
+                return;
+            }
+
+            // If no tile selected yet
+            if (!selectedTile) {
+                selectedTile = tileObj;
+                playSound("click");
+                return;
+            }
+
+            // Clicking the same tile deselects it
+            if (selectedTile.id === tileObj.id) {
+                selectedTile = null;
+                playSound("click");
+                return;
+            }
+
+            // Check if matches the selected tile
+            if (checkTilesMatch(selectedTile.tile, tileObj.tile)) {
+                // Match confirmed!
+                playSound("match");
+
+                const t1 = selectedTile;
+                const t2 = tileObj;
+
+                t1.active = false;
+                t2.active = false;
+                t1.animOpacity = 1;
+                t2.animOpacity = 1;
+
+                moveHistory.push([t1, t2]);
+                matchedPairs++;
+                score += 100;
+
+                selectedTile = null;
+                hintPair = null;
+
+                updateStats();
+                checkWinCondition();
+            } else {
+                // Not a match: switch selection
+                playSound("click");
+                selectedTile = tileObj;
+            }
+        }
+
+        /* -------------------------------------------------------------
+           CONTROLS: HINT, UNDO, SHUFFLE, NEW GAME
+        ------------------------------------------------------------- */
+        function findAvailablePairs() {
+            const freeTiles = activeBoard.filter(t => t.active && isTileFree(t));
+            for (let i = 0; i < freeTiles.length; i++) {
+                for (let j = i + 1; j < freeTiles.length; j++) {
+                    if (checkTilesMatch(freeTiles[i].tile, freeTiles[j].tile)) {
+                        return [freeTiles[i], freeTiles[j]];
+                    }
+                }
+            }
+            return null;
+        }
+
+        function triggerHint() {
+            const pair = findAvailablePairs();
+            if (pair) {
+                hintPair = pair;
+                showToast(`\ud83d\udca1 Pasangan terbuka ditemukan: ${pair[0].tile.label}`);
+                playSound("click");
+            } else {
+                showToast("Tidak ada pasangan terbuka tersisa! Gunakan 'Kocok'.");
+                playSound("error");
+            }
+        }
+
+        function triggerUndo() {
+            if (moveHistory.length === 0) {
+                showToast("Belum ada gerakan yang dapat dibatalkan.");
+                return;
+            }
+            const lastPair = moveHistory.pop();
+            lastPair[0].active = true;
+            lastPair[1].active = true;
+            lastPair[0].animOpacity = 1;
+            lastPair[0].animScale = 1;
+            lastPair[1].animOpacity = 1;
+            lastPair[1].animScale = 1;
+
+            matchedPairs = Math.max(0, matchedPairs - 1);
+            score = Math.max(0, score - 50);
+            penaltiesCount++;
+            selectedTile = null;
+            hintPair = null;
+
+            updateStats();
+            playSound("click");
+            showToast("Gerakan sebelumnya dikembalikan.");
+        }
+
+        function triggerShuffle() {
+            const remainingTiles = activeBoard.filter(t => t.active);
+            if (remainingTiles.length <= 2) {
+                showToast("Ubin terlalu sedikit untuk dikocok.");
+                return;
+            }
+
+            // Extract tile cards and reshuffle them onto the remaining active slots
+            const tilePayloads = remainingTiles.map(t => t.tile).sort(() => Math.random() - 0.5);
+            remainingTiles.forEach((slot, idx) => {
+                slot.tile = tilePayloads[idx];
+            });
+
+            score = Math.max(0, score - 150);
+            penaltiesCount++;
+            selectedTile = null;
+            hintPair = null;
+
+            updateStats();
+            playSound("click");
+            showToast("Ubin berhasil dikocok ulang (-150 poin).");
+        }
+
+        function startNewGame() {
+            const layoutKey = document.getElementById("select-layout").value;
+            activeBoard = generateSolvableBoard(layoutKey);
+            selectedTile = null;
+            hintPair = null;
+            moveHistory = [];
+            matchedPairs = 0;
+            score = 0;
+            penaltiesCount = 0;
+            isGameWon = false;
+
+            // Reset timer
+            clearInterval(timerInterval);
+            gameTimerSeconds = 0;
+            timerInterval = setInterval(() => {
+                gameTimerSeconds++;
+                const mins = String(Math.floor(gameTimerSeconds / 60)).padStart(2, "0");
+                const secs = String(gameTimerSeconds % 60).padStart(2, "0");
+                document.getElementById("stat-timer").textContent = `${mins}:${secs}`;
+            }, 1000);
+
+            resizeCanvas();
+            updateStats();
+            showToast("Permainan baru dimulai. Semoga beruntung!");
+        }
+
+        function updateStats() {
+            const remaining = activeBoard.filter(t => t.active).length;
+            document.getElementById("stat-tiles").textContent = remaining;
+            document.getElementById("stat-matches").textContent = matchedPairs;
+            document.getElementById("stat-score").textContent = score;
+        }
+
+        function checkWinCondition() {
+            const remaining = activeBoard.filter(t => t.active).length;
+            if (remaining === 0 && !isGameWon) {
+                isGameWon = true;
+                clearInterval(timerInterval);
+                playSound("victory");
+
+                const mins = String(Math.floor(gameTimerSeconds / 60)).padStart(2, "0");
+                const secs = String(gameTimerSeconds % 60).padStart(2, "0");
+                document.getElementById("win-time").textContent = `${mins}:${secs}`;
+                document.getElementById("win-score").textContent = score;
+                document.getElementById("win-penalties").textContent = penaltiesCount;
+
+                document.getElementById("modal-victory").classList.add("active");
+            }
+        }
+
+        /* -------------------------------------------------------------
+           POINTER & TOUCH EVENT LISTENERS
+        ------------------------------------------------------------- */
+        let lastHovered = null;
+
+        canvas.addEventListener("pointerdown", (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            const clicked = getTileAtPoint(px, py);
+            handleTileClick(clicked);
+        });
+
+        canvas.addEventListener("pointermove", (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const px = e.clientX - rect.left;
+            const py = e.clientY - rect.top;
+            const hoverTile = getTileAtPoint(px, py);
+
+            if (hoverTile !== lastHovered) {
+                if (lastHovered) lastHovered.isHovered = false;
+                if (hoverTile) hoverTile.isHovered = true;
+                lastHovered = hoverTile;
+                canvas.style.cursor = (hoverTile && isTileFree(hoverTile)) ? "pointer" : "default";
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            resizeCanvas();
+        });
+
+        /* -------------------------------------------------------------
+           UI MODALS & BUTTON BINDINGS
+        ------------------------------------------------------------- */
+        document.getElementById("btn-restart").addEventListener("click", startNewGame);
+        document.getElementById("select-layout").addEventListener("change", startNewGame);
+        document.getElementById("btn-hint").addEventListener("click", triggerHint);
+        document.getElementById("btn-undo").addEventListener("click", triggerUndo);
+        document.getElementById("btn-shuffle").addEventListener("click", triggerShuffle);
+        document.getElementById("btn-win-replay").addEventListener("click", () => {
+            document.getElementById("modal-victory").classList.remove("active");
+            startNewGame();
+        });
+
+        // Rules modal
+        document.getElementById("btn-rules").addEventListener("click", () => {
+            document.getElementById("modal-rules").classList.add("active");
+        });
+
+        // Modal close buttons
+        document.querySelectorAll("[data-close]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const modalId = btn.getAttribute("data-close");
+                const target = document.getElementById(modalId);
+                if (target) target.classList.remove("active");
+            });
+        });
+
+        // Audio toggle
+        document.getElementById("btn-sound").addEventListener("click", () => {
+            soundEnabled = !soundEnabled;
+            document.getElementById("sound-icon").textContent = soundEnabled ? "\ud83d\udd0a" : "\ud83d\udd07";
+            showToast(soundEnabled ? "Suara diaktifkan." : "Suara dimatikan.");
+        });
+
+        /* -------------------------------------------------------------
+           MULTIPLAYER PLATFORM INTEGRATION (jadidaring.com / test)
+           Only active when hosted on jadidaring subdomain
+        ------------------------------------------------------------- */
+        const hostname = window.location.hostname || "";
+        const protocol = window.location.protocol || "";
+        const isOnlineEnvironment = (protocol === "http:" || protocol === "https:") &&
+            (hostname.endsWith("jadidaring.com") || hostname.endsWith("jadidaring.test"));
+
+        let platformConfig = null;
+        let activeWebSocket = null;
+        let currentRoomCode = null;
+
+        if (isOnlineEnvironment) {
+            const mpBtn = document.getElementById("btn-multiplayer");
+            const modeBadge = document.getElementById("badge-mode");
+            mpBtn.style.display = "inline-flex";
+
+            mpBtn.addEventListener("click", () => {
+                document.getElementById("modal-multiplayer").classList.add("active");
+                initOnlineMultiplayer();
+            });
+
+            async function initOnlineMultiplayer() {
+                const statusBox = document.getElementById("mp-status-box");
+                try {
+                    statusBox.textContent = "Menghubungkan ke API Jadidaring...";
+                    const res = await fetch("/api/game/config");
+                    if (!res.ok) throw new Error("Gagal mengambil konfigurasi game");
+                    platformConfig = await res.json();
+
+                    if (!platformConfig.websocket || !platformConfig.websocket.enabled) {
+                        statusBox.textContent = "Multiplayer saat ini tidak aktif di server ini. Tetap di mode latihan.";
+                        return;
+                    }
+
+                    modeBadge.textContent = "Mode Online";
+                    modeBadge.className = "mode-badge mode-online";
+                    modeBadge.style.display = "inline-block";
+                    statusBox.textContent = `Terhubung ke server ${platformConfig.websocket.channelPrefix || "mahjong"}.`;
+
+                    // Connect vanilla websocket
+                    connectGameWebSocket(platformConfig.websocket);
+                    loadPublicRooms();
+                } catch (err) {
+                    console.warn("Online multiplayer init error:", err);
+                    statusBox.textContent = "Server game offline atau tidak terjangkau. Mode latihan tetap aktif.";
+                }
+            }
+
+            function connectGameWebSocket(wsConfig) {
+                if (activeWebSocket) return;
+                try {
+                    activeWebSocket = new WebSocket(wsConfig.url);
+                    activeWebSocket.onopen = () => {
+                        activeWebSocket.send(JSON.stringify({
+                            event: "pusher:subscribe",
+                            data: { channel: wsConfig.lobbyChannel }
+                        }));
+                    };
+                    activeWebSocket.onmessage = (event) => {
+                        try {
+                            const frame = JSON.parse(event.data);
+                            if (frame.event === "pusher:ping") {
+                                activeWebSocket.send(JSON.stringify({ event: "pusher:pong", data: {} }));
+                                return;
+                            }
+                            if (frame.event === "room.updated") {
+                                const payload = JSON.parse(frame.data);
+                                if (currentRoomCode && payload.code === currentRoomCode) {
+                                    refetchRoomState(currentRoomCode);
+                                } else {
+                                    loadPublicRooms();
+                                }
+                            }
+                        } catch (e) {
+                            console.error("WS parse error:", e);
+                        }
+                    };
+                } catch (e) {
+                    console.error("WS error:", e);
+                }
+            }
+
+            async function loadPublicRooms() {
+                try {
+                    const res = await fetch("/api/game/rooms");
+                    if (res.ok) {
+                        const rooms = await res.json();
+                        renderRoomsList(rooms);
+                    }
+                } catch (e) {}
+            }
+
+            function renderRoomsList(rooms) {
+                const container = document.getElementById("mp-rooms-list");
+                container.innerHTML = "";
+                if (!rooms || rooms.length === 0) {
+                    container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.8rem; text-align: center; padding: 10px;">Tidak ada meja terbuka. Buat meja baru di atas!</div>`;
+                    return;
+                }
+                rooms.forEach(room => {
+                    const item = document.createElement("div");
+                    item.className = "room-item";
+                    item.innerHTML = `
+                        <div>
+                            <strong>Meja #${room.code}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-dim);">Pemain: ${room.playersCount || 1}/${room.maxPlayers || 2}</div>
+                        </div>
+                        <button class="btn btn-gold" data-join="${room.code}">Gabung</button>
+                    `;
+                    item.querySelector("button").addEventListener("click", () => joinRoomByCode(room.code));
+                    container.appendChild(item);
+                });
+            }
+
+            async function joinRoomByCode(code) {
+                const displayName = document.getElementById("mp-player-name").value.trim() || "Pemain " + Math.floor(Math.random() * 900 + 100);
+                try {
+                    const res = await fetch("/api/game/rooms/join", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ code: code, displayName: displayName, private: {} })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sessionStorage.setItem("playerToken", data.playerToken);
+                        currentRoomCode = code;
+                        document.getElementById("modal-multiplayer").classList.remove("active");
+                        showToast(`Berhasil masuk ke meja online #${code}!`);
+                    } else {
+                        showToast("Meja penuh atau tidak ditemukan.");
+                    }
+                } catch (e) {
+                    showToast("Gagal bergabung ke meja.");
+                }
+            }
+
+            async function refetchRoomState(code) {
+                const token = sessionStorage.getItem("playerToken");
+                if (!token) return;
+                try {
+                    const res = await fetch(`/api/game/rooms/${code}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const roomData = await res.json();
+                        if (roomData.unchanged) return;
+                    }
+                } catch (e) {}
+            }
+
+            document.getElementById("mp-btn-match").addEventListener("click", async () => {
+                const name = document.getElementById("mp-player-name").value.trim() || "Pemain " + Math.floor(Math.random() * 900 + 100);
+                try {
+                    const res = await fetch("/api/game/rooms/match", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ displayName: name, maxPlayers: 2, state: {}, private: {} })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sessionStorage.setItem("playerToken", data.playerToken);
+                        currentRoomCode = data.code;
+                        document.getElementById("modal-multiplayer").classList.remove("active");
+                        showToast(`Tanding Cepat ditemukan! Meja #${data.code}`);
+                    }
+                } catch (e) {
+                    showToast("Gagal melakukan pencarian tanding.");
+                }
+            });
+
+            document.getElementById("mp-btn-create").addEventListener("click", async () => {
+                const name = document.getElementById("mp-player-name").value.trim() || "Pemain " + Math.floor(Math.random() * 900 + 100);
+                try {
+                    const res = await fetch("/api/game/rooms", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ displayName: name, visibility: "public", maxPlayers: 2, state: {}, private: {} })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        sessionStorage.setItem("playerToken", data.playerToken);
+                        currentRoomCode = data.code;
+                        document.getElementById("modal-multiplayer").classList.remove("active");
+                        showToast(`Meja baru dibuat: #${data.code}. Menunggu lawan...`);
+                    }
+                } catch (e) {
+                    showToast("Gagal membuat meja online.");
+                }
+            });
+
+            document.getElementById("mp-btn-join").addEventListener("click", () => {
+                const code = document.getElementById("mp-join-code").value.trim();
+                if (code) joinRoomByCode(code);
+            });
+        }
+
+        // Initialize and launch game
+        startNewGame();
+        render();
+
+    })();
+    </script>
+</body>
+</html>
