@@ -147,4 +147,30 @@ class SeoInfraTest extends TestCase
         $a = $this->article(['title' => str_repeat('Judul sangat panjang sekali ', 12)]);
         $this->assertFileExists(NewsImage::file($a, 480));
     }
+
+    public function test_home_has_branded_og_image_and_large_twitter_card(): void
+    {
+        $html = $this->get(self::SITE.'/')->assertOk()->getContent();
+        $this->assertStringContainsString('og:image" content="https://jadidaring.test/og-home.webp"', $html);
+        $this->assertStringContainsString('twitter:card" content="summary_large_image"', $html);
+        $r = $this->get(self::SITE.'/og-home.webp')->assertOk();
+        $this->assertSame('image/webp', $r->headers->get('Content-Type'));
+        $this->assertSame([1200, 630], array_slice(getimagesize($r->baseResponse->getFile()->getPathname()), 0, 2));
+    }
+
+    public function test_www_redirect_sets_no_cookies_and_gamehub_keeps_query(): void
+    {
+        $r = $this->get('http://www.jadidaring.test/berita?x=1')->assertStatus(301);
+        $this->assertSame([], $r->headers->getCookies());
+        $this->get('http://gamehub.jadidaring.test/nope?a=b')->assertRedirect('https://jadidaring.test/game?a=b');
+    }
+
+    public function test_game_html_normalizer_sets_lang_and_slashless_canonical(): void
+    {
+        $i = new \App\Services\SeoInjector();
+        $out = $i->normalizeGame('<html lang="en"><head><link rel="canonical" href="https://jadidaring.com/game/x/"></head>');
+        $this->assertStringContainsString('<html lang="id">', $out);
+        $this->assertStringContainsString('href="https://jadidaring.com/game/x"', $out);
+        $this->assertStringContainsString('<html class="a" lang="id">', $i->normalizeGame('<html class="a"><head></head>'));
+    }
 }

@@ -22,4 +22,14 @@ class NewsImageController extends Controller
 
         return $response;
     }
+
+    public function home(Request $request): BinaryFileResponse
+    {
+        $response = new BinaryFileResponse(NewsImage::homeCard(), 200, ['Content-Type' => 'image/webp', 'X-Content-Type-Options' => 'nosniff']);
+        $response->setAutoEtag()->setAutoLastModified();
+        $response->headers->set('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400');
+        $response->isNotModified($request);
+
+        return $response;
+    }
 }

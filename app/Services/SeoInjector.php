@@ -45,6 +45,29 @@ class SeoInjector
         return $html;
     }
 
+    /**
+     * Game pages: canonical without trailing slash (matches the sitemap), html lang=id when it is
+     * missing or en. Only the first <html> tag and the canonical link are touched.
+     */
+    public function normalizeGame(string $html): string
+    {
+        $html = preg_replace_callback('/(<link[^>]*rel=["\']canonical["\'][^>]*href=["\'])([^"\']*\/game\/[^"\'?#]*?)\/(["\'])/i', fn ($m) => $m[1].$m[2].$m[3], $html, 1) ?? $html;
+
+        $html = preg_replace_callback('/<html\b([^>]*)>/i', function ($m) {
+            $attrs = $m[1];
+
+            if (preg_match('/\blang\s*=\s*["\']?([a-zA-Z-]+)["\']?/', $attrs)) {
+                $attrs = preg_replace('/\blang\s*=\s*["\']?en(?:-[a-zA-Z]+)?["\']?/i', 'lang="id"', $attrs, 1);
+            } else {
+                $attrs .= ' lang="id"';
+            }
+
+            return '<html'.$attrs.'>';
+        }, $html, 1) ?? $html;
+
+        return $html;
+    }
+
     private function hasCanonical(string $html): bool
     {
         return (bool) preg_match('/rel=["\']canonical["\']/', $html);

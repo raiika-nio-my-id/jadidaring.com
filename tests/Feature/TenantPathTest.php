@@ -107,7 +107,7 @@ HTML);
 
         $this->get('http://jadidaring.test/game/drawquarium')
             ->assertOk()
-            ->assertSee('href="https://jadidaring.test/game/drawquarium/"', false)
+            ->assertSee('rel="canonical" href="https://jadidaring.test/game/drawquarium"', false)
             ->assertSee('href="/game/drawquarium/syarat-ketentuan"', false)
             ->assertSee('href="https://jadidaring.test/game/langitbersama/play"', false)
             ->assertSee('href="https://admin.jadidaring.test/login"', false)

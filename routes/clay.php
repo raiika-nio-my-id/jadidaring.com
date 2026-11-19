@@ -39,6 +39,7 @@ $cached(Route::get('/sitemap.xml', [ClayController::class, 'sitemap'])->name('cl
 // Feeds, images, static pages and the contact form.
 $cached(Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss']));
 $cached(Route::get('/news-sitemap.xml', [\App\Http\Controllers\FeedController::class, 'newsSitemap'])->name('clay.newssitemap'));
+Route::get('/og-home.webp', [\App\Http\Controllers\NewsImageController::class, 'home'])->withoutMiddleware($guestCache)->name('clay.home.og');
 Route::get('/gambar-berita/{id}-{width}.webp', [\App\Http\Controllers\NewsImageController::class, 'show'])->whereNumber(['id', 'width'])->withoutMiddleware($guestCache)->name('clay.berita.gambar');
 foreach (['tentang' => 'tentang', 'kebijakan-redaksi' => 'redaksi', 'kebijakan-privasi' => 'privasi'] as $path => $page) {
     $cached(Route::get('/'.$path, [\App\Http\Controllers\PageController::class, $page])->name('clay.page.'.$page));

@@ -51,8 +51,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/game.php'));
 
             // www is not a page host: GET/HEAD 301 to the bare domain.
-            Route::middleware('web')
-                ->domain($www)
+            Route::domain($www)
                 ->group(function (): void {
                     Route::match(['GET', 'HEAD'], '/{any?}', function (Request $request) {
                         $target = $request->getScheme().'://'.strtolower((string) config('singlepage.base_domain')).$request->getRequestUri();
@@ -68,7 +67,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     $exists = $slug !== '' && preg_match('/^[a-z0-9-]{1,63}$/', $slug) === 1
                         && \App\Models\CompanyProfile::query()->live()->games()->where('subdomain', $slug)->exists();
 
-                    return redirect()->away('https://'.$base.'/game'.($exists ? '/'.$slug : ''), 301);
+                    $qs = $request->getQueryString();
+
+                    return redirect()->away('https://'.$base.'/game'.($exists ? '/'.$slug : '').($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);
                 })->where('any', '(?!up$).*');
             });
 

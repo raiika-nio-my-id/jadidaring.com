@@ -82,7 +82,8 @@ class TenantController extends Controller
             ? $html
             : $legalInjector->inject($html, TenantPath::gameTermsUrl($request, $profile->subdomain));
 
-        $html = $seoInjector->inject($html, TenantPath::gameHomeUrl($request, $profile->subdomain));
+        $html = $seoInjector->inject($html, rtrim(TenantPath::gameHomeUrl($request, $profile->subdomain), '/'));
+        $html = $seoInjector->normalizeGame($html);
         $html = $names->inject($html, MembersOnlyGames::user());
         $html = $realtime->inject($html, $profile->subdomain);
 

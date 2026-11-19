@@ -224,6 +224,54 @@ class NewsImage
         return $ips[0];
     }
 
+    /** Branded 1200x630 home/share card (GD + Baloo 2), cached on disk. */
+    public static function homeCard(): string
+    {
+        $path = self::dir().'/home-card-v1.webp';
+
+        if (is_file($path)) {
+            return $path;
+        }
+
+        $W = 1200;
+        $H = 630;
+        $img = imagecreatetruecolor($W, $H);
+
+        for ($y = 0; $y < $H; $y++) {
+            $t = $y / $H;
+            imageline($img, 0, $y, $W, $y, imagecolorallocate($img, (int) (0x5B * (1 - .35 * $t)), (int) (0x3F * (1 - .35 * $t)), (int) (0xA6 * (1 - .3 * $t))));
+        }
+
+        $lime = imagecolorallocatealpha($img, 0xD4, 0xFF, 0x3A, 90);
+        imagesetthickness($img, 3);
+
+        for ($i = 1; $i <= 7; $i++) {
+            imagearc($img, $W - 60, 40, $i * 170, $i * 170, 90, 180, $lime);
+        }
+
+        for ($i = -3; $i <= 3; $i++) {
+            imageline($img, $W - 60, 40, $W - 620, 40 + $i * 120 + 280, $lime);
+        }
+
+        $font = resource_path('fonts/Baloo2.ttf');
+        $white = imagecolorallocate($img, 255, 255, 255);
+        $soft = imagecolorallocate($img, 235, 230, 250);
+        $limeSolid = imagecolorallocate($img, 0xD4, 0xFF, 0x3A);
+
+        foreach ([0, 1, 2] as $dx) {
+            imagettftext($img, 130, 0, 80 + $dx, 290, $white, $font, 'Jaring');
+        }
+
+        imagettftext($img, 38, 0, 84, 350, $limeSolid, $font, 'Jadi Daring · jadidaring.com');
+        imagettftext($img, 44, 0, 84, 470, $white, $font, 'Game web gratis, berita hangat,');
+        imagettftext($img, 44, 0, 84, 530, $white, $font, 'dan komunitas digital Indonesia.');
+
+        imagewebp($img, $path, 84);
+        imagedestroy($img);
+
+        return $path;
+    }
+
     /** Branded title card (GD + bundled Baloo 2). Cached on disk per title/topic/width. */
     public static function card(Article $a, int $width): string
     {
