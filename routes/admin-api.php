@@ -26,3 +26,5 @@ Route::get('/community/comments', [\App\Http\Controllers\Api\Admin\CommunityCont
 Route::patch('/community/comments/{comment}', [\App\Http\Controllers\Api\Admin\CommunityController::class, 'moderateComment'])->whereNumber('comment')->name('community.comments.moderate');
 Route::get('/news/articles', [NewsController::class, 'index'])->name('news.articles.index');
 Route::delete('/news/articles/{article}', [NewsController::class, 'destroy'])->whereNumber('article')->name('news.articles.destroy');
+Route::post('/news/articles/{article}/image', [NewsController::class, 'setImage'])->whereNumber('article')->middleware('throttle:30,1')->name('news.articles.image.set');
+Route::delete('/news/articles/{article}/image', [NewsController::class, 'clearImage'])->whereNumber('article')->name('news.articles.image.clear');

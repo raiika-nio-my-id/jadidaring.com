@@ -10,11 +10,11 @@ class Article extends Model
 {
     public const STATUSES = ['draft', 'published', 'hidden'];
 
-    protected $fillable = ['topic', 'slug', 'title', 'summary', 'body', 'image_url', 'sources', 'status', 'published_at'];
+    protected $fillable = ['topic', 'slug', 'title', 'summary', 'body', 'image_url', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'sources', 'status', 'published_at'];
 
     protected function casts(): array
     {
-        return ['sources' => 'array', 'published_at' => 'datetime'];
+        return ['sources' => 'array', 'published_at' => 'datetime', 'image_updated_at' => 'datetime'];
     }
 
     public function comments(): HasMany

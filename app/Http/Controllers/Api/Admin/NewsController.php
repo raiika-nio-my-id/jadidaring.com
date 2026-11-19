@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Models\NewsTopic;
 use App\Services\NewsCache;
+use App\Services\NewsImage;
 use App\Services\NewsSources;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,6 +57,12 @@ class NewsController extends Controller
             'status' => ['sometimes', Rule::in(['draft', 'published'])],
             'published_at' => ['nullable', 'date'],
             'sources' => ['required', 'array', 'min:2', 'max:10'],
+            'image' => ['sometimes', 'array'],
+            'image.url' => ['required_with:image', 'url:https', 'max:500'],
+            'image.alt' => ['required_with:image', 'string', 'min:5', 'max:200'],
+            'image.credit' => ['required_with:image', 'string', 'min:2', 'max:200'],
+            'image.source_url' => ['required_with:image', 'url:https', 'max:500'],
+            'image.license' => ['required_with:image', 'string', 'min:2', 'max:100'],
         ]);
 
         $topic = NewsTopic::query()->findOrFail($data['topic']);
@@ -84,7 +91,18 @@ class NewsController extends Controller
         ]);
         NewsCache::bump();
 
-        return response()->json(['article' => $this->present($article)] + self::formatWarnings($data['body']), 201);
+        $extra = [];
+
+        if (isset($data['image'])) {
+            try {
+                NewsImage::storePhoto($article, NewsImage::download($data['image']['url']), \Illuminate\Support\Arr::only($data['image'], ['alt', 'credit', 'source_url', 'license']));
+                NewsCache::bump();
+            } catch (\InvalidArgumentException $e) {
+                $extra['image_error'] = $e->getMessage();
+            }
+        }
+
+        return response()->json(['article' => $this->present($article->fresh())] + self::formatWarnings($data['body']) + $extra, 201);
     }
 
     public function update(Request $request, int $article): JsonResponse
@@ -130,6 +148,55 @@ class NewsController extends Controller
         return response()->json(['article' => $this->present($model->fresh())]);
     }
 
+    /** POST /news/articles/{id}/image: multipart `image` file or `image_url` (https), plus alt/credit/source_url/license. */
+    public function setImage(Request $request, int $article): JsonResponse
+    {
+        $model = Article::query()->find($article);
+
+        if (! $model instanceof Article) {
+            return response()->json(['message' => 'Article not found.'], 404);
+        }
+
+        $data = $request->validate([
+            'image' => ['nullable', 'file', 'max:12288'],
+            'image_url' => ['nullable', 'url:https', 'max:500'],
+            'alt' => ['required', 'string', 'min:5', 'max:200'],
+            'credit' => ['required', 'string', 'min:2', 'max:200'],
+            'source_url' => ['required', 'url:https', 'max:500'],
+            'license' => ['required', 'string', 'min:2', 'max:100'],
+        ]);
+
+        if (! $request->hasFile('image') && empty($data['image_url'])) {
+            return response()->json(['message' => 'Send an image file (field "image") or an https "image_url".', 'errors' => ['image' => ['Required.']]], 422);
+        }
+
+        try {
+            $binary = $request->hasFile('image') ? (string) file_get_contents($request->file('image')->getRealPath()) : NewsImage::download($data['image_url']);
+            NewsImage::storePhoto($model, $binary, \Illuminate\Support\Arr::only($data, ['alt', 'credit', 'source_url', 'license']));
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['message' => $e->getMessage(), 'errors' => ['image' => [$e->getMessage()]]], 422);
+        }
+
+        NewsCache::bump();
+
+        return response()->json(['article' => $this->present($model->fresh())]);
+    }
+
+    /** DELETE /news/articles/{id}/image: back to the generated title card. */
+    public function clearImage(int $article): JsonResponse
+    {
+        $model = Article::query()->find($article);
+
+        if (! $model instanceof Article) {
+            return response()->json(['message' => 'Article not found.'], 404);
+        }
+
+        NewsImage::clearPhoto($model);
+        NewsCache::bump();
+
+        return response()->json(['article' => $this->present($model->fresh())]);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $status = $request->query('status');
@@ -137,10 +204,11 @@ class NewsController extends Controller
         $items = Article::query()
             ->when(in_array($status, Article::STATUSES, true), fn ($q) => $q->where('status', $status))
             ->orderBy('id')->limit(500)
-            ->get(array_merge(['id', 'topic', 'slug', 'title', 'status', 'published_at', 'created_at'], $request->boolean('full') ? ['body', 'summary'] : []))
+            ->get(array_merge(['id', 'topic', 'slug', 'title', 'status', 'published_at', 'created_at', 'image_path'], $request->boolean('full') ? ['body', 'summary'] : []))
             ->map(fn (Article $a): array => ($request->boolean('full') ? ['body' => $a->body, 'summary' => $a->summary] : []) + [
                 'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'status' => $a->status,
                 'published_at' => $a->published_at?->toIso8601String(), 'created_at' => $a->created_at?->toIso8601String(),
+                'has_photo' => (bool) $a->image_path,
             ]);
 
         return response()->json(['articles' => $items]);
@@ -226,6 +294,7 @@ class NewsController extends Controller
             'status' => $article->status, 'url' => 'https://'.\App\Services\GameHub::host().$article->url(),
             'published_at' => $article->published_at?->toIso8601String(),
             'sources' => $article->sources,
+            'image' => NewsImage::meta($article) + ['url' => NewsImage::absolute($article->id, 1200, ($article->image_updated_at ?? $article->updated_at)?->timestamp)],
         ];
     }
 }
