@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<script type="application/json" id="website-config">
+{
+  "site": {
+    "title": "Dapur Padang Panik",
+    "tagline": "Masak bareng, panik bareng!",
+    "lead": "Game masak co-op 1–4 pemain. Potong ikan dan daging, ulek sambal ijo, masak gulai dan rendang di kuali, sajikan dengan nasi sebelum pelanggan ngamuk.",
+    "gameHubUrl": "https://gamehub.jadidaring.com/",
+    "termsUrl": "/syarat-ketentuan",
+    "footer": "Dapur Padang Panik · JaRing · Game gratis tanpa download"
+  },
+  "shouts": [
+    { "icon": "🍚", "id": "Nasi!", "en": "Rice!" },
+    { "icon": "🍽️", "id": "Piring!", "en": "Plate!" },
+    { "icon": "🔥", "id": "Kuali!", "en": "Pot!" },
+    { "icon": "⏰", "id": "Cepat!", "en": "Hurry!" },
+    { "icon": "🙏", "id": "Tolong!", "en": "Help!" },
+    { "icon": "👍", "id": "Mantap!", "en": "Nice!" }
+  ],
+  "game": {
+    "speed": 4.3,
+    "burnAfter": 11,
+    "expirePenalty": 8,
+    "burnPenalty": 10,
+    "recipes": {
+      "gulai": { "c": ["ikanP", "santan"], "cook": 9 },
+      "rendang": { "c": ["dagingP", "santan", "bumbu"], "cook": 14 }
+    },
+    "shifts": [
+      { "key": "pagi", "dur": 150, "menu": ["gulai", "sambal"], "gap": 17, "stars": [40, 100, 160] },
+      { "key": "siang", "dur": 180, "menu": ["gulai", "sambal", "rendang"], "gap": 16, "stars": [60, 140, 220] },
+      { "key": "malam", "dur": 210, "menu": ["gulai", "sambal", "rendang", "komplit", "gulaiS"], "gap": 14, "stars": [80, 180, 290] }
+    ]
+  }
+}
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dapur Padang Panik · Game Masak Co-op Online 1–4 Pemain Gratis</title>
+<meta name="description" content="Dapur Padang Panik: game masak co-op ala Overcooked untuk 1–4 pemain. Masak rendang, gulai, dan sambal ijo bareng teman di satu dapur, antar ke pelanggan sebelum mereka ngamuk. Ada chat, teriakan cepat, dan mode latihan.">
+<meta name="theme-color" content="#7a1f14">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dapur Padang Panik">
+<meta property="og:description" content="Masak rendang, gulai, dan sambal ijo bareng 1–4 pemain. Panik, seru, gratis di browser.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<main id="main" data-game="dapurPadang">
+  <!-- ============ HOME ============ -->
+  <div id="home" class="screen">
+    <header class="top wrap">
+      <span class="brand"><span class="logo" aria-hidden="true">🍛</span><span><strong data-c="title"></strong><small data-t="tagline"></small></span></span>
+      <div class="topbtns">
+        <button type="button" class="chip" id="muteBtn" aria-label="Suara"></button>
+        <div class="langsw" role="group" aria-label="Bahasa / Language"><button type="button" class="lb" data-lang="id">ID</button><button type="button" class="lb" data-lang="en">EN</button></div>
+      </div>
+    </header>
+    <section class="hero wrap">
+      <h1 class="title" aria-label="Dapur Padang Panik"><span>DAPUR PADANG</span> <span class="panik">PANIK!</span></h1>
+      <p class="lead" data-t="lead"></p>
+      <div class="herobox"><canvas id="heroCv" aria-hidden="true"></canvas></div>
+    </section>
+    <section class="wrap grid">
+      <article class="card">
+        <h2 data-t="youTitle"></h2>
+        <label class="field"><span><span data-t="name"></span> <em class="gm-badge" id="gmNickBadge">(GM)</em></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+        <h3 data-t="practiceTitle"></h3>
+        <p class="muted small" data-t="practiceSub"></p>
+        <div class="row"><span class="lbl" data-t="shift"></span><div class="seg" id="soloShift" role="radiogroup"><button type="button" data-v="0" data-t="sh0"></button><button type="button" data-v="1" data-t="sh1"></button><button type="button" data-v="2" data-t="sh2"></button></div></div>
+        <p class="muted small" id="bestLine"></p>
+        <div class="row wrapbtns"><button type="button" class="btn green big" id="practiceBtn" data-t="practiceGo"></button><button type="button" class="btn ghost" id="tutBtn" data-t="tutGo"></button></div>
+      </article>
+      <article class="card">
+        <h2 data-t="onlineTitle"></h2>
+        <p class="muted small" data-t="onlineSub"></p>
+        <p class="note small" id="onlineNote" hidden></p>
+        <div class="row wrapbtns"><button type="button" class="btn red online-btn" id="createPub" data-t="createPub"></button><button type="button" class="btn gold online-btn" id="createPriv" data-t="createPriv"></button></div>
+        <div class="row"><button type="button" class="btn ghost online-btn" id="matchBtn" data-t="match"></button></div>
+        <form class="row joinrow" id="joinForm"><input type="text" id="codeInput" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" data-tp="codePh" aria-label="Kode room"><button type="submit" class="btn green online-btn" id="joinBtn" data-t="join"></button></form>
+      </article>
+      <article class="card howto">
+        <h2 data-t="howTitle"></h2>
+        <div id="howList" class="how"></div>
+      </article>
+    </section>
+    <section class="wrap"><div class="card gm-card" id="gmRooms" aria-labelledby="gmTitle" hidden>
+      <div class="gm-top"><h2 id="gmTitle" data-t="gmTitle"></h2><button type="button" class="btn ghost small" id="gmRefresh" data-t="gmRefresh"></button></div>
+      <p class="muted small" id="gmNote" role="status" aria-live="polite"></p>
+      <ul class="gm-list" id="gmList"></ul>
+    </div></section>
+    <footer class="wrap foot small"><span data-c="footer"></span> · <a id="termsLink" href="/syarat-ketentuan" data-t="terms"></a> · <a id="hubLink" href="https://gamehub.jadidaring.com/">Game Hub</a></footer>
+  </div>
+
+  <!-- ============ LOBBY ============ -->
+  <div id="lobby" class="screen" hidden>
+    <div class="wrap lobbywrap">
+      <div class="card">
+        <div class="lobby-head">
+          <div><p class="kicker" data-t="roomCode"></p><div class="code" id="roomCode">------</div></div>
+          <div class="row wrapbtns"><button type="button" class="btn gold" id="inviteBtn" data-t="invite"></button><button type="button" class="btn ghost" id="lobbyLeave" data-t="leave"></button></div>
+        </div>
+        <p class="muted small" id="lobbyVis"></p>
+        <h3><span data-t="players"></span> <span id="pCount" class="muted"></span></h3>
+        <ul class="plist" id="pList"></ul>
+        <div class="row"><span class="lbl" data-t="shift"></span><div class="seg" id="onShift" role="radiogroup"><button type="button" data-v="0" data-t="sh0"></button><button type="button" data-v="1" data-t="sh1"></button><button type="button" data-v="2" data-t="sh2"></button></div></div>
+        <div id="hostBox"><div class="row"><button type="button" class="btn green big" id="startBtn" data-t="start"></button></div></div>
+        <p class="muted center" id="lobbyWait"></p>
+      </div>
+      <div class="card chatcard" id="lobbyChatSlot"></div>
+    </div>
+  </div>
+
+  <!-- ============ GAME ============ -->
+  <div id="game" class="screen" hidden>
+    <div class="hud">
+      <button type="button" class="chip" id="exitBtn" data-t="exit"></button>
+      <div class="hud-mid"><span class="shname" id="shName"></span><span class="timer" id="timer">0:00</span><span class="score" id="scoreBox">0</span><span class="stars" id="starBox"></span><span class="streak" id="streakBox" hidden></span></div>
+      <div class="hud-r"><button type="button" class="chip" id="bookBtn" aria-label="Resep">📖</button><button type="button" class="chip" id="pauseBtn" data-t="pause" hidden></button><button type="button" class="chip" id="muteBtn2" aria-label="Suara"></button></div>
+    </div>
+    <div class="playarea">
+      <div class="stage" id="stage">
+        <canvas id="board" aria-label="Dapur"></canvas>
+        <div class="tut" id="tutBox" hidden><span class="tut-n" id="tutN"></span><span class="tut-t" id="tutT"></span><button type="button" class="tut-skip" id="tutSkip" data-t="skip"></button></div>
+        <div class="overlay" id="overlay" hidden></div>
+      </div>
+      <aside class="side" id="side">
+        <ul class="crew" id="crew"></ul>
+        <div class="shouts" id="shouts"></div>
+        <div id="gameChatSlot" class="chatslot"></div>
+        <p class="muted small keys" id="keysHint" data-t="keys"></p>
+      </aside>
+    </div>
+    <div class="ctrls" id="ctrls">
+      <div class="joy" id="joy" aria-label="Gerak"><div class="knob" id="knob"></div></div>
+      <div class="abtns">
+        <button type="button" class="act work" id="workBtn"><span class="ic">🔪</span><span class="lb2" id="workLbl"></span><kbd class="key">F</kbd></button>
+        <button type="button" class="act grab" id="grabBtn"><span class="ic">✋</span><span class="lb2" id="grabLbl"></span><kbd class="key" data-t="kSpace"></kbd></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ END ============ -->
+  <div id="end" class="screen" hidden>
+    <div class="wrap lobbywrap">
+      <div class="card center endcard">
+        <p class="kicker" id="endKicker"></p>
+        <h2 id="endTitle"></h2>
+        <div class="bigstars" id="endStars"></div>
+        <div class="endscore" id="endScore"></div>
+        <ul class="tally" id="endTally"></ul>
+        <ul class="crew endcrew" id="endCrew"></ul>
+        <div class="row wrapbtns centerrow"><button type="button" class="btn green big" id="nextBtn" data-t="nextShift"></button><button type="button" class="btn gold" id="againBtn" data-t="again"></button><button type="button" class="btn ghost" id="toLobbyBtn" data-t="toLobby"></button><button type="button" class="btn ghost" id="endMenu" data-t="menu"></button></div>
+        <p class="muted small" id="endWait"></p>
+      </div>
+      <div class="card chatcard" id="endChatSlot"></div>
+    </div>
+  </div>
+</main>
+<div class="chat" id="chat">
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <form class="chat-form" id="chatForm"><input type="text" id="chatInput" maxlength="120" autocomplete="off" enterkeyhint="send" data-tp="chatPh" aria-label="Chat"><button type="submit" class="btn small red" data-t="send"></button></form>
+</div>
+<div class="modal" id="bookModal" hidden><div class="modal-card"><div class="modal-head"><h2 data-t="bookTitle"></h2><button type="button" class="chip" id="bookClose" aria-label="Tutup">✕</button></div><div id="bookBody" class="book"></div></div></div>
+<div id="toasts" aria-live="polite"></div>
+<script>
+/*GAME*/
+</script>
+<script>
+/*NET*/
+</script>
+<script>
+/*APP*/
+</script>
+</body>
+</html>
