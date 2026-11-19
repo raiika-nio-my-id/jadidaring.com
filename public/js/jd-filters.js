@@ -1,5 +1,5 @@
 /* Filter/tab chips: swap only the listing (fetch + DOMParser), pushState, popstate; any failure = normal navigation.
-   Chips: one swipeable row with edge fades, active chip scrolled into view, sliding indicator. */
+   Chips: one swipeable row with edge fades, active chip scrolled into view. Active chip is a pressed physical button. */
 (function () {
   'use strict';
   var doc = document, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
@@ -7,29 +7,12 @@
   var bars = doc.querySelectorAll('[data-jd-chips]');
   var slots = doc.querySelectorAll('[data-jd-slot]');
 
-  /* ---------- chip rows: fades, scroll into view, indicator ---------- */
+  /* ---------- chip rows: fades, scroll into view ---------- */
   function activeOf(bar) { return bar.querySelector('[aria-current="page"], .is-active'); }
   function fades(bar) {
     var max = bar.scrollWidth - bar.clientWidth;
     bar.classList.toggle('jd-fade-l', bar.scrollLeft > 4);
     bar.classList.toggle('jd-fade-r', max > 4 && bar.scrollLeft < max - 4);
-  }
-  function tone(a) {
-    if (!a) return '';
-    if (/pill--peach/.test(a.className)) return 'peach';
-    if (/pill--sky/.test(a.className)) return 'sky';
-    return 'lavender';
-  }
-  function place(bar, animate) {
-    var a = activeOf(bar), ind = bar._jdInd;
-    if (!ind) return;
-    if (!a) { ind.style.opacity = '0'; return; }
-    ind.setAttribute('data-tone', tone(a));
-    ind.style.transition = animate && !still() ? '' : 'none';
-    ind.style.opacity = '1';
-    ind.style.width = a.offsetWidth + 'px';
-    ind.style.height = a.offsetHeight + 'px';
-    ind.style.transform = 'translate(' + a.offsetLeft + 'px,' + a.offsetTop + 'px)';
   }
   function reveal(bar, smooth) {
     var a = activeOf(bar);
@@ -39,16 +22,11 @@
   }
   function initBar(bar) {
     bar.classList.add('jd-chips');
-    var ind = doc.createElement('span');
-    ind.className = 'jd-ind'; ind.setAttribute('aria-hidden', 'true');
-    bar.insertBefore(ind, bar.firstChild);
-    bar._jdInd = ind;
     bar.addEventListener('scroll', function () { fades(bar); }, { passive: true });
-    place(bar, false); reveal(bar, false); fades(bar);
-    ind.offsetWidth; // flush, then allow transitions
+    reveal(bar, false); fades(bar);
   }
   bars.forEach(initBar);
-  window.addEventListener('resize', function () { bars.forEach(function (b) { place(b, false); fades(b); }); });
+  window.addEventListener('resize', function () { bars.forEach(function (b) { fades(b); }); });
   /* the home page has plain scroll rows without data-jd-chips */
   doc.querySelectorAll('.pills-bar:not([data-jd-chips])').forEach(function (bar) {
     bar.classList.add('jd-chips');
@@ -79,8 +57,20 @@
         if (on) { a.setAttribute('aria-current', 'page'); newActive = a; } else a.removeAttribute('aria-current');
         a.setAttribute('href', b.getAttribute('href'));
       });
-      place(bar, true); reveal(bar, true);
+      reveal(bar, true);
       bar.dispatchEvent(new CustomEvent('jd:chipchange', { detail: { next: newActive, prev: prev } }));
+    });
+  }
+  function syncForms(next) {
+    doc.querySelectorAll('form[data-jd-form]').forEach(function (f) {
+      var n = f.id ? next.getElementById(f.id) : null;
+      if (!n) { var all = doc.querySelectorAll('form[data-jd-form]'), na = next.querySelectorAll('form[data-jd-form]'); n = na[Array.prototype.indexOf.call(all, f)]; }
+      if (!n) return;
+      f.setAttribute('action', n.getAttribute('action'));
+      var q = f.querySelector('[name="q"]'), nq = n.querySelector('[name="q"]');
+      if (q && nq) { q.value = nq.value; q.placeholder = nq.placeholder; }
+      var v = n.getAttribute('data-jd-view');
+      if (v) { try { if (window.jdTrack) window.jdTrack(v, JSON.parse(n.getAttribute('data-jd-params') || '{}')); } catch (e) {} }
     });
   }
   function head(next) {
@@ -100,6 +90,13 @@
     el.classList.add('jd-enter');
   }
   function fail(url) { location.href = url; }
+
+  function press(a) {
+    var bar = a.closest('[data-jd-chips]'), prev = activeOf(bar);
+    if (prev === a) return;
+    if (prev) { prev.classList.remove('is-active'); prev.removeAttribute('aria-current'); }
+    a.classList.add('is-active'); a.setAttribute('aria-current', 'page');
+  }
 
   function go(url, push, scrollTop) {
     if (ctl) ctl.abort();
@@ -123,7 +120,7 @@
           s.classList.remove('jd-loading');
           if (s.getAttribute('data-jd-slot') === 'list') enter(s);
         });
-        syncChips(next); head(next);
+        syncChips(next); syncForms(next); head(next);
         var fin = loc(res.url);
         if (push) history.pushState({ jd: 1 }, '', fin);
         else if (fin !== loc(location.href)) history.replaceState({ jd: 1 }, '', fin);
@@ -153,6 +150,7 @@
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search && u.hash)) return;
     e.preventDefault();
     if (loc(u.href) === cur && inChips) return;
+    if (inChips) press(a);
     go(u.href, true, !!inPager);
   });
   doc.addEventListener('submit', function (e) {
