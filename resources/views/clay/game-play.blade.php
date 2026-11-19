@@ -62,8 +62,19 @@
             .game-stage { border-radius: var(--radius-sm); }
             .is-game-page .clay-consent { bottom: 8px; }
         }
+        /* Back to the game list (replaces the old floating Game Hub link). Press feedback is instant (pointerdown). */
+        .game-back { flex: none; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; color: inherit; transition: transform .08s ease, filter .08s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .game-back svg { width: 20px; height: 20px; }
+        .game-back:active, .game-back.is-pressed { transform: scale(.88); filter: brightness(.92); }
+        .is-game-page .clay-header__bar { padding-left: 6px; }
     </style>
 @endpush
+
+@section('headerStart')
+    <a href="/game" class="theme-toggle game-back" data-game-back aria-label="Kembali ke daftar game" title="Kembali ke daftar game">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+@endsection
 
 @section('headerActions')
     <button type="button" class="theme-toggle game-fs" data-game-fs aria-pressed="false" aria-label="Layar penuh" title="Layar penuh">
@@ -115,6 +126,22 @@
             d.addEventListener('webkitfullscreenchange', sync);
             d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && cssOn()) { leave(); } });
             sync();
+
+            /* Back: history.back() only when the previous page is this site's game list, else open /game. */
+            var back = d.querySelector('[data-game-back]');
+            if (back) {
+                var press = function () { back.classList.add('is-pressed'); };
+                var release = function () { back.classList.remove('is-pressed'); };
+                back.addEventListener('pointerdown', press);
+                ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { back.addEventListener(t, release); });
+                window.addEventListener('pageshow', release);
+                back.addEventListener('click', function (e) {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) { return; }
+                    var fromList = false;
+                    try { var r = new URL(d.referrer); fromList = r.origin === location.origin && /^\/game\/?$/.test(r.pathname); } catch (x) {}
+                    if (fromList && history.length > 1) { e.preventDefault(); press(); history.back(); }
+                });
+            }
         })();
     </script>
 @endsection

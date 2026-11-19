@@ -65,6 +65,7 @@
     <header class="clay-header">
         <div class="clay-shell">
             <div class="clay-header__bar">
+                @yield('headerStart')
                 <a href="/" class="clay-brand" aria-label="Jaring Jadi Daring, beranda">
                     <span class="clay-brand__logo">
                         <img class="clay-logo clay-logo--light" src="{{ \App\Support\AssetUrl::to('marketing/images/logo-mark-light.svg') }}" alt="Jadi Daring" width="36" height="36">

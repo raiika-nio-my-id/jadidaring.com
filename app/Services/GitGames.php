@@ -65,6 +65,9 @@ class GitGames
 
         $html = self::accountName($html);
 
+        // The game page nav has a Back button to /game, so the floating Game Hub link (jr-hub snippet) is dropped.
+        $html = (string) preg_replace('/<!-- JaRing Game Hub link[\s\S]*?<!-- \/jr-hub -->\s*/', '', $html, 1);
+
         $id = (string) config('services.ga4.measurement_id');
 
         if (preg_match('/^G-[A-Z0-9]{4,20}$/', $id) === 1 && ! str_contains($html, GameAnalytics::MARKER)) {

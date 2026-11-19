@@ -104,8 +104,8 @@ resources/games/{slug}/
 
 | URL | What |
 |---|---|
-| `/game/{slug}` | `clay.game-play` view on the site layout: main nav (slim on game pages), fullscreen button, SEO title/description from the game's own `<head>`, VideoGame + BreadcrumbList JSON-LD, and a same-origin `<iframe>` that fills the rest of the screen. Query string and `#hash` are passed to the frame. |
-| `/game/{slug}/play` | `game.html` with exactly the same injections as before (shared `gameDocument()` pipeline), plus `GitGames::frame()`: opened top-level it bounces to `/game/{slug}` (except `?wallpaper`), links that leave the game open in the whole tab, and GA events go to the shell page's `jdTrack` (one consent banner, one page view). Headers: `X-Frame-Options: SAMEORIGIN`, `frame-ancestors 'self'`, `X-Robots-Tag: noindex`. |
+| `/game/{slug}` | `clay.game-play` view on the site layout: main nav (slim on game pages) with a Back button on the left (to `/game`; `history.back()` only when the previous page is the game list), fullscreen button, SEO title/description from the game's own `<head>`, VideoGame + BreadcrumbList JSON-LD, and a same-origin `<iframe>` that fills the rest of the screen. Query string and `#hash` are passed to the frame. |
+| `/game/{slug}/play` | `game.html` with exactly the same injections as before (shared `gameDocument()` pipeline), plus `GitGames::frame()` (also drops the floating Game Hub link snippet `jr-hub`, the nav Back button replaces it): opened top-level it bounces to `/game/{slug}` (except `?wallpaper`), links that leave the game open in the whole tab, and GA events go to the shell page's `jdTrack` (one consent banner, one page view). Headers: `X-Frame-Options: SAMEORIGIN`, `frame-ancestors 'self'`, `X-Robots-Tag: noindex`. |
 | `/{slug}[/...]` | 301 to `/game/{slug}` (old bare path). `{slug}.jadidaring.com` already 301s via `config/old_subdomains.php`. |
 
 Why a frame and not inlining the game into the Blade page: game CSS/JS assume they own `html`, `body`

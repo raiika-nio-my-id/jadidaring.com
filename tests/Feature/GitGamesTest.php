@@ -182,4 +182,21 @@ class GitGamesTest extends TestCase
         $this->assertStringContainsString('"name":"Budi Akun"', $html);
         $this->assertSame(1, substr_count($html, 'data-jd-account-name-lock'));
     }
+
+    public function test_game_nav_has_a_back_button_and_no_floating_hub_link(): void
+    {
+        $this->publish('langitbersama');
+
+        $this->get(self::HOST.'/game/langitbersama')
+            ->assertOk()
+            ->assertSee('data-game-back', false)
+            ->assertSee('href="/game" class="theme-toggle game-back"', false);
+
+        $this->get(self::HOST.'/game/langitbersama/play')
+            ->assertOk()
+            ->assertDontSee('id="jr-hub"', false)
+            ->assertDontSee('JaRing Game Hub link', false);
+
+        $this->get(self::HOST.'/game')->assertOk()->assertDontSee('data-game-back', false);
+    }
 }
