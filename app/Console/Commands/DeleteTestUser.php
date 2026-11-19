@@ -43,7 +43,7 @@ class DeleteTestUser extends Command
             }
         }
 
-        $dir = storage_path('backups');
+        $dir = storage_path('app/backups');
         File::ensureDirectoryExists($dir);
         $file = $dir.'/deleted-user-'.$username.'-'.date('Ymd-His').'.json';
         file_put_contents($file, json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
