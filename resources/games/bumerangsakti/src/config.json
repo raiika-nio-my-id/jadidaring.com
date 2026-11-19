@@ -1,0 +1,228 @@
+{
+  "site": {
+    "name": "Bumerang Sakti",
+    "slug": "bumerangsakti",
+    "tagline": "Lempar, putar, tangkap!"
+  },
+  "api": {
+    "scores": "/api/game/scores",
+    "limit": 20,
+    "hosts": [
+      "jadidaring.com",
+      "jadidaring.test"
+    ]
+  },
+  "game": {
+    "startTime": 90,
+    "maxTime": 180,
+    "lives": 3,
+    "bpm": 112,
+    "timePowerup": 10,
+    "cleanBonusTime": 2,
+    "waveEveryBars": 4,
+    "lifeBeats": 20,
+    "comboTiers": [
+      0,
+      5,
+      12,
+      25,
+      40
+    ],
+    "tierWords": [
+      "",
+      "Mantap!",
+      "Keren!",
+      "Hebat!",
+      "SAKTI!"
+    ],
+    "base": {
+      "mon": 10,
+      "big": 30,
+      "tnt": 15,
+      "bossHit": 20
+    },
+    "coinDiv": 50,
+    "tntRadius": 0.3,
+    "bossEvery": 5,
+    "bossHp": 10,
+    "bossLifeBeats": 48,
+    "bossReward": 500,
+    "bossComboBonus": 5,
+    "bossTime": 5,
+    "_bossNote": "Boss stage starts after every `bossEvery` normal waves. Boss has `bossHp` HP; each time the boomerang path touches it = 1 hit (it can be hit again after 0.25 s, so zig-zag through it!), a TNT blast = 2. Beating it: bossReward x combo multiplier, +bossComboBonus combo, +bossTime s. It leaves after bossLifeBeats beats if not beaten (no penalty)."
+  },
+  "text": {
+    "play": "Main",
+    "shop": "Toko",
+    "scores": "Skor",
+    "how": "Cara Main",
+    "namePrompt": "Siapa namamu?",
+    "nameHint": "1–16 huruf/angka",
+    "nameBad": "Pakai huruf, angka, spasi . _ ' -",
+    "start": "Mulai!",
+    "back": "Kembali",
+    "buy": "Beli",
+    "use": "Pakai",
+    "used": "Dipakai",
+    "skins": "Bumerang",
+    "trails": "Jejak",
+    "online": "Dunia",
+    "local": "HP-ku",
+    "loading": "Memuat…",
+    "empty": "Belum ada skor. Jadilah yang pertama!",
+    "offlineBoard": "Offline · skor lokal",
+    "timeUp": "Waktu Habis!",
+    "livesUp": "Nyawa Habis!",
+    "again": "Main Lagi",
+    "menu": "Menu",
+    "best": "Rekor",
+    "newBest": "REKOR BARU!",
+    "coinsEarned": "Koin",
+    "sending": "Mengirim skor…",
+    "sent": "Skor terkirim ✓",
+    "sendFail": "Gagal kirim · disimpan di HP",
+    "offline": "Offline · disimpan di HP",
+    "paused": "Jeda",
+    "resume": "Lanjut",
+    "quit": "Keluar",
+    "skip": "Lewati",
+    "t1": "Sentuh kamu",
+    "t2": "Tabrak monster!",
+    "t3": "Balik ke kamu!",
+    "tTnt": "TNT: tabrak = DUAR! 👍",
+    "tBomb": "Bom bahaya! −1 ❤️",
+    "tPower": "⏱ +detik · 🛡 tahan 1 bom",
+    "go": "MULAI!",
+    "backToYou": "Balik ke kamu!",
+    "startOnYou": "Mulai dari kamu!",
+    "catch": "Tangkap!",
+    "miss": "Meleset",
+    "clean": "BERSIH!",
+    "shieldOn": "Perisai!",
+    "blocked": "Diblok!",
+    "ouch": "Aduh!",
+    "time": "Waktu",
+    "maxCombo": "Combo",
+    "notEnough": "Koin kurang",
+    "bought": "Terbeli!",
+    "mute": "Suara",
+    "tLoopSub": "Garis harus kena monster ✂️",
+    "tBig": "Monster besar: tabrak 2×",
+    "tBigSub": "Lewati 2 kali",
+    "tBigAgain": "Tabrak lagi! 1/2",
+    "tTntSub": "Monster dekat ikut meledak",
+    "tBombSub": "Jangan ditabrak · 🛡 aman",
+    "tPowerSub": "Tabrak hadiahnya!",
+    "bossIn": "BOSS!",
+    "bossHint": "Tabrak boss berkali-kali!",
+    "bossDown": "BOSS KALAH!",
+    "bossGone": "Boss kabur! 💨",
+    "howTitle": "Cara Main",
+    "howMain": "Tarik garis menembus monster, balik ke kamu",
+    "howSub": "✂️ Garis harus menyentuh monster — bukan melingkari dari jauh",
+    "practice": "Latihan",
+    "lgMon": "Monster · tabrak 1×",
+    "lgBig": "Monster besar · tabrak 2×",
+    "lgBoss": "Boss · tabrak berkali-kali, bonus besar! (tiap 5 gelombang)",
+    "lgTnt": "TNT · tabrak = ledakkan monster dekat 👍",
+    "lgBomb": "Bom · jangan ditabrak! −1 ❤️ (kecuali 🛡)",
+    "lgTime": "Jam · tabrak = +10 detik",
+    "lgShield": "Perisai · tabrak = tahan 1 bom",
+    "lgCombo": "Combo tinggi · skor ×5, makin meriah!",
+    "bossHintSub": "Zig-zag lewati boss ⚡"
+  },
+  "shop": {
+    "skins": [
+      {
+        "id": "kayu",
+        "name": "Kayu",
+        "price": 0,
+        "a": "#c98b4b",
+        "b": "#8a5427"
+      },
+      {
+        "id": "merahputih",
+        "name": "Merah Putih",
+        "price": 40,
+        "a": "#e63946",
+        "b": "#ffffff"
+      },
+      {
+        "id": "laut",
+        "name": "Laut",
+        "price": 80,
+        "a": "#2ec4f1",
+        "b": "#1d5fd1"
+      },
+      {
+        "id": "daun",
+        "name": "Daun",
+        "price": 120,
+        "a": "#7bd34a",
+        "b": "#2f8f3a"
+      },
+      {
+        "id": "batik",
+        "name": "Batik",
+        "price": 180,
+        "a": "#7a3e1d",
+        "b": "#f2c14e",
+        "stripe": true
+      },
+      {
+        "id": "emas",
+        "name": "Emas",
+        "price": 300,
+        "a": "#ffd23f",
+        "b": "#e09b00",
+        "shine": true
+      },
+      {
+        "id": "pelangi",
+        "name": "Pelangi",
+        "price": 500,
+        "a": "#ff5fa2",
+        "b": "#5f7bff",
+        "rainbow": true
+      }
+    ],
+    "trails": [
+      {
+        "id": "angin",
+        "name": "Angin",
+        "price": 0,
+        "type": "plain"
+      },
+      {
+        "id": "bintang",
+        "name": "Bintang",
+        "price": 60,
+        "type": "star"
+      },
+      {
+        "id": "gelembung",
+        "name": "Gelembung",
+        "price": 100,
+        "type": "bubble"
+      },
+      {
+        "id": "pelangi",
+        "name": "Pelangi",
+        "price": 160,
+        "type": "rainbow"
+      },
+      {
+        "id": "api",
+        "name": "Api Kartun",
+        "price": 260,
+        "type": "fire"
+      },
+      {
+        "id": "hati",
+        "name": "Hati",
+        "price": 360,
+        "type": "heart"
+      }
+    ]
+  }
+}

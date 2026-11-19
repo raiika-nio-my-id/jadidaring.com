@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: texts, tuning, and shop cosmetics live in this JSON only ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Bumerang Sakti · Lempar, Putar, Tangkap!</title>
+<meta name="description" content="Bumerang Sakti: game lempar bumerang di browser. Gambar jalur dari dirimu, tabrak monster pink dengan lintasan bumerang, ledakkan TNT, hindari bom, kejar combo dan rekor dunia. Gratis, cocok untuk HP.">
+<meta name="theme-color" content="#6ec3ff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bumerang Sakti">
+<meta property="og:description" content="Gambar jalur bumerang, kalahkan monster pink, kejar combo dan masuk papan skor dunia!">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<canvas id="cv" aria-label="Arena Bumerang Sakti"></canvas>
+
+<div id="hud" hidden>
+  <div class="hud-top">
+    <div class="lives" id="lives" aria-label="Nyawa"></div>
+    <div class="timer" aria-label="Waktu"><span class="t-ic" aria-hidden="true">⏱</span><div class="tbar"><i id="tfill"></i></div><b id="tnum">90</b></div>
+    <button type="button" class="ic-btn" id="pauseBtn" aria-label="Jeda">❚❚</button>
+  </div>
+  <div class="hud-row2">
+    <div class="score"><b id="score">0</b></div>
+    <div class="combo" id="combo" hidden><b id="comboN">0</b><small>COMBO</small><span id="mult">x1</span></div>
+    <div class="shield-ic" id="shieldIc" hidden aria-label="Perisai">🛡</div>
+  </div>
+</div>
+
+<div id="coach" class="coach" hidden><span class="c-ic" id="coachIc"></span><span class="c-tx"><span id="coachTx"></span><small id="coachSub" hidden></small></span></div>
+<div id="banner" class="banner" hidden></div>
+<button type="button" class="skip-btn" id="skipTut" hidden></button>
+
+<section class="scr" id="menu">
+  <div class="panel menu-panel">
+    <div class="logo" aria-hidden="true"><span class="logo-b">🪃</span></div>
+    <h1><span>Bumerang</span> <span class="sakti">Sakti</span></h1>
+    <p class="tag" data-c="site.tagline"></p>
+    <button type="button" class="me-chip" id="meChip"><span>👤</span><b id="meName">—</b><span class="pen">✏️</span></button>
+    <div class="chips"><span class="chip">🏆 <b id="bestTop">0</b></span><span class="chip">🪙 <b id="coinTop">0</b></span></div>
+    <button type="button" class="btn big go" id="playBtn"><span>▶</span><span data-t="play"></span></button>
+    <div class="grid3">
+      <button type="button" class="btn tile" id="shopBtn"><span class="ti">🛒</span><span data-t="shop"></span></button>
+      <button type="button" class="btn tile" id="boardBtn"><span class="ti">🏆</span><span data-t="scores"></span></button>
+      <button type="button" class="btn tile" id="howBtn"><span class="ti">❓</span><span data-t="how"></span></button>
+    </div>
+    <button type="button" class="btn ghost small" id="muteBtn"></button>
+  </div>
+</section>
+
+<section class="scr" id="nameScr" hidden>
+  <form class="panel" id="nameForm" autocomplete="off">
+    <div class="big-ic" aria-hidden="true">👤</div>
+    <h2 data-t="namePrompt"></h2>
+    <input id="nameIn" data-jd-account-name maxlength="16" inputmode="text" enterkeyhint="go" spellcheck="false" autocomplete="off" placeholder="JadiDaring" aria-label="Nama">
+    <p class="hint" id="nameHint"></p>
+    <div class="row"><button type="button" class="btn ghost" id="nameBack" data-t="back"></button><button type="submit" class="btn go" id="nameGo"><span>▶</span> <span data-t="start"></span></button></div>
+  </form>
+</section>
+
+<section class="scr" id="shop" hidden>
+  <div class="panel wide">
+    <div class="head"><button type="button" class="ic-btn" id="shopBack" aria-label="Kembali">←</button><h2>🛒 <span data-t="shop"></span></h2><span class="chip">🪙 <b id="coinShop">0</b></span></div>
+    <div class="preview"><canvas id="pv" width="320" height="120" aria-hidden="true"></canvas></div>
+    <h3>🪃 <span data-t="skins"></span></h3>
+    <div class="items" id="skinList"></div>
+    <h3>✨ <span data-t="trails"></span></h3>
+    <div class="items" id="trailList"></div>
+  </div>
+</section>
+
+<section class="scr" id="board" hidden>
+  <div class="panel wide">
+    <div class="head"><button type="button" class="ic-btn" id="boardBack" aria-label="Kembali">←</button><h2>🏆 <span data-t="scores"></span></h2><span></span></div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" id="tabOn" class="on">🌏 <span data-t="online"></span></button><button type="button" role="tab" id="tabLo">📱 <span data-t="local"></span></button></div>
+    <p class="hint" id="boardNote"></p>
+    <ol class="rank" id="rank"></ol>
+  </div>
+</section>
+
+<section class="scr" id="howScr" hidden>
+  <div class="panel wide how">
+    <div class="head"><button type="button" class="ic-btn" id="howBack" aria-label="Kembali">←</button><h2>❓ <span data-t="howTitle"></span></h2><span></span></div>
+    <div class="how-demo"><canvas id="howDemo" width="320" height="150" aria-hidden="true"></canvas></div>
+    <p class="how-main">💥 <b data-t="howMain"></b></p>
+    <p class="how-sub" data-t="howSub"></p>
+    <ul class="legend">
+      <li><canvas class="ico" data-k="mon"></canvas><span data-t="lgMon"></span></li>
+      <li><canvas class="ico" data-k="big"></canvas><span data-t="lgBig"></span></li>
+      <li class="boss"><canvas class="ico" data-k="boss"></canvas><span data-t="lgBoss"></span></li>
+      <li class="good"><canvas class="ico" data-k="tnt"></canvas><span data-t="lgTnt"></span></li>
+      <li class="bad"><canvas class="ico" data-k="bomb"></canvas><span data-t="lgBomb"></span></li>
+      <li class="good"><canvas class="ico" data-k="time"></canvas><span data-t="lgTime"></span></li>
+      <li class="good"><canvas class="ico" data-k="shield"></canvas><span data-t="lgShield"></span></li>
+      <li><span class="ico emo">🔥</span><span data-t="lgCombo"></span></li>
+    </ul>
+    <div class="row"><button type="button" class="btn ghost" id="howBack2" data-t="back"></button><button type="button" class="btn go" id="howPlay"><span>▶</span> <span data-t="practice"></span></button></div>
+  </div>
+</section>
+
+<section class="scr" id="over" hidden>
+  <div class="panel">
+    <h2 id="overTitle"></h2>
+    <div class="newbest" id="newBest" hidden data-t="newBest"></div>
+    <div class="final"><b id="finalScore">0</b></div>
+    <div class="stats3"><div><span>🔥</span><b id="ovCombo">0</b><small data-t="maxCombo"></small></div><div><span>🏆</span><b id="ovBest">0</b><small data-t="best"></small></div><div><span>🪙</span><b id="ovCoins">+0</b><small data-t="coinsEarned"></small></div></div>
+    <p class="hint" id="sendNote"></p>
+    <div class="row"><button type="button" class="btn ghost" id="overMenu"><span>🏠</span> <span data-t="menu"></span></button><button type="button" class="btn go" id="overAgain"><span>↻</span> <span data-t="again"></span></button></div>
+    <button type="button" class="btn ghost small" id="overBoard">🏆 <span data-t="scores"></span></button>
+  </div>
+</section>
+
+<section class="scr" id="pause" hidden>
+  <div class="panel">
+    <div class="big-ic" aria-hidden="true">⏸</div>
+    <h2 data-t="paused"></h2>
+    <div class="row"><button type="button" class="btn ghost" id="quitBtn"><span>🏠</span> <span data-t="quit"></span></button><button type="button" class="btn go" id="resumeBtn"><span>▶</span> <span data-t="resume"></span></button></div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script id="bs-sim">
+/*SIM*/
+</script>
+<script id="bs-render">
+/*RENDER*/
+</script>
+<script id="bs-app">
+/*APP*/
+</script>
+</body>
+</html>
