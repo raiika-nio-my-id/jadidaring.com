@@ -9,13 +9,35 @@
     return '<div class="jd-sk-card"><i class="jd-sk jd-sk-img"></i><i class="jd-sk jd-sk-line"></i><i class="jd-sk jd-sk-line"></i><i class="jd-sk jd-sk-line jd-sk-short"></i></div>';
   }
   function build(path) {
-    var kind = /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'profile' : /^\/(berita|$)/.test(path) ? 'news' : 'generic';
-    var n = kind === 'profile' ? 8 : kind === 'generic' ? 3 : 6, cards = '';
-    for (var i = 0; i < n; i++) cards += card(kind === 'generic' ? 'news' : kind);
+    var kind = /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : 'generic';
     var box = document.createElement('div');
     box.className = 'jd-skel';
     box.setAttribute('aria-hidden', 'true');
-    box.innerHTML = '<div class="clay-shell"><i class="jd-sk jd-sk-title"></i><div class="jd-sk-grid jd-sk-grid--' + kind + '">' + cards + '</div></div>';
+    var tpl = kind !== 'generic' ? document.getElementById('jd-sk-' + kind) : null;
+    var main = document.createElement('main');
+    main.className = 'clay-main';
+    var shell = document.createElement('div');
+    shell.className = 'clay-shell';
+    main.appendChild(shell);
+    box.appendChild(main);
+    if (tpl) {
+      /* real static UI (title, chips, search, tabs) from the same partials as the page; only the listing is skeleton */
+      shell.appendChild(tpl.content.cloneNode(true));
+      shell.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); });
+      shell.querySelectorAll('[for]').forEach(function (n) { n.removeAttribute('for'); });
+      shell.querySelectorAll('[data-jd-chips],[data-jd-slot],[data-jd-form],[data-jd-view],[data-jd-params]').forEach(function (n) {
+        ['data-jd-chips', 'data-jd-slot', 'data-jd-form', 'data-jd-view', 'data-jd-params'].forEach(function (k) { n.removeAttribute(k); });
+      });
+      shell.querySelectorAll('a,input,button,select').forEach(function (n) { n.tabIndex = -1; });
+      var slot = shell.querySelector('[data-sk]');
+      var n = kind === 'komunitas' ? 5 : 6, cards = '';
+      for (var i = 0; i < n; i++) cards += card(kind === 'game' ? 'game' : kind === 'komunitas' ? 'profile' : 'news');
+      if (slot) slot.innerHTML = cards;
+    } else {
+      var g = '';
+      for (var j = 0; j < 3; j++) g += card('news');
+      shell.innerHTML = '<div class="clay-section"><i class="jd-sk jd-sk-title"></i><div class="news-grid">' + g + '</div></div>';
+    }
     return box;
   }
   function show(path) {
@@ -26,10 +48,12 @@
     document.body.appendChild(el);
     void el.offsetWidth;
     el.classList.add('is-on');
+    document.documentElement.classList.add('jd-leaving');
     safety = setTimeout(hide, 15000);
   }
   function hide() {
     clearTimeout(safety);
+    document.documentElement.classList.remove('jd-leaving');
     if (el) { el.remove(); el = null; }
   }
   document.addEventListener('click', function (e) {

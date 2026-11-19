@@ -10,7 +10,7 @@
   .clay-nav__link:active, .clay-bottom-nav__item:active { transform: scale(.93); }
 }
 /* Nav skeleton (shown instantly on click) */
-.jd-skel { position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; overflow: hidden; background: var(--clay-bg); opacity: 0; transition: opacity .12s ease; pointer-events: none; padding-top: 12px; }
+.jd-skel { position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; overflow: hidden; background: var(--clay-bg); opacity: 0; transition: opacity .12s ease; pointer-events: none; }
 .jd-skel.is-on { opacity: 1; }
 .jd-sk { display: block; border-radius: 14px; background: linear-gradient(90deg, var(--clay-surface) 0%, color-mix(in srgb, var(--clay-lavender) 55%, var(--clay-surface)) 50%, var(--clay-surface) 100%); background-size: 220% 100%; animation: jd-shimmer 1.4s ease-in-out infinite; box-shadow: var(--clay-out); }
 .jd-sk-title { width: 220px; max-width: 60%; height: 34px; margin: 4px 0 20px; }
@@ -26,3 +26,9 @@
 .jd-sk-av { width: 56px; height: 56px; border-radius: 50%; }
 @keyframes jd-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
 @media (prefers-reduced-motion: reduce) { .jd-sk { animation: none; } .jd-skel { transition: none; } }
+
+/* Leaving a member profile: its custom background must not linger */
+.jd-leaving .pf-bg { opacity: 0 !important; transition: opacity .1s ease; }
+.jd-leaving .pf--fixed, .jd-leaving .pf { background: transparent !important; }
+.jd-skel .ch-list--feed { display: grid; gap: 12px; }
+.jd-skel .game-grid .jd-sk-card, .jd-skel .news-grid .jd-sk-card, .jd-skel .pf-cards .jd-sk-card { margin: 0; }

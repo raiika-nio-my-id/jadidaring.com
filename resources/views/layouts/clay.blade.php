@@ -149,6 +149,12 @@
         </a>
     </nav>
 
+    @unless (str_contains($__env->yieldContent('bodyclass'), 'is-game-page') || str_contains($__env->yieldContent('bodyclass'), 'is-embed'))
+    {{-- Static parts of the nav targets, rendered from the same partials as the real pages; jd-vt.js clones one into the skeleton overlay so only the listing is skeleton. --}}
+    <template id="jd-sk-berita"><div class="clay-section"><div><div class="clay-section__header"><h1 class="clay-section__title">Berita Terkini</h1></div></div>@include('clay._berita-controls', ['q' => '', 'popular' => false, 'currentTopic' => null, 'topics' => \App\Http\Controllers\ClayController::TOPICS])<div class="news-grid" data-sk></div></div></template>
+    <template id="jd-sk-game"><div class="clay-section">@include('clay._game-head', ['sort' => 'views'])<div class="game-grid" data-sk></div></div></template>
+    <template id="jd-sk-komunitas"><div class="clay-section ch-page">@include('clay._komunitas-feed-head')@include('clay._komunitas-tabs', ['tab' => 'terbaru'])<div class="ch-list ch-list--feed" data-sk></div></div></template>
+    @endunless
     @include('partials.ga4-consent')
     @unless (str_starts_with(request()->getHost(), 'admin.'))
         <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){});});}</script>
