@@ -23,8 +23,9 @@ class NewsController extends Controller
     public function index(Request $request): View
     {
         $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
-        $articles = NewsCache::latest(null, 24);
         $noindex = false;
+        $pg = $q === '' ? self::pageData($request, null) : ['page' => 1, 'pages' => 1];
+        $articles = $q === '' ? NewsCache::page(null, $pg['page']) : [];
 
         if ($q !== '') {
             $like = '%'.addcslashes($q, '%_\\').'%';
@@ -40,28 +41,57 @@ class NewsController extends Controller
         return view('clay.berita-index', [
             'q' => $q,
             'noindex' => $noindex,
-            'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi — Jadidaring',
+            'pagination' => $q === '' ? $pg + ['base' => '/berita'] : null,
+            'relPrev' => $q === '' ? self::pageUrl('/berita', $pg['page'] - 1, $pg['page'] > 1) : null,
+            'relNext' => $q === '' ? self::pageUrl('/berita', $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
+            'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => 'Berita terkini hari ini seputar politik, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
-            'canonicalUrl' => 'https://'.TenantPath::host().'/berita',
+            'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl('/berita', $pg['page']),
             'topics' => ClayController::TOPICS,
             'articles' => $articles,
         ]);
     }
 
-    public function topic(string $topik): View
+    /** @return array{page: int, pages: int} */
+    private static function pageData(Request $request, ?string $topic): array
+    {
+        $raw = $request->query('page', '1');
+        abort_unless(is_string($raw) && ctype_digit($raw) && (int) $raw >= 1, 404);
+        $page = (int) $raw;
+        $pages = max(1, (int) ceil(NewsCache::total($topic) / NewsCache::PER_PAGE));
+        abort_if($page > $pages, 404);
+
+        return ['page' => $page, 'pages' => $pages];
+    }
+
+    private static function pageUrl(string $base, int $page, bool $show = true): ?string
+    {
+        if (! $show) {
+            return null;
+        }
+
+        return $page <= 1 ? $base : $base.'?page='.$page;
+    }
+
+    public function topic(Request $request, string $topik): View
     {
         $topik = strtolower(trim($topik));
         abort_unless(array_key_exists($topik, ClayController::TOPICS), 404);
         $name = ClayController::TOPICS[$topik];
+        $base = '/berita/'.$topik;
+        $pg = self::pageData($request, $topik);
 
         return view('clay.berita-topik', [
-            'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini — Jadidaring',
+            'pagination' => $pg + ['base' => $base],
+            'relPrev' => self::pageUrl($base, $pg['page'] - 1, $pg['page'] > 1),
+            'relNext' => self::pageUrl($base, $pg['page'] + 1, $pg['page'] < $pg['pages']),
+            'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.',
-            'canonicalUrl' => 'https://'.TenantPath::host().'/berita/'.$topik,
+            'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl($base, $pg['page']),
             'currentTopic' => $topik,
             'topicName' => $name,
             'topics' => ClayController::TOPICS,
-            'articles' => NewsCache::latest($topik, 24),
+            'articles' => NewsCache::page($topik, $pg['page']),
         ]);
     }
 

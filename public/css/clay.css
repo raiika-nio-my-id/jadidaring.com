@@ -1083,3 +1083,12 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .ch-cta { display: flex; align-items: center; gap: 10px; max-width: 680px; margin: 0 auto 14px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink-2); font-weight: 700; text-decoration: none; box-shadow: var(--clay-pressed); }
 @media (min-width: 720px) { .ch-card, .ch-composer { padding: 18px 20px; } .ch-tabs { display: inline-flex; } .ch-tab { flex: 0 0 auto; } }
 @media (max-width: 420px) { .ch-vis-select { flex: 1 1 140px; } .ch-count { margin-left: 0; } .ch-send { margin-left: auto; } }
+
+/* Pagination */
+.pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 32px 0 8px; }
+.pager__list { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; align-items: center; }
+.pager__gap { padding: 0 2px; color: var(--clay-muted, #6b6b80); }
+.pager__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 14px; border-radius: 999px; background: #fff; color: inherit; font-weight: 700; text-decoration: none; box-shadow: 0 3px 0 rgba(0,0,0,.12), 0 6px 14px rgba(80,60,140,.12); }
+.pager__btn:hover { transform: translateY(-1px); }
+.pager__btn.is-active { background: #6c4cf1; color: #fff; }
+@media (max-width: 639px) { .pager__txt { display: none; } .pager__btn { min-width: 40px; height: 40px; padding: 0 10px; } }

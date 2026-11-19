@@ -7,6 +7,8 @@
     <title>{{ $metaTitle ?? 'Jadidaring' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
     @if(!empty($noindex))<meta name="robots" content="noindex,nofollow">@endif
+    @if(!empty($relPrev))<link rel="prev" href="https://{{ config('singlepage.base_domain') }}{{ $relPrev }}">@endif
+    @if(!empty($relNext))<link rel="next" href="https://{{ config('singlepage.base_domain') }}{{ $relNext }}">@endif
     <link rel="canonical" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
 
     <meta property="og:title" content="{{ $metaTitle ?? 'Jadidaring' }}">

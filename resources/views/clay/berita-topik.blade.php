@@ -18,5 +18,6 @@
         </div>
 
         @include('clay._articles', ['articles' => $articles, 'emptyText' => 'Belum ada artikel untuk topik '.strtolower($topicName).'. Pantau terus pembaruan dari redaksi kami!'])
+        @include('clay._pagination')
     </div>
 @endsection

@@ -61,4 +61,30 @@ class NewsCache
                 ])->all();
         });
     }
+
+    public const PER_PAGE = 24;
+
+    public static function total(?string $topic): int
+    {
+        return self::remember('total:'.($topic ?? 'all'), fn (): int => Article::query()->visible()
+            ->when($topic !== null, fn ($q) => $q->where('topic', $topic))->count());
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public static function page(?string $topic, int $page, int $per = self::PER_PAGE): array
+    {
+        return self::remember('page:'.($topic ?? 'all').':'.$per.':'.$page, function () use ($topic, $page, $per): array {
+            return Article::query()->visible()
+                ->when($topic !== null, fn ($q) => $q->where('topic', $topic))
+                ->orderByDesc('published_at')->orderByDesc('id')
+                ->offset(($page - 1) * $per)->limit($per)
+                ->get(['id', 'topic', 'slug', 'title', 'summary', 'image_url', 'image_path', 'image_alt', 'image_credit', 'image_source_url', 'image_license', 'image_updated_at', 'published_at', 'updated_at'])
+                ->map(fn (Article $a): array => [
+                    'id' => $a->id, 'topic' => $a->topic, 'slug' => $a->slug, 'title' => $a->title, 'summary' => $a->summary,
+                    'img' => NewsImage::meta($a), 'updated_at' => $a->updated_at?->toIso8601String(), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url(),
+                ])->all();
+        });
+    }
 }
