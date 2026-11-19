@@ -19,7 +19,8 @@
             'preview' => '/komunitas/halamanku/pratinjau',
             'upload' => '/komunitas/halamanku/gambar',
             'autosave' => '/komunitas/halamanku/autosave',
-            'promptUrl' => '/komunitas/buat?embed=1',
+            'prefill' => $prefill,
+            'ai' => ['saved' => $aiSaved, 'link' => $widgetLink, 'save' => '/komunitas/buat/simpan', 'reset' => '/komunitas/buat/reset'],
             'fonts' => \App\Services\ProfileConfig::FONTS,
             'types' => \App\Services\ProfileConfig::WIDGETS,
             'patterns' => \App\Services\ProfileConfig::PATTERNS,
@@ -49,7 +50,7 @@
                 <button type="button" class="le-chip" data-open="cursor"><span aria-hidden="true">🖱️</span> Kursor</button>
                 <button type="button" class="le-chip le-chip--add" data-open="add"><span aria-hidden="true">＋</span> Tambah kotak</button>
                 <button type="button" class="le-chip" data-open="order"><span aria-hidden="true">↕️</span> Susun</button>
-                <button type="button" class="le-chip" data-open="ai"><span aria-hidden="true">✨</span> Buat pakai AI</button>
+                <button type="button" class="le-chip" data-open="ai" aria-haspopup="dialog"><span aria-hidden="true">✨</span> Buat widget pakai AI</button>
                 <button type="button" class="le-chip le-chip--ghost" id="le-peek" aria-pressed="false"><span aria-hidden="true">👁️</span> Lihat sebagai pengunjung</button>
             </div>
         </div>
@@ -128,4 +129,5 @@
     <script type="application/json" id="le-boot">{!! json_encode($boot, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
     <script src="{{ \App\Support\AssetUrl::to('js/member-frame.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/profile-live.js') }}" defer></script>
+    <script src="{{ \App\Support\AssetUrl::to('js/profile-ai-widget.js') }}" defer></script>
 @endsection

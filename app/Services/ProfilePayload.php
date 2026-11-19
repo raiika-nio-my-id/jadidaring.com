@@ -15,6 +15,19 @@ class ProfilePayload
     /** @return array<string, mixed> */
     public static function decode(string $raw): array
     {
+        $data = self::decodeJson($raw);
+
+        // Accept {"config":{...}} wrappers too.
+        if (isset($data['config']) && is_array($data['config']) && ! isset($data['theme'])) {
+            $data = $data['config'];
+        }
+
+        return $data;
+    }
+
+    /** Decodes ?json= / ?d= payloads (plain, URL-encoded, base64url, zlib/deflate/gzip) into an array without any shape checks. @return array<string, mixed> */
+    public static function decodeJson(string $raw): array
+    {
         $raw = trim($raw);
 
         if ($raw === '') {
@@ -52,11 +65,6 @@ class ProfilePayload
 
         if (! is_array($data)) {
             throw new \InvalidArgumentException('JSON pada tautan tidak valid (mungkin terpotong). Pakai kotak "Tempel JSON dari AI" di editor.');
-        }
-
-        // Accept {"config":{...}} wrappers too.
-        if (isset($data['config']) && is_array($data['config']) && ! isset($data['theme'])) {
-            $data = $data['config'];
         }
 
         return $data;

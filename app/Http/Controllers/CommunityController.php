@@ -114,7 +114,7 @@ class CommunityController extends Controller
      * @param  array<string, mixed>  $config
      * @param  list<array{path: string, from: string, to: string}>  $fixes
      */
-    private function liveView(Request $request, User $user, ?MemberPage $page, ?MemberPageDraft $draft, array $config, string $html, string $mode, array $fixes = []): View
+    private function liveView(Request $request, User $user, ?MemberPage $page, ?MemberPageDraft $draft, array $config, string $html, string $mode, array $fixes = [], ?array $prefill = null): View
     {
         $frame = null;
         if (trim($html) !== '') {
@@ -131,6 +131,9 @@ class CommunityController extends Controller
             'noindex' => true,
             'mode' => $mode,
             'fixes' => $fixes,
+            'prefill' => $prefill,
+            'aiSaved' => $this->savedWidgetForm($user->id),
+            'widgetLink' => 'https://'.TenantPath::host().'/komunitas/halamanku/widget',
             'page' => $page,
             'draft' => $draft,
             'config' => $config,
@@ -334,6 +337,65 @@ class CommunityController extends Controller
     }
 
     /**
+     * Link target for the "pakai AI" widget prompt: opens the live editor with a NEW custom widget prefilled.
+     * Nothing is stored here; the code is sanitized, shown as an unsaved change, and only becomes a draft/live page
+     * when the member saves or publishes in the editor. The owner must be signed in (route middleware).
+     */
+    public function widgetForm(Request $request): View|RedirectResponse
+    {
+        $user = $request->user();
+        $back = fn (string $msg): RedirectResponse => redirect('/komunitas/halamanku')->withErrors(['widget' => $msg]);
+        $raw = (string) ($request->query('d') ?? $request->query('json') ?? '');
+        $title = '';
+
+        if ($raw !== '') {
+            try {
+                $data = ProfilePayload::decodeJson($raw);
+            } catch (\InvalidArgumentException $e) {
+                return $back(str_replace('data profil', 'kode widget', $e->getMessage()));
+            }
+            $code = $data['html'] ?? $data['code'] ?? '';
+            $title = is_string($data['title'] ?? null) ? mb_substr(trim(strip_tags($data['title'])), 0, 60) : '';
+        } else {
+            $code = (string) $request->query('html', '');
+        }
+
+        if (! is_string($code) || trim($code) === '') {
+            return $back('Tautan tidak berisi kode widget. Pakai kotak "Tempel kode" di jendela Buat pakai AI.');
+        }
+        if (strlen($code) > MemberPageSanitizer::MAX_BYTES) {
+            return $back('Kode widget terlalu besar (maks. 300 KB).');
+        }
+
+        [$clean, , $notices] = $this->prepareHtml($code);
+        if (trim($clean) === '') {
+            return $back('Kode widget kosong setelah dibersihkan. Pastikan ada isi HTML-nya.');
+        }
+
+        $page = MemberPage::query()->where('user_id', $user->id)->first();
+        $draft = MemberPageDraft::query()->where('user_id', $user->id)->first();
+        $config = $draft ? $draft->profileConfig() : ($page?->profileConfig() ?? ProfileConfig::defaults());
+        $existing = $draft ? (string) $draft->html : (string) ($page?->html ?? '');
+        $width = (string) $request->query('width', '');
+
+        return $this->liveView($request, $user, $page, $draft, $config, $existing, 'edit', [], [
+            'html' => $clean,
+            'title' => $title,
+            'width' => in_array($width, array_diff(ProfileConfig::WIDTHS, ['auto']), true) ? $width : '',
+            'replaces' => trim($existing) !== '',
+            'notices' => array_values($notices),
+        ]);
+    }
+
+    /** @return array<string, mixed>|null */
+    private function savedWidgetForm(int $userId): ?array
+    {
+        $d = json_decode((string) DB::table('prompt_form_states')->where('user_id', $userId)->value('data'), true);
+
+        return is_array($d) && is_array($d['_widget'] ?? null) ? $d['_widget'] : null;
+    }
+
+    /**
      * Lists values the validator changed or dropped, so the preview can highlight them.
      *
      * @return list<array{path: string, from: string, to: string}>
@@ -412,7 +474,17 @@ class CommunityController extends Controller
     /** Remembers the prompt generator form per member. */
     public function promptSave(Request $request): JsonResponse
     {
-        $data = $request->validate(['data' => ['required', 'array'], 'data.*' => ['nullable']]);
+        $data = $request->validate(['data' => ['required', 'array'], 'data.*' => ['nullable'], 'scope' => ['nullable', 'in:widget']]);
+        $uid = $request->user()->id;
+        $stored = json_decode((string) DB::table('prompt_form_states')->where('user_id', $uid)->value('data'), true);
+        $stored = is_array($stored) ? $stored : [];
+        // The widget generator keeps its values under "_widget" so it never overwrites the profile generator's (and vice versa).
+        if (($data['scope'] ?? null) === 'widget') {
+            $stored['_widget'] = $data['data'];
+            $data['data'] = $stored;
+        } elseif (isset($stored['_widget'])) {
+            $data['data']['_widget'] = $stored['_widget'];
+        }
         $json = json_encode($data['data'], JSON_UNESCAPED_UNICODE);
         abort_if(strlen((string) $json) > 20000, 422);
         $now = now();
@@ -423,6 +495,17 @@ class CommunityController extends Controller
 
     public function promptReset(Request $request): JsonResponse
     {
+        if ($request->input('scope') === 'widget') {
+            $stored = json_decode((string) DB::table('prompt_form_states')->where('user_id', $request->user()->id)->value('data'), true);
+            if (is_array($stored) && isset($stored['_widget'])) {
+                unset($stored['_widget']);
+                $stored === []
+                    ? DB::table('prompt_form_states')->where('user_id', $request->user()->id)->delete()
+                    : DB::table('prompt_form_states')->where('user_id', $request->user()->id)->update(['data' => json_encode($stored, JSON_UNESCAPED_UNICODE)]);
+            }
+
+            return response()->json(['ok' => true]);
+        }
         DB::table('prompt_form_states')->where('user_id', $request->user()->id)->delete();
 
         return response()->json(['ok' => true]);
