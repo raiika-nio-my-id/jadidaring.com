@@ -125,11 +125,34 @@ class ProfileConfig
         $k = ($ink === 'light' ? 1.6 : 1.0) * $boost;
         $cap = $boost > 1 ? .8 : .6;
         $a = static fn (float $v): string => 'rgba('.$c.','.preg_replace('/^0\./', '.', rtrim(rtrim(number_format(min($cap, $v * $k), 3, '.', ''), '0'), '.')).')';
-        $svg = static function (string $body, int $size) use ($c, $k): string {
-            $svg = "<svg xmlns='http://www.w3.org/2000/svg' width='{$size}' height='{$size}' viewBox='0 0 {$size} {$size}'><g fill='rgba({$c},".(0.13 * $k).")'>{$body}</g></svg>";
+        $g = $boost > 1; // frosted-glass variant: thicker strokes, bigger motifs, higher alpha (blur flattens fine/faint patterns, esp. on high-DPR phones)
+        $ga = static fn (float $v): string => 'rgba('.$c.','.rtrim(rtrim(number_format(min(.75, $v * ($ink === 'light' ? 1.5 : 1.0)), 3, '.', ''), '0'), '.').')';
+        $svg = static function (string $body, int $size) use ($c, $k, $g): string {
+            $px = $g ? (int) round($size * 1.8) : $size;
+            $fa = $g ? ($c === '255,255,255' ? .45 : .36) : 0.13 * $k;
+            $svg = "<svg xmlns='http://www.w3.org/2000/svg' width='{$px}' height='{$px}' viewBox='0 0 {$size} {$size}'><g fill='rgba({$c},{$fa})'>{$body}</g></svg>";
 
-            return 'url("data:image/svg+xml,'.rawurlencode($svg)."\") 0 0/{$size}px {$size}px";
+            return 'url("data:image/svg+xml,'.rawurlencode($svg)."\") 0 0/{$px}px {$px}px";
         };
+
+        if ($g) {
+            $glass = match ($id) {
+                'dots' => 'radial-gradient('.$ga(.4).' 4.5px,transparent 5px) 0 0/26px 26px',
+                'grid' => 'linear-gradient('.$ga(.3).' 3px,transparent 3px) 0 0/34px 34px,linear-gradient(90deg,'.$ga(.3).' 3px,transparent 3px) 0 0/34px 34px',
+                'stripes' => 'repeating-linear-gradient(45deg,'.$ga(.28).' 0 14px,transparent 14px 30px)',
+                'checker' => 'conic-gradient('.$ga(.28).' 25%,transparent 0 50%,'.$ga(.28).' 0 75%,transparent 0) 0 0/56px 56px',
+                'polka' => 'radial-gradient('.$ga(.3).' 10px,transparent 10.5px) 0 0/56px 56px,radial-gradient('.$ga(.3).' 10px,transparent 10.5px) 28px 28px/56px 56px',
+                'diagonal' => 'repeating-linear-gradient(45deg,'.$ga(.3).' 0 5px,transparent 5px 20px),repeating-linear-gradient(-45deg,'.$ga(.3).' 0 5px,transparent 5px 20px)',
+                'zigzag' => 'linear-gradient(135deg,'.$ga(.26).' 25%,transparent 25%) -16px 0/32px 32px,linear-gradient(225deg,'.$ga(.26).' 25%,transparent 25%) -16px 0/32px 32px,linear-gradient(315deg,'.$ga(.26).' 25%,transparent 25%) 0 0/32px 32px,linear-gradient(45deg,'.$ga(.26).' 25%,transparent 25%) 0 0/32px 32px',
+                'waves' => 'radial-gradient(circle at 50% 100%,transparent 11px,'.$ga(.26).' 12px 17px,transparent 18px) 0 0/40px 20px',
+                'diamonds' => 'linear-gradient(45deg,transparent 42%,'.$ga(.3).' 43% 57%,transparent 58%) 0 0/40px 40px,linear-gradient(-45deg,transparent 42%,'.$ga(.3).' 43% 57%,transparent 58%) 0 0/40px 40px',
+                'plaid' => 'repeating-linear-gradient(0deg,'.$ga(.24).' 0 14px,transparent 14px 52px),repeating-linear-gradient(90deg,'.$ga(.24).' 0 14px,transparent 14px 52px),repeating-linear-gradient(0deg,'.$ga(.2).' 0 3px,transparent 3px 13px)',
+                default => null,
+            };
+            if ($glass !== null) {
+                return $glass;
+            }
+        }
 
         return match ($id) {
             'dots' => 'radial-gradient('.$a(.14).' 1.5px,transparent 1.5px) 0 0/22px 22px',

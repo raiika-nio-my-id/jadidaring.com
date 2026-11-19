@@ -49,4 +49,16 @@ class ProfileStylePresetTest extends TestCase
         $none = $th('glass', 'none');
         $this->assertStringContainsString('--pf-gb:20px', $none['vars']);
     }
+
+    public function test_every_pattern_has_a_stronger_glass_variant(): void
+    {
+        foreach (array_diff(ProfileConfig::PATTERNS, ['none']) as $id) {
+            foreach (['dark', 'light'] as $ink) {
+                $normal = ProfileConfig::patternLayer($id, $ink);
+                $glass = ProfileConfig::patternLayer($id, $ink, 2.6);
+                $this->assertNotNull($glass, $id);
+                $this->assertNotSame($normal, $glass, $id.' glass variant must differ');
+            }
+        }
+    }
 }
