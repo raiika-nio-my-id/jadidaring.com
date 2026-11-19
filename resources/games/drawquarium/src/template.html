@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<!-- ================= EDITABLE CONTENT: site texts (id/en), colour palette, avatars and walkway NPCs live in this JSON ================= -->
+<script type="application/json" id="website-config">
+/*CONFIG*/
+</script>
+<!-- ================= END OF EDITABLE CONTENT ================= -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<title>Drawquarium · Gambar Ikanmu, Lepas ke Akuarium Bersama</title>
+<meta name="description" content="Drawquarium: akuarium gambar bersama. Gambar ikan atau ubur-ubur sendiri, lepaskan ke akuarium online, lihat siapa pembuatnya dan umurnya, ngobrol sambil menonton pengunjung lain jalan-jalan di depan kaca.">
+<meta name="theme-color" content="#0f5c7a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Drawquarium">
+<meta property="og:description" content="Gambar ikan atau ubur-ubur, lepas ke akuarium bersama, ngobrol bareng pengunjung lain.">
+<style>
+/*CSS*/
+</style>
+</head>
+<body>
+/*SNIPPETS*/
+<a class="skip" href="#main" data-t="skip">Lewati ke konten</a>
+<main id="main" tabindex="-1">
+  <header class="top">
+    <div class="wrap hdr">
+      <span class="brand"><span class="brand-mark" aria-hidden="true">🐠</span><span><strong id="brandName">Drawquarium</strong><small data-t="tagline"></small></span></span>
+      <div class="hdr-right">
+        <button type="button" class="chip addbtn" id="createBtn" aria-haspopup="dialog" data-t="createShort"></button>
+        <button type="button" class="chip qbtn menubtn" id="menuBtn" aria-expanded="false" aria-controls="hdrMore">☰</button>
+        <div class="hdr-more" id="hdrMore">
+        <button type="button" class="chip qbtn" id="muteBtn">🔊</button>
+        <button type="button" class="chip qbtn infobtn" id="howBtn" aria-haspopup="dialog">!</button>
+        <button type="button" class="chip qbtn menu-list" id="listBtn" aria-haspopup="dialog" data-ta="fishList">🐟</button>
+        <a class="chip qbtn menu-wp" id="wpBtn" href="/?wallpaper" data-ta="wpMode">🖼️</a>
+        <span class="conn" id="conn" role="status" aria-live="polite"></span>
+        <button type="button" class="chip" id="meBtn" hidden><span id="meAv"></span> <span id="meName"></span> <em class="gm-badge" id="meGm" hidden>(GM)</em></button>
+        <label class="langsel"><span class="sr" data-t="uiLang"></span><span aria-hidden="true">🌐</span><select id="langSel"></select></label>
+        <a class="chip menu-hub" href="https://gamehub.jadidaring.com/">← Game Hub</a>
+        <a class="chip menu-terms" href="/syarat-ketentuan" data-t="terms">Syarat &amp; Ketentuan</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap stage-grid wide" id="stageGrid">
+    <section class="stage" id="stage" aria-label="Drawquarium">
+      <div class="tank-bar">
+        <span class="pill" id="countPill"></span><span class="pill soft pin" id="pinPill"></span>
+        <span class="pill soft" id="visPill"></span><span class="pill soft tod" id="todPill" aria-live="off"></span>
+        <button type="button" class="pill soft listpill" id="listBtn2" aria-haspopup="dialog"><span aria-hidden="true">🐟</span> <span data-t="fishList"></span></button>
+        <span class="pill soft" id="roomPill" hidden></span>
+      </div>
+      <div class="tank-scroll" id="tankScroll"><div class="tank-set">
+      <div class="tank-frame">
+        <canvas id="tank" aria-label="Akuarium" role="img"></canvas>
+        <p class="tank-empty" id="tankEmpty" data-t="emptyTank" hidden></p>
+        <div class="tank-load" id="tankLoad" role="status"><div class="tl-scene" aria-hidden="true"><span class="tl-fish"></span><i class="tl-b"></i><i class="tl-b"></i><i class="tl-b"></i><span class="tl-sand"></span></div><p class="tl-txt"><span data-t="tankLoading"></span><span class="tl-dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></p></div>
+        <p class="tank-full" id="fullHint" data-t="fullHint" hidden></p>
+      </div>
+      </div></div>
+      <script>(function(){try{var s=document.getElementById('tankScroll');if(s&&s.scrollWidth>s.clientWidth+4)s.scrollLeft=(s.scrollWidth-s.clientWidth)/2}catch(e){}})()</script>
+      <canvas id="walk" class="walkway" aria-hidden="true"></canvas>
+      <canvas id="balloonFx" class="balloon-fx" aria-hidden="true"></canvas>
+    </section>
+
+    <aside class="chat" id="chatBox" aria-labelledby="chatTitle">
+      <div class="chat-head"><h2 id="chatTitle" data-t="chatTitle"></h2><span class="chat-tools"><button type="button" class="chat-clear" id="chatClear" hidden>🧹</button><button type="button" class="xbtn" id="histClose" aria-label="Close">✕</button></span></div>
+      <ul class="chat-list" id="chatList" aria-live="polite"></ul>
+      <button type="button" class="hist-toggle" id="histBtn" aria-expanded="false" aria-controls="chatList"><span class="arr" aria-hidden="true">▲</span> <span data-t="history"></span></button>
+      <form class="chat-form" id="chatForm" autocomplete="off">
+        <input type="text" id="chatInput" maxlength="120" data-tp="chatPh" aria-label="Chat">
+        <button type="submit" class="btn teal" id="chatSend" data-t="chatSend"></button>
+      </form>
+    </aside>
+  </div>
+
+</main>
+<script>document.documentElement.classList.add('dom-ok')</script>
+
+<!-- name gate -->
+<div class="modal" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle" hidden>
+  <form class="sheet gate" id="gateForm" autocomplete="off">
+    <div class="gate-fish" aria-hidden="true">🐠 🪼 🐡</div>
+    <h2 id="gateTitle" data-t="gateTitle"></h2>
+    <p class="muted" data-t="gateSub"></p>
+    <label class="field"><span><span data-t="name"></span> <em class="gm-badge" id="gateGm" hidden>(GM)</em></span><input type="text" id="nameInput" maxlength="24" autocomplete="off" data-tp="namePh"></label>
+    <div class="gate-lang"><p class="field-label" id="gateLangLbl"><span aria-hidden="true">🌐</span> <span id="gateLangTxt"></span></p><div class="lang-pick" id="langPick" role="radiogroup" aria-labelledby="gateLangLbl"></div></div>
+    <p class="field-label" data-t="avatar"></p>
+    <div class="av-pick" id="avPick" role="radiogroup"></div>
+    <p class="err" id="gateErr" role="alert"></p>
+    <button type="submit" class="btn coral big wide" id="gateBtn" data-t="enter"></button>
+  </form>
+</div>
+
+<!-- create: choose kind, then draw -->
+<div class="modal" id="maker" role="dialog" aria-modal="true" aria-labelledby="makerTitle" hidden>
+  <div class="sheet maker">
+    <div id="chooseStep">
+      <h2 id="makerTitle" data-t="chooseTitle"></h2>
+      <p class="muted" data-t="chooseSub"></p>
+      <div class="kinds">
+        <button type="button" class="kind" id="pickFish" data-k="fish"><canvas width="240" height="180" aria-hidden="true"></canvas><strong data-t="fish"></strong><small data-t="fishSub"></small></button>
+        <button type="button" class="kind" id="pickJelly" data-k="jelly"><canvas width="240" height="180" aria-hidden="true"></canvas><strong data-t="jelly"></strong><small data-t="jellySub"></small></button>
+      </div>
+      <div class="row end"><button type="button" class="btn ghost" id="chooseCancel" data-t="cancel"></button></div>
+    </div>
+    <div id="drawStep" hidden>
+      <div class="draw-top"><button type="button" class="btn ghost small" id="drawBack" data-t="back"></button><h2 id="drawTitle"></h2></div>
+      <p class="muted small" data-t="drawHint"></p>
+      <div class="board-wrap"><canvas id="guide" width="480" height="360" aria-hidden="true"></canvas><canvas id="board" width="480" height="360" aria-label="Papan gambar"></canvas></div>
+      <div class="tools">
+        <div class="palette" id="palette" role="radiogroup"></div>
+        <div class="tool-row">
+          <div class="tgroup" role="group">
+            <button type="button" class="tbtn on" id="toolPen" data-ta="pen" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20l1.2-4.6L15.6 5a2.1 2.1 0 013 3L8.2 18.4z" fill="#ffd23f" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.8 6.8l3.4 3.4M4 20l4.2-1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            <button type="button" class="tbtn" id="toolEraser" data-ta="eraser" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.5 19.5L3.8 13.8a1.6 1.6 0 010-2.3l7.7-7.7a1.6 1.6 0 012.3 0l6.4 6.4a1.6 1.6 0 010 2.3L13 19.5z" fill="#ffb3c1" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.2 8.1l8.7 8.7M9.5 19.5H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            <button type="button" class="tbtn" id="toolBucket" data-ta="fill" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 3.5l8 8-6.8 6.8a1.8 1.8 0 01-2.5 0l-5.5-5.5a1.8 1.8 0 010-2.5z" fill="#8fe3d8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4.4 11.5h13.2M8 2l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M20.5 14.5c1 1.6 1.6 2.6 1.6 3.4a1.6 1.6 0 01-3.2 0c0-.8.6-1.8 1.6-3.4z" fill="#2f7de1"/></svg></button>
+          </div>
+          <div class="seg" id="sizes" role="radiogroup"></div>
+          <div class="tgroup" role="group">
+            <button type="button" class="tbtn" id="toolUndo" data-ta="undo"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 14L4 9l5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9h10a6 6 0 010 12h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+            <button type="button" class="tbtn" id="toolClear" data-ta="clear"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12.2A2 2 0 008.5 21h7a2 2 0 002-1.8L18.5 7M9 7V4.5A1.5 1.5 0 0110.5 3h3A1.5 1.5 0 0115 4.5V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <form class="name-row" id="submitForm" autocomplete="off">
+        <label class="field grow"><span id="critterLabel"></span><input type="text" id="critterInput" maxlength="20" data-tp="critterPh"></label>
+        <button type="submit" class="btn coral big" id="submitBtn" data-t="submit"></button>
+      </form>
+      <p class="err" id="drawErr" role="alert"></p>
+    </div>
+  </div>
+</div>
+
+<!-- t213u: fish list (newest first) -->
+<div class="modal" id="fishList" role="dialog" aria-modal="true" aria-labelledby="fishListTitle" hidden>
+  <div class="sheet flist">
+    <div class="row between"><h2 id="fishListTitle" data-t="fishList"></h2><button type="button" class="xbtn" id="fishListClose" aria-label="Close">✕</button></div>
+    <p class="muted small" id="fishListSub"></p>
+    <ul class="flist-ul" id="fishListUl"></ul>
+  </div>
+</div>
+
+<!-- creature info -->
+<div class="modal" id="info" role="dialog" aria-modal="true" aria-labelledby="infoName" hidden>
+  <div class="sheet info">
+    <canvas id="infoPic" width="240" height="180" aria-hidden="true"></canvas>
+    <h2 id="infoName"></h2>
+    <p class="imm" id="infoImm" data-t="immortal" hidden></p>
+    <dl class="facts">
+      <dt data-t="infoKind"></dt><dd id="infoKind"></dd>
+      <dt data-t="infoBy"></dt><dd id="infoBy"></dd>
+      <dt data-t="infoAt"></dt><dd id="infoAt"></dd>
+      <dt data-t="infoAge"></dt><dd id="infoAge"></dd>
+    </dl>
+    <div class="row react"><button type="button" class="btn soft" id="infoDl" data-t="sticker"></button></div>
+    <form class="rename-row" id="renameForm" autocomplete="off" hidden><label class="sr" for="renameInput" data-t="rename"></label><input type="text" id="renameInput" maxlength="20"><button type="submit" class="btn small" id="renameBtn" data-t="renameSave"></button></form>
+    <div class="size-row" id="infoSizeRow" hidden><span data-t="sizeLabel"></span><div class="size-pick" id="infoSize" role="group"></div></div>
+    <div class="row end"><button type="button" class="btn" id="infoPin" hidden></button><button type="button" class="btn danger" id="infoDel" data-t="del" hidden></button><button type="button" class="btn ghost" id="infoClose" data-t="close"></button></div>
+  </div>
+</div>
+
+<div class="modal" id="how" role="dialog" aria-modal="true" aria-labelledby="howTitle" hidden>
+  <div class="sheet how">
+    <div class="row between"><h2 id="howTitle" data-t="howTitle"></h2><button type="button" class="xbtn" id="howClose" aria-label="Close">✕</button></div>
+    <h3 class="how-sub" data-t="residents"></h3><div class="how-counts" id="howCounts"></div>
+    <h3 class="how-sub" data-t="rulesTitle"></h3><ol id="howList"></ol>
+    <p class="how-terms"><a href="/syarat-ketentuan" data-t="terms">Syarat &amp; Ketentuan</a></p>
+    <div class="row end"><button type="button" class="btn coral" id="howOk" data-t="gotIt"></button></div>
+  </div>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+<script id="dq-rules">
+/*RULES*/
+</script>
+<script id="dq-net">
+/*NET*/
+</script>
+<script id="dq-app">
+/*APP*/
+</script>
+</body>
+</html>

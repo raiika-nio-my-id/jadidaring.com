@@ -21,6 +21,7 @@ class GameMasterClaimTest extends TestCase
         parent::setUp();
 
         Event::fake([GameRoomUpdated::class]);
+        config(['singlepage.git_games' => '']); // fixture database html
         $this->publish('coratcoret');
     }
 

@@ -16,7 +16,7 @@ class MembersOnlyGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.members_only_games' => '*']);
+        config(['singlepage.members_only_games' => '*', 'singlepage.git_games' => '']); // fixture database html
     }
 
     private function publish(string $slug): void

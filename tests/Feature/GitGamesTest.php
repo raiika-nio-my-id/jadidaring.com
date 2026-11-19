@@ -17,7 +17,7 @@ class GitGamesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        config(['singlepage.git_games' => 'langitbersama', 'singlepage.members_only_games' => '*']);
+        config(['singlepage.git_games' => 'langitbersama,drawquarium', 'singlepage.members_only_games' => '*']);
     }
 
     private function publish(string $slug, string $html = self::DB_HTML, string $status = 'published'): CompanyProfile
@@ -99,10 +99,10 @@ class GitGamesTest extends TestCase
 
     public function test_other_games_keep_their_database_html(): void
     {
-        $this->publish('drawquarium', '<html><head></head><body>AQUARIUM-DB</body></html>');
+        $this->publish('pawanghujan', '<html><head></head><body>PAWANG-DB</body></html>');
 
-        $this->get(self::HOST.'/game/drawquarium')->assertOk()->assertSee('AQUARIUM-DB')->assertDontSee('data-game-frame', false);
-        $this->get(self::HOST.'/game/drawquarium/play')->assertNotFound();
+        $this->get(self::HOST.'/game/pawanghujan')->assertOk()->assertSee('PAWANG-DB')->assertDontSee('data-game-frame', false);
+        $this->get(self::HOST.'/game/pawanghujan/play')->assertNotFound();
     }
 
     public function test_old_bare_paths_redirect_to_the_game_page(): void
@@ -128,5 +128,40 @@ class GitGamesTest extends TestCase
         $this->assertSame(1, preg_match('/^[\x00-\x7f]*$/', $html));
         $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
         $this->assertStringContainsString('</html>', $html);
+    }
+
+    /** @return array<string, array{string, string}> */
+    public static function migratedGames(): array
+    {
+        return [
+            'drawquarium' => ['drawquarium', 'jdng.drawquarium'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('migratedGames')]
+    public function test_migrated_game_runs_in_the_site_layout_with_the_account_name(string $slug, string $marker): void
+    {
+        $this->publish($slug);
+
+        $this->get(self::HOST.'/game/'.$slug)
+            ->assertOk()
+            ->assertSee('class="clay-header"', false)
+            ->assertSee('data-src="/game/'.$slug.'/play"', false)
+            ->assertDontSee('DB-ROLLBACK-COPY');
+
+        $this->get(self::HOST.'/game/'.$slug.'/play')
+            ->assertOk()
+            ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
+            ->assertSee($marker, false)
+            ->assertSee('window.__JD_ME={"in":false', false)
+            ->assertSee('data-jd-gitgame-frame', false)
+            ->assertDontSee('DB-ROLLBACK-COPY');
+
+        $this->get(self::HOST.'/'.$slug)->assertStatus(301)->assertRedirect(self::HOST.'/game/'.$slug);
+
+        $html = (string) file_get_contents(resource_path('games/'.$slug.'/game.html'));
+        $this->assertSame(1, preg_match('/^[\x00-\x7f]*$/', $html));
+        $this->assertStringNotContainsStringIgnoringCase('gmjd1212', $html);
+        $this->assertStringContainsString('window.__JD_ME', $html, 'the game reads the account name');
     }
 }
