@@ -99,10 +99,10 @@ class GitGamesTest extends TestCase
 
     public function test_other_games_keep_their_database_html(): void
     {
-        $this->publish('pawanghujan', '<html><head></head><body>PAWANG-DB</body></html>');
+        $this->publish('nadapiano', '<html><head></head><body>NADA-DB</body></html>');
 
-        $this->get(self::HOST.'/game/pawanghujan')->assertOk()->assertSee('PAWANG-DB')->assertDontSee('data-game-frame', false);
-        $this->get(self::HOST.'/game/pawanghujan/play')->assertNotFound();
+        $this->get(self::HOST.'/game/nadapiano')->assertOk()->assertSee('NADA-DB')->assertDontSee('data-game-frame', false);
+        $this->get(self::HOST.'/game/nadapiano/play')->assertNotFound();
     }
 
     public function test_old_bare_paths_redirect_to_the_game_page(): void

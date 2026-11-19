@@ -29,9 +29,9 @@ class TenantPathTest extends TestCase
         $this->get('http://jadidaring.test/game/langitbersama/')->assertOk()->assertSee('Sky', false);
 
         // Bare /{slug} is gone for database games (git games 301 to /game/{slug}, see GitGamesTest).
-        $this->publish('pawanghujan', '<html><head></head><body>Rain</body></html>');
-        $this->get('http://jadidaring.test/pawanghujan')->assertNotFound();
-        $this->get('http://jadidaring.test/pawanghujan/')->assertNotFound();
+        $this->publish('nadapiano', '<html><head></head><body>Rain</body></html>');
+        $this->get('http://jadidaring.test/nadapiano')->assertNotFound();
+        $this->get('http://jadidaring.test/nadapiano/')->assertNotFound();
         $this->get('http://drawquarium.jadidaring.test/')->assertRedirect('https://jadidaring.test/game/drawquarium');
         $this->get('http://jadidaring.test/game/missing')->assertNotFound();
     }

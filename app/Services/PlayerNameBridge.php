@@ -62,13 +62,15 @@ class PlayerNameBridge
     /**
      * Only pages that already ask for a player name receive the bridge.
      * The shared gate marks itself jd-namegate / JDNG_CFG. Drawquarium and
-     * Langit Bersama use their own gate and a jdng.<slug> session key.
+     * Langit Bersama use their own gate and a jdng.<slug> session key. Games in git without a gate mark
+     * their name field data-jd-account-name (filled from the account by public/js/account-name.js).
      */
     private function asksForPlayerName(string $html): bool
     {
         return str_contains($html, 'jd-namegate')
             || str_contains($html, 'JDNG_CFG')
             || str_contains($html, 'jdng.drawquarium')
-            || str_contains($html, 'jdng.langitbersama');
+            || str_contains($html, 'jdng.langitbersama')
+            || str_contains($html, 'data-jd-account-name ');
     }
 }
