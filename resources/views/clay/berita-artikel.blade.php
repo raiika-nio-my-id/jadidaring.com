@@ -1,15 +1,11 @@
 @extends('layouts.clay')
 
 @push('head')
-    <meta property="article:published_time" content="{{ $article['published_at'] }}">
+    <meta property="article:published_time" content="{{ $publishedWita }}">
+    <meta property="article:modified_time" content="{{ $modifiedWita }}">
     <meta property="article:section" content="{{ $topicName }}">
     <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
-    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => [
-        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => 'https://'.config('singlepage.base_domain').'/'],
-        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Berita', 'item' => 'https://'.config('singlepage.base_domain').'/berita'],
-        ['@type' => 'ListItem', 'position' => 3, 'name' => $topicName, 'item' => 'https://'.config('singlepage.base_domain').'/berita/'.$article['topic']],
-        ['@type' => 'ListItem', 'position' => 4, 'name' => $article['title']],
-    ]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+    <script type="application/ld+json">{!! json_encode($breadcrumbLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
     <link rel="preload" as="image" href="{{ \App\Services\NewsImage::src($article['id'], 800, $article['img']['v']) }}" imagesrcset="{{ \App\Services\NewsImage::src($article['id'], 480, $article['img']['v']) }} 480w, {{ \App\Services\NewsImage::src($article['id'], 800, $article['img']['v']) }} 800w, {{ \App\Services\NewsImage::src($article['id'], 1200, $article['img']['v']) }} 1200w" imagesizes="(min-width: 800px) 760px, 100vw" fetchpriority="high">
 @endpush
 

@@ -129,8 +129,19 @@ class NewsController extends Controller
         }
 
         $url = 'https://'.TenantPath::host().'/berita/'.$data['topic'].'/'.$data['slug'];
+        $wita = fn (?string $iso): ?string => $iso === null ? null : Carbon::parse($iso)->setTimezone('Asia/Makassar')->toIso8601String();
+        $base = 'https://'.TenantPath::host();
+        $topicName = ClayController::TOPICS[$data['topic']];
 
         return response()->view('clay.berita-artikel', [
+            'publishedWita' => $wita($data['published_at']),
+            'modifiedWita' => $wita($data['updated_at']),
+            'breadcrumbLd' => ['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => $base.'/'],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Berita', 'item' => $base.'/berita'],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $topicName, 'item' => $base.'/berita/'.$data['topic']],
+                ['@type' => 'ListItem', 'position' => 4, 'name' => $data['title']],
+            ]],
             'metaTitle' => $data['title'].' — Jadidaring',
             'metaDescription' => $data['summary'],
             'canonicalUrl' => $url,
@@ -146,9 +157,10 @@ class NewsController extends Controller
                 'headline' => $data['title'],
                 'description' => $data['summary'],
                 'mainEntityOfPage' => $url,
-                'datePublished' => $data['published_at'],
-                'dateModified' => $data['updated_at'],
-                'image' => [NewsImage::absolute($data['id'], 1200, $data['img']['v'])],
+                'datePublished' => $wita($data['published_at']),
+                'dateModified' => $wita($data['updated_at']),
+                'isAccessibleForFree' => true,
+                'image' => [['@type' => 'ImageObject', 'url' => NewsImage::absolute($data['id'], 1200, $data['img']['v']), 'width' => 1200, 'height' => 630]],
                 'articleSection' => ClayController::TOPICS[$data['topic']],
                 'inLanguage' => 'id-ID',
                 'author' => ['@type' => 'Organization', 'name' => 'Redaksi Jaring', 'url' => 'https://'.TenantPath::host().'/tentang'],

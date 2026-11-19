@@ -65,7 +65,7 @@ class SeoInfraTest extends TestCase
         $this->assertNotEmpty($a->image_path);
         $page = $this->get(self::SITE.'/berita/teknologi/'.$a->slug)->assertOk()
             ->assertSee('Foto: Budi / Unsplash', false)->assertSee('alt="Pemandangan kota"', false)->assertSee('gambar-berita/'.$a->id.'-1200.webp', false);
-        $this->assertStringContainsString('"image":["https:', $page->getContent());
+        $this->assertStringContainsString('"image":[{"@type":"ImageObject","url":"https:', $page->getContent());
 
         $this->deleteJson(self::API.'/articles/'.$a->id.'/image', [], $this->key())->assertOk()->assertJsonPath('article.image.photo', false);
         $this->get(self::SITE.'/berita/teknologi/'.$a->slug)->assertDontSee('Foto: Budi', false);
