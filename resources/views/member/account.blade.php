@@ -4,7 +4,7 @@
     <div class="clay-auth">
         <div class="clay-card clay-card--lavender">
             <h1 class="clay-section__title">Akunku</h1>
-            <p>Masuk sebagai <strong>{{ '@'.$user->username }}</strong> (via {{ $user->provider === 'google' ? 'Google' : ($user->provider ? ucfirst($user->provider) : 'kata sandi') }}).</p>
+            <p>Masuk sebagai <strong>{{ '@'.$user->username }}</strong> (via {{ ['google' => 'Google', 'github' => 'GitHub', 'telegram' => 'Telegram'][$user->provider] ?? ($user->provider ? ucfirst($user->provider) : 'kata sandi') }}).</p>
             @include('member._form_open')
             <form method="POST" action="{{ route('member.account.name') }}" class="clay-form">
                 @csrf
