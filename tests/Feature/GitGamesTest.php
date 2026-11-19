@@ -183,6 +183,7 @@ class GitGamesTest extends TestCase
             ->assertSee($marker, false)
             ->assertSee('window.__JD_ME={"in":false', false)
             ->assertSee('data-jd-gitgame-frame', false)
+            ->assertSee("createElement('jd-an')", false)
             ->assertDontSee('DB-ROLLBACK-COPY');
 
         $this->get(self::HOST.'/'.$slug)->assertStatus(301)->assertRedirect(self::HOST.'/game/'.$slug);

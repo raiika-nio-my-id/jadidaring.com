@@ -26,8 +26,11 @@ account (`users.name`, changed only at `/akun`).
 - Server: `GameRoomController::payload()` replaces `displayName` with the account name on create, join, match
   and watch; `GameScoreService` stores scores under the account. Never trust a typed name.
 - Client: `PlayerNameBridge` injects `window.__JD_ME = {in, name, login}` in front of every game that has a name
-  gate. Git games read it directly: the name field is read-only and shows the account name; the gate keeps only
-  avatar/language. Old per-game nicknames in `localStorage` are ignored.
+  gate. Git games read it directly: the name field is never shown as an input (Andika, t777u: a read-only field
+  looks editable). `public/js/account-name.js` keeps the field hidden (value kept for the game's JS, no focus) and
+  shows a plain chip "Main sebagai <name>" with the initial; guests see "Main sebagai Tamu · Masuk". Fields are the
+  gate's `JDNG_CFG.inputs`, `#jdngN`, the invite name, and any `[data-jd-account-name]` (label via
+  `data-jd-account-name-label`). The gate keeps only avatar/language. Old per-game nicknames in `localStorage` are ignored.
 - Guests (not logged in): they can open, watch and try the game under the name **Tamu**. Anything that saves
   (rooms, drawings, chat, scores) gets 401 from the server and the shared "Masuk dulu ya" prompt opens
   (`GAME_MEMBERS_ONLY=*`, commit e3bddfb). The gate shows a "Masuk" link instead of a name field.
