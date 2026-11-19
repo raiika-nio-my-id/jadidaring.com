@@ -47,11 +47,11 @@ class TenantSiteTest extends TestCase
     public function test_a_game_that_asks_for_a_name_receives_the_shared_name_bridge(): void
     {
         CompanyProfile::factory()->published()->create([
-            'subdomain' => 'ulartangga',
+            'subdomain' => 'nadapiano',
             'html' => '<html><head><title>Ular Tangga</title></head><body><!-- jd-namegate --></body></html>',
         ]);
 
-        $html = $this->get('http://jadidaring.test/ulartangga/')->assertOk()->getContent();
+        $html = $this->get('http://jadidaring.test/nadapiano/')->assertOk()->getContent();
         $bridgeAt = strpos($html, 'data-jdng-name-bridge');
         $titleAt = strpos($html, '<title>');
 
