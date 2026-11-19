@@ -17,4 +17,9 @@ class LoggedInHomeTest extends TestCase
         $r->assertOk();
         $this->assertStringNotContainsString('>Masuk<', $r->getContent());
     }
+
+    public function test_cached_routes_keep_optional_session_middleware(): void
+    {
+        $this->assertContains(\App\Http\Middleware\OptionalSession::class, app('router')->gatherRouteMiddleware(app('router')->getRoutes()->getByName('clay.komunitas')));
+    }
 }
