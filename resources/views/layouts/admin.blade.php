@@ -35,6 +35,9 @@
                     <a href="{{ route('admin.settings') }}" @if(request()->routeIs('admin.settings')) aria-current="page" @endif>Settings</a>
                 @endcan
             @endif
+            @if (auth()->user()->isAdmin())
+                <a href="https://{{ config('singlepage.base_domain') }}/admin" title="Panel admin baru di jadidaring.com/admin (masuk sekali lagi dengan akun admin yang sama)">Panel baru ↗</a>
+            @endif
             <span class="user-chip">{{ auth()->user()->name }}</span>
             @include('partials.theme-toggle')
             <form class="inline" method="POST" action="{{ route('logout') }}">

@@ -5,11 +5,16 @@ namespace App\Providers;
 use App\Models\CompanyProfile;
 use App\Models\User;
 use App\Policies\CompanyProfilePolicy;
+use Carbon\CarbonInterface;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -31,8 +36,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Display helper: storage stays UTC, humans see WITA (Asia/Makassar).
         // Usage: $date->wita() => "19 Nov 2026, 15.52 WITA"; wita(true) adds the weekday.
-        \Illuminate\Support\Carbon::macro('wita', function (bool $weekday = false): string {
-            /** @var \Carbon\CarbonInterface $this */
+        Carbon::macro('wita', function (bool $weekday = false): string {
+            /** @var CarbonInterface $this */
             return $this->copy()->setTimezone('Asia/Makassar')->locale('id')
                 ->translatedFormat(($weekday ? 'l, ' : '').'j M Y, H.i').' WITA';
         });
@@ -68,6 +73,20 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(CompanyProfile::class, CompanyProfilePolicy::class);
+
+        // /admin web panel: admins only, never a blocked account.
+        Gate::define('access-admin-panel', fn (User $user): bool => $user->isAdmin() && ! $user->isBanned());
+
+        // Last login, shown in /admin (no updated_at bump).
+        Event::listen(Login::class, function (Login $event): void {
+            if ($event->user instanceof User) {
+                try {
+                    DB::table('users')->where('id', $event->user->id)->update(['last_login_at' => now()]);
+                } catch (\Throwable) {
+                    // Column not migrated yet: login must never fail because of this.
+                }
+            }
+        });
 
         Gate::define('manage-settings', function (User $user): bool {
             return $user->can('manageSettings', CompanyProfile::class);

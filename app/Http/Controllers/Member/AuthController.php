@@ -4,11 +4,18 @@ namespace App\Http\Controllers\Member;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\BlockBannedUser;
+use App\Models\CompanyProfile;
 use App\Models\User;
 use App\Services\SocialAuth;
+use App\Support\EmailChange;
+use App\Support\EmailNormalizer;
+use App\Support\Ga4;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -52,8 +59,15 @@ class AuthController extends Controller
         }
 
         RateLimiter::clear($key);
+
+        if (Auth::user()?->isBanned()) {
+            Auth::guard('web')->logout();
+
+            throw ValidationException::withMessages(['login' => BlockBannedUser::MESSAGE]);
+        }
+
         $request->session()->regenerate();
-        \App\Support\Ga4::flash('login', ['method' => 'password']);
+        Ga4::flash('login', ['method' => 'password']);
 
         return redirect()->intended(route('member.account'));
     }
@@ -71,7 +85,7 @@ class AuthController extends Controller
             'username' => ['required', 'string', 'min:3', 'max:20', 'regex:/^[a-z0-9_]+$/', 'unique:users,username'],
             'password' => ['required', 'string', 'min:8', 'max:100', 'confirmed'],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email', function ($attr, $value, $fail) {
-                if (filled($value) && \App\Support\EmailNormalizer::taken((string) $value)) {
+                if (filled($value) && EmailNormalizer::taken((string) $value)) {
                     $fail('Email sudah terdaftar.');
                 }
             }],
@@ -94,7 +108,7 @@ class AuthController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
-        \App\Support\Ga4::flash('sign_up', ['method' => 'password']);
+        Ga4::flash('sign_up', ['method' => 'password']);
 
         return redirect()->route('member.account');
     }
@@ -142,39 +156,39 @@ class AuthController extends Controller
             'current_password.required' => 'Masukkan kata sandimu saat ini.',
         ]);
 
-        if ($isPasswordAccount && ! \Illuminate\Support\Facades\Hash::check($data['current_password'], (string) $user->password)) {
+        if ($isPasswordAccount && ! Hash::check($data['current_password'], (string) $user->password)) {
             return back()->withErrors(['current_password' => 'Kata sandi salah.']);
         }
 
         $new = Str::lower(trim($data['email']));
 
-        if (\App\Support\EmailNormalizer::normalize($new) === \App\Support\EmailNormalizer::normalize($user->email)) {
+        if (EmailNormalizer::normalize($new) === EmailNormalizer::normalize($user->email)) {
             return back()->withErrors(['email' => 'Itu sudah jadi emailmu.']);
         }
 
-        if (\App\Support\EmailNormalizer::taken($new, $user->id)) {
+        if (EmailNormalizer::taken($new, $user->id)) {
             return back()->withErrors(['email' => 'Email sudah terdaftar.']);
         }
 
         $user->forceFill(['pending_email' => $new])->save();
 
-        \App\Support\EmailChange::sendVerification($user, $new);
+        EmailChange::sendVerification($user, $new);
 
         return back()->with('status', 'Kami mengirim tautan verifikasi ke '.$new.'. Emailmu baru berubah setelah tautan itu diklik (berlaku 60 menit).');
     }
 
-    private function emailResult(array $data): \Illuminate\Http\Response
+    private function emailResult(array $data): Response
     {
         return response()->view('member.email-result', $data)->header('X-No-Public-Cache', '1')->header('Cache-Control', 'no-store, private');
     }
 
-    public function verifyEmail(Request $request, User $user, string $hash): \Illuminate\Http\Response
+    public function verifyEmail(Request $request, User $user, string $hash): Response
     {
         abort_unless($request->hasValidSignature() && $user->pending_email !== null && hash_equals(sha1($user->pending_email), $hash), 403);
 
         $new = $user->pending_email;
 
-        if (\App\Support\EmailNormalizer::taken($new, $user->id)) {
+        if (EmailNormalizer::taken($new, $user->id)) {
             $user->forceFill(['pending_email' => null])->save();
 
             return $this->emailResult(['ok' => false, 'message' => 'Email itu sudah dipakai akun lain, jadi perubahan dibatalkan.']);
@@ -185,7 +199,7 @@ class AuthController extends Controller
         return $this->emailResult(['ok' => true, 'message' => 'Email '.$new.' sudah terverifikasi dan jadi emailmu.']);
     }
 
-    public function reportEmailChange(Request $request, User $user): \Illuminate\Http\Response
+    public function reportEmailChange(Request $request, User $user): Response
     {
         abort_unless($request->hasValidSignature(), 403);
 
@@ -212,11 +226,11 @@ class AuthController extends Controller
             return back()->withErrors(['confirm' => 'Ketik nama penggunamu persis untuk konfirmasi.']);
         }
 
-        if ($user->password !== null && ! \Illuminate\Support\Facades\Hash::check((string) $request->input('password'), $user->password)) {
+        if ($user->password !== null && ! Hash::check((string) $request->input('password'), $user->password)) {
             return back()->withErrors(['password' => 'Kata sandi salah.']);
         }
 
-        if (\App\Models\CompanyProfile::query()->where('user_id', $user->id)->exists()) {
+        if (CompanyProfile::query()->where('user_id', $user->id)->exists()) {
             return back()->withErrors(['confirm' => 'Akun ini memiliki situs klien dan tidak bisa dihapus sendiri.']);
         }
 

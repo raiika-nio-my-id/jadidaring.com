@@ -148,6 +148,7 @@ class GameHubCatalog
         $query = CompanyProfile::query()
             ->live()
             ->games()
+            ->listed()
             ->with('user:id,name')
             ->select('company_profiles.*')
             ->where('company_profiles.subdomain', '!=', GameHub::subdomain());

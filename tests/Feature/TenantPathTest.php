@@ -76,7 +76,8 @@ class TenantPathTest extends TestCase
             ]);
         }
 
-        $this->get('http://jadidaring.test/admin')->assertNotFound();
+        // /admin is the web admin panel now (guests go to its login), never a tenant path.
+        $this->get('http://jadidaring.test/admin')->assertRedirectContains('/admin/masuk');
         $this->get('http://jadidaring.test/reverb')->assertNotFound();
         $this->get('http://jadidaring.test/app')->assertNotFound();
         $this->get('http://admin.jadidaring.test/drawquarium')->assertNotFound();

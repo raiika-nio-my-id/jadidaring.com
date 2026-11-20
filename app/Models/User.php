@@ -30,6 +30,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
+            'banned_at' => 'datetime',
+            'last_login_at' => 'datetime',
         ];
     }
 
@@ -57,6 +59,12 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin;
+    }
+
+    /** Blocked by an admin in /admin: cannot log in or post. */
+    public function isBanned(): bool
+    {
+        return $this->banned_at !== null;
     }
 
     public function isMember(): bool

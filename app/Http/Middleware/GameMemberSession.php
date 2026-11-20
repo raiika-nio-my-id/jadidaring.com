@@ -24,7 +24,7 @@ class GameMemberSession
 
         return app(Pipeline::class)
             ->send($request)
-            ->through([EncryptCookies::class, StartSession::class])
+            ->through([EncryptCookies::class, StartSession::class, BlockBannedUser::class])
             ->then($next);
     }
 }

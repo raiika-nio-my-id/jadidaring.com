@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
-#[Fillable(['user_id', 'subdomain', 'html', 'status', 'expires_at', 'hide_footer', 'sort_order', 'is_pinned', 'is_game'])]
+#[Fillable(['user_id', 'subdomain', 'html', 'status', 'expires_at', 'hide_footer', 'sort_order', 'is_pinned', 'is_game', 'hidden_from_listing'])]
 class CompanyProfile extends Model
 {
     /** @use HasFactory<CompanyProfileFactory> */
@@ -30,12 +30,23 @@ class CompanyProfile extends Model
             'hide_footer' => 'boolean',
             'is_pinned' => 'boolean',
             'is_game' => 'boolean',
+            'hidden_from_listing' => 'boolean',
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scores(): HasMany
+    {
+        return $this->hasMany(GameScore::class);
+    }
+
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(GameRoom::class);
     }
 
     public function aliases(): HasMany
@@ -122,5 +133,16 @@ class CompanyProfile extends Model
     public function scopeGames(Builder $query): Builder
     {
         return $query->where($this->qualifyColumn('is_game'), true);
+    }
+
+    /**
+     * Games an admin has not hidden from the /game and home listings (the game page itself stays playable).
+     *
+     * @param  Builder<CompanyProfile>  $query
+     * @return Builder<CompanyProfile>
+     */
+    public function scopeListed(Builder $query): Builder
+    {
+        return $query->where($this->qualifyColumn('hidden_from_listing'), false);
     }
 }

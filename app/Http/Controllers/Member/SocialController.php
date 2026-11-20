@@ -88,6 +88,10 @@ class SocialController extends Controller
 
     private function finish(Request $request, User $user, string $method): RedirectResponse
     {
+        if ($user->isBanned()) {
+            return redirect()->route('member.login')->withErrors(['login' => \App\Http\Middleware\BlockBannedUser::MESSAGE]);
+        }
+
         Auth::login($user, true);
         $request->session()->regenerate();
         Ga4::flash($user->wasRecentlyCreated ? 'sign_up' : 'login', ['method' => $method]);

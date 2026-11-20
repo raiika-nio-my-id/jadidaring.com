@@ -82,7 +82,9 @@
                     <a href="/berita" class="clay-nav__link" @if(request()->is('berita*')) aria-current="page" @endif>Berita</a>
                     <a href="/game" class="clay-nav__link" @if(request()->is('game*')) aria-current="page" @endif>Game</a>
                     <a href="/komunitas" class="clay-nav__link" @if(request()->is('komunitas*')) aria-current="page" @endif>Komunitas</a>
-                    @auth
+                    @if (auth()->check() && ! auth()->user()->username)
+                        <a href="{{ auth()->user()->isAdmin() ? '/admin' : '/akun' }}" class="clay-nav__link clay-nav__me" @if(request()->is('admin*', 'akun*')) aria-current="page" @endif><span class="clay-me__av" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name ?: 'A', 0, 1)) }}</span><span class="clay-me__name">{{ auth()->user()->isAdmin() ? 'Admin' : (auth()->user()->name ?: 'Akun') }}</span></a>
+                    @elseauth
                         <a href="/u/{{ auth()->user()->username }}" class="clay-nav__link clay-nav__me" title="Masuk sebagai {{ '@'.auth()->user()->username }}" @if(request()->is('akun*') || request()->is('u/'.auth()->user()->username)) aria-current="page" @endif><span class="clay-me__av" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name ?: auth()->user()->username, 0, 1)) }}</span><span class="clay-me__name">{{ auth()->user()->name ?: auth()->user()->username }}</span></a>
                     @else
                         <a href="/masuk" class="clay-nav__link" @if(request()->is('masuk', 'daftar')) aria-current="page" @endif>Masuk</a>
@@ -149,7 +151,7 @@
             </svg>
             <span>Komunitas</span>
         </a>
-        <a href="{{ auth()->check() && auth()->user()->username ? '/u/'.auth()->user()->username : (auth()->check() ? '/akun' : '/masuk') }}" class="clay-bottom-nav__item" @if(auth()->check() && (request()->is('akun*') || request()->is('u/'.auth()->user()->username))) aria-current="page" @endif>
+        <a href="{{ auth()->check() && auth()->user()->username ? '/u/'.auth()->user()->username : (auth()->check() ? (auth()->user()->isAdmin() ? '/admin' : '/akun') : '/masuk') }}" class="clay-bottom-nav__item" @if(auth()->check() && (request()->is('akun*') || request()->is('u/'.auth()->user()->username))) aria-current="page" @endif>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>

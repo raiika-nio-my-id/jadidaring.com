@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\CompanyProfile;
+use App\Models\MemberPage;
 use App\Services\GameHubCatalog;
-use App\Services\TenantPath;
+use App\Services\GitGames;
+use App\Services\NewsCache;
 use App\Services\PopularStats;
+use App\Services\TenantPath;
 use App\Support\Infinite;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ClayController extends Controller
@@ -35,6 +39,7 @@ class ClayController extends Controller
         $profiles = CompanyProfile::query()
             ->live()
             ->games()
+            ->listed()
             ->with('user:id,name')
             ->where('company_profiles.subdomain', '!=', 'gamehub')
             ->orderByDesc('company_profiles.is_pinned')
@@ -57,7 +62,7 @@ class ClayController extends Controller
             'ogImageType' => 'image/webp',
             'ogImageAlt' => 'Jadidaring: game web gratis, berita, dan komunitas Indonesia',
             'games' => $games,
-            'articles' => \App\Services\NewsCache::latest(null, 11),
+            'articles' => NewsCache::latest(null, 11),
         ]);
     }
 
@@ -72,6 +77,7 @@ class ClayController extends Controller
         $query = CompanyProfile::query()
             ->live()
             ->games()
+            ->listed()
             ->with('user:id,name')
             ->where('company_profiles.subdomain', '!=', 'gamehub');
 
@@ -140,7 +146,8 @@ class ClayController extends Controller
             ."Disallow: /api/\n"
             ."Disallow: /*/api/\n"
             ."Disallow: /game/*/api/\n"
-            ."Disallow: /_boost/\n\n"
+            ."Disallow: /_boost/\n"
+            ."Disallow: /admin\n\n"
             ."Sitemap: {$host}/sitemap.xml\n"
             ."Sitemap: {$host}/news-sitemap.xml\n";
 
@@ -152,7 +159,7 @@ class ClayController extends Controller
     public function sitemap(Request $request): Response
     {
         $host = 'https://'.TenantPath::host();
-        $articles = \App\Services\NewsCache::latest(null, 500);
+        $articles = NewsCache::latest(null, 500);
         $newest = $articles === [] ? null : max(array_map(fn (array $a): string => $a['updated_at'] ?? $a['published_at'], $articles));
         $topicNewest = [];
 
@@ -180,9 +187,9 @@ class ClayController extends Controller
             $urls[] = [$host.'/game/'.$profile->subdomain, $profile->updated_at?->toIso8601String()];
         }
 
-        $urls[] = [$host.'/komunitas', \App\Models\MemberPage::query()->max('updated_at') ? \Illuminate\Support\Carbon::parse(\App\Models\MemberPage::query()->max('updated_at'))->toIso8601String() : null];
+        $urls[] = [$host.'/komunitas', MemberPage::query()->max('updated_at') ? Carbon::parse(MemberPage::query()->max('updated_at'))->toIso8601String() : null];
 
-        foreach (\App\Http\Controllers\PageController::PAGES as $path => $updated) {
+        foreach (PageController::PAGES as $path => $updated) {
             $urls[] = [$host.'/'.$path, $updated];
         }
 
@@ -192,7 +199,7 @@ class ClayController extends Controller
             .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
         foreach ($urls as [$url, $mod]) {
-            $xml .= '  <url><loc>'.e($url).'</loc>'.($mod ? '<lastmod>'.e(\Illuminate\Support\Carbon::parse($mod)->toW3cString()).'</lastmod>' : '').'</url>'."\n";
+            $xml .= '  <url><loc>'.e($url).'</loc>'.($mod ? '<lastmod>'.e(Carbon::parse($mod)->toW3cString()).'</lastmod>' : '').'</url>'."\n";
         }
 
         return response($xml.'</urlset>', 200, ['Content-Type' => 'application/xml; charset=utf-8']);
@@ -207,7 +214,7 @@ class ClayController extends Controller
         return $profiles->map(function (CompanyProfile $profile): array {
             $subdomain = strtolower($profile->subdomain);
             // Git games (docs/games-in-git.md) read their card text from the repo file, not the rollback html column.
-            $meta = GameHubCatalog::pageMetadata(\App\Services\GitGames::enabled($subdomain) ? \App\Services\GitGames::html($subdomain) : (string) $profile->html);
+            $meta = GameHubCatalog::pageMetadata(GitGames::enabled($subdomain) ? GitGames::html($subdomain) : (string) $profile->html);
 
             $title = $meta['title'] !== ''
                 ? $meta['title']

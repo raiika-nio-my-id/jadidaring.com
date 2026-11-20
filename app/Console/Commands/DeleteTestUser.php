@@ -3,10 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use App\Services\Admin\UserDeletion;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 
 /** Removes one throwaway member account named tmp<digits> (and its cascaded rows), after a JSON backup of its rows. */
 class DeleteTestUser extends Command
@@ -42,25 +41,12 @@ class DeleteTestUser extends Command
             return self::FAILURE;
         }
 
-        $rows = ['user' => $user->toArray()];
-        foreach (['member_pages', 'member_page_drafts', 'member_page_comments', 'member_follows', 'prompt_form_states', 'member_posts', 'member_post_comments', 'member_post_likes', 'article_comments'] as $table) {
-            if (Schema::hasTable($table)) {
-                $q = DB::table($table);
-                $rows[$table] = match ($table) {
-                    'member_follows' => $q->where('follower_id', $user->id)->orWhere('followed_id', $user->id)->get()->all(),
-                    'member_page_comments' => $q->where('user_id', $user->id)->get()->all(),
-                    default => $q->where('user_id', $user->id)->get()->all(),
-                };
-            }
-        }
+        $rows = UserDeletion::rows($user);
 
-        $dir = storage_path('app/backups');
-        File::ensureDirectoryExists($dir);
-        $file = $dir.'/deleted-user-'.$username.'-'.date('Ymd-His').'.json';
-        file_put_contents($file, json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-        if (! is_file($file) || json_decode((string) file_get_contents($file), true) === null) {
-            $this->error('Backup verification failed; nothing deleted.');
+        try {
+            $file = UserDeletion::backup($user, $rows);
+        } catch (\RuntimeException $e) {
+            $this->error($e->getMessage());
 
             return self::FAILURE;
         }

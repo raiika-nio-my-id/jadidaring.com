@@ -1,15 +1,25 @@
 <?php
 
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\StaticAssetController;
 use App\Http\Middleware\AuthenticateAdminApiKey;
+use App\Http\Middleware\BlockBannedUser;
+use App\Http\Middleware\EnsurePanelAdmin;
 use App\Http\Middleware\GameMemberSession;
+use App\Http\Middleware\OptionalSession;
+use App\Http\Middleware\PublicCache;
 use App\Http\Middleware\ResolveTenantPath;
+use App\Http\Middleware\SecureTransport;
+use App\Models\CompanyProfile;
 use App\Services\TenantPath;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -73,7 +83,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 Route::match(['GET', 'HEAD'], '/{any?}', function (Request $request, ?string $any = null) use ($base) {
                     $slug = strtolower(explode('/', trim((string) $any, '/'))[0] ?? '');
                     $exists = $slug !== '' && preg_match('/^[a-z0-9-]{1,63}$/', $slug) === 1
-                        && \App\Models\CompanyProfile::query()->live()->games()->where('subdomain', $slug)->exists();
+                        && CompanyProfile::query()->live()->games()->where('subdomain', $slug)->exists();
 
                     $qs = $request->getQueryString();
 
@@ -95,7 +105,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Member page content: no session/cookie middleware, sandbox CSP set by the controller.
             Route::domain($base)
-                ->get('/u/{username}/konten', [\App\Http\Controllers\CommunityController::class, 'content'])
+                ->get('/u/{username}/konten', [CommunityController::class, 'content'])
                 ->where('username', '[a-z0-9_]{3,20}')
                 ->middleware('throttle:120,1')
                 ->name('community.content');
@@ -105,22 +115,27 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->get('/', fn () => redirect()->away('https://'.strtolower((string) config('singlepage.base_domain')), 301));
 
                 Route::domain((string) config('singlepage.sandbox_domain'))
-                    ->get('/{username}', [\App\Http\Controllers\CommunityController::class, 'content'])
+                    ->get('/{username}', [CommunityController::class, 'content'])
                     ->where('username', '[a-z0-9_]{3,20}')
                     ->middleware('throttle:120,1');
             }
 
             // One-time-key draft API: no session, no cookies, CORS-open, creates drafts only.
             Route::domain($base)
-                ->match(['POST', 'OPTIONS'], '/api/komunitas/draft', [\App\Http\Controllers\CommunityController::class, 'apiDraft'])
+                ->match(['POST', 'OPTIONS'], '/api/komunitas/draft', [CommunityController::class, 'apiDraft'])
                 ->middleware('throttle:30,1')
                 ->name('community.api.draft');
 
             // Session-less static assets with immutable caching (independent of nginx rules).
             Route::domain($base)
-                ->get('/a/{path}', \App\Http\Controllers\StaticAssetController::class)
+                ->get('/a/{path}', StaticAssetController::class)
                 ->where('path', '.*')
                 ->name('assets');
+
+            // Web admin panel (/admin) on the public host; admins only (EnsurePanelAdmin + access-admin-panel gate).
+            Route::middleware('web')
+                ->domain($base)
+                ->group(base_path('routes/panel.php'));
 
             Route::middleware('web')
                 ->domain($base)
@@ -135,7 +150,7 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->appendToPriorityList(\Illuminate\Session\Middleware\StartSession::class, \App\Http\Middleware\OptionalSession::class);
+        $middleware->appendToPriorityList(StartSession::class, OptionalSession::class);
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR
@@ -144,7 +159,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_PROTO,
         );
 
-        $middleware->prepend(\App\Http\Middleware\SecureTransport::class);
+        $middleware->prepend(SecureTransport::class);
 
         $isAdminHost = static fn (Request $request): bool => strtolower($request->getHost()) === strtolower((string) config('singlepage.admin_domain'));
 
@@ -153,15 +168,17 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin.api' => AuthenticateAdminApiKey::class,
-            'public.cache' => \App\Http\Middleware\PublicCache::class,
+            'public.cache' => PublicCache::class,
+            'panel.admin' => EnsurePanelAdmin::class,
         ]);
+        $middleware->appendToGroup('web', BlockBannedUser::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
-        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException $e, Request $request) {
+        $exceptions->render(function (TooManyRequestsHttpException $e, Request $request) {
             if ($request->expectsJson() || $request->is('api/*') || $request->is('*/api/game/*')) {
                 return null;
             }
