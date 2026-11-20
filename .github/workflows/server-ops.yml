@@ -236,9 +236,9 @@ jobs:
                 done
                 if [ "$ACTION" = "delete-backups" ]; then
                   [ "$VALUE" = "CONFIRM" ] || { echo "value must be CONFIRM"; exit 1; }
-                  for d in storage/backups storage/app/backups; do
-                    [ -d "$d" ] && find "$d" -mindepth 1 -delete
-                  done
+                  [ -d storage/backups ] && find storage/backups -mindepth 1 -delete
+                  # storage/app/backups is written by the app user inside the container
+                  docker exec jadidaring-app sh -c 'test -d storage/app/backups && find storage/app/backups -mindepth 1 -delete || true'
                   echo "== after"; du -sh storage/backups storage/app/backups 2>/dev/null || true
                   echo "== df after"; df -h / | tail -1
                 fi
