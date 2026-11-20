@@ -72,7 +72,9 @@ jobs:
           envs: DEPLOY_PATH,ACTION,VALUE,G_ID,G_SECRET,GH_ID,GH_SECRET,TG_USER,TG_TOKEN,TG_OIDC_ID,TG_OIDC_SECRET,M_USER,M_PASS,GS_PROP,GS_KEY
           script: |
             set -euo pipefail
-            cd "$DEPLOY_PATH"
+            # Diagnostics (lengths / existence only, never values).
+            echo "deploy path len=${#DEPLOY_PATH} dir=$([ -d "${DEPLOY_PATH:-/nonexistent}" ] && echo ok || echo missing) tg_oidc id_len=${#TG_OIDC_ID} secret_len=${#TG_OIDC_SECRET}"
+            if [ -n "${DEPLOY_PATH:-}" ] && [ -d "$DEPLOY_PATH" ]; then cd "$DEPLOY_PATH"; else cd /var/www/singlepage; fi
             setkey() {
               # Rewrite in place (same inode) so the bind-mounted .env stays valid.
               local k="$1" v="$2" tmp; tmp="$(mktemp)"
