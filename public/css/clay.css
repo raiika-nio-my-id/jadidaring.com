@@ -19,6 +19,11 @@
   --radius-md: 24px;
   --radius-lg: 32px;
   --radius-pill: 999px;
+  /* Spacing rule: nothing touches. Controls in a row (buttons, chips, tabs) >= --gap-control;
+     stacked cards >= --gap-stack; a toolbar and the card under it >= --gap-stack. */
+  --gap-control: 8px;
+  --gap-stack: 16px;
+  --gap-section: 20px;
   --clay-out: 8px 8px 18px rgba(120, 100, 170, 0.28), -6px -6px 14px rgba(255, 255, 255, 0.85);
   --clay-in: inset -3px -3px 6px rgba(0, 0, 0, 0.06), inset 3px 3px 6px rgba(255, 255, 255, 0.7);
   --clay-pressed: inset 4px 4px 10px rgba(120, 100, 170, 0.30), inset -4px -4px 10px rgba(255, 255, 255, 0.8);
@@ -939,7 +944,7 @@ html { -webkit-tap-highlight-color: transparent; }
 .pf-editor { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 16px; }
 @media (min-width: 1000px) { .pf-editor { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; } .pf-live-wrap { position: sticky; top: 90px; max-height: calc(100vh - 110px); overflow: auto; } }
 .pf-edit details { margin: 12px 0; } .pf-edit summary { font-weight: 800; cursor: pointer; margin-bottom: 8px; }
-.pf-wlist { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.pf-wlist { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: var(--gap-control); }
 .pf-wlist li { display: flex; align-items: center; gap: 8px; } .pf-wlist label { flex: 1; font-weight: 700; }
 .pf-wlist button { min-width: 36px; min-height: 36px; border-radius: 12px; border: 0; box-shadow: var(--clay-out); background: var(--clay-surface); color: var(--clay-ink); cursor: pointer; }
 .pb-check { display: flex; gap: 8px; align-items: center; font-weight: 600; }
@@ -1129,14 +1134,14 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .ch-body { margin: 10px 0 0; white-space: pre-wrap; line-height: 1.65; font-size: 1.02rem; }
 .ch-img { display: block; margin: 10px 0 0; border-radius: var(--radius-sm); overflow: hidden; background: color-mix(in srgb, var(--clay-lavender) 40%, transparent); }
 .ch-img img { display: block; width: 100%; max-height: 520px; object-fit: contain; }
-.ch-actions { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--clay-ink-2) 30%, transparent); }
+.ch-actions { display: flex; align-items: center; gap: var(--gap-control); margin-top: 10px; padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--clay-ink-2) 30%, transparent); }
 .ch-actions form { margin: 0; }
 .ch-act { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--clay-ink-2); font: inherit; font-weight: 800; text-decoration: none; cursor: pointer; }
 .ch-act:hover { background: color-mix(in srgb, var(--clay-lavender) 55%, transparent); }
 .ch-like.is-on { color: #d6246e; }
 .ch-like span[aria-hidden] { font-size: 1.15rem; line-height: 1; }
 .ch-actions__end { margin-left: auto; display: flex; gap: 12px; }
-.ch-comments { margin-top: 8px; display: grid; gap: 6px; }
+.ch-comments { margin-top: 8px; display: grid; gap: var(--gap-control); }
 .ch-allc { font-size: .88rem; font-weight: 700; color: var(--clay-ink-2); }
 .ch-c { padding: 8px 12px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--clay-lavender) 35%, var(--clay-surface)); }
 .ch-c p { margin: 0; line-height: 1.55; white-space: pre-wrap; }
@@ -1148,7 +1153,7 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 .ch-cform .clay-btn { min-height: 44px; padding: 10px 16px; }
 .ch-more { display: flex; justify-content: center; margin: 4px 0; }
 .ch-empty { margin: 0; padding: 14px 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink-2); box-shadow: var(--clay-out); }
-.ch-tabs { display: flex; gap: 6px; padding: 6px; margin: 0 0 18px; border-radius: var(--radius-pill); background: var(--clay-surface); box-shadow: var(--clay-pressed); overflow-x: auto; scrollbar-width: none; }
+.ch-tabs { display: flex; gap: var(--gap-control); padding: 6px; margin: 0 0 18px; border-radius: var(--radius-pill); background: var(--clay-surface); box-shadow: var(--clay-pressed); overflow-x: auto; scrollbar-width: none; }
 .ch-tab { flex: 1 0 auto; text-align: center; padding: 10px 16px; min-height: 44px; box-sizing: border-box; border-radius: var(--radius-pill); font-weight: 800; color: var(--clay-ink-2); text-decoration: none; white-space: nowrap; }
 .ch-tab[aria-current="page"] { background: var(--clay-lavender); color: var(--clay-lavender-ink); box-shadow: var(--clay-out); }
 .ch-cta { display: flex; align-items: center; gap: 10px; max-width: 680px; margin: 0 0 14px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--clay-surface); color: var(--clay-ink-2); font-weight: 700; text-decoration: none; box-shadow: var(--clay-pressed); }
@@ -1157,7 +1162,7 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 
 /* Pagination */
 .pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 32px 0 8px; }
-.pager__list { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; align-items: center; }
+.pager__list { display: flex; gap: var(--gap-control); list-style: none; margin: 0; padding: 0; align-items: center; }
 .pager__gap { padding: 0 2px; color: var(--clay-muted, #6b6b80); }
 .pager__btn { gap: 6px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 14px; border-radius: 999px; background: #fff; color: inherit; font-weight: 700; text-decoration: none; box-shadow: 0 3px 0 rgba(0,0,0,.12), 0 6px 14px rgba(80,60,140,.12); }
 .pager__btn:hover { transform: translateY(-1px); }

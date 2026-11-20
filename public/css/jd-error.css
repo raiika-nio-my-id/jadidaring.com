@@ -28,7 +28,7 @@ a:not([class]):focus-visible{border-radius:8px}
 .ed-brand__text{display:flex;flex-direction:column;line-height:1}
 .ed-brand__name{font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-.02em}
 .ed-brand__sub{margin-top:2px;font-size:11px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
-.ed-nav{display:flex;align-items:center;gap:6px}
+.ed-nav{display:flex;align-items:center;gap:8px}
 .ed-nav a{min-height:44px;padding:8px 14px;border-radius:var(--radius-pill);font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--clay-ink);text-decoration:none;display:inline-flex;align-items:center;transition:background .12s ease,transform .1s ease}
 .ed-nav a:hover{background:rgba(120,100,170,.10)}
 .ed-nav a:active{transform:scale(.96);background:var(--ed-a);color:var(--ed-a-ink)}
