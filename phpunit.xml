@@ -25,6 +25,8 @@
         <env name="APP_URL" value="http://admin.jadidaring.test"/>
         <env name="APP_BASE_DOMAIN" value="jadidaring.test"/>
         <env name="ADMIN_DOMAIN" value="admin.jadidaring.test"/>
+        <!-- Legacy admin-host tests still cover that code; production runs with it off (RetiredAdminHostTest). -->
+        <env name="LEGACY_ADMIN_HOST" value="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>

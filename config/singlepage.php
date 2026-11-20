@@ -30,6 +30,9 @@ return [
 
     'admin_domain' => env('ADMIN_DOMAIN', 'admin.jadidaring.test'),
 
+    // Old admin UI + API on admin_domain. Retired (off) in production; the panel is {base}/admin.
+    'legacy_admin_host' => (bool) env('LEGACY_ADMIN_HOST', false),
+
     /*
     | Games where creating/drawing needs a logged-in member (comma separated
     | subdomains). Empty disables the rule.

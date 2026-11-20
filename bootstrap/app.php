@@ -31,15 +31,24 @@ return Application::configure(basePath: dirname(__DIR__))
             $base = strtolower((string) config('singlepage.base_domain'));
             $www = 'www.'.$base;
 
-            Route::middleware('web')
-                ->domain((string) config('singlepage.admin_domain'))
-                ->group(base_path('routes/admin.php'));
+            if ((bool) config('singlepage.legacy_admin_host')) {
+                Route::middleware('web')
+                    ->domain((string) config('singlepage.admin_domain'))
+                    ->group(base_path('routes/admin.php'));
 
-            Route::middleware(['api', 'admin.api', 'throttle:admin-api'])
-                ->domain((string) config('singlepage.admin_domain'))
-                ->prefix('api/admin')
-                ->name('api.admin.')
-                ->group(base_path('routes/admin-api.php'));
+                Route::middleware(['api', 'admin.api', 'throttle:admin-api'])
+                    ->domain((string) config('singlepage.admin_domain'))
+                    ->prefix('api/admin')
+                    ->name('api.admin.')
+                    ->group(base_path('routes/admin-api.php'));
+            } else {
+                // The old admin host is retired: everything on it is 404 (no session, no login form).
+                // The panel lives at {base}/admin and the key-checked API at {base}/api/admin.
+                Route::domain((string) config('singlepage.admin_domain'))
+                    ->any('/{any?}', fn () => abort(404))
+                    ->where('any', '.*')
+                    ->name('legacy-admin.retired');
+            }
 
             // The admin subdomain is retired: the same key-checked admin API is served on the
             // main host too (https://jadidaring.com/api/admin/...). Same middleware, same routes.
