@@ -28,9 +28,9 @@ class UserController extends Controller
             ->when(in_array($provider, ['google', 'github', 'telegram'], true), fn ($w) => $w->where('provider', $provider))
             ->when($provider === 'password', fn ($w) => $w->whereNull('provider'))
             ->when(in_array($f, ['member', 'admin', 'client'], true), fn ($w) => $w->where('role', $f))
-            ->when($f === 'diblokir', fn ($w) => $w->whereNotNull('banned_at'))
+            ->when($f === 'diblokir', fn ($w) => $w->whereNotNull('banned_at')->where(fn ($x) => $x->whereNull('banned_until')->orWhere('banned_until', '>', now())))
             ->orderByDesc('id')
-            ->paginate(25, ['id', 'name', 'username', 'email', 'role', 'provider', 'created_at', 'last_login_at', 'banned_at'])->withQueryString();
+            ->paginate(25, ['id', 'name', 'username', 'email', 'role', 'provider', 'created_at', 'last_login_at', 'banned_at', 'banned_until', 'ban_reason'])->withQueryString();
 
         return view('panel.users.index', ['users' => $users, 'q' => $q, 'provider' => $provider, 'f' => $f]);
     }
@@ -68,18 +68,33 @@ class UserController extends Controller
             return back()->with('toast_error', 'Akun admin tidak bisa diblokir.');
         }
 
-        $data = $request->validate(['reason' => ['nullable', 'string', 'max:200']]);
-        $model->forceFill(['banned_at' => now()])->save();
-        DB::table('sessions')->where('user_id', $model->id)->delete();
-        AdminAudit::log($request, 'user.ban', 'user', $model->id, $model->username ?? $model->email, ['reason' => $data['reason'] ?? null]);
+        $data = $request->validate([
+            'duration' => ['nullable', 'in:1,3,7,30,permanen,custom'], // omitted = permanent (older callers)
+            'until' => ['required_if:duration,custom', 'nullable', 'date'],
+            'reason' => ['nullable', 'string', 'max:200'],
+        ], ['until.required_if' => 'Pilih tanggal akhir blokir.'], ['until' => 'tanggal akhir']);
 
-        return back()->with('toast', 'User diblokir dan dikeluarkan dari semua sesi.');
+        $until = match ($data['duration'] ?? 'permanen') {
+            'permanen' => null,
+            'custom' => \Illuminate\Support\Carbon::parse($data['until'], 'Asia/Makassar')->utc(),
+            default => now()->addDays((int) $data['duration']),
+        };
+
+        if ($until !== null && ! $until->isFuture()) {
+            return back()->withInput()->withErrors(['until' => 'Tanggal akhir blokir harus di masa depan.']);
+        }
+
+        $model->forceFill(['banned_at' => now(), 'banned_until' => $until, 'ban_reason' => $data['reason'] ?? null])->save();
+        DB::table('sessions')->where('user_id', $model->id)->delete();
+        AdminAudit::log($request, 'user.ban', 'user', $model->id, $model->username ?? $model->email, ['reason' => $data['reason'] ?? null, 'until' => $until?->toIso8601String() ?? 'permanen']);
+
+        return back()->with('toast', 'User diblokir '.$model->banEndsText().' dan dikeluarkan dari semua sesi.');
     }
 
     public function unban(Request $request, int $user): RedirectResponse
     {
         $model = User::query()->findOrFail($user);
-        $model->forceFill(['banned_at' => null])->save();
+        $model->forceFill(['banned_at' => null, 'banned_until' => null, 'ban_reason' => null])->save();
         AdminAudit::log($request, 'user.unban', 'user', $model->id, $model->username ?? $model->email);
 
         return back()->with('toast', 'Blokir dibuka. User bisa masuk lagi.');
@@ -93,7 +108,7 @@ class UserController extends Controller
             return back()->with('toast_error', $why ?? 'Tidak bisa menghapus akunmu sendiri.');
         }
 
-        $request->validate(['confirm' => ['required', 'string', 'in:'.$model->username]], ['confirm.in' => 'Username yang diketik tidak cocok.', 'confirm.required' => 'Ketik username untuk konfirmasi.']);
+        $request->validate(['confirm' => ['required', 'string', \Illuminate\Validation\Rule::in([self::confirmWord($model)])]], ['confirm.in' => 'Username yang diketik tidak cocok.', 'confirm.required' => 'Ketik username untuk konfirmasi.']);
 
         try {
             $file = UserDeletion::delete($model);
@@ -104,5 +119,11 @@ class UserController extends Controller
         AdminAudit::log($request, 'user.delete', 'user', $user, $model->username, ['backup' => basename($file), 'provider' => $model->provider]);
 
         return redirect()->route('panel.users')->with('toast', '@'.$model->username.' dihapus. Backup: '.basename($file));
+    }
+
+    /** What the admin types to confirm a delete: the username, else the email, else the id. */
+    public static function confirmWord(User $user): string
+    {
+        return (string) ($user->username ?: ($user->email ?: $user->id));
     }
 }

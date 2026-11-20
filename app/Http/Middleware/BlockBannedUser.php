@@ -17,6 +17,7 @@ class BlockBannedUser
         $user = $request->user();
 
         if ($user !== null && method_exists($user, 'isBanned') && $user->isBanned()) {
+            $message = method_exists($user, 'banMessage') ? $user->banMessage() : self::MESSAGE;
             Auth::guard('web')->logout();
 
             if ($request->hasSession()) {
@@ -25,10 +26,10 @@ class BlockBannedUser
             }
 
             if ($request->expectsJson() || $request->is('*/api/*') || $request->is('api/*')) {
-                return response()->json(['message' => self::MESSAGE], 403);
+                return response()->json(['message' => $message], 403);
             }
 
-            return redirect('/masuk')->withErrors(['login' => self::MESSAGE]);
+            return redirect('/masuk')->withErrors(['login' => $message]);
         }
 
         return $next($request);

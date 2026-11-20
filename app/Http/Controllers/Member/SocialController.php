@@ -89,7 +89,7 @@ class SocialController extends Controller
     private function finish(Request $request, User $user, string $method): RedirectResponse
     {
         if ($user->isBanned()) {
-            return redirect()->route('member.login')->withErrors(['login' => \App\Http\Middleware\BlockBannedUser::MESSAGE]);
+            return redirect()->route('member.login')->withErrors(['login' => $user->banMessage()]);
         }
 
         Auth::login($user, true);

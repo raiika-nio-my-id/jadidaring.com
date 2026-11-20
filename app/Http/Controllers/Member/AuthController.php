@@ -61,9 +61,10 @@ class AuthController extends Controller
         RateLimiter::clear($key);
 
         if (Auth::user()?->isBanned()) {
+            $message = Auth::user()->banMessage();
             Auth::guard('web')->logout();
 
-            throw ValidationException::withMessages(['login' => BlockBannedUser::MESSAGE]);
+            throw ValidationException::withMessages(['login' => $message]);
         }
 
         $request->session()->regenerate();

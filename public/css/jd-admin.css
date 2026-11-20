@@ -153,3 +153,8 @@ a.adm-row__title:hover { text-decoration: underline; }
 .adm-note { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--clay-sky); color: var(--clay-sky-ink); font-weight: 700; }
 .adm-note--warn { background: var(--clay-peach); color: var(--clay-peach-ink); }
 .adm [hidden] { display: none !important; }
+.adm-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: var(--gap-control, 8px); }
+.adm-fieldset legend { padding: 0; margin-bottom: var(--gap-control, 8px); font-weight: 800; }
+.adm-radio { cursor: pointer; }
+.adm-radio input { accent-color: var(--clay-primary, #7c5cff); margin: 0; }
+.adm-radio:has(input:checked) { box-shadow: var(--clay-pressed); font-weight: 800; }

@@ -31,7 +31,7 @@
                             <td>{{ $u->last_login_at?->wita() ?? '—' }}</td>
                             <td>
                                 @if ($u->role->value === 'admin')<span class="adm-badge adm-badge--info">Admin</span>@elseif($u->role->value === 'client')<span class="adm-badge">Klien</span>@endif
-                                @if ($u->banned_at)<span class="adm-badge adm-badge--bad">Diblokir</span>@elseif($u->role->value === 'member')<span class="adm-badge adm-badge--ok">Aktif</span>@endif
+                                @if ($u->isBanned())<span class="adm-badge adm-badge--bad" title="{{ $u->ban_reason }}">Diblokir {{ $u->banEndsText() }}</span>@elseif($u->role->value === 'member')<span class="adm-badge adm-badge--ok">Aktif</span>@endif
                             </td>
                         </tr>
                     @empty

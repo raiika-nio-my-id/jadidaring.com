@@ -31,6 +31,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => UserRole::class,
             'banned_at' => 'datetime',
+            'banned_until' => 'datetime',
             'last_login_at' => 'datetime',
         ];
     }
@@ -61,10 +62,27 @@ class User extends Authenticatable
         return $this->role === UserRole::Admin;
     }
 
-    /** Blocked by an admin in /admin: cannot log in or post. */
+    /** Blocked by an admin in /admin: cannot log in or post. A timed ban lifts by itself once banned_until passes. */
     public function isBanned(): bool
     {
-        return $this->banned_at !== null;
+        return $this->banned_at !== null && ($this->banned_until === null || $this->banned_until->isFuture());
+    }
+
+    /** "sampai 22 Nov 2026, 14.00 WITA" or "permanen"; null when not banned. */
+    public function banEndsText(): ?string
+    {
+        if (! $this->isBanned()) {
+            return null;
+        }
+
+        return $this->banned_until === null ? 'permanen' : 'sampai '.$this->banned_until->wita();
+    }
+
+    public function banMessage(): string
+    {
+        return $this->banned_until === null
+            ? 'Akun ini diblokir permanen oleh admin.'
+            : 'Akun ini diblokir oleh admin sampai '.$this->banned_until->wita().'.';
     }
 
     public function isMember(): bool
