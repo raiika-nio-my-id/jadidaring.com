@@ -219,7 +219,7 @@ class ClayController extends Controller
 
             $title = $meta['title'] !== ''
                 ? $meta['title']
-                : ($profile->user?->name ?: $subdomain);
+                : ($profile->name ?: ($profile->user?->name ?: $subdomain));
 
             $description = $meta['description'];
             $image = $meta['image'];

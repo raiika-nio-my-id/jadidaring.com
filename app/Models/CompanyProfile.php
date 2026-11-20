@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
-#[Fillable(['user_id', 'subdomain', 'html', 'status', 'expires_at', 'hide_footer', 'sort_order', 'is_pinned', 'is_game', 'hidden_from_listing'])]
+#[Fillable(['user_id', 'subdomain', 'name', 'html', 'status', 'expires_at', 'hide_footer', 'sort_order', 'is_pinned', 'is_game', 'hidden_from_listing'])]
 class CompanyProfile extends Model
 {
     /** @use HasFactory<CompanyProfileFactory> */

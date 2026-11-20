@@ -23,16 +23,19 @@ class AdminClientService
         $subdomain = $this->subdomains->validateAvailable((string) $data['subdomain']);
 
         return DB::transaction(function () use ($data, $subdomain): CompanyProfile {
-            $user = User::query()->create([
+            // An owner account is only made when an email is given (legacy API callers).
+            $user = filled($data['email'] ?? null) ? User::query()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => filled($data['password'] ?? null)
                     ? $data['password']
                     : Str::password(24),
                 'role' => UserRole::Client,
-            ]);
+            ]) : null;
 
-            $profile = $user->companyProfile()->create([
+            $profile = CompanyProfile::query()->create([
+                'user_id' => $user?->id,
+                'name' => $data['name'],
                 'subdomain' => $subdomain,
                 'html' => $data['html'],
                 'status' => $this->statusFrom($data['status'] ?? null) ?? ProfileStatus::Draft,
@@ -107,6 +110,7 @@ class AdminClientService
 
             if (array_key_exists('name', $data)) {
                 $credentials['name'] = $data['name'];
+                $profile->update(['name' => $data['name']]);
             }
 
             if (array_key_exists('email', $data)) {

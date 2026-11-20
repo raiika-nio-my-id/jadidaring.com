@@ -294,4 +294,18 @@ class AdminClientApiTest extends TestCase
             'expires_at' => now()->addYear()->toDateString(),
         ], $overrides);
     }
+
+    public function test_create_without_email_makes_an_ownerless_page_with_its_own_name(): void
+    {
+        $payload = $this->createPayload(['subdomain' => 'tanpa-pemilik', 'name' => 'Halaman Tanpa Pemilik']);
+        unset($payload['email'], $payload['password']);
+        $usersBefore = \App\Models\User::query()->count();
+
+        $this->postJson($this->clientsUrl(), $payload, $this->apiHeaders())->assertCreated()->assertJsonFragment(['name' => 'Halaman Tanpa Pemilik']);
+
+        $profile = \App\Models\CompanyProfile::query()->where('subdomain', 'tanpa-pemilik')->firstOrFail();
+        $this->assertNull($profile->user_id);
+        $this->assertSame('Halaman Tanpa Pemilik', $profile->name);
+        $this->assertSame($usersBefore, \App\Models\User::query()->count());
+    }
 }

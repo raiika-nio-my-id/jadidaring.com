@@ -175,7 +175,7 @@ class GameHubCatalog
             }
 
             if ($title === '') {
-                $title = self::plainText((string) ($profile->user?->name ?? ''));
+                $title = self::plainText((string) ($profile->name ?: ($profile->user?->name ?? '')));
             }
 
             if ($title === '') {

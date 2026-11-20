@@ -22,7 +22,7 @@ class StoreAdminClientRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email' => ['sometimes', 'nullable', 'string', 'email', 'max:255', 'unique:users,email'], // optional: pages no longer need an owner account
             'password' => ['sometimes', 'nullable', 'string', Password::defaults()],
             'subdomain' => ['required', 'string', 'max:63', new Subdomain],
             'html' => ['required', 'string'],

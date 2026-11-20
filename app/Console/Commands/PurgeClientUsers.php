@@ -83,6 +83,9 @@ class PurgeClientUsers extends Command
         DB::transaction(function () use ($ids, $profilesBefore, $adminsBefore): void {
             foreach (array_chunk($ids, 200) as $chunk) {
                 $chunk = User::query()->whereIn('id', $chunk)->where('role', UserRole::Client->value)->pluck('id')->all();
+                foreach (CompanyProfile::query()->whereIn('user_id', $chunk)->whereNull('name')->with('user')->get() as $p) {
+                    $p->update(['name' => mb_substr((string) $p->user?->name, 0, 120) ?: null]); // keep the page's display name
+                }
                 CompanyProfile::query()->whereIn('user_id', $chunk)->update(['user_id' => null]);
                 DB::table('sessions')->whereIn('user_id', $chunk)->delete();
                 $emails = User::query()->whereIn('id', $chunk)->whereNotNull('email')->pluck('email')->all();

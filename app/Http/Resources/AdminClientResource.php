@@ -21,7 +21,7 @@ class AdminClientResource extends JsonResource
         return [
             'id' => $this->id,
             'subdomain' => $this->subdomain,
-            'name' => $this->user?->name,
+            'name' => $this->name ?: $this->user?->name,
             'email' => $this->user?->email,
             'status' => $this->status->value,
             'expires_at' => $this->expires_at?->toDateString(),

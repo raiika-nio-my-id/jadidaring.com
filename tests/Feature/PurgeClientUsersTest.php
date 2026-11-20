@@ -16,7 +16,7 @@ class PurgeClientUsersTest extends TestCase
     {
         $admin = User::factory()->admin()->create();
         $member = User::factory()->member()->create();
-        $client = User::factory()->client()->create(['email' => 'lama@example.test']);
+        $client = User::factory()->client()->create(['email' => 'lama@example.test', 'name' => 'Situs Lama Kita']);
         $site = CompanyProfile::factory()->create(['user_id' => $client->id, 'subdomain' => 'situs-lama', 'status' => \App\Enums\ProfileStatus::Published]);
         $active = User::factory()->client()->create(['email' => 'aktif@example.test']);
         DB::table('member_follows')->insert(['follower_id' => $active->id, 'followed_id' => $member->id, 'created_at' => now(), 'updated_at' => now()]);
@@ -32,6 +32,7 @@ class PurgeClientUsersTest extends TestCase
         $this->assertModelExists($admin);
         $this->assertModelExists($member);
         $this->assertNull($site->fresh()->user_id);
+        $this->assertSame('Situs Lama Kita', $site->fresh()->name);
         $this->get('http://jadidaring.test/situs-lama')->assertOk();
     }
 }
