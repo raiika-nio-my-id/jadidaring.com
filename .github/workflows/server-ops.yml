@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -100,6 +100,26 @@ jobs:
                 done
                 echo "== compose projects"; docker compose version || true; docker compose ls -a || true
                 echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
+                ;;
+              diagnose-rename)
+                # Read-only inventory for the singlepage -> jadidaring Docker rename.
+                echo "== volumes (project label)"; docker volume ls --filter label=com.docker.compose.project=singlepage
+                echo "== volumes named *singlepage*"; docker volume ls --format '{{.Name}}' | grep -i singlepage || echo none
+                echo "== per-container volumes/networks/ports"
+                for c in $(docker ps -a --filter label=com.docker.compose.project=singlepage --format '{{.Names}}'); do
+                  docker inspect "$c" --format '{{.Name}} image={{.Config.Image}} restart={{.HostConfig.RestartPolicy.Name}} ports={{json .HostConfig.PortBindings}} nets={{range $k,$v := .NetworkSettings.Networks}}{{$k}}(aliases={{join $v.Aliases ","}}) {{end}} volumes={{range .Mounts}}{{if eq .Type "volume"}}{{.Name}}->{{.Destination}} {{end}}{{end}}'
+                done
+                echo "== networks of project"; docker network ls --filter label=com.docker.compose.project=singlepage
+                echo "== shared-services members"; docker network inspect shared-services --format '{{range .Containers}}{{.Name}} {{end}}'
+                echo "== images"; docker image ls --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.Size}}' | grep -iE '^(singlepage|jadidaring)' || true
+                echo "== proxy manager containers (read-only)"
+                for c in $(docker ps --format '{{.Names}} {{.Image}}' | awk '/nginx-proxy-manager|npm|proxy/ {print $1}'); do
+                  docker inspect "$c" --format '{{.Name}} image={{.Config.Image}} netmode={{.HostConfig.NetworkMode}} nets={{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}'
+                  docker exec "$c" sh -c 'for f in $(grep -l "jadidaring" /data/nginx/proxy_host/*.conf 2>/dev/null); do echo "-- $f"; grep -hE "server_name|set \$server|set \$port|set \$forward_scheme|proxy_pass" "$f"; done' 2>/dev/null || echo "(could not read proxy_host confs)"
+                done
+                echo "== .env keys mentioning singlepage (keys only)"; grep -iE '=.*singlepage' .env | cut -d= -f1 || echo none
+                echo "== .env DB_HOST/DB_DATABASE (not secret)"; grep -E '^(DB_HOST|DB_DATABASE|DB_CONNECTION|REDIS_HOST|CACHE_STORE|SESSION_DRIVER|QUEUE_CONNECTION)=' .env || true
+                echo "== storage size"; du -sh storage 2>/dev/null || true; df -h /var/www | tail -1
                 ;;
               news-api-check)
                 # Authenticated read-only GET with the key from .env; prints status and size only, never the key.
