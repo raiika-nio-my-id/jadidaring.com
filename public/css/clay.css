@@ -1225,3 +1225,4 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
     .inf__btn { transition: none; }
     .inf.is-busy .inf__btn::before, .inf__status:not(:empty)::before { animation: none; border-right-color: currentColor; }
 }
+.inf [hidden] { display: none !important; }
