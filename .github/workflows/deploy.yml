@@ -262,6 +262,9 @@ jobs:
           curl --retry 5 --retry-delay 6 --retry-all-errors \
             -sSf -o /dev/null -w 'HTTP %{http_code}\n' \
             https://jadidaring.com/masuk
+          curl --retry 5 --retry-delay 6 --retry-all-errors \
+            -sSf -o /dev/null -w 'admin login HTTP %{http_code}\n' \
+            https://jadidaring.com/admin/masuk
 
       - name: Rollback on failure
         if: failure()
