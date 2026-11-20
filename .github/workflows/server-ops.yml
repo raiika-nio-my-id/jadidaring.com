@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -100,6 +100,16 @@ jobs:
                 done
                 echo "== compose projects"; docker compose version || true; docker compose ls -a || true
                 echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
+                ;;
+              news-api-check)
+                # Authenticated read-only GET with the key from .env; prints status and size only, never the key.
+                k="$(grep -E '^ADMIN_API_SECRET=' .env | tail -1 | cut -d= -f2- | tr -d "\"'[:space:]")"
+                [ -n "$k" ] || { echo "ADMIN_API_SECRET not set in .env"; exit 1; }
+                for path in news/articles news/topics; do
+                  code=$(curl -sS --max-time 20 -o /tmp/jd-news-check.json -w '%{http_code}' -H "Accept: application/json" -H "X-Admin-Api-Key: $k" "https://jadidaring.com/api/admin/$path" || echo 000)
+                  echo "GET https://jadidaring.com/api/admin/$path (with key): HTTP $code, $(wc -c < /tmp/jd-news-check.json) bytes"
+                done
+                rm -f /tmp/jd-news-check.json; unset k
                 ;;
               remove-old-skeleton)
                 # Removes /var/www/singlepage only if it is the realtime skeleton left by
