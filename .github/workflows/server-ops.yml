@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -74,7 +74,8 @@ jobs:
             set -euo pipefail
             # Diagnostics (lengths / existence only, never values).
             echo "deploy path len=${#DEPLOY_PATH} dir=$([ -d "${DEPLOY_PATH:-/nonexistent}" ] && echo ok || echo missing) tg_oidc id_len=${#TG_OIDC_ID} secret_len=${#TG_OIDC_SECRET}"
-            if [ -n "${DEPLOY_PATH:-}" ] && [ -d "$DEPLOY_PATH" ]; then cd "$DEPLOY_PATH"; else cd /var/www/singlepage; fi
+            APP_DIR="${DEPLOY_PATH:-/var/www/jadidaring.com}"
+            cd "$APP_DIR"
             setkey() {
               # Rewrite in place (same inode) so the bind-mounted .env stays valid.
               local k="$1" v="$2" tmp; tmp="$(mktemp)"
@@ -82,6 +83,24 @@ jobs:
               cat "$tmp" > .env; rm -f "$tmp"
             }
             case "$ACTION" in
+              diagnose)
+                # Read-only: paths, compose labels and mounts, git origin (credentials masked).
+                echo "== ls /var/www"; ls -la /var/www/
+                for d in /var/www/singlepage /var/www/singlepage-release /var/www/jadidaring.com-release; do
+                  if [ -e "$d" ]; then echo "== find $d (depth 4, max 60)"; find "$d" -maxdepth 4 | head -60; echo "entries: $(find "$d" | wc -l)"; fi
+                done
+                echo "== app dir $(pwd)"; ls -la | head -60
+                echo "== git"; git rev-parse --short HEAD || true; git status --short | head -20 || true
+                git config --get remote.origin.url | sed -E 's#://[^@/]+@#://***@#' || true
+                echo "== containers"
+                docker ps -a --filter name=singlepage --format '{{.Names}}|{{.Status}}|{{.Image}}'
+                for c in $(docker ps -a --filter name=singlepage --format '{{.Names}}'); do
+                  docker inspect "$c" --format '{{.Name}} project={{index .Config.Labels "com.docker.compose.project"}} wd={{index .Config.Labels "com.docker.compose.project.working_dir"}} files={{index .Config.Labels "com.docker.compose.project.config_files"}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}-{{end}} restarts={{.RestartCount}} started={{.State.StartedAt}}'
+                  docker inspect "$c" --format '{{range .Mounts}}  {{.Type}} {{.Source}} -> {{.Destination}}{{"\n"}}{{end}}'
+                done
+                echo "== compose projects"; docker compose ls -a || true
+                echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
+                ;;
               set-google-stats)
                 [ -n "$GS_PROP" ] && [ -n "$GS_KEY" ] || { echo "missing GA4_PROPERTY_ID or key"; exit 1; }
                 cp .env ".env.bak-$(date +%Y%m%d-%H%M%S)"
