@@ -33,6 +33,8 @@ Route::prefix('admin')->name('panel.')->middleware('panel.admin')->group(functio
     Route::get('/berita/komentar', [NewsController::class, 'comments'])->name('news.comments');
     Route::post('/berita/komentar/{comment}/toggle', [NewsController::class, 'toggleComment'])->whereNumber('comment')->name('news.comments.toggle');
     Route::delete('/berita/komentar/{comment}', [NewsController::class, 'destroyComment'])->whereNumber('comment')->name('news.comments.destroy');
+    Route::get('/berita/tulis', [NewsController::class, 'create'])->name('news.create');
+    Route::post('/berita', [NewsController::class, 'store'])->name('news.store');
     Route::get('/berita/{article}', [NewsController::class, 'edit'])->whereNumber('article')->name('news.edit');
     Route::put('/berita/{article}', [NewsController::class, 'update'])->whereNumber('article')->name('news.update');
     Route::post('/berita/{article}/status', [NewsController::class, 'status'])->whereNumber('article')->name('news.status');

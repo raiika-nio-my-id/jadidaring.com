@@ -158,3 +158,5 @@ a.adm-row__title:hover { text-decoration: underline; }
 .adm-radio { cursor: pointer; }
 .adm-radio input { accent-color: var(--clay-primary, #7c5cff); margin: 0; }
 .adm-radio:has(input:checked) { box-shadow: var(--clay-pressed); font-weight: 800; }
+button.adm-chip, label.adm-chip { border: 0; font: inherit; font-weight: 700; cursor: pointer; }
+.adm-chip:active, .adm-chip.is-pressing { box-shadow: var(--clay-pressed); transform: scale(.96); }

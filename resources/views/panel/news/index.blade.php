@@ -4,6 +4,10 @@
 @section('panel')
     @include('panel.news._sub')
     <section class="adm-card">
+        <div class="adm-top" style="margin-bottom:12px">
+            <h2 style="margin:0">Artikel</h2>
+            <a class="adm-btn adm-btn--primary" href="{{ route('panel.news.create') }}">✍️ Tulis berita</a>
+        </div>
         <form class="adm-search" method="GET" action="{{ route('panel.news') }}" role="search">
             <input class="clay-input" type="search" name="q" value="{{ $q }}" placeholder="Cari judul atau slug…" aria-label="Cari artikel">
             <select class="clay-input" name="topik" aria-label="Topik" data-autosubmit>

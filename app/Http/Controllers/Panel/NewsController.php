@@ -10,6 +10,7 @@ use App\Models\NewsTopic;
 use App\Services\Admin\AdminAudit;
 use App\Services\Admin\AdminBackup;
 use App\Services\NewsCache;
+use App\Services\NewsImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -39,6 +40,64 @@ class NewsController extends Controller
             'topics' => ClayController::TOPICS,
             'statusCounts' => Article::query()->selectRaw('status, count(*) as n')->groupBy('status')->pluck('n', 'status'),
         ]);
+    }
+
+    /** Free licences only; an empty photo means the branded title card is drawn as usual. */
+    public const LICENSES = ['CC0', 'Domain publik', 'CC BY 4.0', 'CC BY-SA 4.0', 'Unsplash License', 'Pexels License', 'Pixabay License', 'Foto sendiri (Jadidaring)'];
+
+    public function create(): View
+    {
+        return view('panel.news.create', ['topics' => ClayController::TOPICS, 'licenses' => self::LICENSES]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        // "Judul | https://..." or just "https://..." per line -> the same sources array the API takes
+        $sources = collect(preg_split('/\R/', (string) $request->input('sources_text', '')) ?: [])
+            ->map(fn ($l) => trim($l))->filter()
+            ->map(function (string $l): array {
+                $parts = array_map('trim', explode('|', $l, 2));
+
+                return count($parts) === 2 ? ['title' => $parts[0], 'url' => $parts[1]] : ['url' => $parts[0]];
+            })->values()->all();
+        $request->merge(['sources' => $sources]);
+
+        $own = $request->input('image_license') === 'Foto sendiri (Jadidaring)';
+        $data = $request->validate(\App\Services\NewsArticleCreator::rules() + [
+            'status' => ['required', Rule::in(['draft', 'published'])],
+            'sources.*.url' => ['required', 'url:https', 'max:500'],
+            'sources.*.title' => ['nullable', 'string', 'max:150'],
+            'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:12288', 'dimensions:min_width=1200,min_height=630'],
+            'image_alt' => ['required_with:image', 'nullable', 'string', 'min:5', 'max:200'],
+            'image_credit' => ['required_with:image', 'nullable', 'string', 'min:2', 'max:200'],
+            'image_license' => ['required_with:image', 'nullable', Rule::in(self::LICENSES)],
+            'image_source_url' => [$own ? 'nullable' : 'required_with:image', 'nullable', 'url:https', 'max:500'],
+        ], [
+            'sources.min' => 'Butuh minimal 2 sumber (satu URL per baris).',
+            'sources.required' => 'Butuh minimal 2 sumber (satu URL per baris).',
+            'sources.*.url.url' => 'Setiap sumber harus URL https.',
+            'image.dimensions' => 'Foto minimal 1200×630 px.',
+            'image_license.in' => 'Hanya foto berlisensi bebas yang boleh dipakai.',
+        ], ['title' => 'judul', 'summary' => 'ringkasan', 'body' => 'isi', 'sources' => 'sumber', 'image' => 'foto', 'image_alt' => 'teks alt', 'image_credit' => 'kredit foto', 'image_license' => 'lisensi', 'image_source_url' => 'URL sumber foto']);
+
+        $article = \App\Services\NewsArticleCreator::create($data);
+        $toast = $article->status === 'published' ? 'Berita terbit.' : 'Draf berita disimpan.';
+
+        if ($request->hasFile('image')) {
+            try {
+                NewsImage::storePhoto($article, (string) file_get_contents($request->file('image')->getRealPath()), [
+                    'alt' => $data['image_alt'], 'credit' => $data['image_credit'], 'license' => $data['image_license'],
+                    'source_url' => $data['image_source_url'] ?? null,
+                ]);
+                NewsCache::bump();
+            } catch (\InvalidArgumentException $e) {
+                return redirect()->route('panel.news.edit', $article->id)->with('toast_error', 'Berita disimpan, tapi foto gagal: '.$e->getMessage().' Kartu judul otomatis dipakai.');
+            }
+        }
+
+        AdminAudit::log($request, 'news.create', 'article', $article->id, $article->title, ['status' => $article->status]);
+
+        return redirect()->route('panel.news.edit', $article->id)->with('toast', $toast);
     }
 
     public function edit(int $article): View

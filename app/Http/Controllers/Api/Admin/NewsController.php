@@ -47,16 +47,8 @@ class NewsController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'topic' => ['required', 'string', Rule::in(array_keys(ClayController::TOPICS))],
-            'title' => ['required', 'string', 'min:10', 'max:200'],
-            'summary' => ['required', 'string', 'min:20', 'max:400'],
-            'body' => ['required', 'string', 'min:200', 'max:60000'],
+        $data = $request->validate(\App\Services\NewsArticleCreator::rules() + [
             'image_url' => ['nullable', 'url:https', 'max:500'],
-            'slug' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
-            'status' => ['sometimes', Rule::in(['draft', 'published'])],
-            'published_at' => ['nullable', 'date'],
-            'sources' => ['required', 'array', 'min:2', 'max:10'],
             'image' => ['sometimes', 'array'],
             'image.url' => ['required_with:image', 'url:https', 'max:500'],
             'image.alt' => ['required_with:image', 'string', 'min:5', 'max:200'],
@@ -65,31 +57,15 @@ class NewsController extends Controller
             'image.license' => ['required_with:image', 'string', 'min:2', 'max:100'],
         ]);
 
-        $topic = NewsTopic::query()->findOrFail($data['topic']);
-        $checked = NewsSources::normalize($data['sources'], $topic->min_sources);
+        try {
+            $article = \App\Services\NewsArticleCreator::create($data);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors = $e->errors();
+            $message = (string) (collect($errors)->flatten()->first() ?? $e->getMessage());
 
-        if ($checked['error'] !== null) {
-            return response()->json(['message' => $checked['error'], 'errors' => ['sources' => [$checked['error']]]], 422);
+            // keep the old response shapes: sources errors carry "errors", publish problems only "message"
+            return response()->json(isset($errors['sources']) ? ['message' => $message, 'errors' => ['sources' => $errors['sources']]] : ['message' => $message], 422);
         }
-
-        $status = $data['status'] ?? 'draft';
-
-        if ($status === 'published' && ($problem = $this->publishProblem($topic)) !== null) {
-            return response()->json(['message' => $problem], 422);
-        }
-
-        $article = Article::query()->create([
-            'topic' => $topic->slug,
-            'slug' => $this->uniqueSlug($data['slug'] ?? $data['title']),
-            'title' => $data['title'],
-            'summary' => $data['summary'],
-            'body' => $data['body'],
-            'image_url' => $data['image_url'] ?? null,
-            'sources' => $checked['sources'],
-            'status' => $status,
-            'published_at' => $status === 'published' ? ($data['published_at'] ?? now()) : null,
-        ]);
-        NewsCache::bump();
 
         $extra = [];
 
@@ -244,23 +220,7 @@ class NewsController extends Controller
 
     private function publishProblem(NewsTopic $topic): ?string
     {
-        if (! $topic->enabled) {
-            return 'Topic is disabled.';
-        }
-
-        if ($topic->articles_per_day <= 0) {
-            return null; // 0 = no daily limit
-        }
-
-        $today = Article::query()
-            ->where('topic', $topic->slug)
-            ->where('status', 'published')
-            ->where('published_at', '>=', now()->startOfDay())
-            ->count();
-
-        return $today >= $topic->articles_per_day
-            ? "Daily limit reached for {$topic->slug} ({$topic->articles_per_day}/day)."
-            : null;
+        return \App\Services\NewsArticleCreator::publishProblem($topic);
     }
 
     private function uniqueSlug(string $seed): string

@@ -21,17 +21,7 @@
         <form class="adm-form" method="POST" action="{{ route('panel.news.update', $article->id) }}">
             @csrf
             @method('PUT')
-            <label for="title">Judul</label>
-            <input class="clay-input" id="title" name="title" value="{{ old('title', $article->title) }}" minlength="10" maxlength="200" required>
-            <label for="topic">Topik</label>
-            <select class="clay-input" id="topic" name="topic">
-                @foreach ($topics as $slug => $name)<option value="{{ $slug }}" @selected(old('topic', $article->topic) === $slug)>{{ $name }}</option>@endforeach
-            </select>
-            <p class="adm-muted">Ganti topik mengubah alamat artikel; alamat lama otomatis dialihkan (301).</p>
-            <label for="summary">Ringkasan</label>
-            <textarea class="clay-input" id="summary" name="summary" minlength="20" maxlength="400" required>{{ old('summary', $article->summary) }}</textarea>
-            <label for="body">Isi (Markdown ringan: “## ” subjudul, “Poin penting” + “- ” daftar)</label>
-            <textarea class="clay-input adm-body-input" id="body" name="body" minlength="200" maxlength="60000" required>{{ old('body', $article->body) }}</textarea>
+            @include('panel.news._fields', ['article' => $article])
             <h3 style="margin-top:10px">Kredit foto</h3>
             @if ($article->image_path)
                 <img src="{{ \App\Services\NewsImage::src($article->id, 480, ($article->image_updated_at ?? $article->updated_at)?->timestamp) }}" alt="" style="max-width:320px;width:100%;border-radius:14px" loading="lazy">
