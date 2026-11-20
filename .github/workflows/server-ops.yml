@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -28,6 +28,7 @@ jobs:
             merge-langit-dry|merge-langit) [[ "$VALUE" =~ ^[A-Z0-9]{4,12}$ ]] || { echo "room code required"; exit 1; } ;;
             mail-test) [[ "$VALUE" =~ ^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$ ]] || { echo "bad email"; exit 1; } ;;
             delete-test-user) [[ "$VALUE" =~ ^tmp[0-9]{3,20}$ ]] || { echo "username must match tmp<digits>"; exit 1; } ;;
+            delete-user) [[ "$VALUE" =~ ^[a-z0-9_.-]{3,32}$ ]] || { echo "bad username"; exit 1; } ;;
             set-google-stats) [[ -z "$VALUE" || "$VALUE" =~ ^sc-domain:[a-z0-9.-]+$ || "$VALUE" =~ ^https://[a-z0-9.-]+/$ ]] || { echo "bad Search Console site"; exit 1; } ;;
           esac
       - name: Prepare Google stats key
@@ -125,5 +126,8 @@ jobs:
                 ;;
               delete-test-user)
                 docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi
+                ;;
+              delete-user)
+                docker exec singlepage-app php artisan users:delete-test "$VALUE" --allow-non-test --force --no-ansi
                 ;;
             esac
