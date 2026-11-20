@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -100,6 +100,27 @@ jobs:
                 done
                 echo "== compose projects"; docker compose version || true; docker compose ls -a || true
                 echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
+                ;;
+              remove-old-skeleton)
+                # Removes /var/www/singlepage only if it is the realtime skeleton left by
+                # the post-rename deploy (realtime/incoming empty + realtime/bin/jd-realtime)
+                # and no container mounts anything under it. Backup first.
+                OLD=/var/www/singlepage
+                [ -d "$OLD" ] || { echo "$OLD absent, nothing to do"; exit 0; }
+                [ "$(readlink -f "$OLD")" != "$(readlink -f "$APP_DIR")" ] || { echo "refusing: $OLD is the app dir"; exit 1; }
+                extra="$(cd "$OLD" && find . -mindepth 1 | sort | grep -vxF -e ./realtime -e ./realtime/incoming -e ./realtime/bin -e ./realtime/bin/jd-realtime || true)"
+                [ -z "$extra" ] || { echo "refusing: unexpected entries:"; echo "$extra"; exit 1; }
+                for c in $(docker ps -aq); do
+                  if docker inspect "$c" --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' | grep -q "^$OLD\(/\|$\)"; then
+                    echo "refusing: container $(docker inspect -f '{{.Name}}' "$c") still mounts $OLD"; exit 1
+                  fi
+                done
+                mkdir -p storage/backups
+                bk="storage/backups/old-singlepage-skeleton-$(date +%Y%m%d-%H%M%S).tgz"
+                tar -czf "$bk" -C /var/www singlepage && tar -tzf "$bk" >/dev/null
+                echo "backup ok: $bk ($(tar -tzf "$bk" | wc -l) entries)"
+                rm -rf "$OLD"
+                echo "removed $OLD"; ls -la /var/www/
                 ;;
               set-google-stats)
                 [ -n "$GS_PROP" ] && [ -n "$GS_KEY" ] || { echo "missing GA4_PROPERTY_ID or key"; exit 1; }

@@ -151,7 +151,7 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
           source: realtime-dist/jd-realtime
-          target: ${{ secrets.DEPLOY_PATH || '/var/www/singlepage' }}/realtime/incoming
+          target: ${{ secrets.DEPLOY_PATH || '/var/www/jadidaring.com' }}/realtime/incoming
           strip_components: 1
           overwrite: true
 
@@ -161,6 +161,7 @@ jobs:
           # inputs.ref is empty on push triggers; github.ref_name is the pushed branch.
           DEPLOY_REF: ${{ inputs.ref || github.ref_name }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_REPO: ${{ github.repository }}
           # Push events have no inputs; both expressions are 0 unless the
           # workflow_dispatch checkbox is set.
           DEPLOY_MAINTENANCE: ${{ inputs.maintenance && '1' || '0' }}
@@ -177,7 +178,7 @@ jobs:
           #   ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}'
           # Output looks like: SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
           fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
-          envs: DEPLOY_REF,DEPLOY_PATH,DEPLOY_MAINTENANCE,DEPLOY_FORCE_RECREATE,DEPLOY_RESTART_REVERB
+          envs: DEPLOY_REF,DEPLOY_PATH,DEPLOY_REPO,DEPLOY_MAINTENANCE,DEPLOY_FORCE_RECREATE,DEPLOY_RESTART_REVERB
           # Bootstrap: fetch first so scripts/deploy.sh is available even on the
           # first run (the server checkout may not yet contain the script).
           # Piping from origin/$DEPLOY_REF guarantees the server always runs the
@@ -185,8 +186,21 @@ jobs:
           # chooses Path A (bind-mounted code) or Path B (blue-green).
           script: |
             set -euo pipefail
-            APP_DIR="${DEPLOY_PATH:-/var/www/singlepage}"
+            APP_DIR="${DEPLOY_PATH:-/var/www/jadidaring.com}"
             cd "$APP_DIR"
+            # Containers belong to compose project "singlepage" (pre-rename folder name).
+            export COMPOSE_PROJECT_NAME=singlepage
+            # Keep the server checkout's origin on this repository (it was renamed);
+            # keep the transport (ssh deploy key vs https) the checkout already uses.
+            cur_origin="$(git config --get remote.origin.url || true)"
+            case "$cur_origin" in
+              git@*|ssh://*) want_origin="git@github.com:${DEPLOY_REPO}.git" ;;
+              *) want_origin="https://github.com/${DEPLOY_REPO}.git" ;;
+            esac
+            if [ "$cur_origin" != "$want_origin" ]; then
+              git remote set-url origin "$want_origin"
+              echo "==> origin set to $want_origin"
+            fi
             # Swap in the new realtime binary atomically; restart only when it changed.
             if [ -f realtime/incoming/jd-realtime ]; then
               mkdir -p realtime/bin
@@ -243,11 +257,11 @@ jobs:
               "https://jadidaring.com$path"
           done
 
-      - name: Smoke admin login
+      - name: Smoke login page
         run: |
           curl --retry 5 --retry-delay 6 --retry-all-errors \
             -sSf -o /dev/null -w 'HTTP %{http_code}\n' \
-            https://admin.jadidaring.com/login
+            https://jadidaring.com/masuk
 
       - name: Rollback on failure
         if: failure()
@@ -270,7 +284,8 @@ jobs:
               echo "Skipping rollback: no valid previous SHA"
               exit 0
             fi
-            cd "${{ secrets.DEPLOY_PATH || '/var/www/singlepage' }}"
+            cd "${{ secrets.DEPLOY_PATH || '/var/www/jadidaring.com' }}"
+            export COMPOSE_PROJECT_NAME=singlepage
             git fetch --prune --tags origin
             echo "==> Rolling back to $PREVIOUS_SHA"
             git show "origin/main:scripts/deploy.sh" | bash -s -- "$PREVIOUS_SHA"

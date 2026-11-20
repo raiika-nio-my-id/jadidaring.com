@@ -19,7 +19,7 @@ server and runs `scripts/deploy.sh`. The script picks one of two paths:
 |---|---|
 | Automatic deploy | Push (or merge) to `main` |
 | Press the deploy button | GitHub → Actions → **Deploy to Production** → Run workflow |
-| Run manually on server | `cd /var/www/singlepage && bash scripts/deploy.sh` |
+| Run manually on server | `cd /var/www/jadidaring.com && bash scripts/deploy.sh` |
 | See which path would run | `bash scripts/deploy.sh --plan` |
 | Deploy a specific branch | `bash scripts/deploy.sh feature/my-branch` |
 | Breaking schema change | `bash scripts/deploy.sh --maintenance` |
@@ -83,7 +83,7 @@ In GitHub → **Settings → Secrets and variables → Actions**, add:
 | `DEPLOY_SSH_KEY` | ✅ | Full content of `~/.ssh/jadidaring_deploy` (the **private** key) |
 | `DEPLOY_HOST_FINGERPRINT` | ✅ | Output of `ssh-keygen -l -f /etc/ssh/ssh_host_ed25519_key.pub \| awk '{print $2}'` on the server |
 | `DEPLOY_PORT` | optional | SSH port if not 22 |
-| `DEPLOY_PATH` | optional | App directory if not `/var/www/singlepage` |
+| `DEPLOY_PATH` | optional | App directory if not `/var/www/jadidaring.com` |
 
 ### 5  Ensure the server can pull from GitHub
 
@@ -96,7 +96,7 @@ The simplest option is a **read-only GitHub deploy key**:
    access** only.
 3. On the server, confirm the remote is set correctly:
    ```bash
-   cd /var/www/singlepage
+   cd /var/www/jadidaring.com
    git remote -v   # should show git@github.com:<org>/<repo>.git
    git fetch origin main   # must succeed
    ```
@@ -177,7 +177,7 @@ it. Clients disconnect and reconnect. `--force-recreate` runs Path B instead.
 ### Path B
 
 1. Same dirty-tree guard and fetch. The live checkout is **not** moved yet.
-2. Extract the target revision to `/var/www/singlepage-release` (override with
+2. Extract the target revision to `/var/www/jadidaring.com-release` (override with
    `DEPLOY_RELEASE_DIR`), build `singlepage:incoming`, install PHP
    dependencies and Vite assets there.
 3. Start `singlepage-app-green` on the Docker network `shared-services`,
@@ -188,7 +188,7 @@ it. Clients disconnect and reconnect. `--force-recreate` runs Path B instead.
 5. Run pending migrations from the green container (shared MySQL, including
    `global-mysql` — the container is not restarted). `--maintenance` turns on
    `php artisan down` first.
-6. Fast-forward `/var/www/singlepage` and swap in the staged `public/build`
+6. Fast-forward `/var/www/jadidaring.com` and swap in the staged `public/build`
    (and `vendor/` when the lockfile changed).
 7. Reload `singlepage-nginx` so PHP goes to `singlepage-app-green`. Reverb
    stays on `singlepage-reverb` for this step. In-flight requests drain
@@ -250,7 +250,7 @@ leaves the old containers serving the old commit.
 
 ```bash
 ssh jadidaring@<SERVER_IP>
-cd /var/www/singlepage
+cd /var/www/jadidaring.com
 
 # Deploy main:
 bash scripts/deploy.sh
@@ -268,7 +268,7 @@ bash scripts/deploy.sh v2.1.0
 
 ```bash
 ssh jadidaring@<SERVER_IP>
-cd /var/www/singlepage
+cd /var/www/jadidaring.com
 
 # Identify the commit you want (the deploy log prints the short SHA):
 git log --oneline -10
@@ -289,11 +289,11 @@ Pre-migration backups are stored in `storage/backups/` on the server (if
 `mysqldump` was available at deploy time):
 
 ```bash
-ls -lt /var/www/singlepage/storage/backups/
+ls -lt /var/www/jadidaring.com/storage/backups/
 # e.g. pre-deploy-20260101-120000.sql.gz
 
 # Restore (WARNING: destructive):
-zcat /var/www/singlepage/storage/backups/pre-deploy-<timestamp>.sql.gz \
+zcat /var/www/jadidaring.com/storage/backups/pre-deploy-<timestamp>.sql.gz \
   | docker exec -i global-mysql mysql \
       -u root -p<ROOT_PASSWORD> singlepage_db
 ```
@@ -308,7 +308,7 @@ upstream file is the tracked symlink `.deploy/nginx-upstream.conf`.
 
 Confirm these once on the server:
 
-1. The deploy user can create `/var/www/singlepage-release` (a sibling of the
+1. The deploy user can create `/var/www/jadidaring.com-release` (a sibling of the
    app). Path B extracts the target revision there and deletes it at the end.
    It needs enough free disk for a second checkout, `vendor/`, and
    `node_modules/`. If `/var/www` is not writable, set `DEPLOY_RELEASE_DIR`
@@ -331,7 +331,7 @@ a second public port.
 
 | Variable | Default | Effect |
 |---|---|---|
-| `DEPLOY_PATH` | `/var/www/singlepage` | App directory on the server |
+| `DEPLOY_PATH` | `/var/www/jadidaring.com` | App directory on the server |
 | `DEPLOY_MAINTENANCE` | unset | `1` = `php artisan down` for this deploy |
 | `DEPLOY_FORCE_RECREATE` | unset | `1` = Path B even if no image files changed |
 | `DEPLOY_RESTART_REVERB` | unset | `1` = recreate Reverb after Path A (clients reconnect) |

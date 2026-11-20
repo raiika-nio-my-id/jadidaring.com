@@ -15,6 +15,12 @@
 # global-proxy / Nginx Proxy Manager on host network → 127.0.0.1:${APP_PORT}).
 # Create the network once: docker network create shared-services
 # Reverb and realtime are internal (sse, unbuffered). Browsers reach it through nginx on /app (Upgrade must pass the proxy).
+# Project name is pinned: the folder was renamed from /var/www/singlepage to
+# /var/www/jadidaring.com, and the live containers carry the label
+# com.docker.compose.project=singlepage. Without this, compose would derive
+# "jadidaringcom" from the folder and clash with the existing container names.
+name: singlepage
+
 services:
   singlepage:
     build: .

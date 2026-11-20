@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# deploy.sh — production deploy for admin.jadidaring.com (singlepage)
+# deploy.sh — production deploy for jadidaring.com (compose project singlepage)
 #
 # Usage:
 #   bash scripts/deploy.sh [REF] [--plan] [--maintenance] [--force-recreate] [--restart-reverb]
 #   DEPLOY_MAINTENANCE=1 bash scripts/deploy.sh
 #
-# REF defaults to "main". Run from /var/www/singlepage, or let GitHub Actions
+# REF defaults to "main". Run from /var/www/jadidaring.com, or let GitHub Actions
 # pipe this file from the target ref over SSH.
 #
 # Path A — assets / code only (true near-zero)
@@ -65,7 +65,9 @@ if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
     exit 1
 fi
 
-APP_DIR="${DEPLOY_PATH:-/var/www/singlepage}"
+APP_DIR="${DEPLOY_PATH:-/var/www/jadidaring.com}"
+# Same project as the live containers, whatever the folder is called.
+export COMPOSE_PROJECT_NAME=singlepage
 APP_CONTAINER="singlepage-app"
 NGINX_CONTAINER="singlepage-nginx"
 REVERB_CONTAINER="singlepage-reverb"
@@ -115,7 +117,7 @@ Options:
   -h, --help          Show this help
 
 Environment:
-  DEPLOY_PATH            App directory (default /var/www/singlepage)
+  DEPLOY_PATH            App directory (default /var/www/jadidaring.com)
   DEPLOY_MAINTENANCE=1   Same as --maintenance
   DEPLOY_FORCE_RECREATE=1
   DEPLOY_FORCE_BUILD=1   Same as --force-build
