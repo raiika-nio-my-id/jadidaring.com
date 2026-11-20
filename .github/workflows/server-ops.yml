@@ -98,7 +98,7 @@ jobs:
                   docker inspect "$c" --format '{{.Name}} project={{index .Config.Labels "com.docker.compose.project"}} wd={{index .Config.Labels "com.docker.compose.project.working_dir"}} files={{index .Config.Labels "com.docker.compose.project.config_files"}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}-{{end}} restarts={{.RestartCount}} started={{.State.StartedAt}}'
                   docker inspect "$c" --format '{{range .Mounts}}  {{.Type}} {{.Source}} -> {{.Destination}}{{"\n"}}{{end}}'
                 done
-                echo "== compose projects"; docker compose ls -a || true
+                echo "== compose projects"; docker compose version || true; docker compose ls -a || true
                 echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
                 ;;
               set-google-stats)
