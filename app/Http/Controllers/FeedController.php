@@ -18,7 +18,7 @@ class FeedController extends Controller
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
             .'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>'."\n"
-            .'<title>Berita Jadidaring</title><link>'.$host.'/berita</link><description>Berita terkini Indonesia: politik, saham, gaming, teknologi, bencana dan kabar baik, minimal dua sumber per berita.</description>'
+            .'<title>Berita Jadidaring</title><link>'.$host.'/berita</link><description>Berita terkini Indonesia: politik, ekonomi, saham, gaming, teknologi, bencana dan kabar baik, minimal dua sumber per berita.</description>'
             .'<language>id-id</language><lastBuildDate>'.$last->toRfc2822String().'</lastBuildDate>'
             .'<atom:link href="'.$host.'/berita/rss.xml" rel="self" type="application/rss+xml"/>'."\n";
 

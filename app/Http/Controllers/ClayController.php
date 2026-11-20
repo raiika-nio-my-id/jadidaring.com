@@ -28,6 +28,7 @@ class ClayController extends Controller
         'politik' => 'Politik',
         'gaming' => 'Gaming',
         'saham' => 'Saham',
+        'ekonomi' => 'Ekonomi',
         'indonesia' => 'Indonesia',
         'musibah' => 'Musibah',
         'teknologi' => 'Teknologi',

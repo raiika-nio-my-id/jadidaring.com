@@ -60,7 +60,7 @@ class NewsController extends Controller
             'relPrev' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] - 1, $pg['page'] > 1) : null,
             'relNext' => $q === '' && ! $popular ? self::pageUrl('/berita', $pg['page'] + 1, $pg['page'] < $pg['pages']) : null,
             'metaTitle' => 'Berita Terkini Hari Ini: Politik, Saham, Teknologi'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
-            'metaDescription' => 'Berita terkini hari ini seputar politik, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
+            'metaDescription' => 'Berita terkini hari ini seputar politik, ekonomi, IHSG & harga emas, game, gempa dan bencana, teknologi, serta kabar baik Indonesia. Setiap berita minimal dua sumber.',
             'canonicalUrl' => 'https://'.TenantPath::host().($popular ? '/berita' : self::pageUrl('/berita', $pg['page'])),
             'topics' => ClayController::TOPICS,
             'articles' => $articles,
@@ -131,7 +131,9 @@ class NewsController extends Controller
             'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => $topik === 'sosmed'
                 ? 'Tren sosial media hari ini: apa yang sedang ramai dan viral di media sosial Indonesia dan dunia, dirangkum ringkas dengan minimal dua sumber yang bisa diperiksa.'
-                : 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.',
+                : ($topik === 'ekonomi'
+                    ? 'Berita ekonomi terbaru hari ini: UMR dan UMP, harga sembako dan BBM, pajak, inflasi, dan lapangan kerja, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.'
+                        : 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.'),
             'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl($base, $pg['page']),
             'currentTopic' => $topik,
             'topicName' => $name,

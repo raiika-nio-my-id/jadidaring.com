@@ -41,6 +41,24 @@ class NewsTest extends TestCase
         return ['X-Admin-Api-Key' => 'testing-admin-api-secret'];
     }
 
+    public function test_ekonomi_topic_page_api_nav_and_sitemap(): void
+    {
+        $topic = NewsTopic::query()->where('slug', 'ekonomi')->first();
+        $politik = NewsTopic::query()->where('slug', 'politik')->first();
+        $this->assertNotNull($topic);
+        $this->assertSame('Ekonomi', $topic->name);
+        $this->assertSame($politik->min_sources, $topic->min_sources);
+        $this->assertSame($politik->articles_per_day, $topic->articles_per_day);
+
+        $this->get(self::SITE.'/berita/ekonomi')->assertOk()->assertSee('Ekonomi')->assertSee('UMR dan UMP', false);
+        $this->get(self::SITE.'/berita')->assertSee('/berita/ekonomi', false);
+        $this->get(self::SITE.'/')->assertSee('/berita/ekonomi', false);
+        $this->get(self::SITE.'/sitemap.xml')->assertSee('/berita/ekonomi', false);
+        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'ekonomi', 'title' => 'UMR Bali 2027 resmi naik, ini rinciannya']), $this->key())->assertCreated();
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonFragment(['slug' => 'ekonomi']);
+        $this->get(self::SITE.'/berita/rss.xml')->assertOk();
+    }
+
     public function test_sosmed_topic_page_api_nav_and_sitemap(): void
     {
         $topic = NewsTopic::query()->where('slug', 'sosmed')->first();
@@ -178,7 +196,7 @@ class NewsTest extends TestCase
         $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming']), $this->key())->assertStatus(422);
 
         $this->patchJson(self::API.'/topics/gaming', ['min_sources' => 1], $this->key())->assertStatus(422);
-        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(7, 'topics');
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(8, 'topics');
     }
 
     public function test_zero_daily_limit_means_unlimited(): void

@@ -24,6 +24,7 @@
             <a href="/berita/politik" class="clay-pill clay-pill--sky">Politik</a>
             <a href="/berita/gaming" class="clay-pill clay-pill--sky">Gaming</a>
             <a href="/berita/saham" class="clay-pill clay-pill--sky">Saham</a>
+            <a href="/berita/ekonomi" class="clay-pill clay-pill--sky">Ekonomi</a>
             <a href="/berita/indonesia" class="clay-pill clay-pill--sky">Indonesia</a>
             <a href="/berita/musibah" class="clay-pill clay-pill--sky">Musibah</a>
             <a href="/berita/teknologi" class="clay-pill clay-pill--sky">Teknologi</a>
