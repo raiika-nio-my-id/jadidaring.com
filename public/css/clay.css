@@ -1203,3 +1203,25 @@ a.pf-stat:hover span, a.pf-stat:focus-visible span { text-decoration: underline;
 @keyframes jd-jig { 0% { transform: scale(1) rotate(0); } 25% { transform: scale(1.08) rotate(-3deg); } 50% { transform: scale(.94) rotate(2deg); } 75% { transform: scale(1) rotate(-1deg); } 100% { transform: scale(.97) rotate(0); } }
 .jd-chips > .clay-pill.jd-jig, .jd-chips > .ch-tab.jd-jig { animation: jd-jig .42s cubic-bezier(.3,.7,.4,1); }
 @media (prefers-reduced-motion: reduce) { .jd-chips > .jd-jig { animation: none !important; } }
+
+/* ===== Infinite scroll footer (news, game, komunitas) ===== */
+.inf { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 28px 0 8px; text-align: center; }
+.inf__prev { font-size: .9rem; color: inherit; opacity: .75; }
+.inf__btn { min-height: 48px; min-width: 220px; justify-content: center; transition: transform .12s ease, box-shadow .12s ease, opacity .15s ease; touch-action: manipulation; }
+.inf__btn:active, .inf__btn.is-pressed { transform: translateY(2px) scale(.97); box-shadow: var(--clay-in, inset 0 3px 8px rgba(0,0,0,.18)); }
+.inf.is-auto .inf__btn { display: none; }
+.inf.is-busy .inf__btn { opacity: .75; pointer-events: none; }
+.inf.is-busy .inf__btn::before, .inf__status:not(:empty)::before { content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 8px; vertical-align: -3px; border-radius: 50%; border: 2.5px solid currentColor; border-right-color: transparent; animation: inf-spin .8s linear infinite; }
+.inf__status { margin: 0; min-height: 22px; font-size: .9rem; opacity: .8; }
+.inf__status:empty { min-height: 0; }
+.inf__end { margin: 0; font-weight: 700; opacity: .65; }
+.inf.is-error .inf__btn { background: var(--clay-peach, #ffd9c7); }
+@keyframes inf-spin { to { transform: rotate(360deg); } }
+@keyframes inf-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.inf-in { animation: inf-rise .24s ease-out both; animation-delay: calc(var(--i, 0) * 28ms); }
+.inf-ghost { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+    .inf-in { animation: none; }
+    .inf__btn { transition: none; }
+    .inf.is-busy .inf__btn::before, .inf__status:not(:empty)::before { animation: none; border-right-color: currentColor; }
+}

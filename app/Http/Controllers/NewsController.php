@@ -8,6 +8,7 @@ use App\Services\NewsCache;
 use App\Services\NewsImage;
 use App\Services\TenantPath;
 use App\Support\BadWords;
+use App\Support\Infinite;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|Response
     {
         $q = trim(mb_substr((string) $request->query('q', ''), 0, 80));
         $noindex = false;
@@ -44,7 +45,14 @@ class NewsController extends Controller
             $noindex = true;
         }
 
+        $inf = $q === '' ? Infinite::data($request, 'news', $pg['page'], $pg['pages']) : null;
+
+        if ($inf !== null && $request->boolean('partial')) {
+            return response()->view('clay._inf-frag', ['kind' => 'news', 'articles' => $articles, 'inf' => $inf])->header('X-Robots-Tag', 'noindex');
+        }
+
         return view('clay.berita-index', [
+            'inf' => $inf,
             'q' => $q,
             'popular' => $popular,
             'noindex' => $noindex,
@@ -80,7 +88,7 @@ class NewsController extends Controller
         return $page <= 1 ? $base : $base.'?page='.$page;
     }
 
-    public function topic(Request $request, string $topik): View
+    public function topic(Request $request, string $topik): View|Response
     {
         $topik = strtolower(trim($topik));
         abort_unless(array_key_exists($topik, ClayController::TOPICS), 404);
@@ -106,7 +114,14 @@ class NewsController extends Controller
                     'img' => NewsImage::meta($a), 'published_at' => $a->published_at?->toIso8601String(), 'url' => $a->url()])->all();
         }
 
+        $inf = $q === '' ? Infinite::data($request, 'news', $pg['page'], $pg['pages']) : null;
+
+        if ($inf !== null && $request->boolean('partial')) {
+            return response()->view('clay._inf-frag', ['kind' => 'news', 'articles' => $articles, 'inf' => $inf])->header('X-Robots-Tag', 'noindex');
+        }
+
         return view('clay.berita-topik', [
+            'inf' => $inf,
             'q' => $q,
             'popular' => $popular,
             'noindex' => ! $plain,

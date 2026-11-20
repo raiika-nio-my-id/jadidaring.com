@@ -17,6 +17,7 @@ use App\Services\ProfilePayload;
 use App\Services\TenantPath;
 use App\Support\BadWords;
 use App\Support\Ga4;
+use App\Support\Infinite;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,6 +33,9 @@ class CommunityController extends Controller
      * /komunitas: Curhatan feed tabs (Terbaru = public posts for everyone, Mengikuti = logged-in only) and the profile explorer.
      * Guests get identical, public-only HTML, which is what PublicCache/nginx may store; logged-in responses are never shared-cached.
      */
+    /** Profile cards per infinite-scroll batch on the explore tab. */
+    public const EXPLORE_PER_PAGE = 12;
+
     public function index(Request $request): View|Response
     {
         $tab = in_array($request->query('tab'), ['terbaru', 'mengikuti', 'profil'], true) ? $request->query('tab')
@@ -66,6 +70,7 @@ class CommunityController extends Controller
             $sort = 'update';
         }
 
+        Infinite::page($request);
         $pages = MemberPage::query()->where('status', 'published')
             ->where(fn ($w) => $w->whereNotNull('config')->orWhere('html', '!=', ''))
             ->with('user:id,username,name')->select('member_pages.*')->addSelect(['followers_count' => DB::table('member_follows')->selectRaw('count(*)')->whereColumn('followed_id', 'member_pages.user_id')])
@@ -74,9 +79,19 @@ class CommunityController extends Controller
             ->when($sort === 'mengikuti', fn ($w) => $w->whereIn('user_id', DB::table('member_follows')->where('follower_id', auth()->id())->select('followed_id'))->orderByDesc('updated_at')->orderByDesc('id'))
             ->when($sort === 'baru', fn ($w) => $w->orderByDesc('created_at')->orderByDesc('id'))
             ->when($sort === 'update', fn ($w) => $w->orderByDesc('updated_at')->orderByDesc('id'))
-            ->simplePaginate(24)->withQueryString();
+            ->simplePaginate(self::EXPLORE_PER_PAGE)->withQueryString();
+
+        abort_if($pages->currentPage() > 1 && $pages->isEmpty(), 404);
+        $inf = Infinite::data($request, 'profile', $pages->currentPage(), $pages->currentPage() + ($pages->hasMorePages() ? 1 : 0));
+
+        if ($request->boolean('partial')) {
+            return response()->view('clay._inf-frag', ['kind' => 'profile', 'pages' => $pages, 'inf' => $inf])->header('X-Robots-Tag', 'noindex');
+        }
 
         return view('clay.komunitas-jelajah', [
+            'inf' => $inf,
+            'relPrev' => $inf['prev'],
+            'relNext' => $inf['next'],
             'tab' => 'profil',
             'metaTitle' => 'Komunitas: Jelajahi Profil Member — Jadidaring',
             'metaDescription' => 'Jelajahi profil member Jadidaring ala Friendster: latar unik, musik, galeri, dan komentar. Cari berdasarkan nama pengguna.',

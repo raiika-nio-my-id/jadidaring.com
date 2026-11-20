@@ -54,3 +54,8 @@
 /* Profile skeleton: real bar (Jelajahi / Edit profil / Pengaturan akun) above, content blocks below */
 .jd-sk-pfhead { height: 190px; border-radius: var(--radius-lg, 24px); margin: 4px 0 16px; }
 .jd-sk-pfblock { height: 120px; border-radius: var(--radius-md); margin: 0 0 16px; }
+
+/* ghost profile card (komunitas explore) */
+.jd-ghost .pf-mini__av { background: var(--jd-sk-bg); background-size: 220% 100%; animation: jd-shimmer 1.8s ease-in-out infinite; box-shadow: none; color: transparent; }
+.jd-ghost .pf-mini strong, .jd-ghost .pf-mini .pf-user { display: block; width: 70%; color: transparent !important; background: var(--jd-sk-bg); background-size: 220% 100%; animation: jd-shimmer 1.8s ease-in-out infinite; border-radius: 8px; }
+.jd-ghost .pf-mini__body { flex: 1; display: grid; gap: 6px; }

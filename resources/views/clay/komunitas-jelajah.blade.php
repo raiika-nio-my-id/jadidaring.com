@@ -33,28 +33,10 @@
         @if ($pages->isEmpty())
             <div class="clay-card clay-card--peach clay-empty"><p class="clay-empty__text">@if ($sort === 'mengikuti') Kamu belum mengikuti siapa pun. Buka sebuah profil lalu tekan Ikuti. @endif Belum ada profil yang cocok. <a href="/komunitas/buat">Buat profilmu</a> dan jadilah yang pertama!</p></div>
         @else
-            <div class="pf-cards">
-                @foreach ($pages as $p)
-                    @php $cfg = $p->profileConfig(); $pr = $cfg['profile']; @endphp
-                    <a class="pf-mini" href="/u/{{ $p->user->username }}">
-                        @if ($pr['avatar'] !== '')
-                            <img class="pf-mini__av" src="{{ $pr['avatar'] }}" alt="" width="56" height="56" loading="lazy" referrerpolicy="no-referrer">
-                        @else
-                            <span class="pf-mini__av pf-mini__av--ph" aria-hidden="true">{{ mb_strtoupper(mb_substr($p->user->name, 0, 1)) }}</span>
-                        @endif
-                        <span class="pf-mini__body">
-                            <strong>{{ $p->user->name }}</strong>
-                            <span class="pf-user">{{ '@'.$p->user->username }}</span>
-                            @if ($pr['tagline'] !== '')<span class="pf-mini__tag">{{ $pr['tagline'] }}</span>@endif
-                            <span class="news-date">{{ number_format($p->followers_count ?? 0) }} pengikut · {{ number_format($p->views) }} pengunjung</span>
-                        </span>
-                    </a>
-                @endforeach
+            <div class="pf-cards" data-jd-inf-list>
+                @include('clay._profile-cards', ['pages' => $pages])
             </div>
-            <nav class="pf-pager" aria-label="Halaman">
-                @if ($pages->previousPageUrl())<a class="clay-btn" href="{{ $pages->previousPageUrl() }}" rel="prev">&larr; Sebelumnya</a>@endif
-                @if ($pages->hasMorePages())<a class="clay-btn" href="{{ $pages->nextPageUrl() }}" rel="next">Berikutnya &rarr;</a>@endif
-            </nav>
+            @include('clay._inf-more', ['inf' => $inf ?? null])
         @endif
         </div>
     </div>

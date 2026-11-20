@@ -12,7 +12,7 @@
 
         <div data-jd-slot="list">
         @include('clay._articles', ['articles' => $articles, 'emptyText' => ! empty($q) ? 'Tidak ada berita '.strtolower($topicName).' yang cocok dengan pencarian Anda.' : 'Belum ada artikel untuk topik '.strtolower($topicName).'. Pantau terus pembaruan dari redaksi kami!'])
-        @include('clay._pagination')
+        @include('clay._inf-more', ['inf' => $inf ?? null])
         </div>
     </div>
 @endsection

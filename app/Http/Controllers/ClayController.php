@@ -6,6 +6,7 @@ use App\Models\CompanyProfile;
 use App\Services\GameHubCatalog;
 use App\Services\TenantPath;
 use App\Services\PopularStats;
+use App\Support\Infinite;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,6 +17,9 @@ class ClayController extends Controller
     /**
      * @var array<string, string>
      */
+    /** Cards per infinite-scroll batch on /game. */
+    public const GAMES_PER_PAGE = 9;
+
     public const TOPICS = [
         'politik' => 'Politik',
         'gaming' => 'Gaming',
@@ -57,7 +61,7 @@ class ClayController extends Controller
         ]);
     }
 
-    public function game(Request $request): View
+    public function game(Request $request): View|Response
     {
         $sort = strtolower((string) $request->query('sort', 'views'));
 
@@ -87,12 +91,23 @@ class ClayController extends Controller
             $profiles = collect(PopularStats::rank($profiles, fn (CompanyProfile $p): string => $p->subdomain, PopularStats::gameViews()));
         }
 
-        $games = $this->formatGames($profiles);
+        $pages = max(1, (int) ceil($profiles->count() / self::GAMES_PER_PAGE));
+        $page = Infinite::page($request);
+        abort_if($page > $pages, 404);
+        $games = $this->formatGames($profiles->slice(($page - 1) * self::GAMES_PER_PAGE, self::GAMES_PER_PAGE)->values());
+        $inf = Infinite::data($request, 'game', $page, $pages);
+
+        if ($request->boolean('partial')) {
+            return response()->view('clay._inf-frag', ['kind' => 'game', 'games' => $games, 'sort' => $sort, 'inf' => $inf])->header('X-Robots-Tag', 'noindex');
+        }
 
         return view('clay.game-index', [
+            'inf' => $inf,
+            'relPrev' => $inf['prev'],
+            'relNext' => $inf['next'],
             'metaTitle' => 'Game Gratis Online Tanpa Unduh — Jadidaring',
             'metaDescription' => 'Main game online gratis di HP atau laptop tanpa instalasi. Game multiplayer dan game santai karya kreator Indonesia, langsung dari peramban.',
-            'canonicalUrl' => 'https://'.TenantPath::host().'/game',
+            'canonicalUrl' => 'https://'.TenantPath::host().'/game'.($page > 1 ? '?page='.$page : ''),
             'games' => $games,
             'sort' => $sort,
         ]);
