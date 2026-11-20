@@ -125,7 +125,7 @@ jobs:
                 # Read-only: row count per table (for before/after comparisons).
                 app_c="$(docker ps --format '{{.Names}}' | grep -E '^(jadidaring|singlepage)-app$' | head -1)"
                 echo "counting via $app_c"
-                docker exec "$app_c" php artisan tinker --no-ansi --execute='foreach (Illuminate\Support\Facades\Schema::getTableListing(schemaQualified: false) as $t) { echo $t, " ", Illuminate\Support\Facades\DB::table($t)->count(), PHP_EOL; }' | sort
+                docker exec "$app_c" php artisan tinker --no-ansi --execute='foreach (Illuminate\Support\Facades\DB::select("SHOW TABLES") as $r) { $t = array_values((array) $r)[0]; echo $t, " ", Illuminate\Support\Facades\DB::table($t)->count(), PHP_EOL; }' | grep -v OPcache | sort
                 ;;
               news-api-check)
                 # Authenticated read-only GET with the key from .env; prints status and size only, never the key.
