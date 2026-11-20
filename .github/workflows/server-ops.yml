@@ -146,6 +146,7 @@ jobs:
                 for path in news/articles news/topics; do
                   code=$(curl -sS --max-time 20 -o /tmp/jd-news-check.json -w '%{http_code}' -H "Accept: application/json" -H "X-Admin-Api-Key: $k" "https://jadidaring.com/api/admin/$path" || echo 000)
                   echo "GET https://jadidaring.com/api/admin/$path (with key): HTTP $code, $(wc -c < /tmp/jd-news-check.json) bytes"
+                  [ "$path" = news/topics ] && echo "topic slugs: $(grep -o '"slug":"[a-z0-9-]*"' /tmp/jd-news-check.json | cut -d'"' -f4 | tr '\n' ' ')"
                 done
                 rm -f /tmp/jd-news-check.json; unset k
                 ;;
