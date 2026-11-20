@@ -74,7 +74,9 @@ class ErrorPagesTest extends TestCase
             ->assertSee('Waduh, halamannya nyasar')
             ->assertSee('Kembali ke Beranda')
             ->assertSee('action="http://jadidaring.test/berita"', false)
-            ->assertSee('Alamat yang dicoba');
+            ->assertSee('Alamat yang dicoba')
+            ->assertSee('class="ed-links__label">Atau mampir ke:', false)
+            ->assertSee('<span class="ed-ico" aria-hidden="true">', false);
     }
 
     public function test_429_keeps_retry_after_and_shows_countdown(): void

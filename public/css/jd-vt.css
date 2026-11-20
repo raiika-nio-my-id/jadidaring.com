@@ -59,3 +59,22 @@
 .jd-ghost .pf-mini__av { background: var(--jd-sk-bg); background-size: 220% 100%; animation: jd-shimmer 1.8s ease-in-out infinite; box-shadow: none; color: transparent; }
 .jd-ghost .pf-mini strong, .jd-ghost .pf-mini .pf-user { display: block; width: 70%; color: transparent !important; background: var(--jd-sk-bg); background-size: 220% 100%; animation: jd-shimmer 1.8s ease-in-out infinite; border-radius: 8px; }
 .jd-ghost .pf-mini__body { flex: 1; display: grid; gap: 6px; }
+
+/* Filter/tab change (jd-filters.js): the listing turns into the same ghost cards at once; the real
+   komunitas search form stays usable. Removed when the new listing is in, or put back on failure. */
+[data-jd-slot="list"].jd-skel-on > :not(.jd-fskel):not(form[data-jd-form]) { display: none !important; }
+.jd-fskel { animation: jd-fskel-in .12s ease-out both; }
+.jd-fskel .ch-list--feed { display: grid; gap: 12px; }
+.jd-fskel__bar { height: 52px; border-radius: var(--radius-pill); margin: 0 0 16px; box-shadow: var(--clay-pressed); }
+@keyframes jd-fskel-in { from { opacity: .4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .jd-fskel { animation: none; } }
+
+/* Error toast for a failed filter load */
+.jd-toast { position: fixed; z-index: 120; left: 50%; bottom: 24px; transform: translate(-50%, 16px); width: max-content; max-width: calc(100vw - 24px); display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 18px; border-radius: var(--radius-pill); background: var(--clay-surface); color: var(--clay-ink); font-weight: 700; font-size: 15px; box-shadow: var(--clay-out), var(--clay-in); opacity: 0; pointer-events: none; transition: opacity .16s ease, transform .16s ease; }
+.jd-toast::before { content: ""; flex: 0 0 10px; width: 10px; height: 10px; border-radius: 50%; background: var(--clay-danger, #B42318); }
+.jd-toast.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.jd-toast__btn, .jd-toast__x { min-height: 40px; min-width: 40px; border: 0; border-radius: var(--radius-pill); font: inherit; font-family: var(--font-display, inherit); cursor: pointer; transition: transform .1s ease, box-shadow .1s ease; }
+.jd-toast__btn { padding: 8px 16px; background: var(--clay-lavender); color: var(--clay-lavender-ink); box-shadow: var(--clay-out); }
+.jd-toast__x { background: transparent; color: var(--clay-ink-2); font-size: 22px; line-height: 1; }
+.jd-toast__btn:active, .jd-toast__btn.is-pressed, .jd-toast__x:active { transform: scale(.95); box-shadow: var(--clay-pressed); }
+@media (max-width: 767px) { .jd-toast { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); } }

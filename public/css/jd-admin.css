@@ -122,6 +122,9 @@ a.adm-row__title:hover { text-decoration: underline; }
 @keyframes adm-shimmer { to { transform: translateX(100%); } }
 .adm-sk-row { display: flex; flex-direction: column; gap: 8px; padding: 14px 0; border-top: 1px dashed rgba(90, 63, 160, .18); }
 .adm-body.is-loading > * { display: none; }
+/* chip filter click: the row of chips stays visible (already switched) above the skeleton */
+.adm-body.is-loading.keep-sub { display: flex; flex-direction: column; }
+.adm-body.is-loading.keep-sub > .adm-sub { display: flex; order: -1; }
 .adm-body.is-loading > .adm-skel { display: flex; }
 .adm-skel { display: none; flex-direction: column; gap: 14px; }
 @media (prefers-reduced-motion: reduce) { .adm-sk::after, .adm-btn.is-busy::after { animation: none; } }

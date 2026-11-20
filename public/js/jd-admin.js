@@ -27,8 +27,15 @@
     var b = body();
     if (!b) return;
     b.classList.add('is-loading');
+    b.classList.toggle('keep-sub', !!(link && link.classList.contains('adm-chip') && link.closest('.adm-sub')));
     if (link && link.classList.contains('adm-tab')) {
       document.querySelectorAll('.adm-tab[aria-current]').forEach(function (t) { t.removeAttribute('aria-current'); });
+      link.setAttribute('aria-current', 'page');
+    }
+    /* filter chips switch at once too (the page reloads; pageshow puts them back on Back) */
+    if (link && link.classList.contains('adm-chip') && link.parentNode) {
+      Array.prototype.forEach.call(link.parentNode.querySelectorAll(':scope > .adm-chip[aria-current]'), function (t) { t.dataset.wasCurrent = t.getAttribute('aria-current'); t.removeAttribute('aria-current'); });
+      link.dataset.wasCurrent = link.getAttribute('aria-current') || '';
       link.setAttribute('aria-current', 'page');
     }
   }
@@ -138,7 +145,11 @@
   /* bfcache: never come back to a page stuck in loading/busy. */
   window.addEventListener('pageshow', function () {
     var b = body();
-    if (b) b.classList.remove('is-loading');
+    if (b) b.classList.remove('is-loading', 'keep-sub');
+    document.querySelectorAll('.adm-chip[data-was-current]').forEach(function (t) {
+      if (t.dataset.wasCurrent) t.setAttribute('aria-current', t.dataset.wasCurrent); else t.removeAttribute('aria-current');
+      delete t.dataset.wasCurrent;
+    });
     document.querySelectorAll('.is-busy').forEach(function (n) { n.classList.remove('is-busy'); n.removeAttribute('aria-busy'); });
     document.querySelectorAll('form[data-busy]').forEach(function (f) { delete f.dataset.busy; });
   });

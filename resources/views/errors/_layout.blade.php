@@ -99,10 +99,10 @@
         @else
           @unless ($code === 503)
           <nav class="ed-links" aria-label="Tautan cepat">
-            <span>Atau mampir ke:</span>
-            <a href="{{ $home }}/berita">📰 Berita</a>
-            <a href="{{ $home }}/game">🎮 Game</a>
-            <a href="{{ $home }}/komunitas">💬 Komunitas</a>
+            <span class="ed-links__label">Atau mampir ke:</span>
+            <a href="{{ $home }}/berita"><span class="ed-ico" aria-hidden="true">📰</span>Berita</a>
+            <a href="{{ $home }}/game"><span class="ed-ico" aria-hidden="true">🎮</span>Game</a>
+            <a href="{{ $home }}/komunitas"><span class="ed-ico" aria-hidden="true">💬</span>Komunitas</a>
           </nav>
           @endunless
         @endif

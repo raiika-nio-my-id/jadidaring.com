@@ -1,4 +1,6 @@
-/* Filter/tab chips: swap only the listing (fetch + DOMParser), pushState, popstate; any failure = normal navigation.
+/* Filter/tab chips: swap only the listing (fetch + DOMParser), pushState, popstate.
+   On click the chip turns active and the listing becomes the page-change skeleton at once; a newer click aborts the
+   older request; a failed load puts the chips back and shows a toast (back/forward failures load the page normally).
    Chips: one swipeable row with edge fades, active chip scrolled into view. Active chip is a pressed physical button. */
 (function () {
   'use strict';
@@ -89,45 +91,156 @@
     kids.forEach(function (k, i) { k.style.setProperty('--i', Math.min(i, 11)); });
     el.classList.add('jd-enter');
   }
-  function fail(url) { location.href = url; }
 
+  function setOn(a, on) {
+    a.classList.toggle('is-active', on && !a.matches('.ch-tab'));
+    if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  }
   function press(a) {
     var bar = a.closest('[data-jd-chips]'), prev = activeOf(bar);
     if (prev === a) return;
-    if (prev) { prev.classList.remove('is-active'); prev.removeAttribute('aria-current'); }
-    a.classList.add('is-active'); a.setAttribute('aria-current', 'page');
+    if (prev) setOn(prev, false);
+    setOn(a, true);
+    reveal(bar, true);
+  }
+  /* chip state before an optimistic switch, so a failed load can put it back */
+  function snapChips() {
+    var out = [];
+    bars.forEach(function (bar) { bar.querySelectorAll('a').forEach(function (a) { out.push([a, a.getAttribute('aria-current'), a.classList.contains('is-active')]); }); });
+    return out;
+  }
+  function restoreChips(snap) {
+    snap.forEach(function (r) {
+      if (r[1]) r[0].setAttribute('aria-current', r[1]); else r[0].removeAttribute('aria-current');
+      r[0].classList.toggle('is-active', r[2]);
+    });
+    bars.forEach(function (b) { reveal(b, true); });
+  }
+  /* back/forward: switch the chip whose link is the new URL before the data arrives */
+  function pressFor(url) {
+    var want = loc(url);
+    bars.forEach(function (bar) {
+      bar.querySelectorAll('a').forEach(function (a) { if (loc(a.href) === want) press(a); });
+    });
   }
 
-  function go(url, push, scrollTop) {
+  /* ---------- listing skeleton (same ghost cards as the page-change overlay in jd-vt.js) ---------- */
+  var MIN_SKEL = 220;
+  function kindFor(url) {
+    var u = new URL(url, location.href), p = u.pathname;
+    if (/^\/game/.test(p)) return 'game';
+    if (/^\/komunitas/.test(p)) return u.searchParams.get('tab') === 'profil' ? 'pfmini' : 'feed';
+    return 'news';
+  }
+  function skelOn(url) {
+    var list = doc.querySelector('[data-jd-slot="list"]');
+    if (!list || !window.jdSkel) { slots.forEach(function (s) { s.classList.add('jd-loading'); }); return; }
+    skelOff();
+    var kind = kindFor(url), box = doc.createElement('div');
+    box.className = 'jd-fskel';
+    box.setAttribute('aria-hidden', 'true');
+    /* komunitas profile search: the real search/sort form stays, a ghost bar stands in when it is not on screen yet */
+    var form = list.querySelector(':scope > form[data-jd-form]');
+    box.innerHTML = (kind === 'pfmini' && !form ? '<div class="jd-sk jd-fskel__bar"></div>' : '') + window.jdSkel.list(kind);
+    list.insertBefore(box, form ? form.nextSibling : list.firstChild);
+    list.classList.add('jd-skel-on');
+    list.setAttribute('aria-busy', 'true');
+    say('Memuat…');
+  }
+  function skelOff() {
+    var list = doc.querySelector('[data-jd-slot="list"]');
+    slots.forEach(function (s) { s.classList.remove('jd-loading'); });
+    if (!list) return;
+    list.querySelectorAll(':scope > .jd-fskel').forEach(function (n) { n.remove(); });
+    list.classList.remove('jd-skel-on');
+    list.removeAttribute('aria-busy');
+  }
+  var live = null;
+  function say(t) {
+    if (!live) { live = doc.createElement('p'); live.className = 'sr-only'; live.setAttribute('aria-live', 'polite'); doc.body.appendChild(live); }
+    live.textContent = t;
+  }
+
+  /* ---------- error toast ---------- */
+  var toastEl = null, toastT = null;
+  function toast(msg, retry) {
+    if (!toastEl) {
+      toastEl = doc.createElement('div');
+      toastEl.className = 'jd-toast';
+      toastEl.setAttribute('role', 'alert');
+      doc.body.appendChild(toastEl);
+    }
+    toastEl.innerHTML = '';
+    var t = doc.createElement('span'); t.textContent = msg; toastEl.appendChild(t);
+    if (retry) {
+      var b = doc.createElement('button');
+      b.type = 'button'; b.className = 'jd-toast__btn'; b.textContent = 'Coba lagi';
+      b.addEventListener('click', function () { b.classList.add('is-pressed'); hideToast(); retry(); });
+      toastEl.appendChild(b);
+    }
+    var x = doc.createElement('button');
+    x.type = 'button'; x.className = 'jd-toast__x'; x.setAttribute('aria-label', 'Tutup'); x.textContent = '×';
+    x.addEventListener('click', hideToast);
+    toastEl.appendChild(x);
+    void toastEl.offsetWidth;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastT); toastT = setTimeout(hideToast, 7000);
+  }
+  function hideToast() { if (toastEl) toastEl.classList.remove('is-on'); }
+
+  /* opts.snap: chip state to restore on failure; opts.pop: back/forward (URL already changed) */
+  function go(url, push, scrollTop, opts) {
+    opts = opts || {};
     if (ctl) ctl.abort();
     ctl = new AbortController();
-    var my = ctl;
-    slots.forEach(function (s) { s.classList.add('jd-loading'); });
-    var t = setTimeout(function () { fail(url); }, 12000);
+    var my = ctl, t0 = Date.now(), timedOut = false;
+    hideToast();
+    skelOn(url);
+    var t = setTimeout(function () { timedOut = true; my.abort(); }, 12000);
+    function failed() {
+      if (my !== ctl) return;
+      ctl = null;
+      skelOff(); say('');
+      if (opts.pop) { location.href = url; return; }   /* history already moved: let the browser load it */
+      if (opts.snap) restoreChips(opts.snap);
+      toast(navigator.onLine === false ? 'Kamu sedang offline. Filter belum bisa dimuat.' : 'Gagal memuat. Filter dikembalikan.', function () {
+        if (opts.chip) press(opts.chip);
+        go(url, push, scrollTop, { snap: opts.snap, chip: opts.chip });
+      });
+    }
     fetch(url, { credentials: 'same-origin', signal: my.signal, headers: { 'Accept': 'text/html', 'X-Requested-With': 'jd-swap' } })
       .then(function (r) {
         var ct = r.headers.get('content-type') || '';
-        if (!r.ok || ct.indexOf('text/html') < 0) throw 0;
+        if (!r.ok || ct.indexOf('text/html') < 0) throw new Error('http');
         return r.text().then(function (h) { return { h: h, url: r.url || url }; });
       })
       .then(function (res) {
         clearTimeout(t);
+        if (my !== ctl) return null;
         var next = new DOMParser().parseFromString(res.h, 'text/html'), ok = true;
         slots.forEach(function (s) { if (!next.querySelector('[data-jd-slot="' + s.getAttribute('data-jd-slot') + '"]')) ok = false; });
-        if (!ok || next.querySelectorAll('[data-jd-chips]').length !== bars.length) throw 0;
+        /* a different page layout came back: not an error, just open it normally */
+        if (!ok || next.querySelectorAll('[data-jd-chips]').length !== bars.length) { location.href = res.url; return null; }
+        /* keep the skeleton up a moment on very fast answers, so it reads as a step and not a flash */
+        var wait = Math.max(0, MIN_SKEL - (Date.now() - t0));
+        return new Promise(function (done) { setTimeout(function () { done({ next: next, url: res.url }); }, wait); });
+      })
+      .then(function (r) {
+        if (!r || my !== ctl) return;
+        ctl = null;
+        var next = r.next;
         slots.forEach(function (s) {
           s.innerHTML = next.querySelector('[data-jd-slot="' + s.getAttribute('data-jd-slot') + '"]').innerHTML;
-          s.classList.remove('jd-loading');
           if (s.getAttribute('data-jd-slot') === 'list') enter(s);
         });
+        skelOff(); say('');
         syncChips(next); syncForms(next); head(next);
-        var fin = loc(res.url);
+        var fin = loc(r.url);
         if (push) history.pushState({ jd: 1 }, '', fin);
         else if (fin !== loc(location.href)) history.replaceState({ jd: 1 }, '', fin);
         cur = fin;
         var l = doc.querySelector('[data-jd-slot="list"]');
-        var tm = doc.querySelectorAll('time[data-jd-time]');
-        if (tm.length && window.__jdLocalTime) window.__jdLocalTime();
+        if (doc.querySelectorAll('time[data-jd-time]').length && window.__jdLocalTime) window.__jdLocalTime();
         doc.querySelectorAll('[data-jd-slot] [data-jd-view]').forEach(function (el) {
           try { var p = JSON.parse(el.getAttribute('data-jd-params') || '{}'); if (window.jdTrack) window.jdTrack(el.getAttribute('data-jd-view'), p); } catch (e) {}
         });
@@ -136,7 +249,11 @@
           if (y < window.scrollY) window.scrollTo({ top: Math.max(0, y), behavior: still() ? 'auto' : 'smooth' });
         }
       })
-      .catch(function (e) { clearTimeout(t); if (e && e.name === 'AbortError') return; fail(url); });
+      .catch(function (e) {
+        clearTimeout(t);
+        if (e && e.name === 'AbortError' && !timedOut) return;   /* replaced by a newer click */
+        failed();
+      });
   }
 
   doc.addEventListener('click', function (e) {
@@ -149,9 +266,10 @@
     var u = new URL(a.href, location.href);
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search && u.hash)) return;
     e.preventDefault();
-    if (loc(u.href) === cur && inChips) return;
+    if (loc(u.href) === cur && inChips && !ctl) return;
+    var snap = snapChips();
     if (inChips) press(a);
-    go(u.href, true, !!inPager);
+    go(u.href, true, !!inPager, { snap: snap, chip: inChips ? a : null });
   });
   doc.addEventListener('submit', function (e) {
     var f = e.target;
@@ -160,14 +278,17 @@
     var u = new URL(f.action, location.href), fd = new FormData(f);
     u.search = '';
     fd.forEach(function (v, k) { if (String(v) !== '') u.searchParams.append(k, v); });
-    go(u.href, true, false);
+    var btn = e.submitter || f.querySelector('button[type="submit"],button:not([type])');
+    if (btn) { btn.classList.add('is-pressed'); setTimeout(function () { btn.classList.remove('is-pressed'); }, 160); }
+    go(u.href, true, false, { snap: snapChips() });
   });
   doc.addEventListener('change', function (e) {
     var s = e.target;
     if (s && s.matches && s.matches('form[data-jd-form] select') && s.form.requestSubmit) s.form.requestSubmit();
   });
   window.addEventListener('popstate', function () {
-    if (loc(location.href) === cur) return;
-    go(location.href, false, false);
+    if (loc(location.href) === cur && !ctl) return;
+    pressFor(location.href);
+    go(location.href, false, false, { pop: true });
   });
 })();
