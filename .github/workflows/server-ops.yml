@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -218,6 +218,15 @@ jobs:
                 ;;
               merge-langit)
                 docker exec jadidaring-app php artisan games:merge-rooms langitbersama "$VALUE" --apply --no-ansi
+                ;;
+              session-diag)
+                # Read-only: effective session config, sessions table stats, php upstream, log lines about sessions/DB errors.
+                echo "== upstream"; cat .deploy/nginx-upstream.conf 2>/dev/null || true
+                echo "== running app-like containers"; docker ps --format '{{.Names}} {{.Status}}' | grep -E 'jadidaring|singlepage' || true
+                echo "== .env SESSION_* / APP_ENV (values are not secret)"; grep -E '^(SESSION_[A-Z_]+|APP_ENV|APP_URL|CACHE_STORE)=' .env || true
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo json_encode(["driver"=>config("session.driver"),"lifetime"=>config("session.lifetime"),"expire_on_close"=>config("session.expire_on_close"),"cookie"=>config("session.cookie"),"domain"=>config("session.domain"),"secure"=>config("session.secure"),"same_site"=>config("session.same_site"),"lottery"=>config("session.lottery"),"connection"=>config("session.connection"),"table"=>config("session.table")]), PHP_EOL; $t=time(); echo "php time ", $t, " db now ", json_encode(Illuminate\Support\Facades\DB::select("select UNIX_TIMESTAMP() u, NOW() n, @@session.time_zone tz")), PHP_EOL; echo "sessions ", Illuminate\Support\Facades\DB::table("sessions")->count(), " with user ", Illuminate\Support\Facades\DB::table("sessions")->whereNotNull("user_id")->count(), " min/max last_activity ", json_encode(Illuminate\Support\Facades\DB::table("sessions")->selectRaw("min(last_activity) a, max(last_activity) b")->first()), PHP_EOL; echo json_encode(Illuminate\Support\Facades\DB::select("show create table sessions")[0]), PHP_EOL;' | grep -v OPcache
+                echo "== php-fpm pm"; docker exec jadidaring-app sh -c 'grep -hE "^(pm|pm\.max_children)" /usr/local/etc/php-fpm.d/*.conf 2>/dev/null' || true
+                echo "== recent log lines (session/SQL/deadlock)"; docker exec jadidaring-app sh -c 'tail -n 4000 storage/logs/laravel.log 2>/dev/null | grep -iE "session|deadlock|SQLSTATE|TokenMismatch" | cut -c1-300 | tail -n 25' || true
                 ;;
               delete-test-user)
                 docker exec jadidaring-app php artisan users:delete-test "$VALUE" --force --no-ansi
