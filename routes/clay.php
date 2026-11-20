@@ -150,7 +150,7 @@ Route::get('/site.webmanifest', function () {
             ['src' => '/web-app-manifest-512x512.png?v=2', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any maskable'],
         ],
     ], 200, ['Content-Type' => 'application/manifest+json', 'Cache-Control' => 'public, max-age=3600'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-})->name('pwa.manifest');
+})->withoutMiddleware($guestCache)->name('pwa.manifest');
 
 Route::get('/sw.js', function () {
     return response()->file(resource_path('pwa/sw.js'), [
@@ -158,4 +158,4 @@ Route::get('/sw.js', function () {
         'Cache-Control' => 'no-cache, max-age=0',
         'Service-Worker-Allowed' => '/',
     ]);
-})->name('pwa.sw');
+})->withoutMiddleware($guestCache)->name('pwa.sw'); // stateless: never starts a session

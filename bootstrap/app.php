@@ -169,6 +169,8 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         $middleware->prepend(SecureTransport::class);
+        // Outermost after SecureTransport: strips Set-Cookie from file-like URLs the proxy caches.
+        $middleware->prepend(\App\Http\Middleware\NoCookiesOnAssets::class);
 
         $isAdminHost = static fn (Request $request): bool => strtolower($request->getHost()) === strtolower((string) config('singlepage.admin_domain'));
 

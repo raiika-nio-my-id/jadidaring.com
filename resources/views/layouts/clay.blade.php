@@ -169,7 +169,7 @@
     @endunless
     @include('partials.ga4-consent')
     @unless (str_starts_with(request()->getHost(), 'admin.'))
-        <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){});});}</script>
+        <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js?v=2',{scope:'/'}).catch(function(){});});}</script>
     @endunless
     <script src="{{ \App\Support\AssetUrl::to('js/theme.js') }}" defer></script>
     <script src="{{ \App\Support\AssetUrl::to('js/local-time.js') }}" defer></script>

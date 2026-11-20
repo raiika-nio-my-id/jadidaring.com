@@ -53,8 +53,8 @@ class PwaTest extends TestCase
 
     public function test_public_pages_register_the_worker_but_admin_does_not(): void
     {
-        $this->get('http://jadidaring.test/')->assertSee("register('/sw.js'", false);
-        $this->get('http://jadidaring.test/berita')->assertSee("register('/sw.js'", false);
+        $this->get('http://jadidaring.test/')->assertSee("register('/sw.js?v=2'", false);
+        $this->get('http://jadidaring.test/berita')->assertSee("register('/sw.js?v=2'", false);
         $this->get('http://admin.jadidaring.test/login')->assertDontSee('serviceWorker', false);
     }
 }
