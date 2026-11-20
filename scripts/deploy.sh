@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# deploy.sh — production deploy for jadidaring.com (compose project singlepage)
+# deploy.sh — production deploy for jadidaring.com (compose project jadidaring)
 #
 # Usage:
 #   bash scripts/deploy.sh [REF] [--plan] [--maintenance] [--force-recreate] [--restart-reverb]
@@ -16,26 +16,26 @@
 #   loads it. Nginx-only files (docker-config/nginx/**) stay on this path and
 #   finish with `nginx -s reload`.
 #   Does: fetch, fast-forward, Vite build (or keep public/build), composer
-#   install in the already-running singlepage-app if composer.lock/json
+#   install in the already-running jadidaring-app if composer.lock/json
 #   changed, migrate --force only when migrations are pending, config/route/view
 #   cache. Does not: artisan down, docker compose build, or recreate
-#   singlepage / reverb / scheduler / nginx.
+#   jadidaring / reverb / scheduler / nginx.
 #   PHP-FPM reads bind-mounted code on the next request (this image does not
 #   enable opcache). The long-running Reverb process keeps the code it loaded
 #   at start. Pass --restart-reverb when a deploy must recycle Reverb; clients
 #   disconnect. --force-recreate selects Path B instead.
 #
 # Path B — blue-green (image / container changes)
-#   Builds singlepage:incoming from a side tree, starts singlepage-app-green
-#   beside the live singlepage-app, and HTTP-checks it on 127.0.0.1 (not a
+#   Builds jadidaring:incoming from a side tree, starts jadidaring-app-green
+#   beside the live jadidaring-app, and HTTP-checks it on 127.0.0.1 (not a
 #   public port) before changing the live site. Public nginx
-#   (singlepage-nginx, ${APP_PORT}) reloads onto the green PHP container, the
-#   canonical singlepage-app is recreated on the new image, then nginx reloads
+#   (jadidaring-nginx, ${APP_PORT}) reloads onto the green PHP container, the
+#   canonical jadidaring-app is recreated on the new image, then nginx reloads
 #   back. global-mysql is never created, stopped, or recreated.
-#   WebSockets: singlepage-reverb is replaced once, after HTTP is on the new
+#   WebSockets: jadidaring-reverb is replaced once, after HTTP is on the new
 #   app image. Connected clients drop and must reconnect. HTTP is not put in
 #   artisan down unless maintenance mode is requested.
-#   singlepage-nginx is reloaded, not recreated, unless a compose file other
+#   jadidaring-nginx is reloaded, not recreated, unless a compose file other
 #   than docker-compose.green.yml changed (new port or volume). That recreate
 #   drops APP_PORT for a couple of seconds.
 #   A few seconds of overlap: the live tree is fast-forwarded just before the
@@ -56,7 +56,7 @@
 #     published on a public interface.
 #   - No manual nginx edit. .deploy/nginx-upstream.conf is in git.
 #
-# Services this script may recreate: singlepage, reverb, scheduler, nginx
+# Services this script may recreate: jadidaring, reverb, scheduler, nginx
 # Deliberately never touched:         global-mysql (external shared container)
 set -euo pipefail
 
@@ -67,14 +67,14 @@ fi
 
 APP_DIR="${DEPLOY_PATH:-/var/www/jadidaring.com}"
 # Same project as the live containers, whatever the folder is called.
-export COMPOSE_PROJECT_NAME=singlepage
-APP_CONTAINER="singlepage-app"
-NGINX_CONTAINER="singlepage-nginx"
-REVERB_CONTAINER="singlepage-reverb"
-SCHEDULER_CONTAINER="singlepage-scheduler"
-GREEN_APP_CONTAINER="singlepage-app-green"
-GREEN_NGINX_CONTAINER="singlepage-nginx-health"
-GREEN_PROJECT="singlepage-green"
+export COMPOSE_PROJECT_NAME=jadidaring
+APP_CONTAINER="jadidaring-app"
+NGINX_CONTAINER="jadidaring-nginx"
+REVERB_CONTAINER="jadidaring-reverb"
+SCHEDULER_CONTAINER="jadidaring-scheduler"
+GREEN_APP_CONTAINER="jadidaring-app-green"
+GREEN_NGINX_CONTAINER="jadidaring-nginx-health"
+GREEN_PROJECT="jadidaring-green"
 RELEASE_DIR="${DEPLOY_RELEASE_DIR:-${APP_DIR}-release}"
 REF="main"
 REF_SET=0
@@ -89,8 +89,8 @@ DRAIN_SECONDS="${DEPLOY_DRAIN_SECONDS:-8}"
 APP_PORT="8081"
 MODE="assets"
 TRAFFIC="blue"
-UPSTREAM_PHP="singlepage-app"
-UPSTREAM_REVERB="singlepage-reverb"
+UPSTREAM_PHP="jadidaring-app"
+UPSTREAM_REVERB="jadidaring-reverb"
 OLD_SHA=""
 NEW_SHA=""
 REMOTE_REF=""
@@ -112,7 +112,7 @@ Options:
   --plan              Print Path A vs Path B and exit without changing the server
   --maintenance       artisan down around migrations and the container switch
   --force-recreate    Path B even if no image/container files changed
-  --force-build       Path B: rebuild singlepage image even if Dockerfile is unchanged
+  --force-build       Path B: rebuild jadidaring image even if Dockerfile is unchanged
   --restart-reverb    Path A only: recreate Reverb (WebSocket clients reconnect)
   -h, --help          Show this help
 
@@ -258,7 +258,7 @@ dirty_guard() {
     fi
     git status --short >&2 || true
     if [ -e "$APP_DIR/.deploy/nginx-upstream.conf" ] && [ ! -L "$APP_DIR/.deploy/nginx-upstream.conf" ]; then
-        fail "Working tree is dirty and .deploy/nginx-upstream.conf is not the committed symlink. A Path B deploy may still be serving singlepage-app-green. Inspect nginx and that container before resetting files."
+        fail "Working tree is dirty and .deploy/nginx-upstream.conf is not the committed symlink. A Path B deploy may still be serving jadidaring-app-green. Inspect nginx and that container before resetting files."
     fi
     fail "Working tree has uncommitted local changes. Stash or commit them before deploying."
 }
@@ -603,7 +603,7 @@ composer_in_release() {
         -v "$RELEASE_DIR:/var/www" \
         -v "$APP_DIR/.env:/var/www/.env:ro" \
         -w /var/www \
-        singlepage:incoming \
+        jadidaring:incoming \
         install --no-dev --optimize-autoloader --no-interaction --prefer-dist
     chmod -R a+rX "$RELEASE_DIR/vendor"
 }
@@ -622,7 +622,7 @@ image_inputs_changed() {
     if [ "${DEPLOY_FORCE_BUILD:-0}" = "1" ]; then
         return 0
     fi
-    if ! docker image inspect singlepage >/dev/null 2>&1; then
+    if ! docker image inspect jadidaring >/dev/null 2>&1; then
         return 0
     fi
     if [ -z "${OLD_SHA:-}" ] || [ -z "${NEW_SHA:-}" ]; then
@@ -636,7 +636,7 @@ image_inputs_changed() {
 
 remove_stale_incoming_image() {
     local img_id
-    img_id=$(docker image inspect singlepage:incoming --format '{{.Id}}' 2>/dev/null || true)
+    img_id=$(docker image inspect jadidaring:incoming --format '{{.Id}}' 2>/dev/null || true)
     if [ -z "$img_id" ]; then
         return 0
     fi
@@ -644,23 +644,23 @@ remove_stale_incoming_image() {
     local in_use
     in_use=$(docker ps -a -q --filter ancestor="$img_id" 2>/dev/null || true)
     if [ -z "$in_use" ]; then
-        in_use=$(docker ps -a -q --filter ancestor=singlepage:incoming 2>/dev/null || true)
+        in_use=$(docker ps -a -q --filter ancestor=jadidaring:incoming 2>/dev/null || true)
     fi
     if [ -n "$in_use" ]; then
         return 0
     fi
 
-    log "Removing stale image singlepage:incoming"
-    docker image rm singlepage:incoming >/dev/null 2>&1 || true
+    log "Removing stale image jadidaring:incoming"
+    docker image rm jadidaring:incoming >/dev/null 2>&1 || true
 }
 
 build_image() {
     if image_inputs_changed; then
-        log "Building image singlepage:incoming (running containers keep their current image)"
-        docker build -t singlepage:incoming -f "$RELEASE_DIR/Dockerfile" "$RELEASE_DIR"
+        log "Building image jadidaring:incoming (running containers keep their current image)"
+        docker build -t jadidaring:incoming -f "$RELEASE_DIR/Dockerfile" "$RELEASE_DIR"
     else
         log "Dockerfile unchanged — reusing the live image (no build)"
-        docker tag singlepage singlepage:incoming
+        docker tag jadidaring jadidaring:incoming
     fi
 }
 
@@ -914,7 +914,7 @@ EOF
 
 restore_upstream_symlink() {
     local dest="$APP_DIR/.deploy/nginx-upstream.conf"
-    if [ "${UPSTREAM_PHP:-singlepage-app}" != "singlepage-app" ] || [ "${UPSTREAM_REVERB:-singlepage-reverb}" != "singlepage-reverb" ]; then
+    if [ "${UPSTREAM_PHP:-jadidaring-app}" != "jadidaring-app" ] || [ "${UPSTREAM_REVERB:-jadidaring-reverb}" != "jadidaring-reverb" ]; then
         log "Leaving $dest pointing at $UPSTREAM_PHP / $UPSTREAM_REVERB"
         return 0
     fi
@@ -1027,10 +1027,10 @@ prepare_green_compose() {
 start_green() {
     [ -n "$DEPLOY_GREEN_PORT_SELECTED" ] || fail "Internal error: green health port was not chosen"
     export GREEN_APP_MOUNT="$1"
-    export APP_DIR DEPLOY_GREEN_PORT HEALTH_NGINX_CONF SINGLEPAGE_IMAGE
+    export APP_DIR DEPLOY_GREEN_PORT HEALTH_NGINX_CONF JADIDARING_IMAGE
     DEPLOY_GREEN_PORT="$DEPLOY_GREEN_PORT_SELECTED"
     HEALTH_NGINX_CONF="$RUN_DIR/nginx-health.conf"
-    SINGLEPAGE_IMAGE="${SINGLEPAGE_IMAGE:-singlepage:incoming}"
+    JADIDARING_IMAGE="${JADIDARING_IMAGE:-jadidaring:incoming}"
     docker network inspect shared-services >/dev/null 2>&1 \
         || fail "Docker network shared-services is missing. The live stack uses it; this script will not create or alter it."
     docker compose \
@@ -1053,7 +1053,7 @@ cleanup_green() {
 
 refuse_leftover_green() {
     if docker inspect "$GREEN_APP_CONTAINER" >/dev/null 2>&1; then
-        fail "$GREEN_APP_CONTAINER already exists. If a previous Path B deploy left HTTP on it, do not remove it until singlepage-app is healthy and nginx points at singlepage-app. If it is an abandoned pre-check, remove it with: docker rm -f $GREEN_APP_CONTAINER $GREEN_NGINX_CONTAINER"
+        fail "$GREEN_APP_CONTAINER already exists. If a previous Path B deploy left HTTP on it, do not remove it until jadidaring-app is healthy and nginx points at jadidaring-app. If it is an abandoned pre-check, remove it with: docker rm -f $GREEN_APP_CONTAINER $GREEN_NGINX_CONTAINER"
     fi
     if docker inspect "$GREEN_NGINX_CONTAINER" >/dev/null 2>&1; then
         log "Removing leftover $GREEN_NGINX_CONTAINER"
@@ -1070,8 +1070,8 @@ retarget_health_nginx() {
 
 recreate_canonical_php() {
     log "Recreating $APP_CONTAINER on the new image while nginx still sends HTTP to green"
-    docker tag singlepage:incoming singlepage
-    docker compose up -d --no-deps --force-recreate singlepage
+    docker tag jadidaring:incoming jadidaring
+    docker compose up -d --no-deps --force-recreate jadidaring
     wait_running "$APP_CONTAINER"
 }
 
@@ -1105,7 +1105,7 @@ recreate_public_nginx_if_compose_changed() {
 recreate_reverb_and_scheduler() {
     log "Recreating Reverb and the scheduler."
     log "WebSocket clients will disconnect briefly and must reconnect. HTTP stays up."
-    docker tag singlepage:incoming singlepage
+    docker tag jadidaring:incoming jadidaring
     docker compose up -d --no-deps --force-recreate reverb scheduler
     # Rust realtime: create if missing (the binary is swapped in by the workflow).
     docker compose up -d --no-deps realtime || log "WARNING: realtime service did not start; games stay on Reverb"
@@ -1158,7 +1158,7 @@ cleanup_on_exit() {
     fi
     if [ "${TRAFFIC:-blue}" = "green" ]; then
         log "HTTP is still on $GREEN_APP_CONTAINER. Leaving that container and $RELEASE_DIR in place."
-        log "Do not delete them until $NGINX_CONTAINER is confirmed on singlepage-app and that container is healthy."
+        log "Do not delete them until $NGINX_CONTAINER is confirmed on jadidaring-app and that container is healthy."
     else
         cleanup_green || true
         if [ "$status" -ne 0 ]; then
@@ -1314,10 +1314,10 @@ cold_start() {
     fi
     commit_staged
     if [ "$MODE" = "container" ]; then
-        docker tag singlepage:incoming singlepage
-        docker compose up -d --no-deps --force-recreate singlepage reverb realtime scheduler nginx
+        docker tag jadidaring:incoming jadidaring
+        docker compose up -d --no-deps --force-recreate jadidaring reverb realtime scheduler nginx
     else
-        docker compose up -d --no-deps singlepage reverb realtime scheduler nginx
+        docker compose up -d --no-deps jadidaring reverb realtime scheduler nginx
     fi
     wait_running "$APP_CONTAINER"
     wait_running "$NGINX_CONTAINER"
@@ -1340,7 +1340,7 @@ cold_start() {
 
 ensure_realtime() {
     [ -f "$APP_DIR/realtime/bin/jd-realtime" ] || return 0
-    if [ "$(docker inspect -f '{{.State.Running}}' singlepage-realtime 2>/dev/null)" != "true" ]; then
+    if [ "$(docker inspect -f '{{.State.Running}}' jadidaring-realtime 2>/dev/null)" != "true" ]; then
         log "Starting the Rust realtime service."
         docker compose up -d --no-deps realtime || log "WARNING: realtime service did not start; games stay on Reverb"
     fi
@@ -1352,6 +1352,124 @@ finish_log() {
     log "Path: $(path_label)"
     log "Ref: $REF → $(git rev-parse --short HEAD) — $(git log -1 --format='%s')"
     docker compose ps --format 'table {{.Name}}\t{{.Status}}' 2>/dev/null || true
+}
+
+# ── One-time Docker rename: compose project "singlepage" → "jadidaring" ──────
+# Runs only while the host still serves from the legacy containers. Order keeps
+# HTTP up except for the nginx swap (seconds): backups → fast-forward → new
+# realtime/reverb/PHP beside the old ones → scheduler swap → nginx swap (NPM
+# reaches it through the network alias singlepage-nginx) → stop the old ones.
+# Old containers are stopped, not removed, so a manual rollback stays possible.
+LEGACY_PROJECT="singlepage"
+LEGACY_APP="singlepage-app"
+LEGACY_NGINX="singlepage-nginx"
+LEGACY_REVERB="singlepage-reverb"
+LEGACY_REALTIME="singlepage-realtime"
+LEGACY_SCHEDULER="singlepage-scheduler"
+
+legacy_project_live() {
+    docker inspect "$APP_CONTAINER" >/dev/null 2>&1 && return 1
+    container_running "$LEGACY_APP" || return 1
+    [ "$(docker inspect -f '{{index .Config.Labels "com.docker.compose.project"}}' "$LEGACY_APP" 2>/dev/null || true)" = "$LEGACY_PROJECT" ]
+}
+
+legacy_rollback_nginx() {
+    log "Rolling HTTP back to $LEGACY_NGINX"
+    docker stop "$NGINX_CONTAINER" >/dev/null 2>&1 || true
+    docker rm "$NGINX_CONTAINER" >/dev/null 2>&1 || true
+    docker start "$LEGACY_NGINX" >/dev/null 2>&1 || true
+}
+
+wait_public_up() {
+    local url="$1" tries="${2:-15}" code="" i
+    for i in $(seq 1 "$tries"); do
+        code=$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "$url" 2>/dev/null || echo 000)
+        [ "$code" = "200" ] && { log "OK $url (HTTP 200)"; return 0; }
+        sleep 2
+    done
+    log "FAILED $url (last HTTP $code)"
+    return 1
+}
+
+migrate_legacy_project() {
+    step "One-time rename: compose project $LEGACY_PROJECT → $COMPOSE_PROJECT_NAME"
+    require_env_file
+    require_free_disk 600
+    local c
+    for c in "$LEGACY_APP" "$LEGACY_NGINX" "$LEGACY_REVERB" "$LEGACY_REALTIME" "$LEGACY_SCHEDULER"; do
+        local mtypes
+        mtypes=$(docker inspect "$c" --format '{{range .Mounts}}{{.Type}} {{end}}' 2>/dev/null || true)
+        if grep -qw volume <<<"$mtypes"; then
+            fail "$c uses a named Docker volume; this migration only handles bind mounts. Stopping before any change."
+        fi
+    done
+    for c in "$APP_CONTAINER" "$NGINX_CONTAINER" "$REVERB_CONTAINER" "$SCHEDULER_CONTAINER" jadidaring-realtime; do
+        docker inspect "$c" >/dev/null 2>&1 && fail "$c already exists; refusing to migrate over it."
+    done
+
+    step "Backups (verified) before the rename"
+    backup_database "$LEGACY_APP"
+    local bdir="$APP_DIR/storage/backups" ts sbk want got
+    ts=$(date +%Y%m%d-%H%M%S)
+    sbk="$bdir/pre-rename-storage-$ts.tgz"
+    mkdir -p "$bdir"
+    docker exec "$LEGACY_APP" tar -czf - --exclude=./backups -C /var/www/storage . > "$sbk" \
+        || { rm -f "$sbk"; fail "storage tar failed"; }
+    want=$(docker exec "$LEGACY_APP" sh -c 'cd /var/www/storage && find . -path ./backups -prune -o -print | wc -l' | tr -d '[:space:]')
+    got=$(tar -tzf "$sbk" | wc -l | tr -d '[:space:]')
+    [ -n "$want" ] && [ "$want" = "$got" ] || { rm -f "$sbk"; fail "storage tar verification failed (entries: tree=$want tar=$got)"; }
+    log "Storage backup verified: $sbk ($got entries, $(du -sh "$sbk" | cut -f1))"
+    log "Named volumes: none (DB is the external global-mysql, storage is the bind-mounted tree)"
+
+    step "Fast-forward the tree (legacy containers keep serving it)"
+    extract_release "$NEW_SHA"
+    preflight_nginx "$RELEASE_DIR"
+    git_ff
+    if ! docker image inspect jadidaring >/dev/null 2>&1; then
+        docker tag "$(docker inspect -f '{{.Config.Image}}' "$LEGACY_APP")" jadidaring
+        log "Tagged the live image as jadidaring (old tag kept)"
+    fi
+
+    step "Start new realtime, Reverb and PHP beside the legacy ones"
+    docker compose up -d --no-deps realtime reverb jadidaring
+    wait_running jadidaring-realtime
+    wait_running "$REVERB_CONTAINER"
+    wait_running "$APP_CONTAINER"
+    sleep 2
+    docker exec "$APP_CONTAINER" php artisan migrate:status --no-ansi >/dev/null \
+        || fail "$APP_CONTAINER cannot reach the database; legacy stack is still serving."
+    maybe_migrate "$APP_CONTAINER"
+    rebuild_caches "$APP_CONTAINER" 1 0
+
+    step "Swap the scheduler"
+    docker stop "$LEGACY_SCHEDULER" >/dev/null
+    docker compose up -d --no-deps scheduler
+    wait_running "$SCHEDULER_CONTAINER"
+
+    step "Swap nginx (HTTP drops for a few seconds)"
+    docker stop "$LEGACY_NGINX" >/dev/null
+    if ! docker compose up -d --no-deps nginx; then
+        legacy_rollback_nginx
+        fail "Could not start $NGINX_CONTAINER; HTTP is back on $LEGACY_NGINX."
+    fi
+    wait_running "$NGINX_CONTAINER"
+    if ! wait_public_up "http://127.0.0.1:${APP_PORT}/up" 15; then
+        legacy_rollback_nginx
+        fail "$NGINX_CONTAINER failed /up; HTTP is back on $LEGACY_NGINX."
+    fi
+    # NPM forwards to "singlepage-nginx" by name: check the public path too.
+    if ! wait_public_up "https://jadidaring.com/up" 15; then
+        legacy_rollback_nginx
+        fail "Public https://jadidaring.com/up failed through NPM; HTTP is back on $LEGACY_NGINX."
+    fi
+
+    step "Stop the legacy containers (kept for rollback, not removed)"
+    docker stop "$LEGACY_APP" "$LEGACY_REVERB" "$LEGACY_REALTIME" >/dev/null
+    docker exec "$NGINX_CONTAINER" nginx -s reload >/dev/null 2>&1 || true
+    wait_public_up "https://jadidaring.com/up" 10 || log "WARNING: public /up failed after stopping legacy containers"
+    log "Legacy containers stopped. Manual rollback: docker stop jadidaring-nginx jadidaring-scheduler jadidaring-app jadidaring-reverb jadidaring-realtime; git checkout <previous sha>; docker start $LEGACY_APP $LEGACY_REVERB $LEGACY_REALTIME $LEGACY_SCHEDULER $LEGACY_NGINX"
+    maybe_up
+    public_health
 }
 
 main() {
@@ -1375,11 +1493,19 @@ main() {
         exit 0
     fi
     require_docker
-    RUN_DIR=$(mktemp -d /tmp/singlepage-deploy.XXXXXX)
+    RUN_DIR=$(mktemp -d /tmp/jadidaring-deploy.XXXXXX)
     chmod 755 "$RUN_DIR"
     trap cleanup_on_exit EXIT
 
-    if ! container_running "$APP_CONTAINER" || ! container_running "$NGINX_CONTAINER"; then
+    local target_compose
+    target_compose=$(git show "${NEW_SHA}:docker-compose.yml" 2>/dev/null || true)
+    if ! grep -qx 'name: jadidaring' <<<"$target_compose"; then
+        fail "Target ${NEW_SHA} predates the Docker rename (compose project is not jadidaring). Deploying it would start a second stack; roll back by hand instead."
+    fi
+
+    if legacy_project_live; then
+        migrate_legacy_project
+    elif ! container_running "$APP_CONTAINER" || ! container_running "$NGINX_CONTAINER"; then
         cold_start
     elif [ "$MODE" = "container" ]; then
         path_b

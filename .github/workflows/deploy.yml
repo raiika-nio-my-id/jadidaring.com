@@ -188,8 +188,8 @@ jobs:
             set -euo pipefail
             APP_DIR="${DEPLOY_PATH:-/var/www/jadidaring.com}"
             cd "$APP_DIR"
-            # Containers belong to compose project "singlepage" (pre-rename folder name).
-            export COMPOSE_PROJECT_NAME=singlepage
+            # Compose project is pinned to "jadidaring" (renamed from "singlepage").
+            export COMPOSE_PROJECT_NAME=jadidaring
             # Keep the server checkout's origin on this repository (it was renamed);
             # keep the transport (ssh deploy key vs https) the checkout already uses.
             cur_origin="$(git config --get remote.origin.url || true)"
@@ -208,7 +208,7 @@ jobs:
               if ! cmp -s realtime/incoming/jd-realtime realtime/bin/jd-realtime; then
                 cp realtime/incoming/jd-realtime realtime/bin/jd-realtime.new
                 mv -f realtime/bin/jd-realtime.new realtime/bin/jd-realtime
-                docker restart singlepage-realtime >/dev/null 2>&1 || true
+                docker restart jadidaring-realtime >/dev/null 2>&1 || true
                 echo "==> realtime binary updated"
               fi
               rm -f realtime/incoming/jd-realtime
@@ -288,7 +288,7 @@ jobs:
               exit 0
             fi
             cd "${{ secrets.DEPLOY_PATH || '/var/www/jadidaring.com' }}"
-            export COMPOSE_PROJECT_NAME=singlepage
+            export COMPOSE_PROJECT_NAME=jadidaring
             git fetch --prune --tags origin
             echo "==> Rolling back to $PREVIOUS_SHA"
             git show "origin/main:scripts/deploy.sh" | bash -s -- "$PREVIOUS_SHA"

@@ -53,8 +53,8 @@ return [
             'secret' => hash_hmac('sha256', 'rt-pusher', (string) env('APP_KEY')),
             'app_id' => 'jdrt',
             'options' => [
-                'host' => explode(':', env('REALTIME_HOST', 'singlepage-realtime:9000'))[0],
-                'port' => (int) (explode(':', env('REALTIME_HOST', 'singlepage-realtime:9000'))[1] ?? 9000),
+                'host' => explode(':', env('REALTIME_HOST', 'jadidaring-realtime:9000'))[0],
+                'port' => (int) (explode(':', env('REALTIME_HOST', 'jadidaring-realtime:9000'))[1] ?? 9000),
                 'scheme' => 'http',
                 'useTLS' => false,
             ],

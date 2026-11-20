@@ -6,7 +6,7 @@ server and runs `scripts/deploy.sh`. The script picks one of two paths:
 - **Path A** — bind-mounted code, assets, composer, and additive migrations.
   No maintenance page and no container rebuild.
 - **Path B** — a second PHP container is health-checked, then nginx reloads
-  onto it, before the canonical `singlepage-app` container is replaced.
+  onto it, before the canonical `jadidaring-app` container is replaced.
   WebSocket clients disconnect when Reverb is replaced. HTTP does not.
 
 `global-mysql` is external and is never stopped or recreated.
@@ -163,7 +163,7 @@ Only one deploy runs at a time (GitHub Actions concurrency group
 3. Build Vite assets in a side directory when `node` and `npm` exist, then
    rename `public/build` into place. Without Node, `public/build` already on
    the server is kept.
-4. `composer install --no-dev` **inside the running `singlepage-app`** only if
+4. `composer install --no-dev` **inside the running `jadidaring-app`** only if
    `composer.json` or `composer.lock` changed.
 5. `php artisan migrate --force` only when `migrate:status --pending` shows
    work. Additive migrations do **not** enable maintenance mode.
@@ -178,9 +178,9 @@ it. Clients disconnect and reconnect. `--force-recreate` runs Path B instead.
 
 1. Same dirty-tree guard and fetch. The live checkout is **not** moved yet.
 2. Extract the target revision to `/var/www/jadidaring.com-release` (override with
-   `DEPLOY_RELEASE_DIR`), build `singlepage:incoming`, install PHP
+   `DEPLOY_RELEASE_DIR`), build `jadidaring:incoming`, install PHP
    dependencies and Vite assets there.
-3. Start `singlepage-app-green` on the Docker network `shared-services`,
+3. Start `jadidaring-app-green` on the Docker network `shared-services`,
    with the live `.env` and `storage/` mounted in. A throwaway nginx on
    `127.0.0.1` (usually port 8082) proxies to that container.
 4. HTTP `GET /up` must return 200 before the live site changes. Failure stops
@@ -190,15 +190,15 @@ it. Clients disconnect and reconnect. `--force-recreate` runs Path B instead.
    `php artisan down` first.
 6. Fast-forward `/var/www/jadidaring.com` and swap in the staged `public/build`
    (and `vendor/` when the lockfile changed).
-7. Reload `singlepage-nginx` so PHP goes to `singlepage-app-green`. Reverb
-   stays on `singlepage-reverb` for this step. In-flight requests drain
+7. Reload `jadidaring-nginx` so PHP goes to `jadidaring-app-green`. Reverb
+   stays on `jadidaring-reverb` for this step. In-flight requests drain
    (`DEPLOY_DRAIN_SECONDS`, default 8).
-8. Recreate canonical `singlepage-app` on the new image, health-check it, and
-   reload nginx back onto `singlepage-app`.
-9. Stop the green container. Recreate `singlepage-reverb` and
-   `singlepage-scheduler`.
+8. Recreate canonical `jadidaring-app` on the new image, health-check it, and
+   reload nginx back onto `jadidaring-app`.
+9. Stop the green container. Recreate `jadidaring-reverb` and
+   `jadidaring-scheduler`.
 10. If a compose file other than `docker-compose.green.yml` changed, recreate
-    `singlepage-nginx` so new host ports or volume mounts apply. That step
+    `jadidaring-nginx` so new host ports or volume mounts apply. That step
     drops `${APP_PORT}` for about as long as the container takes to start.
     Image-only changes leave the existing nginx process in place and reload it.
 
@@ -209,8 +209,8 @@ new bind-mounted code; the green container was already proven against that
 code.
 
 If a step fails **after** nginx is pointing at green, the script leaves
-`singlepage-app-green` and the release directory in place and exits non-zero.
-Do not delete them until `singlepage-nginx` is back on `singlepage-app`.
+`jadidaring-app-green` and the release directory in place and exits non-zero.
+Do not delete them until `jadidaring-nginx` is back on `jadidaring-app`.
 
 ### Maintenance mode
 
@@ -303,7 +303,7 @@ zcat /var/www/jadidaring.com/storage/backups/pre-deploy-<timestamp>.sql.gz \
 ## One-time check before the first near-zero deploy
 
 Nothing in nginx or DNS has to be edited by hand. The public edge stays
-`singlepage-nginx` on `APP_PORT` (8081 unless `.env` says otherwise). The
+`jadidaring-nginx` on `APP_PORT` (8081 unless `.env` says otherwise). The
 upstream file is the tracked symlink `.deploy/nginx-upstream.conf`.
 
 Confirm these once on the server:
@@ -323,7 +323,7 @@ Confirm these once on the server:
 4. The Docker network `shared-services` already exists (the live stack uses
    it). The script will not create it and will not attach `global-mysql`.
 
-The first deploy that contains the new nginx config reloads `singlepage-nginx`.
+The first deploy that contains the new nginx config reloads `jadidaring-nginx`.
 That reload is graceful. It does not recreate the container and does not open
 a second public port.
 
@@ -346,7 +346,7 @@ health check (default `8081` if not set).
 
 ## WebSockets
 
-Path A does not restart Reverb. Path B replaces `singlepage-reverb` once,
+Path A does not restart Reverb. Path B replaces `jadidaring-reverb` once,
 after HTTP is on the new PHP image. Connected game clients drop and must
 reconnect. The public nginx process stays up across that replace; only the
 Reverb container changes.

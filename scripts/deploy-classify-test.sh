@@ -64,21 +64,21 @@ if ! grep -q 'fastcgi_pass $php_upstream;' "$ROOT/docker-config/nginx/default.co
     failures=$((failures + 1))
 fi
 # shellcheck disable=SC2016
-if ! grep -q 'set $php_upstream singlepage-app:9000;' "$ROOT/docker-config/nginx/upstream.default.conf"; then
-    echo 'FAIL: default upstream is not singlepage-app' >&2
+if ! grep -q 'set $php_upstream jadidaring-app:9000;' "$ROOT/docker-config/nginx/upstream.default.conf"; then
+    echo 'FAIL: default upstream is not jadidaring-app' >&2
     failures=$((failures + 1))
 fi
 # shellcheck disable=SC2016
-if ! grep -q 'set $reverb_upstream singlepage-reverb:8080;' "$ROOT/docker-config/nginx/upstream.default.conf"; then
-    echo 'FAIL: default reverb upstream is not singlepage-reverb' >&2
+if ! grep -q 'set $reverb_upstream jadidaring-reverb:8080;' "$ROOT/docker-config/nginx/upstream.default.conf"; then
+    echo 'FAIL: default reverb upstream is not jadidaring-reverb' >&2
     failures=$((failures + 1))
 fi
 if [ ! -L "$ROOT/.deploy/nginx-upstream.conf" ]; then
     echo 'FAIL: .deploy/nginx-upstream.conf must be a symlink' >&2
     failures=$((failures + 1))
 fi
-if ! grep -q 'container_name: singlepage-app-green' "$ROOT/docker-compose.green.yml"; then
-    echo 'FAIL: green compose file is missing singlepage-app-green' >&2
+if ! grep -q 'container_name: jadidaring-app-green' "$ROOT/docker-compose.green.yml"; then
+    echo 'FAIL: green compose file is missing jadidaring-app-green' >&2
     failures=$((failures + 1))
 fi
 if grep -E '^[[:space:]]*(container_name: global-mysql|global-mysql:)' "$ROOT/docker-compose.green.yml"; then
@@ -125,14 +125,14 @@ fi
 # Mock docker for unit testing image_inputs_changed and remove_stale_incoming_image
 docker() {
     case "$*" in
-        "image inspect singlepage:incoming"*)
+        "image inspect jadidaring:incoming"*)
             if [ "${MOCK_INCOMING_EXISTS:-0}" -eq 1 ]; then
                 echo "sha256:incoming123"
                 return 0
             fi
             return 1
             ;;
-        "image inspect singlepage"*)
+        "image inspect jadidaring"*)
             return 0
             ;;
         "ps -a -q --filter ancestor=sha256:incoming123"*)
@@ -141,18 +141,18 @@ docker() {
             fi
             return 0
             ;;
-        "ps -a -q --filter ancestor=singlepage:incoming"*)
+        "ps -a -q --filter ancestor=jadidaring:incoming"*)
             return 0
             ;;
-        "image rm singlepage:incoming"*)
+        "image rm jadidaring:incoming"*)
             MOCK_RM_CALLED=1
             return 0
             ;;
-        "build -t singlepage:incoming"*)
+        "build -t jadidaring:incoming"*)
             MOCK_BUILD_CALLED=1
             return 0
             ;;
-        "tag singlepage singlepage:incoming"*)
+        "tag jadidaring jadidaring:incoming"*)
             MOCK_TAG_CALLED=1
             return 0
             ;;

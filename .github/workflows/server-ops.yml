@@ -93,20 +93,20 @@ jobs:
                 echo "== git"; git rev-parse --short HEAD || true; git status --short | head -20 || true
                 git config --get remote.origin.url | sed -E 's#://[^@/]+@#://***@#' || true
                 echo "== containers"
-                docker ps -a --filter name=singlepage --format '{{.Names}}|{{.Status}}|{{.Image}}'
-                for c in $(docker ps -a --filter name=singlepage --format '{{.Names}}'); do
+                docker ps -a --filter name=singlepage --filter name=jadidaring --format '{{.Names}}|{{.Status}}|{{.Image}}'
+                for c in $(docker ps -a --filter name=singlepage --filter name=jadidaring --format '{{.Names}}'); do
                   docker inspect "$c" --format '{{.Name}} project={{index .Config.Labels "com.docker.compose.project"}} wd={{index .Config.Labels "com.docker.compose.project.working_dir"}} files={{index .Config.Labels "com.docker.compose.project.config_files"}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}-{{end}} restarts={{.RestartCount}} started={{.State.StartedAt}}'
                   docker inspect "$c" --format '{{range .Mounts}}  {{.Type}} {{.Source}} -> {{.Destination}}{{"\n"}}{{end}}'
                 done
                 echo "== compose projects"; docker compose version || true; docker compose ls -a || true
-                echo "== realtime log tail"; docker logs --tail 15 singlepage-realtime 2>&1 || true
+                echo "== realtime log tail"; docker logs --tail 15 jadidaring-realtime 2>&1 || true
                 ;;
               diagnose-rename)
                 # Read-only inventory for the singlepage -> jadidaring Docker rename.
-                echo "== volumes (project label)"; docker volume ls --filter label=com.docker.compose.project=singlepage
+                echo "== volumes (project label)"; docker volume ls --filter label=com.docker.compose.project=singlepage; docker volume ls --filter label=com.docker.compose.project=jadidaring
                 echo "== volumes named *singlepage*"; docker volume ls --format '{{.Name}}' | grep -i singlepage || echo none
                 echo "== per-container volumes/networks/ports"
-                for c in $(docker ps -a --filter label=com.docker.compose.project=singlepage --format '{{.Names}}'); do
+                for c in $(docker ps -a --filter label=com.docker.compose.project=singlepage --format '{{.Names}}') $(docker ps -a --filter label=com.docker.compose.project=jadidaring --format '{{.Names}}'); do
                   docker inspect "$c" --format '{{.Name}} image={{.Config.Image}} restart={{.HostConfig.RestartPolicy.Name}} ports={{json .HostConfig.PortBindings}} nets={{range $k,$v := .NetworkSettings.Networks}}{{$k}}(aliases={{join $v.Aliases ","}}) {{end}} volumes={{range .Mounts}}{{if eq .Type "volume"}}{{.Name}}->{{.Destination}} {{end}}{{end}}'
                 done
                 echo "== networks of project"; docker network ls --filter label=com.docker.compose.project=singlepage
@@ -165,8 +165,8 @@ jobs:
                 setkey GOOGLE_STATS_SA_JSON_B64 "$GS_KEY"
                 if [ -n "$VALUE" ]; then setkey GSC_SITE_URL "$VALUE"; fi
                 ls -t .env.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f
-                docker exec singlepage-app php artisan config:clear --no-ansi
-                docker exec singlepage-app php artisan cache:clear --no-ansi || true
+                docker exec jadidaring-app php artisan config:clear --no-ansi
+                docker exec jadidaring-app php artisan cache:clear --no-ansi || true
                 # Names only, never values.
                 for k in GA4_PROPERTY_ID GOOGLE_STATS_SA_JSON_B64 GSC_SITE_URL; do
                   if grep -q "^${k}=.\+" .env; then echo "$k: set"; else echo "$k: not set (default)"; fi
@@ -186,31 +186,31 @@ jobs:
                   setkey MAIL_FROM_ADDRESS noreply@jadidaring.com; setkey MAIL_FROM_NAME '"Jadidaring"'
                 else setkey GOOGLE_CLIENT_ID "$G_ID"; setkey GOOGLE_CLIENT_SECRET "$G_SECRET"; fi
                 ls -t .env.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f
-                docker exec singlepage-app php artisan config:clear --no-ansi
-                docker exec singlepage-app php artisan cache:clear --no-ansi || true
+                docker exec jadidaring-app php artisan config:clear --no-ansi
+                docker exec jadidaring-app php artisan cache:clear --no-ansi || true
                 grep -E '^(GA4_MEASUREMENT_ID|GOOGLE_CLIENT_ID|GITHUB_CLIENT_ID|TELEGRAM_BOT_USERNAME|TELEGRAM_CLIENT_ID|MAIL_MAILER|MAIL_HOST|MAIL_PORT|MAIL_FROM_ADDRESS)=' .env | sed -E 's/=(.{12}).*/=\1…/'
                 grep -c '^\(GOOGLE_CLIENT_SECRET\|GITHUB_CLIENT_SECRET\|TELEGRAM_BOT_TOKEN\|TELEGRAM_CLIENT_SECRET\|MAIL_PASSWORD\)=.\+' .env || true
                 ;;
               mail-test)
                 echo "server outbound IPv4: $(curl -4 -s --max-time 8 https://api.ipify.org)"
-                docker exec -e TO="$VALUE" singlepage-app php artisan mail:test --no-ansi
+                docker exec -e TO="$VALUE" jadidaring-app php artisan mail:test --no-ansi
                 ;;
               backfill-email-normalized)
-                docker exec singlepage-app php artisan users:backfill-email-normalized --no-ansi
+                docker exec jadidaring-app php artisan users:backfill-email-normalized --no-ansi
                 ;;
               refresh-popular)
-                docker exec singlepage-app php artisan stats:refresh-popular --no-ansi
+                docker exec jadidaring-app php artisan stats:refresh-popular --no-ansi
                 ;;
               merge-langit-dry)
-                docker exec singlepage-app php artisan games:merge-rooms langitbersama "$VALUE" --no-ansi
+                docker exec jadidaring-app php artisan games:merge-rooms langitbersama "$VALUE" --no-ansi
                 ;;
               merge-langit)
-                docker exec singlepage-app php artisan games:merge-rooms langitbersama "$VALUE" --apply --no-ansi
+                docker exec jadidaring-app php artisan games:merge-rooms langitbersama "$VALUE" --apply --no-ansi
                 ;;
               delete-test-user)
-                docker exec singlepage-app php artisan users:delete-test "$VALUE" --force --no-ansi
+                docker exec jadidaring-app php artisan users:delete-test "$VALUE" --force --no-ansi
                 ;;
               delete-user)
-                docker exec singlepage-app php artisan users:delete-test "$VALUE" --allow-non-test --force --no-ansi
+                docker exec jadidaring-app php artisan users:delete-test "$VALUE" --allow-non-test --force --no-ansi
                 ;;
             esac

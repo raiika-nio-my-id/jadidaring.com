@@ -3,7 +3,7 @@
 # This stack must stay within 50 % of the host: ≤ 512 MB RAM, ≤ 0.50 vCPU.
 #
 #   Service       RAM    CPU
-#   singlepage   256m   0.25
+#   jadidaring   256m   0.25
 #   reverb        80m   0.08   (fallback engine for games not yet on Rust)
 #   realtime      80m   0.08   (Rust WebSocket fan-out, realtime/)
 #   scheduler     64m   0.04
@@ -12,20 +12,21 @@
 #   Total        512m   0.50
 #
 # Relies on ~/project/infrastructure (mysql-db on shared-services,
-# global-proxy / Nginx Proxy Manager on host network → 127.0.0.1:${APP_PORT}).
+# global-npm / Nginx Proxy Manager on shared-services → forward host "singlepage-nginx":80,
+# kept as a network alias of jadidaring-nginx; 127.0.0.1:${APP_PORT} is for deploy health checks).
 # Create the network once: docker network create shared-services
 # Reverb and realtime are internal (sse, unbuffered). Browsers reach it through nginx on /app (Upgrade must pass the proxy).
-# Project name is pinned: the folder was renamed from /var/www/singlepage to
-# /var/www/jadidaring.com, and the live containers carry the label
-# com.docker.compose.project=singlepage. Without this, compose would derive
-# "jadidaringcom" from the folder and clash with the existing container names.
-name: singlepage
+# Project name is pinned (the folder name /var/www/jadidaring.com would derive
+# "jadidaringcom"). Renamed from the original project "singlepage" in Nov 2026;
+# scripts/deploy.sh migrates a host still running the old project once.
+# No named volumes: the DB is the external global-mysql, storage is the bind-mounted tree.
+name: jadidaring
 
 services:
-  singlepage:
+  jadidaring:
     build: .
-    image: singlepage
-    container_name: singlepage-app
+    image: jadidaring
+    container_name: jadidaring-app
     restart: unless-stopped
     mem_limit: 256m
     memswap_limit: 256m
@@ -43,8 +44,8 @@ services:
       - PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-300}
       - PHP_DISPLAY_ERRORS=${PHP_DISPLAY_ERRORS:-Off}
       - BROADCAST_CONNECTION=reverb
-      - REALTIME_HOST=singlepage-realtime:9000
-      - REVERB_HOST=reverb
+      - REALTIME_HOST=jadidaring-realtime:9000
+      - REVERB_HOST=jadidaring-reverb
       - REVERB_PORT=8080
       - REVERB_SCHEME=http
       - REVERB_SERVER_HOST=0.0.0.0
@@ -56,8 +57,8 @@ services:
 
   reverb:
     build: .
-    image: singlepage
-    container_name: singlepage-reverb
+    image: jadidaring
+    container_name: jadidaring-reverb
     restart: unless-stopped
     mem_limit: 80m
     memswap_limit: 80m
@@ -76,13 +77,13 @@ services:
       - PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-300}
       - PHP_DISPLAY_ERRORS=${PHP_DISPLAY_ERRORS:-Off}
       - BROADCAST_CONNECTION=reverb
-      - REVERB_HOST=reverb
+      - REVERB_HOST=jadidaring-reverb
       - REVERB_PORT=8080
       - REVERB_SCHEME=http
       - REVERB_SERVER_HOST=0.0.0.0
       - REVERB_SERVER_PORT=8080
     depends_on:
-      - singlepage
+      - jadidaring
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -93,7 +94,7 @@ services:
   # all sub-keys are derived from it, so no new secret exists.
   realtime:
     image: alpine:3.20
-    container_name: singlepage-realtime
+    container_name: jadidaring-realtime
     restart: unless-stopped
     mem_limit: 80m
     memswap_limit: 80m
@@ -108,8 +109,8 @@ services:
 
   scheduler:
     build: .
-    image: singlepage
-    container_name: singlepage-scheduler
+    image: jadidaring
+    container_name: jadidaring-scheduler
     restart: unless-stopped
     mem_limit: 64m
     memswap_limit: 64m
@@ -129,7 +130,7 @@ services:
       - PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-300}
       - PHP_DISPLAY_ERRORS=${PHP_DISPLAY_ERRORS:-Off}
     depends_on:
-      - singlepage
+      - jadidaring
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -137,7 +138,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: singlepage-nginx
+    container_name: jadidaring-nginx
     restart: unless-stopped
     labels:
       jadidaring.nginx-config: "microcache-2026-11-19b-nohead"
@@ -151,11 +152,14 @@ services:
       - .:/var/www
       - ./docker-config/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - singlepage
+      - jadidaring
       - reverb
       - realtime
     networks:
-      - shared-services
+      shared-services:
+        # Nginx Proxy Manager forwards jadidaring.com to "singlepage-nginx":80 by name.
+        aliases:
+          - singlepage-nginx
 
 networks:
   shared-services:

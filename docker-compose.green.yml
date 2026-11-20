@@ -1,16 +1,16 @@
 # Standby PHP slot used only by scripts/deploy.sh during Path B.
 # A normal `docker compose up` does not load this file.
-# The script runs it as project `singlepage-green` and removes it after
-# traffic is back on container singlepage-app.
+# The script runs it as project `jadidaring-green` and removes it after
+# traffic is back on container jadidaring-app.
 #
 # Required environment (exported by deploy.sh):
 #   GREEN_APP_MOUNT, APP_DIR, DEPLOY_GREEN_PORT, HEALTH_NGINX_CONF
 # global-mysql is not defined here and must not be added.
 
 services:
-  singlepage_green:
-    image: ${SINGLEPAGE_IMAGE:-singlepage:incoming}
-    container_name: singlepage-app-green
+  jadidaring_green:
+    image: ${JADIDARING_IMAGE:-jadidaring:incoming}
+    container_name: jadidaring-app-green
     restart: unless-stopped
     mem_limit: 160m
     memswap_limit: 160m
@@ -32,7 +32,7 @@ services:
       PHP_DISPLAY_ERRORS: ${PHP_DISPLAY_ERRORS:-Off}
       # Publish to the live Reverb (compose DNS alias), not a second process.
       BROADCAST_CONNECTION: reverb
-      REVERB_HOST: reverb
+      REVERB_HOST: jadidaring-reverb
       REVERB_PORT: "8080"
       REVERB_SCHEME: http
       REVERB_SERVER_HOST: 0.0.0.0
@@ -44,13 +44,13 @@ services:
 
   nginx_health:
     image: nginx:alpine
-    container_name: singlepage-nginx-health
+    container_name: jadidaring-nginx-health
     restart: "no"
     mem_limit: 32m
     memswap_limit: 32m
     cpus: 0.05
     depends_on:
-      - singlepage_green
+      - jadidaring_green
     ports:
       - "127.0.0.1:${DEPLOY_GREEN_PORT:?}:80"
     volumes:
