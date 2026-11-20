@@ -8,6 +8,7 @@
         ['panel.community', 'Komunitas', '👥', ['panel.community*']],
         ['panel.users', 'User', '🙋', ['panel.users*']],
         ['panel.games', 'Game', '🎮', ['panel.games*']],
+        ['panel.pages', 'Custom Page', '🧩', ['panel.pages*']],
         ['panel.messages', 'Pesan', '✉️', ['panel.messages*']],
         ['panel.log', 'Log', '🧾', ['panel.log']],
         ['panel.backups', 'Backup', '💾', ['panel.backups*']],

@@ -152,3 +152,4 @@ a.adm-row__title:hover { text-decoration: underline; }
 .adm-login { max-width: 440px; margin: 28px auto; }
 .adm-note { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--clay-sky); color: var(--clay-sky-ink); font-weight: 700; }
 .adm-note--warn { background: var(--clay-peach); color: var(--clay-peach-ink); }
+.adm [hidden] { display: none !important; }

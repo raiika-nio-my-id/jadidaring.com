@@ -3,6 +3,7 @@
 use App\Http\Controllers\Panel\AuthController;
 use App\Http\Controllers\Panel\BackupController;
 use App\Http\Controllers\Panel\CommunityController;
+use App\Http\Controllers\Panel\CustomPageController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\GameController;
 use App\Http\Controllers\Panel\LogController;
@@ -66,6 +67,16 @@ Route::prefix('admin')->name('panel.')->middleware('panel.admin')->group(functio
     Route::get('/game/{game}/room/{room}', [GameController::class, 'room'])->whereNumber(['game', 'room'])->name('games.room');
     Route::delete('/game/{game}/room/{room}', [GameController::class, 'destroyRoom'])->whereNumber(['game', 'room'])->name('games.room.destroy');
     Route::post('/game/{game}/room-kosongkan', [GameController::class, 'clearRooms'])->whereNumber('game')->name('games.rooms.clear');
+
+    Route::get('/custom-page', [CustomPageController::class, 'index'])->name('pages');
+    Route::get('/custom-page/baru', [CustomPageController::class, 'create'])->name('pages.create');
+    Route::post('/custom-page', [CustomPageController::class, 'store'])->name('pages.store');
+    Route::get('/custom-page/{page}', [CustomPageController::class, 'edit'])->whereNumber('page')->name('pages.edit');
+    Route::put('/custom-page/{page}', [CustomPageController::class, 'update'])->whereNumber('page')->name('pages.update');
+    Route::post('/custom-page/{page}/pin', [CustomPageController::class, 'pin'])->whereNumber('page')->name('pages.pin');
+    Route::post('/custom-page/{page}/urutan', [CustomPageController::class, 'move'])->whereNumber('page')->name('pages.move');
+    Route::post('/custom-page/{page}/alias', [CustomPageController::class, 'storeAlias'])->whereNumber('page')->name('pages.alias.store');
+    Route::delete('/custom-page/{page}/alias/{alias}', [CustomPageController::class, 'destroyAlias'])->whereNumber(['page', 'alias'])->name('pages.alias.destroy');
 
     Route::get('/pesan', [MessageController::class, 'index'])->name('messages');
     Route::post('/pesan/{message}/baca', [MessageController::class, 'read'])->whereNumber('message')->name('messages.read');
