@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\SocialAuth;
+use App\Services\TelegramOidc;
+use App\Support\Ga4;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,9 +36,44 @@ class SocialController extends Controller
         return $this->finish($request, $user, $provider);
     }
 
+    /** OpenID Connect: full-page redirect to oauth.telegram.org (opens the Telegram app on phones). */
+    public function telegramRedirect(): RedirectResponse
+    {
+        abort_unless(TelegramOidc::enabled(), 404);
+
+        return redirect()->away(TelegramOidc::authorizeUrl());
+    }
+
+    public function telegramOidcCallback(Request $request): RedirectResponse
+    {
+        abort_unless(TelegramOidc::enabled(), 404);
+
+        if ($request->filled('error')) {
+            $request->session()->forget('tg_oidc');
+
+            return redirect()->route('member.login')->withErrors(['login' => 'Login Telegram dibatalkan.']);
+        }
+
+        try {
+            $claims = TelegramOidc::complete($request->query('state'), $request->query('code'));
+        } catch (\RuntimeException $e) {
+            return redirect()->route('member.login')->withErrors(['login' => $e->getMessage()]);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return redirect()->route('member.login')->withErrors(['login' => 'Login Telegram gagal. Coba lagi.']);
+        }
+
+        // Same provider_id as the classic widget (numeric Telegram user id), so existing accounts keep working.
+        $nick = (string) ($claims['preferred_username'] ?? $claims['given_name'] ?? $claims['name'] ?? '');
+        $user = SocialAuth::resolveUser('telegram', (string) $claims['id'], null, $nick);
+
+        return $this->finish($request, $user, 'telegram');
+    }
+
     public function telegram(Request $request): RedirectResponse
     {
-        abort_unless(SocialAuth::enabled('telegram'), 404);
+        abort_unless(SocialAuth::telegramWidgetEnabled(), 404);
 
         $data = $request->query();
 
@@ -48,11 +86,11 @@ class SocialController extends Controller
         return $this->finish($request, $user, 'telegram');
     }
 
-    private function finish(Request $request, \App\Models\User $user, string $method): RedirectResponse
+    private function finish(Request $request, User $user, string $method): RedirectResponse
     {
         Auth::login($user, true);
         $request->session()->regenerate();
-        \App\Support\Ga4::flash($user->wasRecentlyCreated ? 'sign_up' : 'login', ['method' => $method]);
+        Ga4::flash($user->wasRecentlyCreated ? 'sign_up' : 'login', ['method' => $method]);
 
         return redirect()->intended(route('member.account'))->with('status', session('social_notice'));
     }

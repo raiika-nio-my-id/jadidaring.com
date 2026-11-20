@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Support\EmailNormalizer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -20,10 +21,14 @@ class SocialAuth
         return match ($provider) {
             'google', 'github' => filled(config("services.{$provider}.client_id"))
                 && filled(config("services.{$provider}.client_secret")),
-            'telegram' => filled(config('services.telegram.bot_username'))
-                && filled(config('services.telegram.bot_token')),
+            'telegram' => TelegramOidc::enabled() || self::telegramWidgetEnabled(),
             default => false,
         };
+    }
+
+    public static function telegramWidgetEnabled(): bool
+    {
+        return filled(config('services.telegram.bot_username')) && filled(config('services.telegram.bot_token'));
     }
 
     /**
@@ -83,7 +88,7 @@ class SocialAuth
 
         // Never link by email (an email at the provider may be unverified, or someone else's). If the address, or its
         // gmail-dot / +tag twin, already belongs to a member, create the account without an email and say so.
-        if ($email !== null && $email !== '' && \App\Support\EmailNormalizer::taken($email)) {
+        if ($email !== null && $email !== '' && EmailNormalizer::taken($email)) {
             session()->flash('social_notice', 'Email '.$email.' sudah terdaftar di akun lain, jadi akun baru ini dibuat tanpa email. Kalau itu akunmu, masuk dengan cara lama lalu hubungkan dari sana.');
             $email = null;
         }

@@ -87,6 +87,8 @@ Route::middleware('guest')->group(function (): void {
     Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('member.password.reset');
     Route::post('/reset-password', [PasswordResetController::class, 'reset'])->middleware('throttle:10,1')->name('member.password.update');
     Route::get('/auth/telegram/callback', [SocialController::class, 'telegram'])->name('member.telegram.callback');
+    Route::get('/auth/telegram/redirect', [SocialController::class, 'telegramRedirect'])->middleware('throttle:30,1')->name('member.telegram.redirect');
+    Route::get('/auth/telegram/oidc/callback', [SocialController::class, 'telegramOidcCallback'])->middleware('throttle:30,1')->name('member.telegram.oidc.callback');
     Route::get('/auth/{provider}/redirect', [SocialController::class, 'redirect'])->whereIn('provider', ['google', 'github'])->name('member.social.redirect');
     Route::get('/auth/{provider}/callback', [SocialController::class, 'callback'])->whereIn('provider', ['google', 'github'])->name('member.social.callback');
 });

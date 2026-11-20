@@ -29,6 +29,9 @@ return [
     'telegram' => [
         'bot_username' => env('TELEGRAM_BOT_USERNAME'),
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        // OpenID Connect login (@BotFather > Login Widget shows both). When set, replaces the classic widget.
+        'client_id' => env('TELEGRAM_CLIENT_ID'),
+        'client_secret' => env('TELEGRAM_CLIENT_SECRET'),
     ],
 
     'ga4' => [

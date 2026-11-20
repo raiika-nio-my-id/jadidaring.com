@@ -10,7 +10,9 @@
     <div class="clay-social">
         <p class="clay-social__label">atau lanjutkan dengan</p>
         @foreach ($providers as $provider)
-            @if ($provider === 'telegram')
+            @if ($provider === 'telegram' && \App\Services\TelegramOidc::enabled())
+                <a class="clay-btn clay-btn--sky clay-social__btn" href="{{ route('member.telegram.redirect') }}" data-loading-text="Membuka Telegram…">{!! $icons['telegram'] !!}<span>Telegram</span></a>
+            @elseif ($provider === 'telegram')
                 <button type="button" class="clay-btn clay-btn--sky clay-social__btn" id="tg-login"
                     data-bot-id="{{ explode(':', (string) config('services.telegram.bot_token'))[0] }}"
                     data-callback="{{ route('member.telegram.callback') }}">{!! $icons['telegram'] !!}<span>Telegram</span></button>
@@ -18,8 +20,9 @@
                 <script src="https://telegram.org/js/telegram-widget.js?22" async></script>
                 <script src="{{ \App\Support\AssetUrl::to('js/telegram-login.js') }}" defer></script>
             @else
-                <a class="clay-btn clay-btn--sky clay-social__btn" href="{{ route('member.social.redirect', $provider) }}">{!! $icons[$provider] ?? '' !!}<span>{{ $labels[$provider] ?? ucfirst($provider) }}</span></a>
+                <a class="clay-btn clay-btn--sky clay-social__btn" href="{{ route('member.social.redirect', $provider) }}" data-loading-text="Membuka {{ $labels[$provider] ?? ucfirst($provider) }}…">{!! $icons[$provider] ?? '' !!}<span>{{ $labels[$provider] ?? ucfirst($provider) }}</span></a>
             @endif
         @endforeach
     </div>
+    <script src="{{ \App\Support\AssetUrl::to('js/social-login.js') }}" defer></script>
 @endif
