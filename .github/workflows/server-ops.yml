@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -218,6 +218,30 @@ jobs:
                 ;;
               merge-langit)
                 docker exec jadidaring-app php artisan games:merge-rooms langitbersama "$VALUE" --apply --no-ansi
+                ;;
+              purge-clients-dry)
+                docker exec jadidaring-app php artisan users:purge-clients --no-ansi
+                ;;
+              purge-clients)
+                [ "$VALUE" = "CONFIRM" ] || { echo "value must be CONFIRM"; exit 1; }
+                docker exec jadidaring-app php artisan users:purge-clients --force --no-ansi
+                ;;
+              list-backups|delete-backups)
+                # Only this app's backup folders. Never other hosts, images, containers or databases.
+                echo "== df before"; df -h / | tail -1
+                for d in storage/backups storage/app/backups; do
+                  [ -d "$d" ] || continue
+                  echo "== $d ($(du -sh "$d" | cut -f1))"
+                  find "$d" -mindepth 1 -maxdepth 3 -printf '%TY-%Tm-%Td %10s %p\n' | sort | tail -n 80
+                done
+                if [ "$ACTION" = "delete-backups" ]; then
+                  [ "$VALUE" = "CONFIRM" ] || { echo "value must be CONFIRM"; exit 1; }
+                  for d in storage/backups storage/app/backups; do
+                    [ -d "$d" ] && find "$d" -mindepth 1 -delete
+                  done
+                  echo "== after"; du -sh storage/backups storage/app/backups 2>/dev/null || true
+                  echo "== df after"; df -h / | tail -1
+                fi
                 ;;
               session-diag)
                 # Read-only: effective session config, sessions table stats, php upstream, log lines about sessions/DB errors.
