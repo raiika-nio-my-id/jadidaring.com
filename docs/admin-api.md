@@ -7,7 +7,7 @@ Machine-to-machine HTTP API for creating and updating company clients (`CompanyP
 | Environment | Base URL |
 |---|---|
 | Local | `http://admin.jadidaring.test/api/admin` |
-| Production | `https://admin.jadidaring.com/api/admin` |
+| Production | `https://jadidaring.com/api/admin` (the admin.jadidaring.com host is retired) |
 
 Path prefix: `/api/admin`
 
@@ -63,7 +63,7 @@ Changing `subdomain` reuses the admin UI swap: the former primary is kept as an 
 
 ```http
 POST /api/admin/clients HTTP/1.1
-Host: admin.jadidaring.com
+Host: jadidaring.com
 X-Admin-Api-Key: <ADMIN_API_SECRET>
 Accept: application/json
 Content-Type: application/json
@@ -112,7 +112,7 @@ The password is never returned. `public_url` is `https://www.{base_domain}/{subd
 
 ```http
 PATCH /api/admin/clients/12 HTTP/1.1
-Host: admin.jadidaring.com
+Host: jadidaring.com
 X-Admin-Api-Key: <ADMIN_API_SECRET>
 Accept: application/json
 Content-Type: application/json
@@ -128,7 +128,7 @@ Or by subdomain:
 
 ```http
 PATCH /api/admin/clients/subdomain/acme HTTP/1.1
-Host: admin.jadidaring.com
+Host: jadidaring.com
 X-Admin-Api-Key: <ADMIN_API_SECRET>
 Accept: application/json
 Content-Type: application/json

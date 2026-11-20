@@ -31,6 +31,14 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('api.admin.')
                 ->group(base_path('routes/admin-api.php'));
 
+            // The admin subdomain is retired: the same key-checked admin API is served on the
+            // main host too (https://jadidaring.com/api/admin/...). Same middleware, same routes.
+            Route::middleware(['api', 'admin.api', 'throttle:admin-api'])
+                ->domain($base)
+                ->prefix('api/admin')
+                ->name('api.admin.main.')
+                ->group(base_path('routes/admin-api.php'));
+
             // Game room/score API. New clients use /game/{tenant}/api/game.
             // /{tenant}/api/game stays on the bare host and www for tabs and
             // clients opened before the move (no redirect, so POSTs survive).
