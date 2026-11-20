@@ -199,7 +199,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 return redirect()->back(fallback: '/')->withInput($request->except(['password', 'password_confirmation', 'file']))->withErrors(['throttle' => $msg]);
             }
 
-            return response($msg, 429, ['Retry-After' => (string) $wait, 'Content-Type' => 'text/plain; charset=UTF-8']);
+            return response()->view('errors.429', ['retryAfter' => $wait, 'exception' => $e], 429, ['Retry-After' => (string) $wait]);
+        });
+
+        // Error pages (resources/views/errors) must never be indexed.
+        $exceptions->respond(function ($response) {
+            if ($response instanceof \Symfony\Component\HttpFoundation\Response && $response->getStatusCode() >= 400) {
+                $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+            }
+
+            return $response;
         });
 
         $exceptions->render(function (NotFoundHttpException $exception, Request $request) {
