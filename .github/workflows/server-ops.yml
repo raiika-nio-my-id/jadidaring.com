@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -115,11 +115,17 @@ jobs:
                 echo "== proxy manager containers (read-only)"
                 for c in $(docker ps --format '{{.Names}} {{.Image}}' | awk '/nginx-proxy-manager|npm|proxy/ {print $1}'); do
                   docker inspect "$c" --format '{{.Name}} image={{.Config.Image}} netmode={{.HostConfig.NetworkMode}} nets={{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}'
-                  docker exec "$c" sh -c 'for f in $(grep -l "jadidaring" /data/nginx/proxy_host/*.conf 2>/dev/null); do echo "-- $f"; grep -hE "server_name|set \$server|set \$port|set \$forward_scheme|proxy_pass" "$f"; done' 2>/dev/null || echo "(could not read proxy_host confs)"
+                  docker exec "$c" sh -c 'for f in $(grep -l "jadidaring" /data/nginx/proxy_host/*.conf 2>/dev/null); do echo "-- $f"; grep -hE "server_name|set .server|set .port|set .forward_scheme|proxy_pass|location" "$f"; done' 2>/dev/null || echo "(could not read proxy_host confs)"
                 done
                 echo "== .env keys mentioning singlepage (keys only)"; grep -iE '=.*singlepage' .env | cut -d= -f1 || echo none
                 echo "== .env DB_HOST/DB_DATABASE (not secret)"; grep -E '^(DB_HOST|DB_DATABASE|DB_CONNECTION|REDIS_HOST|CACHE_STORE|SESSION_DRIVER|QUEUE_CONNECTION)=' .env || true
                 echo "== storage size"; du -sh storage 2>/dev/null || true; df -h /var/www | tail -1
+                ;;
+              db-counts)
+                # Read-only: row count per table (for before/after comparisons).
+                app_c="$(docker ps --format '{{.Names}}' | grep -E '^(jadidaring|singlepage)-app$' | head -1)"
+                echo "counting via $app_c"
+                docker exec "$app_c" php artisan tinker --no-ansi --execute='foreach (Illuminate\Support\Facades\Schema::getTableListing(schemaQualified: false) as $t) { echo $t, " ", Illuminate\Support\Facades\DB::table($t)->count(), PHP_EOL; }' | sort
                 ;;
               news-api-check)
                 # Authenticated read-only GET with the key from .env; prints status and size only, never the key.
