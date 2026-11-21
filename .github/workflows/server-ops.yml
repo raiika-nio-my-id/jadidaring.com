@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -243,6 +243,23 @@ jobs:
                   echo "== after"; du -sh storage/backups storage/app/backups 2>/dev/null || true
                   echo "== df after"; df -h / | tail -1
                 fi
+                ;;
+              set-app-url)
+                # Idempotent: APP_URL is always the public host (admin.jadidaring.com is retired). Fixed value, no input.
+                want="https://jadidaring.com"
+                before="$(grep -E '^APP_URL=' .env | tail -1 | cut -d= -f2- || true)"
+                echo "APP_URL before: ${before:-<unset>}"
+                if [ "$before" != "$want" ]; then setkey APP_URL "$want"; fi
+                echo "APP_URL after: $(grep -E '^APP_URL=' .env | tail -1 | cut -d= -f2-)"
+                echo "APP_URL lines: $(grep -c '^APP_URL=' .env)"
+                # Other link-related keys still naming the old host (names only; hostnames are not secrets, but print just the key names)
+                echo "keys still mentioning admin.jadidaring: $(grep -E '^[A-Z0-9_]+=.*admin\.jadidaring' .env | cut -d= -f1 | tr '\n' ' ')"
+                for k in ASSET_URL SESSION_DOMAIN MAIL_FROM_ADDRESS REVERB_HOST; do printf '%s: %s\n' "$k" "$(grep -E "^$k=" .env | tail -1 | cut -d= -f2- | sed -E 's/^(.{0,60}).*/\1/' || true)"; done
+                docker exec jadidaring-app php artisan config:cache --no-ansi
+                docker exec jadidaring-app php artisan queue:restart --no-ansi >/dev/null 2>&1 || true
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo "config app.url=", config("app.url"), PHP_EOL, "url(/)=", url("/"), PHP_EOL, "reset=", route("member.password.reset", ["token" => "TOKEN", "email" => "a@example.com"]), PHP_EOL;' | grep -v OPcache
+                docker exec jadidaring-scheduler php artisan tinker --no-ansi --execute='echo "scheduler app.url=", config("app.url"), PHP_EOL;' 2>/dev/null | grep -v OPcache || true
+                docker ps --format '{{.Names}} {{.Status}}' | grep -E '^jadidaring-' || true
                 ;;
               session-diag)
                 # Read-only: effective session config, sessions table stats, php upstream, log lines about sessions/DB errors.
