@@ -8,8 +8,9 @@
     $isLiked = isset($liked[$post->id]);
     $comments = $previews[$post->id] ?? collect();
     $allComments = (bool) ($allComments ?? false);
+    $canMod = (bool) auth()->user()?->can('access-admin-panel');
 @endphp
-<article class="ch-card" id="curhat-{{ $post->id }}">
+<article class="ch-card" id="curhat-{{ $post->id }}" data-mod-item>
     <header class="ch-head">
         <a class="ch-av" href="/u/{{ $author->username }}" tabindex="-1" aria-hidden="true">
             @if ($avatar !== '')
@@ -49,6 +50,9 @@
                     <form method="post" action="/curhatan/{{ $post->id }}/hapus" data-ch-confirm="Hapus curhatan ini?">@csrf<button type="submit" class="member-link">Hapus</button></form>
                 @else
                     <form method="post" action="/curhatan/{{ $post->id }}/lapor" data-ch-confirm="Laporkan curhatan ini ke moderator?">@csrf<button type="submit" class="member-link">Laporkan</button></form>
+                    @if ($canMod)
+                        @include('clay._mod-menu', ['what' => 'curhatan', 'hideUrl' => '/admin/komunitas/curhatan/'.$post->id.'/toggle', 'deleteUrl' => '/admin/komunitas/curhatan/'.$post->id, 'after' => $allComments ? '/u/'.$author->username.'#curhatan' : null])
+                    @endif
                 @endif
             </span>
         @endauth
@@ -59,7 +63,7 @@
                 <a class="ch-allc" href="{{ $post->url() }}#komentar-curhat">Lihat semua {{ number_format($post->comments_count) }} komentar</a>
             @endif
             @foreach ($comments as $c)
-                <div class="ch-c" id="ch-c-{{ $c->id }}">
+                <div class="ch-c" id="ch-c-{{ $c->id }}" data-mod-item>
                     <p><a class="ch-c__who" href="/u/{{ $c->user?->username }}">{{ '@'.($c->user?->username ?? 'anonim') }}</a> {{ $c->body }}</p>
                     @auth
                         <span class="ch-c__tools">
@@ -68,6 +72,9 @@
                                 <form method="post" action="/curhatan/komentar/{{ $c->id }}/hapus" data-ch-confirm="Hapus komentar ini?">@csrf<button type="submit" class="member-link">Hapus</button></form>
                             @else
                                 <form method="post" action="/curhatan/komentar/{{ $c->id }}/lapor" data-ch-confirm="Laporkan komentar ini?">@csrf<button type="submit" class="member-link">Laporkan</button></form>
+                            @endif
+                            @if ($canMod && ! $isMine && auth()->id() !== $c->user_id)
+                                @include('clay._mod-menu', ['what' => 'komentar', 'hideUrl' => '/admin/komunitas/curhatan-komentar/'.$c->id.'/toggle', 'deleteUrl' => '/admin/komunitas/curhatan-komentar/'.$c->id])
                             @endif
                         </span>
                     @endauth

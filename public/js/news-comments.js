@@ -9,11 +9,22 @@
     function render(c) {
         var item = document.createElement('div');
         item.className = 'news-comment';
+        item.setAttribute('data-mod-item', '');
         var who = document.createElement('strong');
         who.textContent = c.user;
         var text = document.createElement('p');
         text.textContent = c.body;
-        item.appendChild(who);
+        var modBase = box.getAttribute('data-mod-base');
+        if (modBase && c.id && window.JdMod) {
+            /* admin-only (attribute rendered for panel admins); the /admin route is the real guard */
+            var head = document.createElement('div');
+            head.className = 'news-comment__head';
+            head.appendChild(who);
+            head.appendChild(window.JdMod.menu({ what: 'komentar', hideUrl: modBase + c.id + '/toggle', deleteUrl: modBase + c.id }));
+            item.appendChild(head);
+        } else {
+            item.appendChild(who);
+        }
         item.appendChild(text);
         return item;
     }

@@ -48,6 +48,7 @@ Route::prefix('admin')->name('panel.')->middleware('panel.admin')->group(functio
     Route::post('/komunitas/curhatan/{post}/toggle', [CommunityController::class, 'togglePost'])->whereNumber('post')->name('community.posts.toggle');
     Route::delete('/komunitas/curhatan/{post}', [CommunityController::class, 'destroyPost'])->whereNumber('post')->name('community.posts.destroy');
     Route::post('/komunitas/curhatan-komentar/{comment}/toggle', [CommunityController::class, 'togglePostComment'])->whereNumber('comment')->name('community.postcomments.toggle');
+    Route::delete('/komunitas/curhatan-komentar/{comment}', [CommunityController::class, 'destroyPostComment'])->whereNumber('comment')->name('community.postcomments.destroy');
     Route::get('/komunitas/{page}', [CommunityController::class, 'show'])->whereNumber('page')->name('community.show');
     Route::post('/komunitas/{page}/status', [CommunityController::class, 'status'])->whereNumber('page')->name('community.status');
     Route::post('/komunitas/{page}/reset-pengunjung', [CommunityController::class, 'resetViews'])->whereNumber('page')->name('community.reset');

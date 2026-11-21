@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Panel\Concerns\RespondsToModeration;
 use App\Models\MemberPage;
 use App\Models\MemberPageComment;
 use App\Models\MemberPost;
@@ -10,6 +11,7 @@ use App\Models\MemberPostComment;
 use App\Services\Admin\AdminAudit;
 use App\Services\Admin\AdminBackup;
 use App\Services\PostImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +24,8 @@ use Illuminate\View\View;
  */
 class CommunityController extends Controller
 {
+    use RespondsToModeration;
+
     public function index(Request $request): View
     {
         $q = trim((string) $request->query('q', ''));
@@ -88,23 +92,24 @@ class CommunityController extends Controller
         return view('panel.community.comments', ['comments' => $comments, 'f' => $f, 'q' => $q]);
     }
 
-    public function toggleComment(Request $request, int $comment): RedirectResponse
+    public function toggleComment(Request $request, int $comment): JsonResponse|RedirectResponse
     {
         $model = MemberPageComment::query()->findOrFail($comment);
-        $model->update(['is_hidden' => ! $model->is_hidden, 'reports_count' => $model->is_hidden ? 0 : $model->reports_count]);
+        $hide = $this->wantHidden($request, (bool) $model->is_hidden);
+        $model->update(['is_hidden' => $hide, 'reports_count' => $hide ? $model->reports_count : 0]);
         AdminAudit::log($request, $model->is_hidden ? 'community.comment.hide' : 'community.comment.unhide', 'member_page_comment', $model->id, Str::limit((string) $model->body, 80));
 
-        return back()->with('toast', $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi (laporan direset).');
+        return $this->moderated($request, $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi (laporan direset).', ['hidden' => (bool) $model->is_hidden]);
     }
 
-    public function destroyComment(Request $request, int $comment): RedirectResponse
+    public function destroyComment(Request $request, int $comment): JsonResponse|RedirectResponse
     {
         $model = MemberPageComment::query()->findOrFail($comment);
         $file = AdminBackup::write('member-page-comment-'.$model->id, $model->toArray());
         $model->delete();
         AdminAudit::log($request, 'community.comment.delete', 'member_page_comment', $comment, Str::limit((string) $model->body, 80), ['backup' => basename($file)]);
 
-        return back()->with('toast', 'Komentar dihapus.');
+        return $this->moderated($request, 'Komentar dihapus.', ['deleted' => true]);
     }
 
     public function posts(Request $request): View
@@ -125,16 +130,17 @@ class CommunityController extends Controller
         return view('panel.community.posts', ['posts' => $posts, 'postComments' => $postComments, 'f' => $f, 'q' => $q]);
     }
 
-    public function togglePost(Request $request, int $post): RedirectResponse
+    public function togglePost(Request $request, int $post): JsonResponse|RedirectResponse
     {
         $model = MemberPost::query()->findOrFail($post);
-        $model->update(['is_hidden' => ! $model->is_hidden, 'reports_count' => $model->is_hidden ? 0 : $model->reports_count]);
+        $hide = $this->wantHidden($request, (bool) $model->is_hidden);
+        $model->update(['is_hidden' => $hide, 'reports_count' => $hide ? $model->reports_count : 0]);
         AdminAudit::log($request, $model->is_hidden ? 'curhatan.hide' : 'curhatan.unhide', 'member_post', $model->id, Str::limit((string) $model->body, 80));
 
-        return back()->with('toast', $model->is_hidden ? 'Curhatan disembunyikan.' : 'Curhatan tampil lagi (laporan direset).');
+        return $this->moderated($request, $model->is_hidden ? 'Curhatan disembunyikan.' : 'Curhatan tampil lagi (laporan direset).', ['hidden' => (bool) $model->is_hidden]);
     }
 
-    public function destroyPost(Request $request, int $post): RedirectResponse
+    public function destroyPost(Request $request, int $post): JsonResponse|RedirectResponse
     {
         $model = MemberPost::query()->findOrFail($post);
         $file = AdminBackup::write('member-post-'.$model->id, ['post' => $model->toArray(), 'comments' => $model->comments()->get()->toArray()]);
@@ -146,18 +152,32 @@ class CommunityController extends Controller
         $model->delete();
         AdminAudit::log($request, 'curhatan.delete', 'member_post', $post, Str::limit((string) $model->body, 80), ['backup' => basename($file)]);
 
-        return back()->with('toast', 'Curhatan dihapus.');
+        return $this->moderated($request, 'Curhatan dihapus.', ['deleted' => true]);
     }
 
-    public function togglePostComment(Request $request, int $comment): RedirectResponse
+    public function togglePostComment(Request $request, int $comment): JsonResponse|RedirectResponse
     {
         $model = MemberPostComment::query()->findOrFail($comment);
-        $model->update(['is_hidden' => ! $model->is_hidden, 'reports_count' => $model->is_hidden ? 0 : $model->reports_count]);
+        $hide = $this->wantHidden($request, (bool) $model->is_hidden);
+        $model->update(['is_hidden' => $hide, 'reports_count' => $hide ? $model->reports_count : 0]);
         MemberPost::query()->whereKey($model->member_post_id)->update([
             'comments_count' => MemberPostComment::query()->where('member_post_id', $model->member_post_id)->where('is_hidden', false)->count(),
         ]);
         AdminAudit::log($request, $model->is_hidden ? 'curhatan.comment.hide' : 'curhatan.comment.unhide', 'member_post_comment', $model->id, Str::limit((string) $model->body, 80));
 
-        return back()->with('toast', $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi.');
+        return $this->moderated($request, $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi.', ['hidden' => (bool) $model->is_hidden]);
+    }
+
+    public function destroyPostComment(Request $request, int $comment): JsonResponse|RedirectResponse
+    {
+        $model = MemberPostComment::query()->findOrFail($comment);
+        $file = AdminBackup::write('member-post-comment-'.$model->id, $model->toArray());
+        $model->delete();
+        MemberPost::query()->whereKey($model->member_post_id)->update([
+            'comments_count' => MemberPostComment::query()->where('member_post_id', $model->member_post_id)->where('is_hidden', false)->count(),
+        ]);
+        AdminAudit::log($request, 'curhatan.comment.delete', 'member_post_comment', $comment, Str::limit((string) $model->body, 80), ['backup' => basename($file)]);
+
+        return $this->moderated($request, 'Komentar dihapus.', ['deleted' => true]);
     }
 }

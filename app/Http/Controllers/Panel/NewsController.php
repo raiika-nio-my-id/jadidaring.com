@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\ClayController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Panel\Concerns\RespondsToModeration;
 use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Models\NewsTopic;
@@ -11,6 +12,7 @@ use App\Services\Admin\AdminAudit;
 use App\Services\Admin\AdminBackup;
 use App\Services\NewsCache;
 use App\Services\NewsImage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -20,6 +22,8 @@ use Illuminate\View\View;
 /** /admin Berita: list, search, filter, edit, hide/unhide, delete (with JSON backup), topics, comment moderation. */
 class NewsController extends Controller
 {
+    use RespondsToModeration;
+
     public function index(Request $request): View
     {
         $q = trim((string) $request->query('q', ''));
@@ -200,22 +204,22 @@ class NewsController extends Controller
         return view('panel.news.comments', ['comments' => $comments, 'f' => $f, 'q' => $q]);
     }
 
-    public function toggleComment(Request $request, int $comment): RedirectResponse
+    public function toggleComment(Request $request, int $comment): JsonResponse|RedirectResponse
     {
         $model = ArticleComment::query()->findOrFail($comment);
-        $model->update(['is_hidden' => ! $model->is_hidden]);
+        $model->update(['is_hidden' => $this->wantHidden($request, (bool) $model->is_hidden)]);
         AdminAudit::log($request, $model->is_hidden ? 'news.comment.hide' : 'news.comment.unhide', 'article_comment', $model->id, Str::limit((string) $model->body, 80));
 
-        return back()->with('toast', $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi.');
+        return $this->moderated($request, $model->is_hidden ? 'Komentar disembunyikan.' : 'Komentar tampil lagi.', ['hidden' => (bool) $model->is_hidden]);
     }
 
-    public function destroyComment(Request $request, int $comment): RedirectResponse
+    public function destroyComment(Request $request, int $comment): JsonResponse|RedirectResponse
     {
         $model = ArticleComment::query()->findOrFail($comment);
         $file = AdminBackup::write('article-comment-'.$model->id, $model->toArray());
         $model->delete();
         AdminAudit::log($request, 'news.comment.delete', 'article_comment', $comment, Str::limit((string) $model->body, 80), ['backup' => basename($file)]);
 
-        return back()->with('toast', 'Komentar dihapus.');
+        return $this->moderated($request, 'Komentar dihapus.', ['deleted' => true]);
     }
 }

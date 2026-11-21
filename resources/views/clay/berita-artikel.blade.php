@@ -52,7 +52,7 @@
 
         <section class="clay-card clay-card--lavender news-comments" id="komentar"
             data-url="/berita/{{ $article['topic'] }}/{{ $article['slug'] }}/komentar"
-            data-auth="{{ auth()->check() ? '1' : '0' }}">
+            data-auth="{{ auth()->check() ? '1' : '0' }}"@can('access-admin-panel') data-mod-base="/admin/berita/komentar/"@endcan>
             <h2>Komentar</h2>
             <div class="news-comments__list" aria-live="polite"><p class="news-comments__hint">Komentar dimuat saat Anda menggulir ke sini…</p></div>
             @auth

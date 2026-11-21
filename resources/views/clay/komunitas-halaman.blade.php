@@ -49,7 +49,7 @@
                 <p><a href="/masuk">Masuk</a> atau <a href="/daftar">daftar</a> untuk berkomentar.</p>
             @endauth
             @forelse ($comments as $c)
-                <article class="member-comment">
+                <article class="member-comment" data-mod-item>
                     <header><strong>{{ '@'.($c->user?->username ?? 'anonim') }}</strong> <time class="news-date" data-jd-time datetime="{{ $c->created_at?->toIso8601String() }}">{{ $c->created_at?->wita() }}</time></header>
                     <p>{{ $c->body }}</p>
                     @auth
@@ -57,6 +57,9 @@
                             <form method="post" action="/u/{{ $owner->username }}/komentar/{{ $c->id }}/lapor">@csrf<button class="member-link" type="submit">Laporkan</button></form>
                             @if (auth()->id() === $owner->id || auth()->id() === $c->user_id)
                                 <form method="post" action="/u/{{ $owner->username }}/komentar/{{ $c->id }}/sembunyikan">@csrf<button class="member-link" type="submit">Sembunyikan</button></form>
+                            @endif
+                            @if (auth()->user()->can('access-admin-panel') && auth()->id() !== $c->user_id)
+                                @include('clay._mod-menu', ['what' => 'komentar', 'hideUrl' => '/admin/komunitas/komentar/'.$c->id.'/toggle', 'deleteUrl' => '/admin/komunitas/komentar/'.$c->id])
                             @endif
                         </div>
                     @endauth
