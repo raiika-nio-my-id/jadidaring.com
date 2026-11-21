@@ -40,6 +40,9 @@ class TenantPath
 
     public static function publicUrl(string $subdomain): string
     {
+        if (($own = self::ownHostUrl($subdomain)) !== null) {
+            return rtrim($own, '/');
+        }
         $scheme = parse_url((string) config('app.url'), PHP_URL_SCHEME) ?: 'https';
 
         return $scheme.'://'.self::host().'/'.self::segment($subdomain);
@@ -50,7 +53,28 @@ class TenantPath
      */
     public static function label(string $subdomain): string
     {
+        if (self::isOwnHost($subdomain)) {
+            return strtolower(trim($subdomain)).'.'.strtolower((string) config('singlepage.base_domain'));
+        }
+
         return self::host().'/'.self::segment($subdomain);
+    }
+
+    /** Custom Pages served on their own host (config singlepage.own_host_pages). */
+    public static function isOwnHost(string $subdomain): bool
+    {
+        return in_array(strtolower(trim($subdomain)), (array) config('singlepage.own_host_pages', []), true);
+    }
+
+    /** https://{label}.{base_domain}/ for an own-host page, else null. */
+    public static function ownHostUrl(string $subdomain): ?string
+    {
+        if (! self::isOwnHost($subdomain)) {
+            return null;
+        }
+        $scheme = parse_url((string) config('app.url'), PHP_URL_SCHEME) ?: 'https';
+
+        return $scheme.'://'.strtolower(trim($subdomain)).'.'.strtolower((string) config('singlepage.base_domain')).'/';
     }
 
     public static function homeUrl(Request $request, string $subdomain): string

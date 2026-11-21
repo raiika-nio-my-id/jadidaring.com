@@ -62,6 +62,49 @@ class TenantController extends Controller
         ]);
     }
 
+    /** A Custom Page on its own host ({label}.{base}/, config singlepage.own_host_pages). Not for games. */
+    public function showOwnHost(Request $request, LegalNoticeInjector $legalInjector, SeoInjector $seoInjector): Response
+    {
+        $profile = $this->ownHostProfile($request);
+        $html = \App\Services\GameMasterKey::scrub((string) $profile->html);
+        $html = $profile->hide_footer ? $html : $legalInjector->inject($html, TenantPath::termsUrl($request, $profile->subdomain));
+        $html = $seoInjector->inject($html, (string) TenantPath::ownHostUrl($profile->subdomain));
+        $this->trackVisit($profile, $request);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html; charset=UTF-8',
+            'X-Content-Type-Options' => 'nosniff',
+            'Referrer-Policy' => 'strict-origin-when-cross-origin',
+            'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()',
+            'Cache-Control' => 'public, max-age=0, s-maxage=120',
+        ]);
+    }
+
+    public function ownHostRobots(Request $request): Response
+    {
+        $profile = $this->ownHostProfile($request);
+
+        return response("User-agent: *\nAllow: /\n\nSitemap: ".TenantPath::ownHostUrl($profile->subdomain)."sitemap.xml\n")
+            ->header('Content-Type', 'text/plain; charset=utf-8');
+    }
+
+    public function ownHostSitemap(Request $request): Response
+    {
+        $profile = $this->ownHostProfile($request);
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'
+            .e((string) TenantPath::ownHostUrl($profile->subdomain)).'</loc><lastmod>'.($profile->updated_at ?? now())->toDateString().'</lastmod></url></urlset>';
+
+        return response($xml)->header('Content-Type', 'application/xml; charset=utf-8');
+    }
+
+    private function ownHostProfile(Request $request): CompanyProfile
+    {
+        $label = strtolower(explode('.', $request->getHost())[0]);
+        abort_unless(TenantPath::isOwnHost($label), 404);
+
+        return CompanyProfile::query()->live()->where('is_game', false)->where('subdomain', $label)->firstOrFail();
+    }
+
     public function showGame(Request $request, string $slug): Response
     {
         $profile = $this->liveGame($slug);

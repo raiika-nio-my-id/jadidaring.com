@@ -50,6 +50,13 @@ class ResolveTenantPath
                 abort(404);
             }
 
+            // Own-host pages: the bare path (/andika, /andika/) 301s to https://andika.{base}/ (query kept).
+            if (! $isApi && $request->isMethod('GET') && trim($request->path(), '/') === $subdomain && ($own = TenantPath::ownHostUrl($subdomain)) !== null) {
+                $qs = $request->getQueryString();
+
+                return redirect()->away($own.($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);
+            }
+
             $request->attributes->set('tenantProfile', $profile);
 
             return $next($request);

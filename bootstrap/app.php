@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\StaticAssetController;
+use App\Http\Controllers\TenantController;
 use App\Http\Middleware\AuthenticateAdminApiKey;
 use App\Http\Middleware\BlockBannedUser;
 use App\Http\Middleware\EnsurePanelAdmin;
@@ -99,6 +100,17 @@ return Application::configure(basePath: dirname(__DIR__))
                     return redirect()->away('https://'.$base.'/game'.($exists ? '/'.$slug : '').($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);
                 })->where('any', '(?!up$).*');
             });
+
+            // Own-host Custom Pages (config singlepage.own_host_pages): {label}.{base} serves the page at /.
+            // No web middleware, so no session/CSRF cookies. Other paths (except static files nginx serves) are 404.
+            foreach ((array) config('singlepage.own_host_pages', []) as $label) {
+                Route::domain($label.'.'.$base)->group(function (): void {
+                    Route::get('/', [TenantController::class, 'showOwnHost'])->middleware('throttle:120,1');
+                    Route::get('/robots.txt', [TenantController::class, 'ownHostRobots']);
+                    Route::get('/sitemap.xml', [TenantController::class, 'ownHostSitemap']);
+                    Route::any('/{any}', fn () => abort(404))->where('any', '(?!up$).*');
+                });
+            }
 
             // Old client/game subdomains (explicit allowlist in config/old_subdomains.php): 301 to the path
             // on the apex domain. No web middleware, so no session/CSRF cookies. Query string is kept.

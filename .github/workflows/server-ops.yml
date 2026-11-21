@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url, import-andika-page]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -243,6 +243,13 @@ jobs:
                   echo "== after"; du -sh storage/backups storage/app/backups 2>/dev/null || true
                   echo "== df after"; df -h / | tail -1
                 fi
+                ;;
+              import-andika-page)
+                # Seeds the andika Custom Page (own host andika.<base>) from resources/pages/andika.html.
+                # Idempotent: an existing page (admin edits) is kept unless value=force.
+                f=""; [ "$VALUE" = "force" ] && f="--force"
+                docker exec jadidaring-app php artisan pages:import-custom andika resources/pages/andika.html --name="Andika Pradipta Suardi" $f --no-ansi 2>&1 | grep -v OPcache
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo "public url=", App\Services\TenantPath::publicUrl("andika"), PHP_EOL;' 2>&1 | grep -v OPcache
                 ;;
               set-app-url)
                 # Idempotent: APP_URL is always the public host (admin.jadidaring.com is retired). Fixed value, no input.

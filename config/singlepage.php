@@ -33,6 +33,10 @@ return [
     // Old admin UI + API on admin_domain. Retired (off) in production; the panel is {base}/admin.
     'legacy_admin_host' => (bool) env('LEGACY_ADMIN_HOST', false),
 
+    // Custom Pages served on their own host {label}.{base_domain} (root path) instead of {base}/{label}.
+    // The path URL 301s to the own host. Labels must be Custom Pages (not games) and not old_subdomains entries.
+    'own_host_pages' => array_values(array_filter(array_map('trim', explode(',', strtolower((string) env('OWN_HOST_PAGES', 'andika')))))),
+
     /*
     | Games where creating/drawing needs a logged-in member (comma separated
     | subdomains). Empty disables the rule.
