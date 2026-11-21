@@ -9,7 +9,7 @@
     <div class="adm-login">
         <div class="clay-card clay-card--lavender">
             <h1 class="clay-section__title">Masuk Admin</h1>
-            <p>Pakai email dan kata sandi akun admin (sama dengan admin.jadidaring.com).</p>
+            <p>Pakai email dan kata sandi akun admin.</p>
             @auth
                 <p class="adm-note adm-note--warn">Kamu sedang masuk sebagai {{ auth()->user()->username ? '@'.auth()->user()->username : auth()->user()->email }}, yang bukan admin. Masuk di sini akan mengganti sesi itu.</p>
             @endauth

@@ -20,7 +20,7 @@ news photos. The server downloads and self-hosts the photo (never hotlinked), cr
 webp copies at 480/800/1200px. The source file must be at least **1200x630 px**, JPEG/PNG/WebP/GIF, up to 12 MB.
 The credit line is shown under the image on the article page.
 
-Attach a photo to an existing article (header `X-Admin-Api-Key`, host `admin.jadidaring.com`):
+Attach a photo to an existing article (header `X-Admin-Api-Key`, host `jadidaring.com`):
 
 ```
 POST /api/admin/news/articles/{id}/image
