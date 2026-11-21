@@ -247,6 +247,14 @@ jobs:
               import-andika-page)
                 # Seeds the andika Custom Page (own host andika.<base>) from resources/pages/andika.html.
                 # Idempotent: an existing page (admin edits) is kept unless value=force.
+                if [ "$VALUE" = "info" ]; then
+                  docker exec jadidaring-app php artisan tinker --no-ansi --execute='$p=App\Models\CompanyProfile::where("subdomain","andika")->first(); echo "created=", $p?->created_at, " updated=", $p?->updated_at, " md5=", md5((string) $p?->html), " ig_old=", substr_count((string) $p?->html, "instagram.com/andikanio"), PHP_EOL;' 2>&1 | grep -v OPcache
+                  exit 0
+                fi
+                if [ "$VALUE" = "patch-ig" ]; then
+                  docker exec jadidaring-app php artisan tinker --no-ansi --execute='$p=App\Models\CompanyProfile::where("subdomain","andika")->firstOrFail(); $h=str_replace(["https://www.instagram.com/andikanio/","<small>@andikanio</small>"],["https://www.instagram.com/raiika13/","<small>@raiika13</small>"],(string)$p->html); $p->update(["html"=>$h]); echo "patched ig_new=", substr_count($h,"raiika13"), PHP_EOL;' 2>&1 | grep -v OPcache
+                  exit 0
+                fi
                 f=""; [ "$VALUE" = "force" ] && f="--force"
                 docker exec jadidaring-app php artisan pages:import-custom andika resources/pages/andika.html --name="Andika Pradipta Suardi" $f --no-ansi 2>&1 | grep -v OPcache
                 docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo "public url=", App\Services\TenantPath::publicUrl("andika"), PHP_EOL;' 2>&1 | grep -v OPcache
