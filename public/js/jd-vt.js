@@ -16,7 +16,7 @@
   window.jdSkel = {
     list: function (kind) {
       var wrap = kind === 'game' ? 'game-grid' : kind === 'feed' ? 'ch-list ch-list--feed' : kind === 'pfmini' ? 'pf-cards' : 'news-grid';
-      var n = kind === 'feed' ? 5 : kind === 'pfmini' ? 8 : 6, c = '';
+      var n = kind === 'feed' ? 5 : kind === 'pfmini' ? 8 : kind === 'news' ? 12 : 6, c = '';
       for (var i = 0; i < n; i++) c += card(kind === 'feed' ? 'profile' : kind);
       return '<div class="' + wrap + '">' + c + '</div>';
     }
@@ -43,7 +43,7 @@
       });
       shell.querySelectorAll('a,input,button,select').forEach(function (n) { n.tabIndex = -1; });
       var slot = shell.querySelector('[data-sk]');
-      var n = kind === 'komunitas' ? 5 : 6, cards = '';
+      var n = kind === 'komunitas' ? 5 : kind === 'berita' ? 12 : 6, cards = '';
       if (kind === 'profil') { if (slot) slot.innerHTML = '<div class="jd-sk jd-sk-pfhead"></div><div class="jd-sk jd-sk-pfblock"></div><div class="jd-sk jd-sk-pfblock"></div>'; }
       else {
       for (var i = 0; i < n; i++) cards += card(kind === 'game' ? 'game' : kind === 'komunitas' ? 'profile' : 'news');

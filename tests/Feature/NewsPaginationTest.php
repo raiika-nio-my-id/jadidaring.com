@@ -26,24 +26,24 @@ class NewsPaginationTest extends TestCase
 
     public function test_page_two_shows_different_articles_with_canonical_and_title(): void
     {
-        $this->seedArticles(60);
+        $this->seedArticles(30);
         $p1 = $this->get(self::SITE.'/berita')->assertOk()
             ->assertSee('<link rel="canonical" href="https://jadidaring.test/berita">', false)
             ->assertSee('rel="next" href="https://jadidaring.test/berita?page=2"', false)
             ->assertSee('href="/berita?page=2"', false)
-            ->assertSee('Artikel nomor 60')->assertDontSee('Artikel nomor 36');
+            ->assertSee('Artikel nomor 30')->assertDontSee('Artikel nomor 18');
         $this->assertStringNotContainsString('Halaman 1', $p1->getContent());
 
         $this->get(self::SITE.'/berita?page=2')->assertOk()
             ->assertSee('<link rel="canonical" href="https://jadidaring.test/berita?page=2">', false)
             ->assertSee('Halaman 2')
-            ->assertSee('Artikel nomor 36')->assertDontSee('Artikel nomor 60');
+            ->assertSee('Artikel nomor 18')->assertDontSee('Artikel nomor 30');
     }
 
     public function test_out_of_range_and_invalid_pages_404(): void
     {
-        $this->seedArticles(30);
-        $this->get(self::SITE.'/berita?page=3')->assertNotFound();
+        $this->seedArticles(12);
+        $this->get(self::SITE.'/berita?page=2')->assertNotFound();
         $this->get(self::SITE.'/berita?page=0')->assertNotFound();
         $this->get(self::SITE.'/berita?page=abc')->assertNotFound();
         $this->get(self::SITE.'/berita/politik?page=2')->assertNotFound();
@@ -57,6 +57,6 @@ class NewsPaginationTest extends TestCase
             ->assertSee('href="/berita/politik?page=2"', false);
         $this->get(self::SITE.'/berita/politik?page=2')->assertOk()
             ->assertSee('<link rel="canonical" href="https://jadidaring.test/berita/politik?page=2">', false)
-            ->assertSee('Halaman 2')->assertSee('Artikel nomor 5')->assertDontSee('Artikel nomor 59');
+            ->assertSee('Halaman 2')->assertSee('Artikel nomor 35')->assertDontSee('Artikel nomor 59');
     }
 }

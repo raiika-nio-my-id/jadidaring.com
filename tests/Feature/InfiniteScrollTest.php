@@ -29,7 +29,7 @@ class InfiniteScrollTest extends TestCase
 
     public function test_news_shows_load_more_link_instead_of_numbered_pager(): void
     {
-        $this->seedArticles(60);
+        $this->seedArticles(30);
         $r = $this->get(self::SITE.'/berita')->assertOk()
             ->assertSee('data-jd-inf', false)
             ->assertSee('class="clay-btn clay-btn--secondary inf__btn" rel="next" href="/berita?page=2"', false)
@@ -48,10 +48,10 @@ class InfiniteScrollTest extends TestCase
 
     public function test_news_partial_returns_only_cards_and_next_footer(): void
     {
-        $this->seedArticles(60);
+        $this->seedArticles(30);
         $r = $this->get(self::SITE.'/berita?page=2&partial=1')->assertOk()
             ->assertHeader('X-Robots-Tag', 'noindex')
-            ->assertSee('Artikel nomor 36')->assertDontSee('Artikel nomor 60')
+            ->assertSee('Artikel nomor 18')->assertDontSee('Artikel nomor 30')
             ->assertSee('data-next="/berita?page=3&amp;partial=1"', false)
             ->assertSee('href="/berita?page=3"', false);
         $this->assertStringNotContainsString('<html', $r->getContent());

@@ -62,7 +62,7 @@ class NewsCache
         });
     }
 
-    public const PER_PAGE = 24;
+    public const PER_PAGE = 12;
 
     public static function total(?string $topic): int
     {
