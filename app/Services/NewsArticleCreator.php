@@ -25,7 +25,7 @@ final class NewsArticleCreator
             'slug' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
             'status' => ['sometimes', Rule::in(['draft', 'published'])],
             'published_at' => ['nullable', 'date'],
-            'sources' => ['required', 'array', 'min:2', 'max:10'],
+            'sources' => ['required', 'array', 'min:1', 'max:10'],
         ];
     }
 

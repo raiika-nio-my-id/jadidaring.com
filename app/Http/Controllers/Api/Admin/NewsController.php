@@ -36,7 +36,7 @@ class NewsController extends Controller
         $data = $request->validate([
             'enabled' => ['sometimes', 'boolean'],
             'articles_per_day' => ['sometimes', 'integer', 'min:0', 'max:50'],
-            'min_sources' => ['sometimes', 'integer', 'min:2', 'max:10'],
+            'min_sources' => ['sometimes', 'integer', 'min:1', 'max:10'],
         ]);
 
         $topic->update($data);

@@ -4,7 +4,7 @@ namespace App\Services;
 
 /**
  * Validates an article's source list: each source is an http(s) URL and the
- * registrable domains are distinct (at least $min of them).
+ * registrable domains are distinct (at least $min of them; the topic's min_sources, 1-10).
  */
 class NewsSources
 {
@@ -42,7 +42,7 @@ class NewsSources
      */
     public static function normalize(array $sources, int $min = 2): array
     {
-        $min = max(2, $min);
+        $min = max(1, $min);
         $clean = [];
         $domains = [];
         $own = GameHub::baseDomain();

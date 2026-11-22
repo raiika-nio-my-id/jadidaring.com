@@ -195,7 +195,9 @@ class NewsTest extends TestCase
         $this->patchJson(self::API.'/topics/gaming', ['enabled' => false], $this->key())->assertOk();
         $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming']), $this->key())->assertStatus(422);
 
-        $this->patchJson(self::API.'/topics/gaming', ['min_sources' => 1], $this->key())->assertStatus(422);
+        $this->patchJson(self::API.'/topics/gaming', ['min_sources' => 0], $this->key())->assertStatus(422);
+        $this->patchJson(self::API.'/topics/gaming', ['enabled' => true, 'min_sources' => 1], $this->key())->assertOk();
+        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming', 'slug' => 'satu-sumber', 'sources' => [['url' => 'https://a.com/1']]]), $this->key())->assertStatus(201);
         $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(8, 'topics');
     }
 
