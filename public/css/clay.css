@@ -442,6 +442,16 @@ html { -webkit-tap-highlight-color: transparent; }
   color: var(--clay-focus);
 }
 
+.clay-footer__social { display: flex; justify-content: center; gap: 12px; margin: 4px 0 16px 0; }
+.clay-footer .clay-footer__ig {
+  width: 48px; height: 48px; min-height: 48px; justify-content: center;
+  border-radius: 16px; background: var(--clay-surface, transparent);
+  box-shadow: var(--clay-out), var(--clay-in);
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+.clay-footer .clay-footer__ig svg { width: 24px; height: 24px; }
+.clay-footer .clay-footer__ig:active { transform: translateY(2px) scale(.94); box-shadow: var(--clay-pressed, var(--clay-in)); transition: none; }
+
 /* Fixed Mobile Bottom Nav */
 .clay-bottom-nav {
   display: flex;

@@ -47,7 +47,8 @@
             'publisher' => ['@id' => 'https://jadidaring.com/#org'],
             'potentialAction' => ['@type' => 'SearchAction', 'target' => ['@type' => 'EntryPoint', 'urlTemplate' => 'https://jadidaring.com/berita?q={search_term_string}'], 'query-input' => 'required name=search_term_string']],
         ['@type' => 'Organization', '@id' => 'https://jadidaring.com/#org', 'name' => 'Jadidaring', 'url' => 'https://jadidaring.com/',
-            'logo' => ['@type' => 'ImageObject', 'url' => 'https://jadidaring.com/marketing/images/logo-512.png', 'width' => 512, 'height' => 512]],
+            'logo' => ['@type' => 'ImageObject', 'url' => 'https://jadidaring.com/marketing/images/logo-512.png', 'width' => 512, 'height' => 512],
+            'sameAs' => ['https://www.instagram.com/jadidaringnews/']],
     ]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     @include('partials.favicons')
 
@@ -120,6 +121,11 @@
                 <a href="/berita">Berita</a>
                 <a href="/game">Game</a>
                 <a href="/komunitas">Komunitas</a>
+            </div>
+            <div class="clay-footer__social">
+                <a href="https://www.instagram.com/jadidaringnews/" target="_blank" rel="noopener" aria-label="Instagram Jadidaring News" class="clay-footer__ig">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>
+                </a>
             </div>
             <p>&copy; {{ date('Y') }} Jadidaring. Hak cipta dilindungi undang-undang.</p>
         </div>
