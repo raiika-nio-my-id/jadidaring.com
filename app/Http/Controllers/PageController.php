@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactSubmitted;
 use App\Models\ContactMessage;
 use App\Services\TenantPath;
+use App\Support\Ga4;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -48,7 +52,14 @@ class PageController extends Controller
 
     public function contact(): View
     {
-        return $this->page('kontak', 'Kontak', 'Hubungi redaksi dan pengelola Jadidaring lewat formulir kontak.', ['started' => time()]);
+        $a = random_int(1, 9);
+        $b = random_int(1, 9);
+        session(['contact_captcha' => $a + $b]);
+
+        return $this->page('kontak', 'Kontak', 'Hubungi redaksi dan pengelola Jadidaring lewat formulir kontak.', [
+            'started' => time(),
+            'captchaQuestion' => "{$a} + {$b}",
+        ]);
     }
 
     public function send(Request $request): RedirectResponse
@@ -56,6 +67,13 @@ class PageController extends Controller
         // Honeypot (hidden "website" field) and a minimum fill time quietly drop bots.
         if ($request->filled('website') || time() - (int) $request->input('t', 0) < 3) {
             return redirect('/kontak')->with('sent', true);
+        }
+
+        $expectedCaptcha = $request->session()->get('contact_captcha');
+        $captcha = $request->input('captcha');
+
+        if ($expectedCaptcha === null || ! is_numeric($captcha) || (int) $captcha !== (int) $expectedCaptcha) {
+            return back()->withInput()->withErrors(['captcha' => 'Jawaban perhitungan salah. Silakan coba lagi.']);
         }
 
         $data = $request->validate([
@@ -77,12 +95,20 @@ class PageController extends Controller
 
         Cache::put($day, (int) Cache::get($day, 1), now()->endOfDay());
 
-        ContactMessage::query()->create([
+        $request->session()->forget('contact_captcha');
+
+        $message = ContactMessage::query()->create([
             'name' => strip_tags($data['name']), 'email' => $data['email'] ?? null, 'subject' => strip_tags($data['subject']),
             'message' => strip_tags($data['message']), 'ip_hash' => hash_hmac('sha256', (string) $request->ip(), (string) config('app.key')),
         ]);
 
-        \App\Support\Ga4::flash('generate_lead', ['form' => 'contact']);
+        try {
+            Mail::to(ContactSubmitted::RECIPIENT)->send(new ContactSubmitted($message));
+        } catch (\Throwable $e) {
+            Log::error('Gagal mengirim email kontak untuk pesan id '.$message->id.': '.preg_replace('/xsmtpsib-\S+/', '[redacted]', $e->getMessage()));
+        }
+
+        Ga4::flash('generate_lead', ['form' => 'contact']);
 
         return redirect('/kontak')->with('sent', true);
     }

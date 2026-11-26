@@ -141,12 +141,12 @@ class SeoInfraTest extends TestCase
         $this->assertStringContainsString('<loc>https://jadidaring.test/kebijakan-koreksi</loc>', $sm);
 
         $t = time() - 10;
-        $this->post(self::SITE.'/kontak', ['name' => 'Rina', 'subject' => 'Koreksi berita', 'message' => 'Ada kesalahan angka di artikel tertentu.', 't' => $t])->assertRedirect('/kontak');
+        $this->withSession(['contact_captcha' => 10])->post(self::SITE.'/kontak', ['name' => 'Rina', 'subject' => 'Koreksi berita', 'message' => 'Ada kesalahan angka di artikel tertentu.', 'captcha' => '10', 't' => $t])->assertRedirect('/kontak');
         $this->assertSame(1, ContactMessage::count());
-        $this->post(self::SITE.'/kontak', ['name' => 'Bot', 'subject' => 'Spam spam', 'message' => 'Pesan spam dari bot nih.', 't' => $t, 'website' => 'http://spam'])->assertRedirect('/kontak');
-        $this->post(self::SITE.'/kontak', ['name' => 'Cepat', 'subject' => 'Terlalu cepat', 'message' => 'Dikirim kurang dari tiga detik.', 't' => time()])->assertRedirect('/kontak');
+        $this->withSession(['contact_captcha' => 10])->post(self::SITE.'/kontak', ['name' => 'Bot', 'subject' => 'Spam spam', 'message' => 'Pesan spam dari bot nih.', 'captcha' => '10', 't' => $t, 'website' => 'http://spam'])->assertRedirect('/kontak');
+        $this->withSession(['contact_captcha' => 10])->post(self::SITE.'/kontak', ['name' => 'Cepat', 'subject' => 'Terlalu cepat', 'message' => 'Dikirim kurang dari tiga detik.', 'captcha' => '10', 't' => time()])->assertRedirect('/kontak');
         $this->assertSame(1, ContactMessage::count());
-        $this->post(self::SITE.'/kontak', ['name' => 'R', 'subject' => 'x', 'message' => 'pendek', 't' => $t])->assertSessionHasErrors(['name', 'subject', 'message']);
+        $this->withSession(['contact_captcha' => 10])->post(self::SITE.'/kontak', ['name' => 'R', 'subject' => 'x', 'message' => 'pendek', 'captcha' => '10', 't' => $t])->assertSessionHasErrors(['name', 'subject', 'message']);
     }
 
     public function test_hsts_https_redirect_and_old_gamehub_host(): void

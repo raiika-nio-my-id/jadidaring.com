@@ -24,8 +24,47 @@
             <label for="c-message">Pesan</label>
             <textarea class="clay-input" id="c-message" name="message" rows="6" maxlength="3000" required>{{ old('message') }}</textarea>
             @error('message')<p class="field-error">{{ $message }}</p>@enderror
-            <div class="clay-actions"><button class="clay-btn clay-btn--primary" type="submit">Kirim pesan</button></div>
+            <label for="c-captcha">Berapa {{ $captchaQuestion }}?</label>
+            <input class="clay-input" id="c-captcha" name="captcha" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" required>
+            @error('captcha')<p class="field-error">{{ $message }}</p>@enderror
+            <div class="clay-actions"><button class="clay-btn clay-btn--primary" id="c-submit" type="submit">Kirim pesan</button></div>
         </form>
+        <script>
+            (function () {
+                var form = document.querySelector('form.clay-form');
+                var btn = document.getElementById('c-submit');
+                if (!form || !btn) return;
+                var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+                function press() {
+                    if (!motion.matches) {
+                        btn.style.transform = 'translateY(1px)';
+                        btn.style.boxShadow = 'var(--clay-pressed)';
+                    }
+                }
+                function unpress() {
+                    if (!btn.hasAttribute('data-submitting')) {
+                        btn.style.transform = '';
+                        btn.style.boxShadow = '';
+                    }
+                }
+                btn.addEventListener('pointerdown', press);
+                btn.addEventListener('pointerup', unpress);
+                btn.addEventListener('pointercancel', unpress);
+                form.addEventListener('submit', function (e) {
+                    if (btn.hasAttribute('data-submitting')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    btn.setAttribute('data-submitting', 'true');
+                    btn.setAttribute('aria-busy', 'true');
+                    press();
+                    btn.textContent = 'Mengirim…';
+                    setTimeout(function () {
+                        btn.disabled = true;
+                    }, 0);
+                });
+            })();
+        </script>
     </div>
 </div>
 @endsection
