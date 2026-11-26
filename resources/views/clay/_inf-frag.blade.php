@@ -3,6 +3,8 @@
     @include('clay._news-cards', ['articles' => $articles])
 @elseif ($kind === 'game')
     @include('clay._game-cards', ['games' => $games, 'sort' => $sort])
+@elseif ($kind === 'bedtime')
+    @include('clay._bedtime-cards', ['stories' => $stories])
 @else
     @include('clay._profile-cards', ['pages' => $pages])
 @endif

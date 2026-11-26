@@ -5,6 +5,7 @@
         ['panel.home', 'Ringkasan', '📊', ['panel.home']],
         ['panel.stats', 'Statistik', '📈', ['panel.stats']],
         ['panel.news', 'Berita', '📰', ['panel.news*']],
+        ['panel.bedtime', 'Bed Time Stories', '📖', ['panel.bedtime*']],
         ['panel.community', 'Komunitas', '👥', ['panel.community*']],
         ['panel.users', 'User', '🙋', ['panel.users*']],
         ['panel.games', 'Game', '🎮', ['panel.games*']],

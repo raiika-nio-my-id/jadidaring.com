@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BedtimeStoryController;
 use App\Http\Controllers\ClayController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\CurhatanController;
@@ -32,6 +33,9 @@ $cached(Route::get('/berita/{topik}', [NewsController::class, 'topic'])->name('c
 $cached(Route::get('/berita/{topik}/{slug}', [NewsController::class, 'show'])->name('clay.berita.artikel'));
 Route::get('/berita/{topik}/{slug}/komentar', [NewsController::class, 'comments'])->name('clay.berita.komentar');
 Route::post('/berita/{topik}/{slug}/komentar', [NewsController::class, 'postComment'])->middleware('auth')->name('clay.berita.komentar.post');
+Route::get('/bedtime-stories/{id}-{width}.webp', [BedtimeStoryController::class, 'image'])->whereNumber(['id', 'width'])->withoutMiddleware($guestCache)->name('clay.bedtime.image');
+$cached(Route::get('/bed-time-stories', [BedtimeStoryController::class, 'index'])->name('clay.bedtime'));
+$cached(Route::get('/bed-time-stories/{slug}', [BedtimeStoryController::class, 'show'])->name('clay.bedtime.show'));
 $cached(Route::get('/game', [ClayController::class, 'game'])->name('clay.game'));
 $cached(Route::get('/komunitas', [CommunityController::class, 'index'])->name('clay.komunitas'));
 Route::get('/komunitas/prompt-spec.txt', fn () => response(file_get_contents(resource_path('static/prompt-spec.txt')), 200, ['Content-Type' => 'text/plain; charset=utf-8', 'Cache-Control' => 'public, max-age=300']));

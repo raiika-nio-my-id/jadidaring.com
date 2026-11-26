@@ -88,6 +88,7 @@
 
                 <nav class="clay-nav" aria-label="Navigasi Utama">
                     <a href="/berita" class="clay-nav__link" @if(request()->is('berita*')) aria-current="page" @endif>Berita</a>
+                    <a href="/bed-time-stories" class="clay-nav__link" @if(request()->is('bed-time-stories*')) aria-current="page" @endif>Bed Time Stories</a>
                     <a href="/game" class="clay-nav__link" @if(request()->is('game*')) aria-current="page" @endif>Game</a>
                     <a href="/komunitas" class="clay-nav__link" @if(request()->is('komunitas*')) aria-current="page" @endif>Komunitas</a>
                     @if (auth()->check() && ! auth()->user()->username)
@@ -125,6 +126,7 @@
                 <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a>
                 <a href="/berita/rss.xml">RSS</a>
                 <a href="/berita">Berita</a>
+                <a href="/bed-time-stories">Bed Time Stories</a>
                 <a href="/game">Game</a>
                 <a href="/komunitas">Komunitas</a>
             </div>
@@ -166,6 +168,12 @@
             </svg>
             <span>Komunitas</span>
         </a>
+        <a href="/bed-time-stories" class="clay-bottom-nav__item" @if(request()->is('bed-time-stories*')) aria-current="page" @endif>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+            </svg>
+            <span>Bed Time</span>
+        </a>
         <a href="{{ auth()->check() && auth()->user()->username ? '/u/'.auth()->user()->username : (auth()->check() ? (auth()->user()->isAdmin() ? '/admin' : '/akun') : '/masuk') }}" class="clay-bottom-nav__item" @if(auth()->check() && (request()->is('akun*') || request()->is('u/'.auth()->user()->username))) aria-current="page" @endif>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -178,6 +186,7 @@
     @unless (str_contains($__env->yieldContent('bodyclass'), 'is-game-page') || str_contains($__env->yieldContent('bodyclass'), 'is-embed'))
     {{-- Static parts of the nav targets, rendered from the same partials as the real pages; jd-vt.js clones one into the skeleton overlay so only the listing is skeleton. --}}
     <template id="jd-sk-berita"><div class="clay-section"><div><div class="clay-section__header"><h1 class="clay-section__title">Berita Terkini</h1></div></div>@include('clay._berita-controls', ['q' => '', 'popular' => false, 'currentTopic' => null, 'topics' => \App\Http\Controllers\ClayController::TOPICS])<div class="news-grid" data-sk></div></div></template>
+    <template id="jd-sk-bedtime"><div class="clay-section"><div><div class="clay-section__header"><h1 class="clay-section__title">Bed Time Stories</h1><p class="clay-section__subtitle" style="margin-top:0.5rem;color:var(--clay-muted);font-size:1.05rem;">Dongeng klasik pengantar tidur dari penulis aslinya, diceritakan ulang oleh Dongeng Anak Kecil.</p></div></div><div class="news-grid" data-sk></div></div></template>
     <template id="jd-sk-game"><div class="clay-section">@include('clay._game-head', ['sort' => 'views'])<div class="game-grid" data-sk></div></div></template>
     <template id="jd-sk-komunitas"><div class="clay-section ch-page">@include('clay._komunitas-feed-head')@include('clay._komunitas-tabs', ['tab' => 'terbaru'])@auth<a class="ch-cta" href="#" tabindex="-1"><span aria-hidden="true">✏️</span> Lagi mikirin apa? Tulis di profilmu</a>@endauth<div class="ch-list ch-list--feed" data-sk></div></div></template>
     @auth<template id="jd-sk-profil"><div class="member-page">@include('clay._profile-bar', ['isOwner' => true])<div data-sk></div></div></template>@endauth

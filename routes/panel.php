@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Panel\AuthController;
 use App\Http\Controllers\Panel\BackupController;
+use App\Http\Controllers\Panel\BedtimeStoryController;
 use App\Http\Controllers\Panel\CommunityController;
 use App\Http\Controllers\Panel\CustomPageController;
 use App\Http\Controllers\Panel\DashboardController;
@@ -39,6 +40,14 @@ Route::prefix('admin')->name('panel.')->middleware('panel.admin')->group(functio
     Route::put('/berita/{article}', [NewsController::class, 'update'])->whereNumber('article')->name('news.update');
     Route::post('/berita/{article}/status', [NewsController::class, 'status'])->whereNumber('article')->name('news.status');
     Route::delete('/berita/{article}', [NewsController::class, 'destroy'])->whereNumber('article')->name('news.destroy');
+
+    Route::get('/bedtime-stories', [BedtimeStoryController::class, 'index'])->name('bedtime');
+    Route::get('/bedtime-stories/tulis', [BedtimeStoryController::class, 'create'])->name('bedtime.create');
+    Route::post('/bedtime-stories', [BedtimeStoryController::class, 'store'])->name('bedtime.store');
+    Route::get('/bedtime-stories/{bedtimeStory}', [BedtimeStoryController::class, 'edit'])->whereNumber('bedtimeStory')->name('bedtime.edit');
+    Route::put('/bedtime-stories/{bedtimeStory}', [BedtimeStoryController::class, 'update'])->whereNumber('bedtimeStory')->name('bedtime.update');
+    Route::post('/bedtime-stories/{bedtimeStory}/status', [BedtimeStoryController::class, 'status'])->whereNumber('bedtimeStory')->name('bedtime.status');
+    Route::delete('/bedtime-stories/{bedtimeStory}', [BedtimeStoryController::class, 'destroy'])->whereNumber('bedtimeStory')->name('bedtime.destroy');
 
     Route::get('/komunitas', [CommunityController::class, 'index'])->name('community');
     Route::get('/komunitas/komentar', [CommunityController::class, 'comments'])->name('community.comments');

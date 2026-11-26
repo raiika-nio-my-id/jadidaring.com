@@ -22,7 +22,7 @@
     }
   };
   function build(path) {
-    var kind = /^\/u\//.test(path) ? 'profil' : /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : 'generic';
+    var kind = /^\/u\//.test(path) ? 'profil' : /^\/game/.test(path) ? 'game' : /^\/komunitas/.test(path) ? 'komunitas' : /^\/berita/.test(path) ? 'berita' : /^\/bed-time-stories/.test(path) ? 'bedtime' : 'generic';
     var box = document.createElement('div');
     box.className = 'jd-skel';
     box.setAttribute('aria-hidden', 'true');

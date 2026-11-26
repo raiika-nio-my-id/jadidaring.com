@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BedtimeStory;
 use App\Models\CompanyProfile;
 use App\Models\MemberPage;
 use App\Services\GameHubCatalog;
@@ -186,6 +187,13 @@ class ClayController extends Controller
 
         foreach ($gameProfiles as $profile) {
             $urls[] = [$host.'/game/'.$profile->subdomain, $profile->updated_at?->toIso8601String()];
+        }
+
+        $stories = BedtimeStory::query()->visible()->orderByDesc('published_at')->get(['slug', 'updated_at', 'published_at']);
+        $bedtimeNewest = $stories->max('updated_at') ?? $stories->max('published_at');
+        $urls[] = [$host.'/bed-time-stories', $bedtimeNewest?->toIso8601String()];
+        foreach ($stories as $story) {
+            $urls[] = [$host.'/bed-time-stories/'.$story->slug, ($story->updated_at ?? $story->published_at)?->toIso8601String()];
         }
 
         $urls[] = [$host.'/komunitas', MemberPage::query()->max('updated_at') ? Carbon::parse(MemberPage::query()->max('updated_at'))->toIso8601String() : null];
