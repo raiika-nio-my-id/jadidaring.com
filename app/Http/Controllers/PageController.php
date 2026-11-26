@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
 use App\Services\TenantPath;
+use App\Support\Ga4;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -13,10 +14,12 @@ class PageController extends Controller
 {
     /** path => last edited date (real content dates, used by the sitemap). */
     public const PAGES = [
-        'tentang' => '2026-11-19',
-        'kebijakan-redaksi' => '2026-11-19',
+        'tentang' => '2026-11-26',
+        'kebijakan-redaksi' => '2026-11-26',
         'kebijakan-privasi' => '2026-11-19',
         'kontak' => '2026-11-19',
+        'redaksi' => '2026-11-26',
+        'kebijakan-koreksi' => '2026-11-26',
     ];
 
     public function tentang(): View
@@ -32,6 +35,16 @@ class PageController extends Controller
     public function privasi(): View
     {
         return $this->page('privasi', 'Kebijakan Privasi', 'Kebijakan privasi Jadidaring: data apa yang dikumpulkan, cookie, dan cara menghubungi kami.');
+    }
+
+    public function timRedaksi(): View
+    {
+        return $this->page('tim-redaksi', 'Redaksi', 'Redaksi Jadidaring: pengelola situs, byline Redaksi Jaring, dan cara artikel berita disusun dengan bantuan AI.');
+    }
+
+    public function koreksi(): View
+    {
+        return $this->page('koreksi', 'Kebijakan Koreksi', 'Kebijakan koreksi Jadidaring: cara melaporkan kesalahan artikel dan bagaimana redaksi memperbaikinya.');
     }
 
     public function contact(): View
@@ -70,7 +83,7 @@ class PageController extends Controller
             'message' => strip_tags($data['message']), 'ip_hash' => hash_hmac('sha256', (string) $request->ip(), (string) config('app.key')),
         ]);
 
-        \App\Support\Ga4::flash('generate_lead', ['form' => 'contact']);
+        Ga4::flash('generate_lead', ['form' => 'contact']);
 
         return redirect('/kontak')->with('sent', true);
     }
@@ -78,7 +91,13 @@ class PageController extends Controller
     /** @param array<string, mixed> $extra */
     private function page(string $view, string $title, string $description, array $extra = []): View
     {
-        $path = $view === 'redaksi' ? 'kebijakan-redaksi' : ($view === 'privasi' ? 'kebijakan-privasi' : $view);
+        $path = match ($view) {
+            'redaksi' => 'kebijakan-redaksi',
+            'privasi' => 'kebijakan-privasi',
+            'tim-redaksi' => 'redaksi',
+            'koreksi' => 'kebijakan-koreksi',
+            default => $view,
+        };
 
         return view('clay.page-'.$view, [
             'metaTitle' => $title.' — Jadidaring',

@@ -14,6 +14,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\TenantController;
 use App\Http\Middleware\OptionalSession;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -52,7 +53,7 @@ $cached(Route::get('/news-sitemap.xml', [FeedController::class, 'newsSitemap'])-
 Route::get('/og-home.webp', [NewsImageController::class, 'home'])->withoutMiddleware($guestCache)->name('clay.home.og');
 Route::get('/gambar-profil/{user}/{file}', [CommunityController::class, 'profileImage'])->whereNumber('user')->where('file', '[a-f0-9]{20}(\.webp|-c(24|32|48)\.png)')->withoutMiddleware($guestCache)->name('community.image');
 Route::get('/gambar-berita/{id}-{width}.webp', [NewsImageController::class, 'show'])->whereNumber(['id', 'width'])->withoutMiddleware($guestCache)->name('clay.berita.gambar');
-foreach (['tentang' => 'tentang', 'kebijakan-redaksi' => 'redaksi', 'kebijakan-privasi' => 'privasi'] as $path => $page) {
+foreach (['tentang' => 'tentang', 'kebijakan-redaksi' => 'redaksi', 'kebijakan-privasi' => 'privasi', 'redaksi' => 'timRedaksi', 'kebijakan-koreksi' => 'koreksi'] as $path => $page) {
     $cached(Route::get('/'.$path, [PageController::class, $page])->name('clay.page.'.$page));
 }
 Route::get('/kontak', [PageController::class, 'contact'])->name('clay.contact');
@@ -69,7 +70,7 @@ foreach (array_filter(array_map('trim', explode(',', strtolower((string) config(
         continue;
     }
 
-    Route::get('/'.$gitGame.'/{any?}', function (Illuminate\Http\Request $request) use ($gitGame) {
+    Route::get('/'.$gitGame.'/{any?}', function (Request $request) use ($gitGame) {
         $qs = $request->getQueryString();
 
         return redirect('/game/'.$gitGame.($qs !== null && $qs !== '' ? '?'.$qs : ''), 301);

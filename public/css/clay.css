@@ -803,6 +803,10 @@ html { -webkit-tap-highlight-color: transparent; }
 /* Dates: distinct from body copy (smaller, bolder, accent colour, icon). AA on clay surfaces. */
 .news-meta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; padding-top: 10px; border-top: 1px dashed rgba(90, 63, 160, .25); }
 .news-meta.news-meta-row { border-top: 0; padding-top: 0; }
+.news-byline { font-size: .8rem; font-weight: 700; letter-spacing: .03em; color: #5a3fa0; text-decoration: none; }
+.news-byline:hover { text-decoration: underline; }
+.news-meta__sep { color: var(--clay-ink-2); font-weight: 700; }
+:root[data-theme="dark"] .news-byline { color: #cdbdff; }
 .news-date { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 700; letter-spacing: .03em; font-variant-numeric: tabular-nums; color: #5a3fa0; }
 .news-card time.news-date, .news-meta time.news-date { color: #5a3fa0; font-size: .8rem; }
 .news-date__icon { flex: none; }

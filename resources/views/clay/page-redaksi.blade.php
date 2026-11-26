@@ -13,7 +13,7 @@
         <h2>Gambar</h2>
         <p>Foto yang dipakai berlisensi bebas dan kreditnya ditampilkan di bawah gambar. Artikel tanpa foto memakai kartu judul yang dibuat otomatis oleh program, bukan foto peristiwa dan bukan gambar buatan AI.</p>
         <h2>Koreksi</h2>
-        <p>Menemukan kesalahan? Kirim lewat <a href="/kontak">formulir kontak</a> dengan menyebut judul artikelnya. Kami akan memeriksa dan memperbaiki artikel; bila perubahannya berarti, kami menambahkan catatan koreksi pada artikel.</p>
+        <p>Menemukan kesalahan? Kirim lewat <a href="/kontak">formulir kontak</a> dengan menyebut judul artikelnya. Kami akan memeriksa dan memperbaiki artikel; bila perubahannya berarti, kami menambahkan catatan koreksi pada artikel. Tata cara pelaporan dan penanganan ralat selengkapnya ada di <a href="/kebijakan-koreksi">Kebijakan Koreksi</a>.</p>
         <p class="page-doc__date">Diperbarui: {{ \Carbon\Carbon::parse($updated)->locale('id')->translatedFormat('d F Y') }}</p>
     </article>
 </div>

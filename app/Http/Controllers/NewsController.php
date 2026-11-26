@@ -210,7 +210,7 @@ class NewsController extends Controller
                 'image' => [['@type' => 'ImageObject', 'url' => NewsImage::absolute($data['id'], 1200, $data['img']['v']), 'width' => 1200, 'height' => 630]],
                 'articleSection' => ClayController::TOPICS[$data['topic']],
                 'inLanguage' => 'id-ID',
-                'author' => ['@type' => 'Organization', 'name' => 'Redaksi Jaring', 'url' => 'https://'.TenantPath::host().'/tentang'],
+                'author' => ['@type' => 'Organization', 'name' => 'Redaksi Jaring', 'url' => 'https://'.TenantPath::host().'/redaksi'],
                 'publisher' => self::publisher(),
                 'citation' => array_map(fn (array $s): string => $s['url'], $data['sources']),
             ],

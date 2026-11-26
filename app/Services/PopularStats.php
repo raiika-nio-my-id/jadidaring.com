@@ -165,7 +165,7 @@ class PopularStats
         return $out;
     }
 
-    private const RESERVED_ROOTS = ['game', 'berita', 'komunitas', 'kontak', 'tentang', 'privasi', 'redaksi', 'login', 'register', 'ketentuan', 'syarat-ketentuan', 'a', 'api', 'curhatan', 'member', 'u', 'admin', 'terms', 'sitemap', 'sitemap-xml'];
+    private const RESERVED_ROOTS = ['game', 'berita', 'komunitas', 'kontak', 'tentang', 'privasi', 'redaksi', 'login', 'register', 'ketentuan', 'syarat-ketentuan', 'kebijakan-redaksi', 'kebijakan-privasi', 'kebijakan-koreksi', 'a', 'api', 'curhatan', 'member', 'u', 'admin', 'terms', 'sitemap', 'sitemap-xml'];
 
     private static function cleanPath(string $path): string
     {

@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $metaTitle ?? 'Jadidaring' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Platform game web, berita, dan komunitas digital Indonesia yang seru dan ringan.' }}">
-    @if(!empty($noindex))<meta name="robots" content="noindex,nofollow">@endif
+    @if(!empty($noindex))
+    <meta name="robots" content="noindex,nofollow">
+    @else
+    <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    @endif
     @if(!empty($relPrev))<link rel="prev" href="https://{{ config('singlepage.base_domain') }}{{ $relPrev }}">@endif
     @if(!empty($relNext))<link rel="next" href="https://{{ config('singlepage.base_domain') }}{{ $relNext }}">@endif
     <link rel="canonical" href="{{ $canonicalUrl ?? (request()->getScheme() . '://' . config('singlepage.base_domain') . request()->getRequestUri()) }}">
@@ -113,7 +117,9 @@
         <div class="clay-shell">
             <div class="clay-footer__links">
                 <a href="/tentang">Tentang</a>
+                <a href="/redaksi">Redaksi</a>
                 <a href="/kebijakan-redaksi">Kebijakan Redaksi</a>
+                <a href="/kebijakan-koreksi">Kebijakan Koreksi</a>
                 <a href="/kebijakan-privasi">Kebijakan Privasi</a>
                 <a href="/kontak">Kontak</a>
                 <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a>

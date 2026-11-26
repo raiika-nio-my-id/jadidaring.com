@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Article;
 use App\Models\ContactMessage;
 use App\Services\NewsImage;
+use App\Services\SeoInjector;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
@@ -117,15 +118,27 @@ class SeoInfraTest extends TestCase
         $home = $this->get(self::SITE.'/')->assertOk();
         $home->assertSee('SearchAction', false)->assertSee('"Organization"', false)->assertSee('application/rss+xml', false);
         $this->get(self::SITE.'/berita?q=uji')->assertOk()->assertSee('noindex', false)->assertSee($a->slug, false);
-        $this->get(self::SITE.'/berita/teknologi/'.$a->slug)->assertSee('"author"', false)->assertSee('Redaksi Jaring', false)->assertSee('logo-512.png', false);
+        $article = $this->get(self::SITE.'/berita/teknologi/'.$a->slug);
+        $article->assertSee('"author"', false)->assertSee('Redaksi Jaring', false)->assertSee('logo-512.png', false)
+            ->assertSee('/redaksi', false)->assertSee('max-image-preview:large', false)
+            ->assertSee('class="news-byline"', false);
     }
 
     public function test_static_pages_and_contact_form(): void
     {
-        foreach (['/tentang', '/kebijakan-redaksi', '/kebijakan-privasi', '/kontak'] as $p) {
+        foreach (['/tentang', '/redaksi', '/kebijakan-redaksi', '/kebijakan-koreksi', '/kebijakan-privasi', '/kontak'] as $p) {
             $this->get(self::SITE.$p)->assertOk();
         }
-        $this->get(self::SITE.'/')->assertSee('/kebijakan-privasi', false)->assertSee('/kontak', false);
+        $this->get(self::SITE.'/redaksi')->assertSee('Redaksi Jaring', false)->assertSee('Andika', false)->assertDontSee('admin@jadidaring.com', false);
+        $this->get(self::SITE.'/kebijakan-koreksi')->assertSee('formulir kontak', false)->assertDontSee('admin@jadidaring.com', false);
+        $this->get(self::SITE.'/kontak')->assertDontSee('admin@jadidaring.com', false);
+        $home = $this->get(self::SITE.'/');
+        $home->assertSee('/kebijakan-privasi', false)->assertSee('/kontak', false)
+            ->assertSee('/redaksi', false)->assertSee('/kebijakan-koreksi', false)
+            ->assertSee('max-image-preview:large', false);
+        $sm = $this->get(self::SITE.'/sitemap.xml')->assertOk()->getContent();
+        $this->assertStringContainsString('<loc>https://jadidaring.test/redaksi</loc>', $sm);
+        $this->assertStringContainsString('<loc>https://jadidaring.test/kebijakan-koreksi</loc>', $sm);
 
         $t = time() - 10;
         $this->post(self::SITE.'/kontak', ['name' => 'Rina', 'subject' => 'Koreksi berita', 'message' => 'Ada kesalahan angka di artikel tertentu.', 't' => $t])->assertRedirect('/kontak');
@@ -169,7 +182,7 @@ class SeoInfraTest extends TestCase
 
     public function test_game_html_normalizer_sets_lang_and_slashless_canonical(): void
     {
-        $i = new \App\Services\SeoInjector();
+        $i = new SeoInjector;
         $out = $i->normalizeGame('<html lang="en"><head><link rel="canonical" href="https://jadidaring.com/game/x/"></head>');
         $this->assertStringContainsString('<html lang="id">', $out);
         $this->assertStringContainsString('href="https://jadidaring.com/game/x"', $out);
