@@ -103,7 +103,12 @@ class PageController extends Controller
         ]);
 
         try {
-            Mail::to(ContactSubmitted::RECIPIENT)->send(new ContactSubmitted($message));
+            $sent = Mail::to(ContactSubmitted::RECIPIENT)->send(new ContactSubmitted($message));
+            Log::info('Contact mail accepted', [
+                'contact_id' => $message->id,
+                'to' => ContactSubmitted::RECIPIENT,
+                'message_id' => $sent?->getMessageId(),
+            ]);
         } catch (\Throwable $e) {
             Log::error('Gagal mengirim email kontak untuk pesan id '.$message->id.': '.preg_replace('/xsmtpsib-\S+/', '[redacted]', $e->getMessage()));
         }
