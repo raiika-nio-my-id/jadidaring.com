@@ -131,7 +131,7 @@ class SeoInfraTest extends TestCase
         }
         $this->get(self::SITE.'/redaksi')->assertSee('Redaksi Jaring', false)->assertSee('Andika', false)->assertDontSee('admin@jadidaring.com', false);
         $this->get(self::SITE.'/kebijakan-koreksi')->assertSee('formulir kontak', false)->assertDontSee('admin@jadidaring.com', false);
-        $this->get(self::SITE.'/kontak')->assertDontSee('admin@jadidaring.com', false);
+        $this->get(self::SITE.'/kontak')->assertSee('admin@jadidaring.com', false)->assertSee('mailto:admin@jadidaring.com', false);
         $home = $this->get(self::SITE.'/');
         $home->assertSee('/kebijakan-privasi', false)->assertSee('/kontak', false)
             ->assertSee('/redaksi', false)->assertSee('/kebijakan-koreksi', false)

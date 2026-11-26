@@ -17,7 +17,7 @@ class PageController extends Controller
         'tentang' => '2026-11-26',
         'kebijakan-redaksi' => '2026-11-26',
         'kebijakan-privasi' => '2026-11-19',
-        'kontak' => '2026-11-19',
+        'kontak' => '2026-11-26',
         'redaksi' => '2026-11-26',
         'kebijakan-koreksi' => '2026-11-26',
     ];

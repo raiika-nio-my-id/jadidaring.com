@@ -4,6 +4,7 @@
     <div class="clay-card page-doc">
         <h1 class="clay-section__title">Kontak</h1>
         <p>Kirim pertanyaan, koreksi berita, atau laporan masalah lewat formulir ini. Pesan dibaca oleh pengelola situs.</p>
+        <p>Anda juga bisa menulis ke <a href="mailto:admin@jadidaring.com">admin@jadidaring.com</a>.</p>
         @if (session('sent'))
             <p class="clay-card clay-card--mint" role="status">Terima kasih, pesan Anda sudah terkirim.</p>
         @endif
