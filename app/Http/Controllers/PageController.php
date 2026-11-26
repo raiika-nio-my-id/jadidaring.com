@@ -103,10 +103,10 @@ class PageController extends Controller
         ]);
 
         try {
-            $sent = Mail::to(ContactSubmitted::RECIPIENT)->send(new ContactSubmitted($message));
+            $sent = Mail::to(ContactSubmitted::recipient())->send(new ContactSubmitted($message));
             Log::info('Contact mail accepted', [
                 'contact_id' => $message->id,
-                'to' => ContactSubmitted::RECIPIENT,
+                'to' => ContactSubmitted::recipient(),
                 'message_id' => $sent?->getMessageId(),
             ]);
         } catch (\Throwable $e) {

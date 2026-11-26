@@ -8,9 +8,9 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, mail-diag, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url, import-andika-page]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, mail-diag, set-contact-notify, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url, import-andika-page]
       value:
-        description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
+        description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). set-contact-notify/mail-test: email. delete-test-user: username (tmp + digits only)"
         required: false
         type: string
 
@@ -26,7 +26,7 @@ jobs:
           case "$ACTION" in
             set-ga4) [[ "$VALUE" =~ ^G-[A-Z0-9]{4,20}$ ]] || { echo "bad GA4 id"; exit 1; } ;;
             merge-langit-dry|merge-langit) [[ "$VALUE" =~ ^[A-Z0-9]{4,12}$ ]] || { echo "room code required"; exit 1; } ;;
-            mail-test) [[ "$VALUE" =~ ^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$ ]] || { echo "bad email"; exit 1; } ;;
+            mail-test|set-contact-notify) [[ "$VALUE" =~ ^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$ ]] || { echo "bad email"; exit 1; } ;;
             delete-test-user) [[ "$VALUE" =~ ^tmp[0-9]{3,20}$ ]] || { echo "username must match tmp<digits>"; exit 1; } ;;
             delete-user) [[ "$VALUE" =~ ^[a-z0-9_.-]{3,32}$ ]] || { echo "bad username"; exit 1; } ;;
             set-google-stats) [[ -z "$VALUE" || "$VALUE" =~ ^sc-domain:[a-z0-9.-]+$ || "$VALUE" =~ ^https://[a-z0-9.-]+/$ ]] || { echo "bad Search Console site"; exit 1; } ;;
@@ -207,6 +207,17 @@ jobs:
               mail-test)
                 echo "server outbound IPv4: $(curl -4 -s --max-time 8 https://api.ipify.org)"
                 docker exec -e TO="$VALUE" jadidaring-app php artisan mail:test --no-ansi
+                ;;
+              set-contact-notify)
+                # Recipient for /kontak notification mail. Written only to the server .env, never committed.
+                cp .env ".env.bak-$(date +%Y%m%d-%H%M%S)"
+                setkey CONTACT_NOTIFY_TO "$VALUE"
+                ls -t .env.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f
+                docker exec jadidaring-app php artisan config:clear --no-ansi
+                docker exec jadidaring-app php artisan config:cache --no-ansi
+                domain="${VALUE##*@}"
+                echo "CONTACT_NOTIFY_TO: set (@${domain})"
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo "config valid=", filter_var(config("mail.contact_notify_to"), FILTER_VALIDATE_EMAIL) ? "yes" : "no", PHP_EOL;' 2>&1 | grep -v OPcache || true
                 ;;
               mail-diag)
                 # Read-only: mailer config (never username/password/url values) and recent mail log lines.

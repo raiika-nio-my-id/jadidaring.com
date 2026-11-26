@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ContactSubmitted;
 use App\Models\ContactMessage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -210,5 +211,33 @@ class ContactFormTest extends TestCase
 
         $this->assertNotNull(session('contact_captcha'));
         $this->assertIsInt(session('contact_captcha'));
+    }
+
+    public function test_notify_recipient_comes_from_config_and_falls_back_when_invalid(): void
+    {
+        Mail::fake();
+        config(['mail.contact_notify_to' => 'notify@example.com']);
+
+        $t = time() - 10;
+        $this->withSession(['contact_captcha' => 7])
+            ->post(self::SITE.'/kontak', [
+                'name' => 'Sari',
+                'subject' => 'Koreksi angka',
+                'message' => 'Ada kesalahan angka di artikel teknologi kemarin.',
+                'captcha' => '7',
+                't' => $t,
+            ])
+            ->assertRedirect('/kontak');
+
+        Mail::assertSent(ContactSubmitted::class, function (ContactSubmitted $mail) {
+            $this->assertTrue($mail->hasTo('notify@example.com'));
+            $this->assertFalse($mail->hasTo('admin@jadidaring.com'));
+
+            return true;
+        });
+
+        $this->assertSame('admin@jadidaring.com', ContactSubmitted::DEFAULT_RECIPIENT);
+        config(['mail.contact_notify_to' => 'not-an-email']);
+        $this->assertSame('admin@jadidaring.com', ContactSubmitted::recipient());
     }
 }

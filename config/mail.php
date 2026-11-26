@@ -115,4 +115,10 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    | Where /kontak form submissions are emailed. Override in the server .env
+    | when admin@ cannot receive mail from the transactional provider.
+    */
+    'contact_notify_to' => env('CONTACT_NOTIFY_TO', 'admin@jadidaring.com'),
+
 ];

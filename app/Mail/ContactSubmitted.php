@@ -13,9 +13,17 @@ class ContactSubmitted extends Mailable
 {
     use Queueable;
 
-    public const RECIPIENT = 'admin@jadidaring.com';
+    public const DEFAULT_RECIPIENT = 'admin@jadidaring.com';
 
     public function __construct(public ContactMessage $contactMessage) {}
+
+    /** Valid CONTACT_NOTIFY_TO, or admin@jadidaring.com if missing/invalid. */
+    public static function recipient(): string
+    {
+        $to = (string) config('mail.contact_notify_to', self::DEFAULT_RECIPIENT);
+
+        return filter_var($to, FILTER_VALIDATE_EMAIL) ?: self::DEFAULT_RECIPIENT;
+    }
 
     public function envelope(): Envelope
     {
