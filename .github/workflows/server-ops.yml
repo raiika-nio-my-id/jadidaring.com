@@ -236,6 +236,9 @@ jobs:
                 docker logs --since '2026-11-26T01:40:00Z' --until '2026-11-26T02:10:00Z' jadidaring-app 2>&1 | grep -iE "Gagal mengirim email|JADIDARING|Tes JD Bot|Unauthorized IP|525 5.7.1|Failed to authenticate|TransportException|smtp-relay|Connection could not be established" | sed -E "s/xsmtpsib-[A-Za-z0-9]+/[redacted]/g" | cut -c1-400 | tail -n 80 || true
                 echo "== docker logs today any mail auth errors"
                 docker logs --since '2026-11-26T00:00:00Z' jadidaring-app 2>&1 | grep -iE "Gagal mengirim email|Unauthorized IP|525 5.7.1|Failed to authenticate|smtp-relay" | sed -E "s/xsmtpsib-[A-Za-z0-9]+/[redacted]/g" | cut -c1-400 | tail -n 40 || true
+                echo "== write a warning ping and re-stat laravel.log"
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='logger()->warning("mail-diag ping"); echo "ping_ok", PHP_EOL;' 2>&1 | grep -v OPcache || true
+                docker exec jadidaring-app sh -c 'ls -la storage/logs/laravel.log; tail -n 5 storage/logs/laravel.log | cut -c1-200' || true
                 ;;
               backfill-email-normalized)
                 docker exec jadidaring-app php artisan users:backfill-email-normalized --no-ansi
