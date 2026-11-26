@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
 use App\Services\TenantPath;
-use App\Support\Ga4;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -83,7 +82,7 @@ class PageController extends Controller
             'message' => strip_tags($data['message']), 'ip_hash' => hash_hmac('sha256', (string) $request->ip(), (string) config('app.key')),
         ]);
 
-        Ga4::flash('generate_lead', ['form' => 'contact']);
+        \App\Support\Ga4::flash('generate_lead', ['form' => 'contact']);
 
         return redirect('/kontak')->with('sent', true);
     }
