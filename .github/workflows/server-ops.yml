@@ -8,7 +8,7 @@ on:
         description: Action
         required: true
         type: choice
-        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url, import-andika-page]
+        options: [set-ga4, set-google-stats, set-google-oauth, set-github-oauth, set-telegram, set-telegram-oidc, set-mail, mail-test, mail-diag, delete-test-user, delete-user, backfill-email-normalized, merge-langit-dry, merge-langit, refresh-popular, diagnose, remove-old-skeleton, news-api-check, diagnose-rename, db-counts, set-deploy-repo, session-diag, purge-clients-dry, purge-clients, list-backups, delete-backups, set-app-url, import-andika-page]
       value:
         description: "set-ga4: measurement id (G-XXXX). set-google-stats: optional Search Console site (sc-domain:jadidaring.com or https://jadidaring.com/). delete-test-user: username (tmp + digits only)"
         required: false
@@ -207,6 +207,24 @@ jobs:
               mail-test)
                 echo "server outbound IPv4: $(curl -4 -s --max-time 8 https://api.ipify.org)"
                 docker exec -e TO="$VALUE" jadidaring-app php artisan mail:test --no-ansi
+                ;;
+              mail-diag)
+                # Read-only: mailer config (never username/password/url values) and recent mail log lines.
+                echo "== .env mail keys (no secrets)"
+                grep -E '^(MAIL_MAILER|MAIL_HOST|MAIL_PORT|MAIL_FROM_ADDRESS|MAIL_FROM_NAME|MAIL_SCHEME|MAIL_EHLO_DOMAIN)=' .env || true
+                for k in MAIL_USERNAME MAIL_PASSWORD MAIL_URL; do
+                  val="$(grep -E "^${k}=" .env | tail -1 | cut -d= -f2- || true)"
+                  if [ -n "$val" ]; then echo "$k: set len=${#val}"; else echo "$k: empty or unset"; fi
+                done
+                echo "MAIL_ key count: $(grep -c '^MAIL_' .env || true)"
+                echo "== config cache"
+                docker exec jadidaring-app sh -c 'if [ -f bootstrap/cache/config.php ]; then echo cached; else echo not-cached; fi'
+                echo "== runtime config (no secrets)"
+                docker exec jadidaring-app php artisan tinker --no-ansi --execute='echo "default=", config("mail.default"), PHP_EOL, "host=", config("mail.mailers.smtp.host"), PHP_EOL, "port=", config("mail.mailers.smtp.port"), PHP_EOL, "from=", config("mail.from.address"), PHP_EOL, "from_name=", config("mail.from.name"), PHP_EOL, "user_set=", (config("mail.mailers.smtp.username") ? "yes" : "no"), PHP_EOL, "pass_set=", (config("mail.mailers.smtp.password") ? "yes" : "no"), PHP_EOL;' 2>&1 | grep -v OPcache || true
+                echo "== log files"
+                docker exec jadidaring-app sh -c 'ls -la storage/logs' || true
+                echo "== recent mail-related log lines (redacted, last 80)"
+                docker exec jadidaring-app sh -c 'tail -n 12000 storage/logs/laravel.log 2>/dev/null | grep -iE "Gagal mengirim email|JADIDARING|Tes JD Bot|mailer=|smtp-relay|Mailer|TransportException|Failed to authenticate|Connection could not be established|Symfony.Component.Mailer" | sed -E "s/xsmtpsib-[A-Za-z0-9]+/[redacted]/g; s/(password|passwd|pwd|secret|token|authorization)=[^[:space:]]+/\1=[redacted]/Ig" | cut -c1-400 | tail -n 80' || true
                 ;;
               backfill-email-normalized)
                 docker exec jadidaring-app php artisan users:backfill-email-normalized --no-ansi
