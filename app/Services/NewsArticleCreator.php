@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * One way to create a news article, shared by the bot API (POST /api/admin/news/articles)
- * and the /admin "Tulis berita" form: same field rules, same source check, same daily limit.
+ * and the /admin "Tulis berita" form: same field rules, same source check, same enabled-topic check (no per-topic daily limit).
  */
 final class NewsArticleCreator
 {
@@ -71,18 +71,6 @@ final class NewsArticleCreator
             return 'Topic is disabled.';
         }
 
-        if ($topic->articles_per_day <= 0) {
-            return null; // 0 = no daily limit
-        }
-
-        $today = Article::query()
-            ->where('topic', $topic->slug)
-            ->where('status', 'published')
-            ->where('published_at', '>=', now()->startOfDay())
-            ->count();
-
-        return $today >= $topic->articles_per_day
-            ? "Daily limit reached for {$topic->slug} ({$topic->articles_per_day}/day)."
-            : null;
+        return null;
     }
 }

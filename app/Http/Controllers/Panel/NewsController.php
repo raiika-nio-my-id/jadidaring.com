@@ -180,7 +180,6 @@ class NewsController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:64'],
             'enabled' => ['sometimes', 'boolean'],
-            'articles_per_day' => ['required', 'integer', 'min:0', 'max:50'],
             'min_sources' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
         $data['enabled'] = $request->boolean('enabled');

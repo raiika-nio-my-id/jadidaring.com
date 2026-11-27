@@ -48,7 +48,6 @@ class NewsTest extends TestCase
         $this->assertNotNull($topic);
         $this->assertSame('Ekonomi', $topic->name);
         $this->assertSame($politik->min_sources, $topic->min_sources);
-        $this->assertSame($politik->articles_per_day, $topic->articles_per_day);
 
         $this->get(self::SITE.'/berita/ekonomi')->assertOk()->assertSee('Ekonomi')->assertSee('UMR dan UMP', false);
         $this->get(self::SITE.'/berita')->assertSee('/berita/ekonomi', false);
@@ -196,14 +195,8 @@ class NewsTest extends TestCase
         $this->get(self::SITE.$path)->assertNotFound();
     }
 
-    public function test_per_topic_daily_limit_and_disabled_topic(): void
+    public function test_disabled_topic_and_min_sources(): void
     {
-        NewsTopic::query()->where('slug', 'politik')->update(['articles_per_day' => 1]);
-
-        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'politik', 'title' => 'Berita politik nomor satu hari ini']), $this->key())->assertCreated();
-        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'politik', 'title' => 'Berita politik nomor dua hari ini']), $this->key())->assertStatus(422);
-        $this->postJson(self::API.'/articles', $this->payload(['topic' => 'politik', 'title' => 'Berita politik nomor tiga draf', 'status' => 'draft']), $this->key())->assertCreated();
-
         $this->patchJson(self::API.'/topics/gaming', ['enabled' => false], $this->key())->assertOk();
         $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming']), $this->key())->assertStatus(422);
 
@@ -213,13 +206,20 @@ class NewsTest extends TestCase
         $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(9, 'topics');
     }
 
-    public function test_zero_daily_limit_means_unlimited(): void
+    public function test_topics_have_no_daily_limit_sosmed_fifth_article_accepted(): void
     {
-        NewsTopic::query()->where('slug', 'politik')->update(['articles_per_day' => 0]);
+        // Legacy production value that used to cap sosmed at 4 published per day.
+        NewsTopic::query()->where('slug', 'sosmed')->update(['articles_per_day' => 4]);
 
-        foreach (['satu', 'dua', 'tiga', 'empat', 'lima'] as $n) {
-            $this->postJson(self::API.'/articles', $this->payload(['topic' => 'politik', 'title' => "Berita politik tanpa batas nomor {$n}"]), $this->key())->assertCreated();
+        foreach (['satu', 'dua', 'tiga', 'empat', 'lima', 'enam'] as $n) {
+            $this->postJson(self::API.'/articles', $this->payload(['topic' => 'sosmed', 'title' => "Tren sosial media hari ini nomor {$n}"]), $this->key())->assertCreated();
         }
+
+        $this->assertSame(6, Article::query()->where('topic', 'sosmed')->where('status', 'published')->count());
+
+        $sosmed = collect($this->getJson(self::API.'/topics', $this->key())->assertOk()->json('topics'))->firstWhere('slug', 'sosmed');
+        $this->assertNotNull($sosmed);
+        $this->assertArrayNotHasKey('articles_per_day', $sosmed);
     }
 
     public function test_comments_load_lazily_and_posting_requires_a_member(): void

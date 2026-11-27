@@ -12,10 +12,13 @@ class NewsTopic extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['slug', 'name', 'enabled', 'articles_per_day', 'min_sources'];
+    protected $fillable = ['slug', 'name', 'enabled', 'min_sources'];
+
+    /** Legacy column, no longer enforced (no per-topic daily cap); hidden from API output. */
+    protected $hidden = ['articles_per_day'];
 
     protected function casts(): array
     {
-        return ['enabled' => 'boolean', 'articles_per_day' => 'integer', 'min_sources' => 'integer'];
+        return ['enabled' => 'boolean', 'min_sources' => 'integer'];
     }
 }
