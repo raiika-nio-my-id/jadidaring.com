@@ -339,4 +339,57 @@ class BedtimeStoriesTest extends TestCase
         ], $this->key())->assertStatus(422);
         $this->assertArrayHasKey('image_credit', (array) $resImg->json('errors'));
     }
+
+    /**
+     * @return array<string, string>
+     */
+    private function apiPayload(string $slug, string $publishedAt): array
+    {
+        return [
+            'title' => 'Story '.$slug,
+            'slug' => $slug,
+            'author' => 'Beatrix Potter',
+            'body' => "Once upon a time there were four little rabbits.\n\nThey lived under a big fir tree.",
+            'published_at' => $publishedAt,
+        ];
+    }
+
+    public function test_admin_api_honours_the_utc_offset_in_published_at(): void
+    {
+        $this->travelTo('2026-11-27 12:30:00');
+
+        $wita = $this->postJson(self::API, $this->apiPayload('offset-wita', '2026-11-27T20:00:00+08:00'), $this->key())->assertCreated();
+        $this->assertSame('2026-11-27T12:00:00+00:00', $wita->json('story.published_at'));
+
+        $zulu = $this->postJson(self::API, $this->apiPayload('offset-zulu', '2026-11-27T12:00:00Z'), $this->key())->assertCreated();
+        $this->assertSame('2026-11-27T12:00:00+00:00', $zulu->json('story.published_at'));
+
+        $this->get(self::SITE.'/bed-time-stories/offset-wita')->assertOk();
+        $this->get(self::SITE.'/bed-time-stories/offset-zulu')->assertOk();
+
+        $this->patchJson(self::API.'/'.$wita->json('story.id'), ['published_at' => '2026-11-27T21:15:00+08:00'], $this->key())
+            ->assertOk()
+            ->assertJsonPath('story.published_at', '2026-11-27T13:15:00+00:00');
+    }
+
+    public function test_admin_form_published_at_is_read_and_shown_as_wita(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->post(self::SITE.'/admin/bedtime-stories', [
+            'title' => 'The Tale of Peter Rabbit',
+            'author' => 'Beatrix Potter',
+            'language' => 'en',
+            'body' => "Once upon a time there were four little rabbits.\n\nThey lived under a big fir tree.",
+            'status' => 'published',
+            'published_at' => '2026-11-27T20:00',
+        ]);
+
+        $story = BedtimeStory::query()->where('title', 'The Tale of Peter Rabbit')->firstOrFail();
+        $this->assertSame('2026-11-27 12:00:00', $story->published_at->utc()->format('Y-m-d H:i:s'));
+
+        $this->actingAs($admin)->get(self::SITE.'/admin/bedtime-stories/'.$story->id)
+            ->assertOk()
+            ->assertSee('value="2026-11-27T20:00"', false);
+    }
 }

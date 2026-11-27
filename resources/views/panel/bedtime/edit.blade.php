@@ -60,8 +60,8 @@
             </fieldset>
 
             <div class="adm-form">
-                <label for="published_at">Waktu Terbit</label>
-                <input class="clay-input" type="datetime-local" id="published_at" name="published_at" value="{{ old('published_at', $story->published_at?->format('Y-m-d\TH:i')) }}">
+                <label for="published_at">Waktu Terbit (WITA)</label>
+                <input class="clay-input" type="datetime-local" id="published_at" name="published_at" value="{{ old('published_at', $story->published_at?->copy()->setTimezone(\App\Models\BedtimeStory::INPUT_TIMEZONE)->format('Y-m-d\TH:i')) }}">
             </div>
 
             <div class="clay-actions"><button class="adm-btn adm-btn--primary" type="submit" style="min-height:48px;padding-inline:28px">Simpan perubahan</button></div>

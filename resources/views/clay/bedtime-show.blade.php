@@ -16,12 +16,12 @@
         <p><span class="topic-badge topic-badge--static" style="background: #312E81; color: #FEF08A;">Bed Time Stories</span></p>
         <h1 class="clay-section__title">{{ $story['title'] }}</h1>
 
-        <div class="clay-card bedtime-credit-block" style="margin: 1.25rem 0; padding: 1rem 1.25rem; background: var(--clay-surface-warm, #FAF5EE); border-radius: var(--radius-md);">
-            <p style="margin: 0; font-size: 1rem; color: var(--clay-ink);">
+        <div class="clay-card clay-card--lavender bedtime-credit-block" style="margin: 1.25rem 0; padding: 1rem 1.25rem; border-radius: var(--radius-md);">
+            <p style="margin: 0; font-size: 1rem; color: inherit;">
                 <strong>Penulis:</strong> {{ $story['author'] }}@if(!empty($story['author_origin'])) ({{ $story['author_origin'] }})@endif
             </p>
             @if (!empty($story['adapter']))
-                <p style="margin: 0.35rem 0 0; font-size: 0.9375rem; color: var(--clay-muted);">
+                <p style="margin: 0.35rem 0 0; font-size: 0.9375rem; color: inherit; opacity: 0.92;">
                     <strong>Diceritakan ulang oleh:</strong> {{ $story['adapter'] }}
                 </p>
             @endif

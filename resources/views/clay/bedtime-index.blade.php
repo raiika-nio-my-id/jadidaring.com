@@ -9,7 +9,7 @@
         <div data-jd-slot="top">
             <div class="clay-section__header">
                 <h1 class="clay-section__title">Bed Time Stories</h1>
-                <p class="clay-section__subtitle" style="margin-top: 0.5rem; color: var(--clay-muted); font-size: 1.05rem;">Dongeng klasik pengantar tidur dari penulis aslinya, diceritakan ulang oleh Dongeng Anak Kecil.</p>
+                <p class="clay-section__subtitle" style="margin-top: 0.5rem; color: var(--clay-ink-2); font-size: 1.05rem;">Dongeng klasik pengantar tidur dari penulis aslinya, diceritakan ulang oleh Dongeng Anak Kecil.</p>
             </div>
         </div>
 

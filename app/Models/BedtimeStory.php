@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class BedtimeStory extends Model
@@ -43,6 +46,33 @@ class BedtimeStory extends Model
             'published_at' => 'datetime',
             'image_updated_at' => 'datetime',
         ];
+    }
+
+    /** Timezone assumed for a published_at value written without an offset (admin form, API). */
+    public const INPUT_TIMEZONE = 'Asia/Makassar';
+
+    /**
+     * Store published_at in the app timezone, honouring any ISO 8601 offset ("+08:00", "Z").
+     * Values without an offset are read as WITA.
+     */
+    protected function publishedAt(): Attribute
+    {
+        return Attribute::make(
+            set: fn (mixed $value): ?string => self::normalizeTime($value)?->format('Y-m-d H:i:s'),
+        );
+    }
+
+    public static function normalizeTime(mixed $value): ?Carbon
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        $time = $value instanceof DateTimeInterface
+            ? Carbon::instance($value)
+            : Carbon::parse((string) $value, self::INPUT_TIMEZONE);
+
+        return $time->setTimezone((string) config('app.timezone'));
     }
 
     protected static function booted(): void

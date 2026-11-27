@@ -31,7 +31,7 @@
             </fieldset>
 
             <div class="adm-form">
-                <label for="published_at">Waktu Terbit (opsional, kosongkan untuk otomatis saat terbit)</label>
+                <label for="published_at">Waktu Terbit WITA (opsional, kosongkan untuk otomatis saat terbit)</label>
                 <input class="clay-input" type="datetime-local" id="published_at" name="published_at" value="{{ old('published_at') }}">
             </div>
 
