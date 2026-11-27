@@ -34,6 +34,7 @@ class ClayController extends Controller
         'musibah' => 'Musibah',
         'teknologi' => 'Teknologi',
         'sosmed' => 'Tren Sosial Media',
+        'kriminal' => 'Kriminal & Hukum',
     ];
 
     public function home(Request $request): View

@@ -783,6 +783,7 @@ html { -webkit-tap-highlight-color: transparent; }
 .topic-badge--teknologi { background: #a8e4ff; }
 .topic-badge--sosmed { background: #ffc4e6; }
 .topic-badge--ekonomi { background: #ffe58a; }
+.topic-badge--kriminal { background: #cfd6e4; }
 .news-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 8px 16px; border-radius: 999px; background: var(--clay-surface); color: var(--clay-ink); font-weight: 800; text-decoration: none; box-shadow: var(--clay-out); }
 .news-back:hover { transform: translateY(-1px); }
 .news-back:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }

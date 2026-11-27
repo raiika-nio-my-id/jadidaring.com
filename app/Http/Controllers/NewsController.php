@@ -131,9 +131,11 @@ class NewsController extends Controller
             'metaTitle' => 'Berita '.$name.' Terbaru Hari Ini'.($pg['page'] > 1 ? ' — Halaman '.$pg['page'] : '').' — Jadidaring',
             'metaDescription' => $topik === 'sosmed'
                 ? 'Tren sosial media hari ini: apa yang sedang ramai dan viral di media sosial Indonesia dan dunia, dirangkum ringkas dengan minimal dua sumber yang bisa diperiksa.'
-                : ($topik === 'ekonomi'
+                : ($topik === 'kriminal'
+                    ? 'Berita kriminal dan hukum terbaru hari ini: kasus perundungan, kekerasan, penipuan, korupsi, hingga putusan pengadilan, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.'
+                    : ($topik === 'ekonomi'
                     ? 'Berita ekonomi terbaru hari ini: UMR dan UMP, harga sembako dan BBM, pajak, inflasi, dan lapangan kerja, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.'
-                        : 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.'),
+                        : 'Berita '.$name.' terbaru hari ini di Jadidaring, ditulis ringkas dengan minimal dua sumber yang bisa diperiksa.')),
             'canonicalUrl' => 'https://'.TenantPath::host().self::pageUrl($base, $pg['page']),
             'currentTopic' => $topik,
             'topicName' => $name,

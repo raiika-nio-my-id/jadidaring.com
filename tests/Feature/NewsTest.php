@@ -59,6 +59,18 @@ class NewsTest extends TestCase
         $this->get(self::SITE.'/berita/rss.xml')->assertOk();
     }
 
+    public function test_kriminal_topic_page_api_nav_and_sitemap(): void
+    {
+        $topic = NewsTopic::query()->where('slug', 'kriminal')->first();
+        $this->assertNotNull($topic);
+        $this->assertSame('Kriminal & Hukum', $topic->name);
+        $this->assertSame(2, $topic->min_sources);
+        $this->get(self::SITE.'/berita/kriminal')->assertOk()->assertSee('Kriminal &amp; Hukum', false);
+        $this->get(self::SITE.'/berita')->assertSee('/berita/kriminal', false);
+        $this->get(self::SITE.'/sitemap.xml')->assertSee('/berita/kriminal', false);
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonFragment(['slug' => 'kriminal']);
+    }
+
     public function test_sosmed_topic_page_api_nav_and_sitemap(): void
     {
         $topic = NewsTopic::query()->where('slug', 'sosmed')->first();
@@ -198,7 +210,7 @@ class NewsTest extends TestCase
         $this->patchJson(self::API.'/topics/gaming', ['min_sources' => 0], $this->key())->assertStatus(422);
         $this->patchJson(self::API.'/topics/gaming', ['enabled' => true, 'min_sources' => 1], $this->key())->assertOk();
         $this->postJson(self::API.'/articles', $this->payload(['topic' => 'gaming', 'slug' => 'satu-sumber', 'sources' => [['url' => 'https://a.com/1']]]), $this->key())->assertStatus(201);
-        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(8, 'topics');
+        $this->getJson(self::API.'/topics', $this->key())->assertOk()->assertJsonCount(9, 'topics');
     }
 
     public function test_zero_daily_limit_means_unlimited(): void

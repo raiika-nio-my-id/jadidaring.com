@@ -29,6 +29,7 @@
             <a href="/berita/musibah" class="clay-pill clay-pill--sky">Musibah</a>
             <a href="/berita/teknologi" class="clay-pill clay-pill--sky">Teknologi</a>
             <a href="/berita/sosmed" class="clay-pill clay-pill--sky">Tren Sosmed</a>
+            <a href="/berita/kriminal" class="clay-pill clay-pill--sky">Kriminal</a>
         </div>
 
         @include('clay._articles', ['featured' => true, 'articles' => $articles, 'emptyText' => 'Redaksi Jadidaring sedang menyiapkan sajian berita harian terbaik untuk Anda.'])
